@@ -1,0 +1,53 @@
+The KDAB State Machine Editor Library uses the CMake buildsystem.
+
+Please see the comments at the top of CMakeLists.txt for
+the available configuration options you can pass to cmake.
+
+The installation directory defaults to /usr/local on UNIX
+c:/Program Files on Windows and /Applications on MacOS.
+You can change this location by passing the option
+-DCMAKE_INSTALL_PREFIX=/install/path to cmake.
+
+To build a debug version pass -DCMAKE_BUILD_TYPE=Debug to cmake.
+
+To build this library you will need:
+ - CMake 2.8.11
+ - Qt 5.3 or higher
+
+Optional FOSS packages (eg. Graphviz, etc) provide extra functionality.
+See the "Optional Dependencies" section below for more details.
+
+Building on Unix with gcc or clang:
+% mkdir build
+% cd build
+% cmake ..
+% make
+% make install
+
+Building on Windows with Microsoft Visual Studio:
+% mkdir build
+% cd build
+% cmake -G "NMake Makefiles" ..
+% nmake
+% nmake install
+
+Building on Windows with mingw:
+% mkdir build
+% cd build
+% cmake -G "MinGW Makefiles" ..
+% mingw32-make
+% mingw32-make install
+
+== Optional Dependencies ==
+The KDAB State Machine Editor Library relies on optional (FOSS) dependencies
+to provide some of its functionality.  For example, you'll need the Graphviz
+visualization software (http://www.graphviz.org) for the state chart automatic
+layout feature.
+
+When you run cmake it will inform you about these missing dependencies.
+
+You can also force CMake to ignore any or all of the optional dependencies
+by passing the option -DCMAKE_DISABLE_FIND_PACKAGE_<PACKAGE>=True.
+For instance:
+# tell cmake to ignore Graphiz
+  % cmake -DCMAKE_DISABLE_FIND_PACKAGE_Graphviz=True

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml version="1.0" xmlns="http://www.w3.org/2005/07/scxml" name="qtstickman" initial="alive">
+    <state id="alive" initial="idle">
+        <transition event="e1" target="S1"/>
+        <transition event="e2" target="S2"/>
+        <transition event="e3" target="S3"/>
+
+        <state id="idle">
+        </state>
+
+        <state id="S1" initial="S11">
+            <state id="S11">
+                <transition event="s11" target="S12"/>
+            </state>
+            <state id="S12">
+                <transition event="s12" target="S11"/>
+            </state>
+        </state>
+        <state id="S2" initial="S21">
+            <state id="S21">
+                <transition event="s21" target="S22"/>
+            </state>
+            <state id="S22">
+                <transition event="s22" target="S23"/>
+            </state>
+            <state id="S23">
+                <transition event="s23" target="S21"/>
+            </state>
+        </state>
+        <state id="S3" initial="S31">
+            <state id="S31">
+                <transition event="s31" target="S32"/>
+            </state>
+            <state id="S32">
+                <transition event="s32" target="S33"/>
+            </state>
+            <state id="S33">
+                <transition event="s33" target="S34"/>
+            </state>
+            <state id="S34">
+                <transition event="s34" target="S31"/>
+            </state>
+        </state>
+    </state>
+
+    <state id="death" initial="Final">
+        <final id="Final"/>
+    </state>
+</scxml>

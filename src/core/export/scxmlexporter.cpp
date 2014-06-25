@@ -1,0 +1,142 @@
+/*
+  scxmlexporter.cpp
+
+  This file is part of the KDAB State Machine Editor Library.
+
+  Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
+  All rights reserved.
+  Author: Kevin Funk <kevin.funk@kdab.com>
+
+  Licensees holding valid commercial KDAB State Machine Editor Library
+  licenses may use this file in accordance with the KDAB State Machine Editor
+  Library License Agreement provided with the Software.
+
+  This file may be distributed and/or modified under the terms of the
+  GNU Lesser General Public License version 2.1 as published by the
+  Free Software Foundation and appearing in the file LICENSE.LGPL.txt included.
+
+  This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+  WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+  Contact info@kdab.com if any conditions of this licensing are not
+  clear to you.
+*/
+
+#include "scxmlexporter.h"
+
+#include "objecthelper.h"
+#include "element.h"
+#include "elementutil.h"
+
+#include <QDebug>
+
+using namespace KDSME;
+
+ScxmlExporter::ScxmlExporter(QByteArray* array)
+    : m_writer(array)
+{
+    init();
+}
+
+ScxmlExporter::ScxmlExporter(QIODevice* device)
+    : m_writer(device)
+{
+    init();
+}
+
+void ScxmlExporter::init()
+{
+    m_writer.setAutoFormatting(true);
+}
+
+bool ScxmlExporter::exportMachine(StateMachine* machine)
+{
+    setErrorString(QString());
+
+    if (!machine) {
+        setErrorString("Null machine instance passed");
+        return false;
+    }
+
+    if (m_writer.hasError()) {
+        setErrorString("Setting up XML writer failed");
+        return false;
+    }
+
+    return writeStateMachine(machine);
+}
+
+bool ScxmlExporter::writeStateMachine(StateMachine* machine)
+{
+    Q_ASSERT(machine);
+
+
+    // TODO: Check if preconditions are met, e.g. that all state labels are unique?
+
+    m_writer.writeStartDocument();
+    m_writer.writeStartElement("scxml");
+    m_writer.writeDefaultNamespace("http://www.w3.org/2005/07/scxml");
+    m_writer.writeAttribute("version", "1.0");
+    if (!writeStateInner(machine))
+        return false;
+    m_writer.writeEndElement();
+    m_writer.writeEndDocument();
+    return !m_writer.hasError();
+}
+
+bool ScxmlExporter::writeState(State* state)
+{
+    if (qobject_cast<PseudoState*>(state)) {
+        return true; // pseudo states are ignored
+    }
+
+    m_writer.writeStartElement("state");
+    if (!writeStateInner(state))
+        return false;
+    m_writer.writeEndElement();
+    return true;
+}
+
+bool ScxmlExporter::writeStateInner(State* state)
+{
+    if (state->label().isEmpty()) {
+        setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
+        return false;
+    }
+
+    if (qobject_cast<StateMachine*>(state)) {
+        m_writer.writeAttribute("name", state->label());
+    } else {
+        m_writer.writeAttribute("id", state->label());
+    }
+
+    if (State* initial = ElementUtil::findInitialState(state)) {
+        if (initial->label().isEmpty()) {
+            setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
+            return false;
+        }
+        m_writer.writeAttribute("initial", initial->label());
+    }
+
+    foreach (Transition* transition, state->transitions()) {
+        if (!writeTransition(transition))
+            return false;
+    }
+
+    foreach (State* child, state->childStates()) {
+        if (!writeState(child))
+            return false;
+    }
+    return true;
+}
+
+bool ScxmlExporter::writeTransition(Transition* transition)
+{
+    m_writer.writeStartElement("transition");
+    m_writer.writeAttribute("event", transition->label());
+    if (State* targetState = transition->targetState()) {
+        m_writer.writeAttribute("target", targetState->label());
+    }
+    m_writer.writeEndElement();
+    return true;
+}
