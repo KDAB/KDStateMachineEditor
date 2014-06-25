@@ -6,7 +6,7 @@ and tools.  Output from such applications is in metacode or QML that can
 then be used in larger Qt or QtQuick projects.
 
 For a full description of the KDAB State Machine Editor Library, read our
-wiki on GitHub.
+wiki on GitHub, http://github.com/KDAB/KDStateMachineEditor/wiki.
 
 Contributing
 ============
@@ -27,12 +27,12 @@ For terms of redistribution, refer to the license agreement.
 About KDAB
 ==========
 The KDAB State Machine Editor Library is supported and maintained by
-Klarälvdalens Datakonsult AB (KDAB)
+Klarälvdalens Datakonsult AB (KDAB).
 
 KDAB, the Qt experts, provide consulting and mentoring for developing
 Qt applications from scratch and in porting from all popular and legacy
-frameworks to Qt. Our software products increase Qt productivity and our
-Qt trainers have trained 50% of commercial Qt developers globally.
+frameworks to Qt. We continue to help develop parts of Qt and are one
+of the major contributors to the Qt Project. We can give advanced or
+standard trainings anywhere around the globe.
 
 Please visit http://www.kdab.com to meet the people who write code like this.
-We also offer Qt training courses.
