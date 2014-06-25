@@ -16,14 +16,3 @@ target_link_libraries(${KDSME_APPBIN}
   ${KDSME_CORELIB}
   ${KDSME_VIEWLIB}
 )
-install(TARGETS ${KDSME_APPBIN} ${INSTALL_TARGETS_DEFAULT_ARGS})
-
-set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP ON)
-include(InstallRequiredSystemLibraries)
-set(KDSME_EXECUTABLE ${BIN_INSTALL_DIR}/${KDSME_APPBIN}${CMAKE_EXECUTABLE_SUFFIX})
-if(DEPLOY_DEPENDENCIES)
-  if(APPLE OR WIN32)
-    include(DeployQt5)
-    install_qt5_executable("${KDSME_EXECUTABLE}" "" "" "${Graphviz_ROOT}/bin")
-  endif()
-endif()
