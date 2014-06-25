@@ -1,0 +1,20 @@
+CHECKSETS qt4,c++,foss
+
+#KDAB-specific checks
+EXTRA kdabcopyright
+
+#additional checks
+EXTRA defines,null,camelcase
+
+#coding style settings
+STYLE_CPPSTYLE kde
+STYLE_OFFSET 2
+STYLE_LINEMAX 100
+
+#no need to check 3rdparty stuff
+SKIP /3rdparty/
+#nor Digia'stuff
+SKIP /codeeditor.cpp|/codeeditor.h
+SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
+#skip the borrowed code in the cmake subdir
+SKIP /cmake/MacroLogFeature.cmake|/cmake/DeployQt5.cmake
