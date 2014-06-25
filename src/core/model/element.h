@@ -40,6 +40,7 @@ class StateMachine;
 class KDSME_CORE_EXPORT Element : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(Flags)
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
     Q_PROPERTY(Flags flags READ flags CONSTANT FINAL)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged FINAL)
