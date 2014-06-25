@@ -86,7 +86,7 @@ Item {
             opacity: 0.5
             sourceItem: root.scene
             mipmap: true
-            recursive: true
+            recursive: false
         }
 
         Rectangle {
