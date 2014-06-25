@@ -26,7 +26,7 @@ For terms of redistribution, refer to the license agreement.
 
 About KDAB
 ==========
-The KDAB State Machine Editor Library is supported and maintained by
+This State Machine Editor Library is supported and maintained by
 Klarälvdalens Datakonsult AB (KDAB).
 
 KDAB, the Qt experts, provide consulting and mentoring for developing
