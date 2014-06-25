@@ -1,0 +1,14 @@
+# general
+*.kdev4
+*~
+*.rej
+*.orig
+*.out
+.*
+CMakeLists.txt.user
+
+# from kdiff3
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
