@@ -222,7 +222,7 @@ void LayoutItem::elementChanged(Element* oldElement, Element* newElement)
     Q_UNUSED(newElement);
 }
 
-QDebug SME::operator<<(QDebug dbg, const LayoutItem& item)
+QDebug KDSME::operator<<(QDebug dbg, const LayoutItem& item)
 {
     dbg.nospace() << "LayoutItem["
         << "pos=(" << item.pos().x() << "," << item.pos().y() << ")"
@@ -397,7 +397,7 @@ Transition* TransitionLayoutItem::transition() const
     return qobject_cast<Transition*>(element());
 }
 
-QDebug SME::operator<<(QDebug dbg, const TransitionLayoutItem& item)
+QDebug KDSME::operator<<(QDebug dbg, const TransitionLayoutItem& item)
 {
     dbg.nospace() << "TransitionLayoutItem["
         << "pos=(" << item.pos().x() << "," << item.pos().y() << ")"
@@ -407,7 +407,7 @@ QDebug SME::operator<<(QDebug dbg, const TransitionLayoutItem& item)
     return dbg.space();
 }
 
-QDebug SME::operator<<(QDebug dbg, const StateLayoutItem& item)
+QDebug KDSME::operator<<(QDebug dbg, const StateLayoutItem& item)
 {
     dbg.nospace() << "StateLayoutItem["
         << "pos=(" << item.pos().x() << "," << item.pos().y() << ")"
