@@ -32,6 +32,7 @@ using namespace KDSME;
 ModifyTransitionLayoutItemCommand::ModifyTransitionLayoutItemCommand(TransitionLayoutItem* item, QUndoCommand* parent)
     : Command(QString(), parent)
     , m_item(item)
+    , m_operation(NoOperation)
 {
 }
 

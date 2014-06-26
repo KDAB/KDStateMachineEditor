@@ -95,13 +95,17 @@ QString toQmlId(const QString& input)
 }
 
 QmlExporter::QmlExporter(QByteArray* array)
-    : m_out(array), m_indent(4)
+    : m_out(array)
+    , m_indent(4)
+    , m_level(0)
 {
     Q_ASSERT(array);
 }
 
 QmlExporter::QmlExporter(QIODevice* device)
-    : m_out(device), m_indent(4)
+    : m_out(device)
+    , m_indent(4)
+    , m_level(0)
 {
     Q_ASSERT(device);
 }

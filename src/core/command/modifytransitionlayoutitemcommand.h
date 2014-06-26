@@ -55,6 +55,7 @@ private:
     QPointer<TransitionLayoutItem> m_item;
 
     enum Operation {
+        NoOperation,
         SetShapeOperation
     } m_operation;
 
