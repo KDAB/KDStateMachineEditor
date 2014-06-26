@@ -70,6 +70,9 @@ UmlElement {
         }
         onDropped: {
             var transition = root.item.element;
+            while (target && target.parent && (target.item == undefined || target.item.element == undefined)) { // find the state containing the drop area
+                target = target.parent;
+            }
             // If target == null => reparent to root state (the state machine object)
             var state = (target ? target.item.element : root.item.element.machine());
             if (index == 0) {
