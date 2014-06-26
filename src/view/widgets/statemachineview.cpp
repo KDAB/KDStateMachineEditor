@@ -31,6 +31,7 @@
 #include "command/commandfactory.h"
 #include "command/createelementcommand.h"
 #include "command/changestatemachinecommand.h"
+#include "command/modifylayoutitemcommand.h"
 #include "common/metatypedeclarations.h"
 #include "editcontroller.h"
 #include "quick/quickpainterpath.h"
@@ -43,6 +44,7 @@
 #include "layoutitem.h"
 #include "layoutitemmodel.h"
 #include "layoutproperties.h"
+#include "layoutimportexport.h"
 #include "semanticzoommanager.h"
 #include "kdsmeconstants.h"
 #include "view/view.h"
@@ -53,6 +55,8 @@
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickView>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 using namespace KDSME;
 
@@ -252,10 +256,62 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, cons
         return false;
 
     Element::Type type = Element::stringToType(qPrintable(typeString));
-    auto cmd = new CreateElementCommand(m_view->stateModel(), type);
+
+    // TODO should we probably either move that command to kdstatemachine/commands
+    // for reuse or even extend the existing CreateElementCommand to set optionally
+    // an initial position/geometry?
+    class CreateAndPositionCommand : public Command {
+    public:
+        CreateAndPositionCommand(View *view, Element::Type type, const QPointF &pos)
+            : Command(view->stateModel())
+            , m_view(view)
+            , m_createcmd(new CreateElementCommand(view->stateModel(), type))
+            , m_pos(pos)
+        {
+            setText(m_createcmd->text());
+        }
+        virtual void redo()
+        {
+            // save the current layout
+            Q_ASSERT(m_view->rootLayoutItem());
+            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootLayoutItem()));
+
+            m_createcmd->redo();
+
+            Element *element = m_createcmd->createdElement();
+            if (!element) // creating the element failed, abort here
+                return;
+
+            // re-import is needed so the newly created element gets a LayoutItem
+            m_view->import();
+
+            // restore the previous layout
+            Q_ASSERT(m_view->rootLayoutItem());
+            LayoutImportExport::importLayout(doc.object(), m_view->rootLayoutItem());
+
+            // Now move the new element to its position
+            LayoutItem* layoutitem = m_view->layoutItemForElement(element);
+            Q_ASSERT(layoutitem);
+            ModifyLayoutItemCommand poscmd(layoutitem);
+            QPointF p = m_pos - layoutitem->pos();
+            poscmd.moveBy(p.x(), p.y());
+            poscmd.redo();
+
+            // TODO this rearranges the just created and positioned element, why?
+            //m_view->layout();
+        }
+        virtual void undo() {
+            m_createcmd->undo();
+        }
+    private:
+        View *m_view;
+        QScopedPointer<CreateElementCommand> m_createcmd;
+        QPointF m_pos;
+    };
+
+    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(m_view, type, QPointF(pos));
     commandController()->push(cmd);
 
-    // TODO: Send command to move the newly created LayoutItem to the correct position
     return true;
 }
 

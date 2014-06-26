@@ -108,7 +108,7 @@ protected Q_SLOTS:
     virtual void rowsInserted(const QModelIndex& parent, int start, int end) Q_DECL_OVERRIDE;
     virtual void layoutChanged() Q_DECL_OVERRIDE;
 
-private Q_SLOTS:
+public Q_SLOTS:
     void import();
 
 private:
