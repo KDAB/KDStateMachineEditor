@@ -117,6 +117,7 @@ QVariant StateModel::headerData(int section, Qt::Orientation orientation, int ro
     Q_UNUSED(section);
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
+        case 0:
         default:
             return tr("State");
         }
