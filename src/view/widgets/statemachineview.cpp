@@ -72,6 +72,14 @@ static QObject* kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, 
     return new CommandFactory;
 }
 
+static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
+{
+    QString s;
+    Q_FOREACH(const QQmlError &e, errors)
+        s += e.toString() + "\n";
+    return s;
+}
+
 StateMachineView::StateMachineView(QWidget* parent)
     : QQuickWidget(parent)
     , m_view(nullptr)
@@ -132,7 +140,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     setFormat(format);
 
     setSource(QUrl("qrc:/kdsme/qml/StateMachineView.qml"));
-    Q_ASSERT(errors().isEmpty());
+    Q_ASSERT_X(errors().isEmpty(), __FUNCTION__, qPrintable(kdsme_qmlErrorString(errors())));
 }
 
 View* StateMachineView::view() const
