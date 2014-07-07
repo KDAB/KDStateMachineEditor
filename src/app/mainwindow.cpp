@@ -88,9 +88,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     , m_presetsModel(new QStandardItemModel(this))
     , m_stateMachineModel(new StateModel(this))
     , m_transitionsModel(new TransitionListModel(this))
+    , m_layoutInformationModel(new LayoutItemModel(this))
     , m_view(new View)
     , m_stateMachineView(0)
-    , m_layoutInformationModel(new LayoutItemModel(this))
 {
     ui->setupUi(this);
 
@@ -135,7 +135,7 @@ void MainWindow::setupPresetsView()
 
     QStringList files = dir.entryList(QDir::Files);
     foreach (const QString& file, files) {
-        if (!file.endsWith(".scxml"))
+        if (!file.endsWith(QLatin1String(".scxml")))
             continue;
 
         QStandardItem* item = new QStandardItem(file);

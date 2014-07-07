@@ -44,8 +44,8 @@ void setLayoutItemGeometry(LayoutItem* item, const QRectF& geometry)
 
 KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(KDSME::LayoutItem* item, QUndoCommand* parent)
     : Command(QString(), parent)
-    , m_item(item)
     , m_operation(NoOperation)
+    , m_item(item)
 {
     Q_ASSERT(item);
 }

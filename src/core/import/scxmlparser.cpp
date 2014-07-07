@@ -226,6 +226,7 @@ void ScxmlParser::visitTransiton(State* parent)
 
 void ScxmlParser::visitHistory(State* parent)
 {
+    Q_UNUSED(parent);
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
     IF_DEBUG(qDebug() << Q_FUNC_INFO;)
 

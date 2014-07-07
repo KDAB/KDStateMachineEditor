@@ -56,7 +56,7 @@ public:
     void setSelectionModel(QItemSelectionModel* selectionModel);
     void setCommandController(CommandController *cmdController);
 
-private slots:
+private Q_SLOTS:
     void updateSimpleProperty();
     void setInitalState(const QString& label);
     void setSourceState(const QString& label);

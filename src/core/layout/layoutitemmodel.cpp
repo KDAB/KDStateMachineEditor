@@ -95,7 +95,7 @@ void LayoutItemModel::slotEndResetModel()
     setRootObjects(QList<QObject*>() << m_view->rootLayoutItem());
 }
 
-void LayoutItemModel::slotModelContentUpdated(LayoutItem* item)
+void LayoutItemModel::slotModelContentUpdated(LayoutItem* /*item*/)
 {
     // TODO: Emit dataChanged properly
 

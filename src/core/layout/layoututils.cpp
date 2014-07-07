@@ -58,7 +58,7 @@ bool LayoutUtils::moveInner(StateLayoutItem* state, const QPointF& offset)
     return true;
 }
 
-bool LayoutUtils::fixupLayout(StateLayoutItem* state)
+bool LayoutUtils::fixupLayout(StateLayoutItem* /*state*/)
 {
     /*
     LayoutWalker walker;
