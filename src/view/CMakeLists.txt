@@ -27,6 +27,7 @@ qt5_add_resources(LIB_SRCS ${LIB_QRCS})
 set(QML_FILES
   qml/LayoutItemLoader.qml
   qml/StateMachineDebugToolBar.qml
+  qml/util/ChannelizedDropArea.qml
   qml/util/DragPointGroup.qml
   qml/util/SquareButton.qml
   qml/util/DragPoint.qml
