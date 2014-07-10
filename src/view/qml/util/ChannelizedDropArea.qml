@@ -32,13 +32,15 @@ DropArea {
     keys: ["external"]
 
     onEntered: {
-        if (!_quickView.sendDragEnterEvent(root.item, Qt.point(drag.x, drag.y), drag.urls)) {
-            // FIXME: Bug in Qt: https://bugreports.qt-project.org/browse/QTBUG-39453
-            // Rejecting the drag-enter event results in a broken DropArea...
-            //drag.accepted = false
+        var sender = drag.source.dragData != undefined ? drag.source.dragData.item : null;
+        if (!_quickView.sendDragEnterEvent(sender, Qt.point(drag.x, drag.y), drag.urls)) {
+            drag.accepted = false
         }
     }
     onDropped: {
-        _quickView.sendDropEvent(root.item, Qt.point(drop.x, drop.y), drop.urls)
+        var sender = drop.source.dragData != undefined ? drop.source.dragData.item : null;
+        if (!_quickView.sendDropEvent(sender, Qt.point(drop.x, drop.y), drop.urls)) {
+            drop.accepted = false
+        }
     }
 }

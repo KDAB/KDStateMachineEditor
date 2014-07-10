@@ -223,16 +223,26 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 
 bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, const QPoint& pos, const QList<QUrl>& urls)
 {
-    Q_UNUSED(sender);
     Q_UNUSED(pos);
 
-    if (urls.isEmpty())
+    qDebug() << Q_FUNC_INFO << "sender=" << sender << "pos=" << pos << "urls=" << urls;
+
+    //FIXME this is a temporary hack to make drag and drop of transitions
+    //      to states work.
+    if (qobject_cast<TransitionLayoutItem*>(sender))
+        return true;
+
+    if (urls.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "No urls";
         return false;
+    }
 
     // we only accept one item only for now
     const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX)
+    if (url.scheme() != KDSME_QML_URI_PREFIX) {
+        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
         return false;
+    }
 
     return true;
 }
@@ -242,13 +252,19 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, cons
     Q_UNUSED(sender);
     Q_UNUSED(pos);
 
-    if (urls.isEmpty())
+    qDebug() << Q_FUNC_INFO << "sender=" << sender << "pos=" << pos << "urls=" << urls;
+
+    if (urls.isEmpty()) {
+        qDebug()<< Q_FUNC_INFO << "No urls";
         return false;
+    }
 
     // we only accept one item only for now
     const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX)
+    if (url.scheme() != KDSME_QML_URI_PREFIX) {
+        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
         return false;
+    }
 
     const QString str = url.toString(QUrl::RemoveScheme);
     const QString typeString = str.split('/').last();
