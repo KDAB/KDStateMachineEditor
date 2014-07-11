@@ -1,11 +1,11 @@
 /*
-  command.h
+  ModifyDefaultStateCommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Volker Krause <volker.krause@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,49 +22,35 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_COMMAND_H
-#define KDSME_COMMAND_COMMAND_H
+#ifndef KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#define KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
 
-#include "kdsme_core_export.h"
+#include "command.h"
 
-#include <QUndoCommand>
+#include <QPointer>
 
 namespace KDSME {
-class StateModel;
 
-class KDSME_CORE_EXPORT Command : public QObject, public QUndoCommand
+class State;
+class HistoryState;
+
+class KDSME_CORE_EXPORT ModifyDefaultStateCommand : public Command
 {
     Q_OBJECT
-
 public:
-    enum Id {
-        CreateElement = 0,
-        LayoutSnapshot,
-        ModifyProperty,
-        ModifyInitialState,
-        ModifyDefaultState,
+    explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = 0);
+    ~ModifyDefaultStateCommand();
 
-        ReparentElement,
-
-        ModifyTransition,
-
-        ModifyLayoutItem,
-        ModifyTransitionLayoutItem,
-
-        ChangeStateMachine
-    };
-
-    explicit Command(StateModel* model, QUndoCommand* parent = 0);
-    explicit Command(const QString& text = QString(), QUndoCommand* parent = 0);
-
-    StateModel* model() const;
+    int id() const Q_DECL_OVERRIDE;
+    void undo() Q_DECL_OVERRIDE;
+    void redo() Q_DECL_OVERRIDE;
 
 private:
-    StateModel* m_model;
+    QPointer<HistoryState> m_state;
+    QPointer<State> m_defaultState;
+    QPointer<State> m_oldDefaultState;
 };
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Command*);
-
-#endif // COMMAND_H
+#endif // KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H

@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -52,7 +55,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="childModeLabel">
        <property name="text">
         <string>&amp;Child mode:</string>
@@ -62,17 +65,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="historyTypeLabel">
-       <property name="text">
-        <string>&amp;History type:</string>
-       </property>
-       <property name="buddy">
-        <cstring>historyTypeEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
+     <item row="3" column="1">
       <widget class="QComboBox" name="childModeEdit">
        <item>
         <property name="text">
@@ -86,7 +79,17 @@
        </item>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="0">
+      <widget class="QLabel" name="historyTypeLabel">
+       <property name="text">
+        <string>&amp;History type:</string>
+       </property>
+       <property name="buddy">
+        <cstring>historyTypeEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
       <widget class="QComboBox" name="historyTypeEdit">
        <item>
         <property name="text">
@@ -98,6 +101,26 @@
          <string>Deep</string>
         </property>
        </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="defaultStateLabel">
+       <property name="text">
+        <string>&amp;Default state:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="buddy">
+        <cstring>initialStateComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="defaultStateComboBox">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>

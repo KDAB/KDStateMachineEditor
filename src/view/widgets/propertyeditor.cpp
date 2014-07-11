@@ -29,6 +29,7 @@
 #include "command/modifypropertycommand.h"
 #include "command/modifytransitioncommand.h"
 #include "command/modifyinitialstatecommand.h"
+#include "command/modifydefaultstatecommand.h"
 #include "element.h"
 #include "elementmodel.h"
 #include "elementutil.h"
@@ -68,6 +69,7 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     connect(m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
     connect(m_stateWidget->initialStateComboBox, SIGNAL(activated(QString)), SLOT(setInitalState(QString)));
+    connect(m_stateWidget->defaultStateComboBox, SIGNAL(activated(QString)), SLOT(setDefaultState(QString)));
     connect(m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
     connect(m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
     connect(m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
@@ -167,9 +169,12 @@ void PropertyEditor::loadFromCurrentElement()
     if (state && state->type() != Element::PseudoStateType) {
         m_stateWidget->labelLineEdit->setText(state->label());
         m_stateWidget->initialStateComboBox->clear();
+        m_stateWidget->defaultStateComboBox->clear();
 
         m_stateWidget->initialStateLabel->setVisible(state->isComposite());
         m_stateWidget->initialStateComboBox->setVisible(state->isComposite());
+        m_stateWidget->defaultStateLabel->setVisible(state->type() == Element::HistoryStateType);
+        m_stateWidget->defaultStateComboBox->setVisible(state->type() == Element::HistoryStateType);
         m_stateWidget->childModeLabel->setVisible(state->isComposite());
         m_stateWidget->childModeEdit->setVisible(state->isComposite());
 
@@ -182,6 +187,12 @@ void PropertyEditor::loadFromCurrentElement()
                 m_stateWidget->initialStateComboBox->setCurrentIndex(0);
 
             m_stateWidget->childModeEdit->setCurrentIndex(state->childMode());
+        }
+
+        if (state->type() == Element::HistoryStateType) {
+            m_stateWidget->defaultStateComboBox->addItems(allStates(state->machine()));
+            State *defaultState = qobject_cast<HistoryState*>(state)->defaultState();
+            m_stateWidget->defaultStateComboBox->setCurrentText(defaultState ? defaultState->label() : "");
         }
 
         m_stateWidget->onEntryEditor->setPlainText(state->onEntry());
@@ -269,6 +280,19 @@ void PropertyEditor::setInitalState(const QString &label)
         State* initialState = ElementUtil::findState(state, label);
         if (currentInitialState != initialState) {
             ModifyInitialStateCommand *command = new ModifyInitialStateCommand(state, initialState);
+            m_commandController->undoStack()->push(command);
+        }
+    }
+}
+
+void PropertyEditor::setDefaultState(const QString& label)
+{
+    HistoryState* state = current<HistoryState>();
+    Q_ASSERT(state);
+    if (state) {
+        State* defaultState = ElementUtil::findState(state->machine(), label);
+        if (state->defaultState() != defaultState) {
+            ModifyDefaultStateCommand *command = new ModifyDefaultStateCommand(state, defaultState);
             m_commandController->undoStack()->push(command);
         }
     }

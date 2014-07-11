@@ -59,6 +59,7 @@ public:
 private Q_SLOTS:
     void updateSimpleProperty();
     void setInitalState(const QString& label);
+    void setDefaultState(const QString& label);
     void setSourceState(const QString& label);
     void setTargetState(const QString& label);
     void childModeChanged();
