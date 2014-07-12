@@ -50,7 +50,7 @@ UmlElement {
     }
 
     draggingComponent: DragPointGroup {
-        dragKeys: ["transition"]
+        dragKeys: ["TransitionType"]
         dragData: root
 
         points: [

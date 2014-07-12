@@ -31,6 +31,7 @@
 #include <QListView>
 #include <QMimeData>
 #include <QUrl>
+#include <QRegularExpression>
 #include <QVBoxLayout>
 
 using namespace KDSME;
@@ -122,10 +123,24 @@ QMimeData* PaletteModel::mimeData(const QModelIndexList& indexes) const
 
     const QModelIndex index = indexes.first();
     auto type = index.data(ElementTypeRole).value<Element::Type>();
+    const QString typeString = Element::typeToString(type);
 
     QMimeData* mimeData = new QMimeData;
+
+    mimeData->setUrls(QList<QUrl>() << QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, typeString));
+
+    // Following setData calls are used in QML DropArea.keys to accept/reject a drag and drop
+    // depending on the data given. We are using this to allow for example "TransitionType"
+    // elements not to be placed on a UmlStateMachine.qml but only "StateType" elements.
+
+    if (typeString.contains(QRegularExpression(".+StateType$")))
+        mimeData->setData("StateType", "");
+    if (typeString.contains(QRegularExpression(".+TransitionType$")))
+        mimeData->setData("TransitionType", "");
+
     mimeData->setData("external", "");
-    mimeData->setUrls(QList<QUrl>() << QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, Element::typeToString(type)));
+    mimeData->setData(typeString, "");
+
     return mimeData;
 }
 
