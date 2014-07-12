@@ -46,6 +46,7 @@ set(QML_FILES
   qml/uml/UmlHistoryState.qml
   qml/uml/UmlStateMachine.qml
   qml/uml/UmlState.qml
+  qml/uml/UmlSimpleStateDelegate.qml
   qml/StateMachineScene.qml
 )
 
