@@ -29,17 +29,23 @@ import com.kdab.kdsme 1.0
 DropArea {
     id: root
 
+    // A list of QMimeData.data's the DropArea accepts.
     keys: ["external"]
+
+    // The UmlElement.item this DropArea is attached to.
+    property variant item: null
 
     onEntered: {
         var sender = drag.source.dragData != undefined ? drag.source.dragData.item : null;
-        if (!_quickView.sendDragEnterEvent(sender, Qt.point(drag.x, drag.y), drag.urls)) {
+        var target = item
+        if (!_quickView.sendDragEnterEvent(sender, item, Qt.point(drag.x, drag.y), drag.urls)) {
             drag.accepted = false
         }
     }
+
     onDropped: {
         var sender = drop.source.dragData != undefined ? drop.source.dragData.item : null;
-        if (!_quickView.sendDropEvent(sender, Qt.point(drop.x, drop.y), drop.urls)) {
+        if (!_quickView.sendDropEvent(sender, item, Qt.point(drop.x, drop.y), drop.urls)) {
             drop.accepted = false
         }
     }

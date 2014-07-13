@@ -59,8 +59,8 @@ public:
     Q_INVOKABLE void fitInView(const QRectF& rect);
     Q_INVOKABLE void fitInView();
 
-    Q_INVOKABLE bool sendDragEnterEvent(KDSME::LayoutItem* sender, const QPoint& pos, const QList<QUrl>& urls);
-    Q_INVOKABLE bool sendDropEvent(KDSME::LayoutItem* sender, const QPoint& pos, const QList<QUrl>& urls);
+    Q_INVOKABLE bool sendDragEnterEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
+    Q_INVOKABLE bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
 
     Q_INVOKABLE void changeStateMachine(KDSME::StateMachine *stateMachine);
 

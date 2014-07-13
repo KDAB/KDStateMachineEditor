@@ -47,10 +47,9 @@ Rectangle {
 
     ChannelizedDropArea {
         id: dropArea
-
-        keys: ["StateType", "TransitionType", "external"]
-
         anchors.fill: parent
+        keys: ["StateType", "TransitionType", "external"]
+        item: control.item
     }
 
     states: [

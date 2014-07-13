@@ -221,17 +221,19 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
     }
 }
 
-bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, const QPoint& pos, const QList<QUrl>& urls)
+bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
 {
     Q_UNUSED(pos);
 
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "pos=" << pos << "urls=" << urls;
+    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
-    //FIXME this is a temporary hack to make drag and drop of transitions
-    //      to states work.
-    if (qobject_cast<TransitionLayoutItem*>(sender))
-        return true;
+    // For the case a TransitionLayoutItem is dragged onto a StateLayoutItem that
+    // StateLayoutItem will turns into the new source/target of the transition.
+    if (qobject_cast<TransitionLayoutItem*>(sender)) {
+        return qobject_cast<StateLayoutItem*>(target);
+    }
 
+    // No sender means we expect a URL to be given.
     if (urls.isEmpty()) {
         qDebug() << Q_FUNC_INFO << "No urls";
         return false;
@@ -247,12 +249,12 @@ bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, const QPoint& pos,
     return true;
 }
 
-bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, const QList<QUrl>& urls)
+bool StateMachineView::sendDropEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
 {
     Q_UNUSED(sender);
     Q_UNUSED(pos);
 
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "pos=" << pos << "urls=" << urls;
+    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
     if (urls.isEmpty()) {
         qDebug()<< Q_FUNC_INFO << "No urls";
@@ -278,12 +280,13 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, cons
     // an initial position/geometry?
     class CreateAndPositionCommand : public Command {
     public:
-        CreateAndPositionCommand(View *view, Element::Type type, const QPointF &pos)
+        CreateAndPositionCommand(View *view, Element::Type type, Element *targetElement, const QPointF &pos)
             : Command(view->stateModel())
             , m_view(view)
             , m_createcmd(new CreateElementCommand(view->stateModel(), type))
             , m_pos(pos)
         {
+            m_createcmd->setParentElement(targetElement);
             setText(m_createcmd->text());
         }
         virtual void redo()
@@ -315,6 +318,10 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, cons
 
             // TODO this rearranges the just created and positioned element, why?
             //m_view->layout();
+
+            // Mark the new LayoutItem as current one what means the item is selected
+            // as if a user clicked on it.
+            m_view->setCurrentItem(layoutitem);
         }
         virtual void undo() {
             m_createcmd->undo();
@@ -325,7 +332,8 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, const QPoint& pos, cons
         QPointF m_pos;
     };
 
-    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(m_view, type, QPointF(pos));
+    Element *targetElement = target ? target->element() : 0;
+    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(m_view, type, targetElement, QPointF(pos));
     commandController()->push(cmd);
 
     return true;

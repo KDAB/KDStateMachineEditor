@@ -75,11 +75,12 @@ UmlElement {
 
     ChannelizedDropArea {
         id: dropArea
+        anchors.fill: parent
 
         //keys: ["StateType", "HistoryStateType", "FinalStateType", "PseudoStateType"]
         keys: ["StateType"]
 
-        anchors.fill: parent
+        item: root.item
     }
 
     states: [
