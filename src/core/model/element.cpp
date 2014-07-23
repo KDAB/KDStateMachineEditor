@@ -30,6 +30,7 @@
 
 #include <QDebug>
 #include <QEvent>
+#include <QQmlEngine>
 
 using namespace KDSME;
 
@@ -182,7 +183,9 @@ Element::Type Transition::type() const
 
 StateMachine* Transition::machine() const
 {
-    return findStateMachine(this);
+    StateMachine *m = findStateMachine(this);
+    QQmlEngine::setObjectOwnership(m, QQmlEngine::CppOwnership);
+    return m;
 }
 
 State* Transition::sourceState() const
@@ -414,7 +417,9 @@ bool State::isComposite() const
 
 StateMachine* State::machine() const
 {
-    return findStateMachine(this);
+    StateMachine* m = findStateMachine(this);
+    QQmlEngine::setObjectOwnership(m, QQmlEngine::CppOwnership);
+    return m;
 }
 
 bool State::event(QEvent* event)
