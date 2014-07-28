@@ -165,8 +165,21 @@ Rectangle {
                 var offsetY = newPos.y - pos.y;
 
                 scene.scale = scale;
-                view.contentX += offsetX;
-                view.contentY += offsetY;
+
+                // if the horizontal scrollbar isn't visible (because displayed scene-width is smaller
+                // then viewport) then not adjust contentX but keep it at zero. Means only start adjusting
+                // the contentX once the zooming results in only parts being displayed.
+                if (view.visibleArea.widthRatio < 1) {
+                    view.contentX = Math.max(0, view.contentX + offsetX);
+                } else {
+                    view.contentX = 0
+                }
+                if (view.visibleArea.heightRatio < 1) {
+                    view.contentY = Math.max(0, view.contentY + offsetY);
+                } else {
+                    view.contentY = 0
+                }
+
             } else {
                 wheel.accepted = false
             }
