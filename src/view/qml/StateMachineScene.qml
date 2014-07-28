@@ -64,12 +64,6 @@ Item {
                     view: root.currentView
                     configurationController: root.configurationController
 
-                    states: State {
-                        when: object.selected
-                        AnchorChanges { target: delegate; anchors.left: undefined; anchors.top: undefined }
-                        ParentChange { target: delegate; parent: root }
-                    }
-
                     Loader {
                         property variant myRootIndex: visualDataModel.modelIndex(index)
                         anchors {
