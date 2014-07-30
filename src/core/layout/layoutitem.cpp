@@ -32,29 +32,6 @@
 
 using namespace KDSME;
 
-namespace {
-
-QSizeF sizeHintForElement(Element* element)
-{
-    if (!element)
-        return QSizeF();
-
-    switch (element->type())
-    {
-    case Element::StateMachineType:
-        return QSizeF(1024, 1024);
-    case Element::FinalStateType:
-        return QSizeF(32, 32);
-    case Element::HistoryStateType:
-    case Element::StateType:
-        return LayoutUtils::sizeForLabel(element->label());
-    default:
-        return QSizeF();
-    }
-}
-
-}
-
 LayoutItem::LayoutItem(QObject* parent)
     : QObject(parent)
     , m_height(0.0)
@@ -290,7 +267,24 @@ void StateLayoutItem::updateItem()
         return;
 
     const QSizeF oldSize = QSizeF(height(), width());
-    const QSizeF newSize = sizeHintForElement(element());
+
+    QSizeF newSize;
+    switch (element()->type())
+    {
+    case Element::StateMachineType:
+        newSize = boundingRect().size().expandedTo(LayoutUtils::sizeForLabel(element()->label()));
+        break;
+    case Element::FinalStateType:
+        newSize = QSizeF(32, 32);
+        break;
+    case Element::HistoryStateType:
+    case Element::StateType:
+        newSize = LayoutUtils::sizeForLabel(element()->label());
+        break;
+    default:
+        break;
+    }
+
     if (oldSize == newSize)
         return;
 
