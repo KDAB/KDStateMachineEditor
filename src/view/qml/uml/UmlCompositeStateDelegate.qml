@@ -43,7 +43,8 @@ Rectangle {
 
     // TODO: Tint background color based on level in hierarchy
     color: Theme.compositeStateLabelBackgroundColor
-    border.color: Theme.compositeStateBorderColor
+    readonly property color activeBorderColor: Theme.compositeStateBorderColor_Active // only needed to force type conversion to a color object
+    border.color: Qt.tint(Theme.compositeStateBorderColor, Qt.rgba(activeBorderColor.r, activeBorderColor.g, activeBorderColor.b, activeness))
     border.width: (activeness > 0 ? 2 : 1)
     radius: 5
 
@@ -125,7 +126,8 @@ Rectangle {
         width: parent.width
 
         color: Theme.compositeStateBackgroundColor_Lightest
-        border.color: Theme.compositeStateBorderColor
+        border.color: root.border.color
+        border.width: root.border.width
 
         clip: true
     }

@@ -33,7 +33,8 @@ Rectangle {
     anchors.fill: parent
 
     color: Theme.stateBackgroundColor
-    border.color: Theme.stateBorderColor
+    readonly property color activeBorderColor: Theme.stateBorderColor_Active // only needed to force type conversion to a color object
+    border.color: Qt.tint(Theme.stateBorderColor, Qt.rgba(activeBorderColor.r, activeBorderColor.g, activeBorderColor.b, activeness))
     border.width: (activeness > 0 ? 2 : 1)
     radius: width*0.2
 
