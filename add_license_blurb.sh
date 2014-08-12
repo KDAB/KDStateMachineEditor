@@ -27,7 +27,7 @@ AUTHORS() {
   fi
 }
 
-find "$@" -name '*.h' -o -name '*.cpp' -o -name '*.qml' | grep -v /3rdparty/ | grep -v /build | grep -v /codeeditor | grep -v /qopengl2pexvertexarray | while read FILE; do
+find "$@" -name '*.h' -o -name '*.cpp' -o -name '*.qml' -o -name '*.js' | grep -v /3rdparty/ | grep -v /build | grep -v /codeeditor | grep -v /qopengl2pexvertexarray | while read FILE; do
     if grep -qiE "Copyright \(C\) [0-9, -]{4,} Klar.*lvdalens Datakonsult AB" "$FILE" ; then continue; fi
     thisfile=`basename $FILE`
     AUTHORS $FILE
