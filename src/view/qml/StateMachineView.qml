@@ -51,7 +51,53 @@ Rectangle {
     /// Whether we automatically collapse/expand states in case they're active or not
     property alias semanticZoom: semanticZoomManager.enabled
 
+    focus: true
+    Keys.onPressed: {
+        if ((event.key === Qt.Key_Up) && (event.modifiers === Qt.NoModifier)) {
+            stateMachineViewport.contentY = Math.max(0, stateMachineViewport.contentY - 10)
+        } else if ((event.key === Qt.Key_Down) && (event.modifiers === Qt.NoModifier)) {
+            var maximum = Math.max(0, stateMachineViewport.contentHeight - stateMachineViewport.height)
+            stateMachineViewport.contentY = Math.min(maximum, stateMachineViewport.contentY + 10)
+        } else if ((event.key === Qt.Key_Left) && (event.modifiers === Qt.NoModifier)) {
+            stateMachineViewport.contentX = Math.max(0, stateMachineViewport.contentX - 10)
+        } else if ((event.key === Qt.Key_Right) && (event.modifiers === Qt.NoModifier)) {
+            var maximum = Math.max(0, stateMachineViewport.contentWidth - stateMachineViewport.width)
+            stateMachineViewport.contentX = Math.min(maximum, stateMachineViewport.contentX + 10)
+        } else if ((event.key === Qt.Key_Plus) && (event.modifiers & Qt.ControlModifier)) {
+            setZoom(1.1, 0, 0)
+        } else if ((event.key === Qt.Key_Minus) && (event.modifiers & Qt.ControlModifier)) {
+            setZoom(0.9, 0, 0)
+        }
+    }
+
     color: Theme.viewBackgroundColor
+
+    function setZoom(nominalFactor, centerX, centerY) {
+        var scale = Math.min(Math.max(stateMachineScene.scale * nominalFactor, Constants.minimumZoomLevel), Constants.maximumZoomLevel);
+        var factor = scale / stateMachineScene.scale;
+
+        // calculate offset, to move the contents when zooming in or out to stay at the mouse position
+        var pos = Qt.point(centerX, centerY);
+        var newPos = Qt.point(pos.x * factor, pos.y * factor)
+        var offsetX = newPos.x - pos.x;
+        var offsetY = newPos.y - pos.y;
+
+        stateMachineScene.scale = scale;
+
+        // if the horizontal scrollbar isn't visible (because displayed scene-width is smaller
+        // then viewport) then not adjust contentX but keep it at zero. Means only start adjusting
+        // the contentX once the zooming results in only parts being displayed.
+        if (stateMachineViewport.visibleArea.widthRatio < 1) {
+            stateMachineViewport.contentX = Math.max(0, stateMachineViewport.contentX + offsetX);
+        } else {
+            stateMachineViewport.contentX = 0
+        }
+        if (stateMachineViewport.visibleArea.heightRatio < 1) {
+            stateMachineViewport.contentY = Math.max(0, stateMachineViewport.contentY + offsetY);
+        } else {
+            stateMachineViewport.contentY = 0
+        }
+    }
 
     function fitInView() {
         _quickView.fitInView()
@@ -152,34 +198,9 @@ Rectangle {
         hoverEnabled: true
         onWheel: {
             followActiveRegion = false;
-
             if (wheel.modifiers & Qt.ControlModifier) {
                 var nominalFactor = (wheel.angleDelta.y > 0 ? 1.1 : 0.9);
-                var scale = Math.min(Math.max(scene.scale * nominalFactor, Constants.minimumZoomLevel), Constants.maximumZoomLevel);
-                var factor = scale / scene.scale;
-
-                // calculate offset, to move the contents when zooming in or out to stay at the mouse position
-                var pos = Qt.point(mouseX, mouseY);
-                var newPos = Qt.point(pos.x * factor, pos.y * factor)
-                var offsetX = newPos.x - pos.x;
-                var offsetY = newPos.y - pos.y;
-
-                scene.scale = scale;
-
-                // if the horizontal scrollbar isn't visible (because displayed scene-width is smaller
-                // then viewport) then not adjust contentX but keep it at zero. Means only start adjusting
-                // the contentX once the zooming results in only parts being displayed.
-                if (view.visibleArea.widthRatio < 1) {
-                    view.contentX = Math.max(0, view.contentX + offsetX);
-                } else {
-                    view.contentX = 0
-                }
-                if (view.visibleArea.heightRatio < 1) {
-                    view.contentY = Math.max(0, view.contentY + offsetY);
-                } else {
-                    view.contentY = 0
-                }
-
+                setZoom(nominalFactor, mouseX, mouseY);
             } else {
                 wheel.accepted = false
             }

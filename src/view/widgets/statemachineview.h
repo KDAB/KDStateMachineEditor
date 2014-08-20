@@ -56,8 +56,9 @@ public:
     ConfigurationController* configurationController() const;
     EditController* editController() const;
 
-    Q_INVOKABLE void fitInView(const QRectF& rect);
-    Q_INVOKABLE void fitInView();
+    Q_INVOKABLE qreal zoom() const;
+    Q_INVOKABLE void setZoom(qreal value);
+    Q_INVOKABLE void fitInView(const QRectF& rect = QRectF());
 
     Q_INVOKABLE bool sendDragEnterEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
     Q_INVOKABLE bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
@@ -83,6 +84,8 @@ private:
     EditController* m_editController;
 
     bool m_editModeEnabled;
+
+    QRectF adjustedViewRect();
 };
 
 }

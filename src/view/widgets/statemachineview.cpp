@@ -168,6 +168,7 @@ void StateMachineView::setView(View* view)
     }
 
     m_configurationController->setView(m_view);
+
     emit viewChanged(m_view);
 }
 
@@ -339,32 +340,52 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, LayoutItem* target, con
     return true;
 }
 
-void StateMachineView::fitInView(const QRectF& rect)
+qreal StateMachineView::zoom() const
 {
-    static const int margin = 10;
+    QQuickItem* scene = sceneObject();
+    return scene->scale();
+}
 
+void StateMachineView::setZoom(qreal value)
+{
+    QQuickItem* scene = sceneObject();
+    if (qFuzzyCompare(scene->scale(), value))
+        return;
+    scene->setTransformOrigin(QQuickItem::TopLeft);
+    scene->setScale(value);
+}
+
+QRectF StateMachineView::adjustedViewRect()
+{
     const QQuickItem* viewPort = viewPortObject();
     const QRectF viewRect(viewPort->x(), viewPort->y(), viewPort->width(), viewPort->height());
-    if (rect.isEmpty() || viewRect.isEmpty())
+    if (viewRect.isEmpty())
+        return QRectF();
+    static const int margin = 10;
+    return viewRect.adjusted(margin, margin, -margin, -margin);
+}
+
+void StateMachineView::fitInView(const QRectF& rect)
+{
+    const QQuickItem* viewPort = viewPortObject();
+
+    QRectF r = rect;
+    if (rect.isEmpty()) {
+        const qreal width = viewPort->property("contentWidth").toReal();
+        const qreal height = viewPort->property("contentHeight").toReal();
+        r = QRectF(0, 0, width, height);
+    }
+
+    QRectF viewrect = adjustedViewRect();
+
+    if (r.isEmpty() || viewrect.isEmpty())
         return;
 
-    QRectF adjustedViewRect = viewRect.adjusted(
-        margin, margin, -margin, -margin
-    );
-    qreal horizontalScale = adjustedViewRect.width() / rect.width();
-    qreal verticalScale = adjustedViewRect.height() / rect.height();
+    qreal horizontalScale = viewrect.width() / r.width();
+    qreal verticalScale = viewrect.height() / r.height();
 
     QQuickItem* scene = sceneObject();
     const qreal scale = scene->scale() * qMin(horizontalScale, verticalScale);
     scene->setTransformOrigin(QQuickItem::TopLeft);
     scene->setScale(scale);
-}
-
-void StateMachineView::fitInView()
-{
-    QQuickItem* viewPort = viewPortObject();
-    const qreal width = viewPort->property("contentWidth").toReal();
-    const qreal height = viewPort->property("contentHeight").toReal();
-    const QRectF rect(0, 0, width, height);
-    fitInView(rect);
 }
