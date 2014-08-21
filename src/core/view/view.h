@@ -59,14 +59,15 @@ class KDSME_CORE_EXPORT View : public AbstractView
 public:
     explicit View(QObject* parent = 0);
 
-    StateMachine* stateMachine() const;
 
     StateModel* stateModel() const;
     virtual void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
 
+    StateMachine* stateMachine() const;
     /// Ownership is not transferred
     void setStateMachine(StateMachine* stateMachine);
 
+    Layouter* layouter() const;
     /// Ownership is transferred
     void setLayouter(Layouter* layouter);
 

@@ -176,6 +176,11 @@ void View::setStateMachine(StateMachine* stateMachine)
     emit contentsChanged();
 }
 
+Layouter* View::layouter() const
+{
+    return m_layouter;
+}
+
 void View::setLayouter(Layouter* layouter)
 {
     if (m_layouter == layouter)
