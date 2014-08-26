@@ -60,6 +60,7 @@ public:
     Q_ENUMS(ViewState)
 
     explicit AbstractView(QObject* parent = 0);
+    virtual ~AbstractView();
 
     virtual void setModel(QAbstractItemModel *model);
     QAbstractItemModel *model() const;
@@ -95,10 +96,8 @@ Q_SIGNALS:
     void stateChanged(ViewState state);
 
 private:
-    QAbstractItemModel* m_model;
-    QPointer<QItemSelectionModel> m_selectionModel;
-    EditTriggers m_editTriggers;
-    ViewState m_state;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }

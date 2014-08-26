@@ -29,122 +29,142 @@
 
 using namespace KDSME;
 
-AbstractView::AbstractView(QObject* parent)
-    : QObject(parent)
-    , m_model(nullptr)
+struct AbstractView::Private
+{
+    Private();
+
+    QAbstractItemModel* m_model;
+    QPointer<QItemSelectionModel> m_selectionModel;
+    AbstractView::EditTriggers m_editTriggers;
+    AbstractView::ViewState m_state;
+};
+
+AbstractView::Private::Private()
+    : m_model(nullptr)
     , m_editTriggers(NoEditTriggers)
     , m_state(NoState)
+{
+
+}
+
+AbstractView::AbstractView(QObject* parent)
+    : QObject(parent)
+    , d(new Private)
+{
+}
+
+AbstractView::~AbstractView()
 {
 }
 
 QAbstractItemModel* AbstractView::model() const
 {
-    return m_model;
+    return d->m_model;
 }
 
 void AbstractView::setModel(QAbstractItemModel* model)
 {
-    if (m_model == model)
+    if (d->m_model == model)
         return;
 
-    if (m_model) {
-        disconnect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
+    if (d->m_model) {
+        disconnect(d->m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
                    this, &AbstractView::rowsAboutToBeRemoved);
-        disconnect(m_model, &QAbstractItemModel::rowsInserted,
+        disconnect(d->m_model, &QAbstractItemModel::rowsInserted,
                    this, &AbstractView::rowsInserted);
-        disconnect(m_model, &QAbstractItemModel::rowsMoved,
+        disconnect(d->m_model, &QAbstractItemModel::rowsMoved,
                    this, &AbstractView::layoutChanged);
-        disconnect(m_model, &QAbstractItemModel::columnsMoved,
+        disconnect(d->m_model, &QAbstractItemModel::columnsMoved,
                    this, &AbstractView::layoutChanged);
-        disconnect(m_model, &QAbstractItemModel::layoutChanged,
+        disconnect(d->m_model, &QAbstractItemModel::layoutChanged,
                    this, &AbstractView::layoutChanged);
     }
 
-    m_model = model;
+    d->m_model = model;
 
-    if (m_model) {
-        connect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
+    if (d->m_model) {
+        connect(d->m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
                 this, &AbstractView::rowsAboutToBeRemoved);
-        connect(m_model, &QAbstractItemModel::rowsInserted,
+        connect(d->m_model, &QAbstractItemModel::rowsInserted,
                 this, &AbstractView::rowsInserted);
-        connect(m_model, &QAbstractItemModel::rowsMoved,
+        connect(d->m_model, &QAbstractItemModel::rowsMoved,
                 this, &AbstractView::layoutChanged);
-        connect(m_model, &QAbstractItemModel::columnsMoved,
+        connect(d->m_model, &QAbstractItemModel::columnsMoved,
                 this, &AbstractView::layoutChanged);
-        connect(m_model, &QAbstractItemModel::layoutChanged,
+        connect(d->m_model, &QAbstractItemModel::layoutChanged,
                 this, &AbstractView::layoutChanged);
     }
 
-    QItemSelectionModel *selectionModel = new QItemSelectionModel(m_model, this);
-    connect(m_model, SIGNAL(destroyed()), selectionModel, SLOT(deleteLater()));
+    QItemSelectionModel *selectionModel = new QItemSelectionModel(d->m_model, this);
+    connect(d->m_model, SIGNAL(destroyed()), selectionModel, SLOT(deleteLater()));
     setSelectionModel(selectionModel);
 
-    emit modelChanged(m_model);
+    emit modelChanged(d->m_model);
 }
 
 QItemSelectionModel* AbstractView::selectionModel() const
 {
-    return m_selectionModel;
+    return d->m_selectionModel;
 }
 
 void AbstractView::setSelectionModel(QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
-    if (selectionModel->model() != m_model) {
+    if (selectionModel->model() != d->m_model) {
         qWarning("QAbstractItemView::setSelectionModel() failed: "
                  "Trying to set a selection model, which works on "
                  "a different model than the view.");
         return;
     }
 
-    if (m_selectionModel) {
-        disconnect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    if (d->m_selectionModel) {
+        disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                    this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
-        disconnect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
                    this, SLOT(currentChanged(QModelIndex,QModelIndex)));
     }
 
-    m_selectionModel = selectionModel;
+    d->m_selectionModel = selectionModel;
 
-    if (m_selectionModel) {
-        connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    if (d->m_selectionModel) {
+        connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                 this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
-        connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
                 this, SLOT(currentChanged(QModelIndex,QModelIndex)));
     }
 }
 
 AbstractView::EditTriggers AbstractView::editTriggers() const
 {
-    return m_editTriggers;
+    return d->m_editTriggers;
 }
 
 void AbstractView::setEditTriggers(AbstractView::EditTriggers triggers)
 {
-    m_editTriggers = triggers;
+    d->m_editTriggers = triggers;
 }
 
 AbstractView::ViewState AbstractView::state() const
 {
-    return m_state;
+    return d->m_state;
 }
 
 void AbstractView::setState(AbstractView::ViewState state)
 {
-    if (m_state == state)
+    if (d->m_state == state)
         return;
 
-    m_state = state;
-    emit stateChanged(m_state);
+    d->m_state = state;
+    emit stateChanged(d->m_state);
 }
 
 void AbstractView::setCurrentIndex(const QModelIndex& index)
 {
-    if (!m_selectionModel) {
+    if (!d->m_selectionModel) {
         return;
     }
 
-    m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
+    d->m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
 }
 
 void AbstractView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
