@@ -67,7 +67,7 @@ void QmlExportTest::testEmptyInput()
 
 void QmlExportTest::testInvalidIds()
 {
-    const QByteArray expectedOutput = "import QtStateMachine 1.0\n\n"
+    const QByteArray expectedOutput = "import QtQml.StateMachine 1.0\n\n"
         "StateMachine {\n"
         "id: root\n"
         "BasicState {\n"
@@ -88,7 +88,7 @@ void QmlExportTest::testInvalidIds()
 
 void QmlExportTest::testSimpleStateMachine()
 {
-    const QByteArray expectedOutput = "import QtStateMachine 1.0\n\n"
+    const QByteArray expectedOutput = "import QtQml.StateMachine 1.0\n\n"
         "StateMachine {\n"
         "id: root\n"
         "initialState: s1\n"

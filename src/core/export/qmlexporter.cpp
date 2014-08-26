@@ -36,7 +36,7 @@
 
 using namespace KDSME;
 
-const char* const KDSME_QML_MODULE = "QtStateMachine";
+const char* const KDSME_QML_MODULE = "QtQml.StateMachine";
 const char* const KDSME_QML_MODULE_VERSION = "1.0";
 
 namespace {
