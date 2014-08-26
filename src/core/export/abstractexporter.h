@@ -27,6 +27,7 @@
 
 #include "kdsme_core_export.h"
 
+#include <QScopedPointer>
 #include <QString>
 
 namespace KDSME {
@@ -36,6 +37,7 @@ class StateMachine;
 class KDSME_CORE_EXPORT AbstractExporter
 {
 public:
+    AbstractExporter();
     virtual ~AbstractExporter();
 
     virtual bool exportMachine(StateMachine* machine) = 0;
@@ -46,7 +48,8 @@ protected:
     void setErrorString(const QString& errorString);
 
 private:
-    QString m_errorString;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }

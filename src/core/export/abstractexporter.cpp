@@ -26,16 +26,26 @@
 
 using namespace KDSME;
 
+struct AbstractExporter::Private
+{
+    QString m_errorString;
+};
+
+AbstractExporter::AbstractExporter()
+    : d(new Private)
+{
+}
+
 AbstractExporter::~AbstractExporter()
 {
 }
 
 QString AbstractExporter::errorString()
 {
-    return m_errorString;
+    return d->m_errorString;
 }
 
 void AbstractExporter::setErrorString(const QString& errorString)
 {
-    m_errorString = errorString;
+    d->m_errorString = errorString;
 }
