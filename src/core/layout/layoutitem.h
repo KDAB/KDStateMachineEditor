@@ -149,12 +149,6 @@ public:
 Q_SIGNALS:
     void expandedChanged(bool expanded);
 
-protected:
-    virtual void elementChanged(Element* oldElement, Element* newElement);
-
-private Q_SLOTS:
-    void updateItem();
-
 private:
     bool m_expanded;
 };

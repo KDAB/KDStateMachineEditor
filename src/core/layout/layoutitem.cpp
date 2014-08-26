@@ -248,51 +248,6 @@ QList<TransitionLayoutItem*> StateLayoutItem::transitions() const
     return ObjectHelper::copy_if_type<TransitionLayoutItem*>(children());
 }
 
-void StateLayoutItem::elementChanged(Element* oldElement, Element* newElement)
-{
-    KDSME::LayoutItem::elementChanged(oldElement, newElement);
-
-    if (oldElement) {
-        disconnect(oldElement, &Element::labelChanged, this, &StateLayoutItem::updateItem);
-    }
-    if (newElement) {
-        connect(newElement, &Element::labelChanged, this, &StateLayoutItem::updateItem);
-    }
-    updateItem();
-}
-
-void StateLayoutItem::updateItem()
-{
-    if (!element())
-        return;
-
-    const QSizeF oldSize = QSizeF(height(), width());
-
-    QSizeF newSize;
-    switch (element()->type())
-    {
-    case Element::StateMachineType:
-        newSize = boundingRect().size().expandedTo(LayoutUtils::sizeForLabel(element()->label()));
-        break;
-    case Element::FinalStateType:
-        newSize = QSizeF(32, 32);
-        break;
-    case Element::HistoryStateType:
-    case Element::StateType:
-        newSize = LayoutUtils::sizeForLabel(element()->label());
-        break;
-    default:
-        break;
-    }
-
-    if (oldSize == newSize)
-        return;
-
-    prepareGeometryChange();
-    setWidth(newSize.width());
-    setHeight(newSize.height());
-}
-
 TransitionLayoutItem::TransitionLayoutItem(StateLayoutItem* parent)
     : LayoutItem(parent)
     , m_targetState(nullptr)
