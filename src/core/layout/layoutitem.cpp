@@ -32,14 +32,32 @@
 
 using namespace KDSME;
 
-LayoutItem::LayoutItem(QObject* parent)
-    : QObject(parent)
-    , m_height(0.0)
+struct LayoutItem::Private
+{
+    Private();
+
+    QPointF m_pos;
+    qreal m_height, m_width;
+    bool m_visible;
+    bool m_selected;
+
+    View* m_view;
+    Element* m_element;
+};
+
+LayoutItem::Private::Private()
+    : m_height(0.0)
     , m_width(0.0)
     , m_visible(true)
     , m_selected(false)
     , m_view(nullptr)
     , m_element(nullptr)
+{
+}
+
+LayoutItem::LayoutItem(QObject* parent)
+    : QObject(parent)
+    , d(new Private)
 {
 }
 
@@ -54,43 +72,43 @@ LayoutItem::Type LayoutItem::type() const
 
 QPointF LayoutItem::pos() const
 {
-    return m_pos;
+    return d->m_pos;
 }
 
 void LayoutItem::setPos(const QPointF& pos)
 {
-    if (m_pos == pos)
+    if (d->m_pos == pos)
         return;
 
-    m_pos = pos;
+    d->m_pos = pos;
     emit posChanged(pos);
 }
 
 qreal LayoutItem::width() const
 {
-    return m_width;
+    return d->m_width;
 }
 
 void LayoutItem::setWidth(qreal width)
 {
-    if (m_width == width)
+    if (d->m_width == width)
         return;
 
-    m_width = width;
+    d->m_width = width;
     emit widthChanged(width);
 }
 
 qreal LayoutItem::height() const
 {
-    return m_height;
+    return d->m_height;
 }
 
 void LayoutItem::setHeight(qreal height)
 {
-    if (m_height == height)
+    if (d->m_height == height)
         return;
 
-    m_height = height;
+    d->m_height = height;
     emit heightChanged(height);
 }
 
@@ -107,30 +125,30 @@ QPointF LayoutItem::absolutePos() const
 
 bool LayoutItem::isVisible() const
 {
-    return m_visible;
+    return d->m_visible;
 }
 
 void LayoutItem::setVisible(bool visible)
 {
-    if (m_visible == visible)
+    if (d->m_visible == visible)
         return;
 
-    m_visible = visible;
-    emit visibleChanged(m_visible);
+    d->m_visible = visible;
+    emit visibleChanged(d->m_visible);
 }
 
 bool LayoutItem::isSelected() const
 {
-    return m_selected;
+    return d->m_selected;
 }
 
 void LayoutItem::setSelected(bool selected)
 {
-    if (m_selected == selected)
+    if (d->m_selected == selected)
         return;
 
-    m_selected = selected;
-    emit selectedChanged(m_selected);
+    d->m_selected = selected;
+    emit selectedChanged(d->m_selected);
 }
 
 QRectF LayoutItem::boundingRect() const
@@ -141,26 +159,26 @@ QRectF LayoutItem::boundingRect() const
 
 View* LayoutItem::view() const
 {
-    return m_view;
+    return d->m_view;
 }
 
 void LayoutItem::setView(View* view)
 {
-    m_view = view;
+    d->m_view = view;
 }
 
 Element* LayoutItem::element() const
 {
-    return m_element;
+    return d->m_element;
 }
 
 void LayoutItem::setElement(Element* element)
 {
-    if (m_element == element)
+    if (d->m_element == element)
         return;
 
-    Element* oldElement = m_element;
-    m_element = element;
+    Element* oldElement = d->m_element;
+    d->m_element = element;
     elementChanged(oldElement, element);
 
     emit elementChanged(element);
@@ -208,9 +226,26 @@ QDebug KDSME::operator<<(QDebug dbg, const LayoutItem& item)
     return dbg.space();
 }
 
+struct StateLayoutItem::Private
+{
+    Private();
+
+    bool m_expanded;
+};
+
+StateLayoutItem::Private::Private()
+    : m_expanded(true)
+{
+
+}
+
 StateLayoutItem::StateLayoutItem(StateLayoutItem* parent)
     : LayoutItem(parent)
-    , m_expanded(true)
+    , d(new Private)
+{
+}
+
+StateLayoutItem::~StateLayoutItem()
 {
 }
 
@@ -221,16 +256,16 @@ LayoutItem::Type StateLayoutItem::type() const
 
 bool StateLayoutItem::isExpanded() const
 {
-    return m_expanded;
+    return d->m_expanded;
 }
 
 void StateLayoutItem::setExpanded(bool expanded)
 {
-    if (m_expanded == expanded)
+    if (d->m_expanded == expanded)
         return;
 
-    m_expanded = expanded;
-    emit expandedChanged(m_expanded);
+    d->m_expanded = expanded;
+    emit expandedChanged(d->m_expanded);
 }
 
 StateLayoutItem* StateLayoutItem::parentState() const
@@ -248,9 +283,32 @@ QList<TransitionLayoutItem*> StateLayoutItem::transitions() const
     return ObjectHelper::copy_if_type<TransitionLayoutItem*>(children());
 }
 
+struct TransitionLayoutItem::Private
+{
+    Private(TransitionLayoutItem* q);
+
+    TransitionLayoutItem* q;
+
+    KDSME::Transition* transition() const;
+
+    QPainterPath m_shape;
+    QRectF m_labelBoundingRect;
+    StateLayoutItem* m_targetState;
+};
+
+TransitionLayoutItem::Private::Private(TransitionLayoutItem* q)
+    : q(q)
+    , m_targetState(nullptr)
+{
+}
+
 TransitionLayoutItem::TransitionLayoutItem(StateLayoutItem* parent)
     : LayoutItem(parent)
-    , m_targetState(nullptr)
+    , d(new Private(this))
+{
+}
+
+TransitionLayoutItem::~TransitionLayoutItem()
 {
 }
 
@@ -261,29 +319,29 @@ LayoutItem::Type TransitionLayoutItem::type() const
 
 QPainterPath TransitionLayoutItem::shape() const
 {
-    return m_shape;
+    return d->m_shape;
 }
 
 void TransitionLayoutItem::setShape(const QPainterPath& shape)
 {
-    if (m_shape == shape)
+    if (d->m_shape == shape)
         return;
 
-    m_shape = shape;
+    d->m_shape = shape;
     emit shapeChanged(shape);
 }
 
 QRectF TransitionLayoutItem::labelBoundingRect() const
 {
-    return m_labelBoundingRect;
+    return d->m_labelBoundingRect;
 }
 
 void TransitionLayoutItem::setLabelBoundingRect(const QRectF& rect)
 {
-    if (m_labelBoundingRect == rect)
+    if (d->m_labelBoundingRect == rect)
         return;
 
-    m_labelBoundingRect = rect;
+    d->m_labelBoundingRect = rect;
     emit labelBoundingRectChanged(rect);
 }
 
@@ -300,21 +358,21 @@ StateLayoutItem* TransitionLayoutItem::sourceState() const
 
 StateLayoutItem* TransitionLayoutItem::targetState() const
 {
-    return m_targetState;
+    return d->m_targetState;
 }
 
 void TransitionLayoutItem::setTargetState(StateLayoutItem* state)
 {
-    if (m_targetState == state)
+    if (d->m_targetState == state)
         return;
 
-    m_targetState = state;
+    d->m_targetState = state;
     emit targetStateChanged(state);
 }
 
 QRectF TransitionLayoutItem::boundingRect() const
 {
-    return m_shape.boundingRect();
+    return d->m_shape.boundingRect();
 }
 
 void TransitionLayoutItem::elementChanged(Element* oldElement, Element* newElement)
@@ -332,7 +390,7 @@ void TransitionLayoutItem::elementChanged(Element* oldElement, Element* newEleme
 
 void TransitionLayoutItem::updateItem()
 {
-    Transition* transition = this->transition();
+    Transition* transition = d->transition();
     if (!transition || transition->targetState())
         return;
 
@@ -342,9 +400,9 @@ void TransitionLayoutItem::updateItem()
     setShape(path);
 }
 
-Transition* TransitionLayoutItem::transition() const
+Transition* TransitionLayoutItem::Private::transition() const
 {
-    return qobject_cast<Transition*>(element());
+    return qobject_cast<Transition*>(q->element());
 }
 
 QDebug KDSME::operator<<(QDebug dbg, const TransitionLayoutItem& item)

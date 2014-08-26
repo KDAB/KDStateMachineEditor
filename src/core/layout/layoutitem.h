@@ -118,13 +118,8 @@ private:
 
     void setView(View* view);
 
-    QPointF m_pos;
-    qreal m_height, m_width;
-    bool m_visible;
-    bool m_selected;
-
-    View* m_view;
-    Element* m_element;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 QDebug operator<<(QDebug dbg, const LayoutItem& item);
@@ -136,6 +131,7 @@ class KDSME_CORE_EXPORT StateLayoutItem : public LayoutItem
 
 public:
     explicit StateLayoutItem(StateLayoutItem* parent = 0);
+    virtual ~StateLayoutItem();
 
     virtual Type type() const Q_DECL_OVERRIDE;
 
@@ -150,7 +146,8 @@ Q_SIGNALS:
     void expandedChanged(bool expanded);
 
 private:
-    bool m_expanded;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 QDebug operator<<(QDebug dbg, const StateLayoutItem& item);
@@ -165,6 +162,7 @@ class KDSME_CORE_EXPORT TransitionLayoutItem : public LayoutItem
 
 public:
     explicit TransitionLayoutItem(StateLayoutItem* parent = 0);
+    virtual ~TransitionLayoutItem();
 
     virtual Type type() const Q_DECL_OVERRIDE;
 
@@ -195,11 +193,8 @@ private Q_SLOTS:
     void updateItem();
 
 private:
-    KDSME::Transition* transition() const;
-
-    QPainterPath m_shape;
-    QRectF m_labelBoundingRect;
-    StateLayoutItem* m_targetState;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 QDebug operator<<(QDebug dbg, const TransitionLayoutItem& item);
