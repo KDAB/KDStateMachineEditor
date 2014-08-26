@@ -58,7 +58,7 @@ class KDSME_CORE_EXPORT View : public AbstractView
 
 public:
     explicit View(QObject* parent = 0);
-
+    virtual ~View();
 
     StateModel* stateModel() const;
     virtual void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
@@ -90,6 +90,7 @@ public:
     LayoutItem* layoutItemForElement(Element* element);
 
 public Q_SLOTS:
+    void import();
     void layout();
 
 Q_SIGNALS:
@@ -109,31 +110,9 @@ protected Q_SLOTS:
     virtual void rowsInserted(const QModelIndex& parent, int start, int end) Q_DECL_OVERRIDE;
     virtual void layoutChanged() Q_DECL_OVERRIDE;
 
-public Q_SLOTS:
-    void import();
-
 private:
-    StateLayoutItem* importState(State* state);
-
-    void updateChildItemVisibility(StateLayoutItem* state, bool expand);
-    void doDelayedImport();
-
-    void setRootLayoutItem(StateLayoutItem* root);
-
-    void importTransitions(State* state);
-    TransitionLayoutItem* importTransition(Transition* transition);
-
-    QPointer<StateMachine> m_stateMachine;
-    Layouter* m_layouter;
-    LayoutProperties* m_properties;
-
-    // TODO: Use Boost Bimap?
-    StateLayoutItem* m_root;
-    QMap<Element*, LayoutItem*> m_elementToLayoutItemMap;
-
-    StateLayoutItem* m_expandedItem;
-    QTimer* m_delayedImportTimer;
-    bool m_reimportRequired;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }

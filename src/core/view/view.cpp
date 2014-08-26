@@ -60,22 +60,62 @@ QList<Element*> elementsAt(const QModelIndex& parent, int start, int end)
 
 }
 
-View::View(QObject* parent)
-    : AbstractView(parent)
-    , m_layouter(new LayerwiseLayouter(this))
-    , m_properties(new LayoutProperties(this))
+struct View::Private
+{
+    Private(View* view);
+
+    StateLayoutItem* importState(State* state);
+
+    void updateChildItemVisibility(StateLayoutItem* state, bool expand);
+    void doDelayedImport();
+
+    void setRootLayoutItem(StateLayoutItem* root);
+
+    void importTransitions(State* state);
+    TransitionLayoutItem* importTransition(Transition* transition);
+
+    View* q;
+
+    QPointer<StateMachine> m_stateMachine;
+    Layouter* m_layouter;
+    LayoutProperties* m_properties;
+
+    // TODO: Use Boost Bimap?
+    StateLayoutItem* m_root;
+    QMap<Element*, LayoutItem*> m_elementToLayoutItemMap;
+
+    StateLayoutItem* m_expandedItem;
+    QTimer* m_delayedImportTimer;
+    bool m_reimportRequired;
+};
+
+View::Private::Private(View* view)
+    : q(view)
+    , m_layouter(new LayerwiseLayouter(q))
+    , m_properties(new LayoutProperties(q))
     , m_root(0)
     , m_expandedItem(nullptr)
-    , m_delayedImportTimer(new QTimer(this))
+    , m_delayedImportTimer(new QTimer(q))
     , m_reimportRequired(false)
 {
-    m_delayedImportTimer->setSingleShot(true);
-    connect(m_delayedImportTimer, SIGNAL(timeout()), this, SLOT(import()));
+}
+
+View::View(QObject* parent)
+    : AbstractView(parent)
+    , d(new Private(this))
+
+{
+    d->m_delayedImportTimer->setSingleShot(true);
+    connect(d->m_delayedImportTimer, SIGNAL(timeout()), this, SLOT(import()));
+}
+
+View::~View()
+{
 }
 
 LayoutProperties* View::layoutProperties() const
 {
-    return m_properties;
+    return d->m_properties;
 }
 
 void View::collapseItem(StateLayoutItem* state)
@@ -84,9 +124,9 @@ void View::collapseItem(StateLayoutItem* state)
         return;
 
     state->setExpanded(false);
-    updateChildItemVisibility(state, false);
+    d->updateChildItemVisibility(state, false);
     emit contentsUpdated(state);
-    doDelayedImport();
+    d->doDelayedImport();
 }
 
 void View::expandItem(StateLayoutItem* state)
@@ -97,9 +137,9 @@ void View::expandItem(StateLayoutItem* state)
     state->setExpanded(true);
 
     // we delay showing the child items until the layout has been done
-    m_expandedItem = state;
+    d->m_expandedItem = state;
 
-    doDelayedImport();
+    d->doDelayedImport();
 }
 
 bool View::isItemExpanded(StateLayoutItem* state) const
@@ -158,42 +198,42 @@ Element* View::currentState()
 
 StateMachine* View::stateMachine() const
 {
-    return m_stateMachine;
+    return d->m_stateMachine;
 }
 
 void View::setStateMachine(StateMachine* stateMachine)
 {
-    if (m_stateMachine == stateMachine)
+    if (d->m_stateMachine == stateMachine)
         return;
 
     emit contentsAboutToBeChanged();
 
-    setRootLayoutItem(nullptr);
-    m_stateMachine = stateMachine;
+    d->setRootLayoutItem(nullptr);
+    d->m_stateMachine = stateMachine;
     import();
 
-    emit stateMachineChanged(m_stateMachine);
+    emit stateMachineChanged(d->m_stateMachine);
     emit contentsChanged();
 }
 
 Layouter* View::layouter() const
 {
-    return m_layouter;
+    return d->m_layouter;
 }
 
 void View::setLayouter(Layouter* layouter)
 {
-    if (m_layouter == layouter)
+    if (d->m_layouter == layouter)
         return;
 
-    if (m_layouter) {
-        delete m_layouter;
+    if (d->m_layouter) {
+        delete d->m_layouter;
     }
 
-    m_layouter = layouter;
+    d->m_layouter = layouter;
 
-    if (m_layouter) {
-        m_layouter->setParent(this);
+    if (d->m_layouter) {
+        d->m_layouter->setParent(this);
     }
     layout();
     emit contentsUpdated(rootLayoutItem());
@@ -201,12 +241,12 @@ void View::setLayouter(Layouter* layouter)
 
 void View::import()
 {
-    if (!m_stateMachine) {
+    if (!d->m_stateMachine) {
         return;
     }
 
     setState(ItemLayoutState);
-    if (!m_root || m_reimportRequired) {
+    if (!d->m_root || d->m_reimportRequired) {
         // HACK: ParentChange state is active, and it will behave very odd if the
         // parent it is controlling is modified.
         // TODO: Check how to disable/avoid active ParentChange during the actual modification of the layout
@@ -216,36 +256,36 @@ void View::import()
         emit contentsAboutToBeChanged();
 
         // import
-        StateLayoutItem* root = importState(m_stateMachine);
+        StateLayoutItem* root = d->importState(d->m_stateMachine);
         if (root) {
-            importTransitions(m_stateMachine);
-            setRootLayoutItem(root);
+            d->importTransitions(d->m_stateMachine);
+            d->setRootLayoutItem(root);
         } else {
             qDebug() << "Importing failed";
         }
-        m_reimportRequired = false;
+        d->m_reimportRequired = false;
 
         emit contentsChanged();
     }
 
-    LayoutUtils::fixupLayout(m_root);
+    LayoutUtils::fixupLayout(d->m_root);
 
-    if (m_expandedItem) {
+    if (d->m_expandedItem) {
         // show expanded item again
-        updateChildItemVisibility(m_expandedItem, true);
-        emit contentsUpdated(m_expandedItem);
-        m_expandedItem = nullptr;
+        d->updateChildItemVisibility(d->m_expandedItem, true);
+        emit contentsUpdated(d->m_expandedItem);
+        d->m_expandedItem = nullptr;
     }
     setState(NoState);
 }
 
 void View::layout()
 {
-    if (!m_layouter || !m_root) {
+    if (!d->m_layouter || !d->m_root) {
         return;
     }
 
-    m_layouter->layout(m_root, this);
+    d->m_layouter->layout(d->m_root, this);
 }
 
 StateModel* View::stateModel() const
@@ -263,7 +303,7 @@ void View::setModel(QAbstractItemModel* model)
     KDSME::AbstractView::setModel(stateModel);
 }
 
-StateLayoutItem* View::importState(State* state)
+StateLayoutItem* View::Private::importState(State* state)
 {
     if (!state)
         return nullptr;
@@ -276,7 +316,7 @@ StateLayoutItem* View::importState(State* state)
     State* parentState = state->parentState();
     StateLayoutItem* parentItem = (parentState ? qobject_cast<StateLayoutItem*>(m_elementToLayoutItemMap[parentState]) : nullptr);
     LayoutUtils::moveToParent(item, parentItem);
-    item->setView(this);
+    item->setView(q);
     item->setElement(state);
 
     // recursive import
@@ -287,7 +327,7 @@ StateLayoutItem* View::importState(State* state)
     return item;
 }
 
-void View::updateChildItemVisibility(StateLayoutItem* state, bool expand)
+void View::Private::updateChildItemVisibility(StateLayoutItem* state, bool expand)
 {
     if (!state)
         return;
@@ -308,12 +348,12 @@ void View::updateChildItemVisibility(StateLayoutItem* state, bool expand)
     });
 }
 
-void View::doDelayedImport()
+void View::Private::doDelayedImport()
 {
     m_delayedImportTimer->start();
 }
 
-void View::importTransitions(State* state)
+void View::Private::importTransitions(State* state)
 {
     if (!state)
         return;
@@ -327,7 +367,7 @@ void View::importTransitions(State* state)
     }
 }
 
-TransitionLayoutItem* View::importTransition(Transition* transition)
+TransitionLayoutItem* View::Private::importTransition(Transition* transition)
 {
     if (!transition) {
         return nullptr;
@@ -351,7 +391,7 @@ TransitionLayoutItem* View::importTransition(Transition* transition)
 #endif
 
     LayoutUtils::moveToParent(item, parentState);
-    item->setView(this);
+    item->setView(q);
     item->setTargetState(targetState);
     item->setElement(transition);
     return item;
@@ -359,10 +399,10 @@ TransitionLayoutItem* View::importTransition(Transition* transition)
 
 StateLayoutItem* View::rootLayoutItem() const
 {
-    return m_root;
+    return d->m_root;
 }
 
-void View::setRootLayoutItem(StateLayoutItem* root)
+void View::Private::setRootLayoutItem(StateLayoutItem* root)
 {
     if (m_root == root)
         return;
@@ -376,19 +416,19 @@ void View::setRootLayoutItem(StateLayoutItem* root)
     m_root = root;
 
     if (m_root) {
-        m_root->setParent(this);
+        m_root->setParent(q);
     }
-    emit rootLayoutItemChanged(m_root);
+    emit q->rootLayoutItemChanged(m_root);
 }
 
 QList<LayoutItem*> View::layoutItems() const
 {
-    return m_elementToLayoutItemMap.values();
+    return d->m_elementToLayoutItemMap.values();
 }
 
 LayoutItem* View::layoutItemForElement(Element* element)
 {
-    return m_elementToLayoutItemMap.value(element);
+    return d->m_elementToLayoutItemMap.value(element);
 }
 
 void View::currentChanged(const QModelIndex& current, const QModelIndex& previous)
@@ -421,7 +461,7 @@ void View::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 
     emit contentsAboutToBeChanged();
     foreach (Element* element, elements) {
-        LayoutItem* item = m_elementToLayoutItemMap.take(element);
+        LayoutItem* item = d->m_elementToLayoutItemMap.take(element);
         delete item;
     }
     emit contentsChanged();
@@ -431,16 +471,16 @@ void View::rowsInserted(const QModelIndex& parent, int start, int end)
 {
     AbstractView::rowsInserted(parent, start, end);
 
-    m_reimportRequired = true;
-    doDelayedImport();
+    d->m_reimportRequired = true;
+    d->doDelayedImport();
 }
 
 void View::layoutChanged()
 {
     AbstractView::layoutChanged();
 
-    m_reimportRequired = true;
-    doDelayedImport();
+    d->m_reimportRequired = true;
+    d->doDelayedImport();
 }
 
 #include "moc_view.cpp"
