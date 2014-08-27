@@ -94,53 +94,83 @@ QString toQmlId(const QString& input)
 
 }
 
-QmlExporter::QmlExporter(QByteArray* array)
+struct QmlExporter::Private
+{
+    Private(QByteArray* array);
+    Private(QIODevice* device);
+
+    bool writeStateMachine(StateMachine* machine);
+    bool writeState(State* state);
+    bool writeStateInner(State* state);
+    bool writeTransition(Transition* transition);
+
+    QString indention() const;
+
+    QTextStream m_out;
+    int m_indent, m_level;
+};
+
+QmlExporter::Private::Private(QByteArray* array)
     : m_out(array)
     , m_indent(4)
     , m_level(0)
+{
+}
+
+QmlExporter::Private::Private(QIODevice* device)
+    : m_out(device)
+    , m_indent(4)
+    , m_level(0)
+{
+}
+
+QmlExporter::QmlExporter(QByteArray* array)
+    : d(new Private(array))
 {
     Q_ASSERT(array);
 }
 
 QmlExporter::QmlExporter(QIODevice* device)
-    : m_out(device)
-    , m_indent(4)
-    , m_level(0)
+    : d(new Private(device))
 {
     Q_ASSERT(device);
 }
 
+QmlExporter::~QmlExporter()
+{
+}
+
 int QmlExporter::indent() const
 {
-    return m_indent;
+    return d->m_indent;
 }
 
 void QmlExporter::setIndent(int indent)
 {
-    m_indent = indent;
+    d->m_indent = indent;
 }
 
 bool QmlExporter::exportMachine(StateMachine* machine)
 {
     setErrorString(QString());
-    m_level = 0;
+    d->m_level = 0;
 
     if (!machine) {
         setErrorString("Null machine instance passed");
         return false;
     }
 
-    if (m_out.status() != QTextStream::Ok) {
-        setErrorString(QString("Invalid QTextStream status: %1").arg(m_out.status()));
+    if (d->m_out.status() != QTextStream::Ok) {
+        setErrorString(QString("Invalid QTextStream status: %1").arg(d->m_out.status()));
         return false;
     }
 
-    bool success = writeStateMachine(machine);
-    m_out.flush();
+    bool success = d->writeStateMachine(machine);
+    d->m_out.flush();
     return success;
 }
 
-bool QmlExporter::writeStateMachine(StateMachine* machine)
+bool QmlExporter::Private::writeStateMachine(StateMachine* machine)
 {
     Q_ASSERT(machine);
 
@@ -159,7 +189,7 @@ bool QmlExporter::writeStateMachine(StateMachine* machine)
     return true;
 }
 
-bool QmlExporter::writeState(State* state)
+bool QmlExporter::Private::writeState(State* state)
 {
     Q_ASSERT(state);
 
@@ -174,7 +204,7 @@ bool QmlExporter::writeState(State* state)
     return true;
 }
 
-bool QmlExporter::writeStateInner(State* state)
+bool QmlExporter::Private::writeStateInner(State* state)
 {
     Q_ASSERT(state);
 
@@ -220,7 +250,7 @@ bool QmlExporter::writeStateInner(State* state)
     return true;
 }
 
-bool QmlExporter::writeTransition(Transition* transition)
+bool QmlExporter::Private::writeTransition(Transition* transition)
 {
     Q_ASSERT(transition);
     m_out << indention() << QString("%1 {\n").arg(elementToComponent(transition));
@@ -254,7 +284,7 @@ bool QmlExporter::writeTransition(Transition* transition)
     return true;
 }
 
-QString QmlExporter::indention() const
+QString QmlExporter::Private::indention() const
 {
     return QString().fill(QChar(' '), m_indent*m_level);
 }

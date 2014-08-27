@@ -41,6 +41,7 @@ class KDSME_CORE_EXPORT QmlExporter : public AbstractExporter
 public:
     explicit QmlExporter(QByteArray* array);
     explicit QmlExporter(QIODevice* device);
+    virtual ~QmlExporter();
 
     int indent() const;
     void setIndent(int indent);
@@ -48,15 +49,8 @@ public:
     virtual bool exportMachine(StateMachine* machine) Q_DECL_OVERRIDE;
 
 private:
-    bool writeStateMachine(StateMachine* machine);
-    bool writeState(State* state);
-    bool writeStateInner(State* state);
-    bool writeTransition(Transition* transition);
-
-    QString indention() const;
-
-    QTextStream m_out;
-    int m_indent, m_level;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
