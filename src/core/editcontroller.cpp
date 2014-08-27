@@ -26,23 +26,40 @@
 
 using namespace KDSME;
 
+struct EditController::Private
+{
+    Private();
+
+    bool m_editModeEnabled;
+};
+
+EditController::Private::Private()
+    : m_editModeEnabled(false)
+{
+
+}
+
 EditController::EditController(QObject* parent)
     : QObject(parent)
-    , m_editModeEnabled(false)
+    , d(new Private)
+{
+}
+
+EditController::~EditController()
 {
 }
 
 bool EditController::editModeEnabled() const
 {
-    return m_editModeEnabled;
+    return d->m_editModeEnabled;
 }
 
 void EditController::setEditModeEnabled(bool editModeEnabled)
 {
-    if (m_editModeEnabled == editModeEnabled)
+    if (d->m_editModeEnabled == editModeEnabled)
         return;
 
-    m_editModeEnabled = editModeEnabled;
-    emit editModeEnabledChanged(m_editModeEnabled);
+    d->m_editModeEnabled = editModeEnabled;
+    emit editModeEnabledChanged(d->m_editModeEnabled);
 }
 

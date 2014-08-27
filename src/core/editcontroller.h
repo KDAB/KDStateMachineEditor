@@ -38,6 +38,7 @@ class KDSME_CORE_EXPORT EditController : public QObject
 
 public:
     explicit EditController(QObject* parent = nullptr);
+    virtual ~EditController();
 
     bool editModeEnabled() const;
     void setEditModeEnabled(bool editModeEnabled);
@@ -46,7 +47,8 @@ Q_SIGNALS:
     void editModeEnabledChanged(bool editModeEnabled);
 
 private:
-    bool m_editModeEnabled;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
