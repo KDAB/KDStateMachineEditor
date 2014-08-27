@@ -27,21 +27,19 @@
 
 #include "abstractexporter.h"
 
-#include <QXmlStreamWriter>
-
 class QByteArray;
+class QIODevice;
 
 namespace KDSME {
 
-class State;
 class StateMachine;
-class Transition;
 
 class KDSME_CORE_EXPORT ScxmlExporter : public AbstractExporter
 {
 public:
     explicit ScxmlExporter(QByteArray* array);
     explicit ScxmlExporter(QIODevice* device);
+    virtual ~ScxmlExporter();
 
     /**
      * Exports state machine @p machine in SCXML format
@@ -51,14 +49,8 @@ public:
     virtual bool exportMachine(StateMachine* machine) Q_DECL_OVERRIDE;
 
 private:
-    void init();
-
-    bool writeStateMachine(StateMachine* machine);
-    bool writeState(State* state);
-    bool writeStateInner(State* state);
-    bool writeTransition(Transition* transition);
-
-    QXmlStreamWriter m_writer;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }

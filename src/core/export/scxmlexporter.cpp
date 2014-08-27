@@ -29,22 +29,55 @@
 #include "elementutil.h"
 
 #include <QDebug>
+#include <QXmlStreamWriter>
 
 using namespace KDSME;
 
-ScxmlExporter::ScxmlExporter(QByteArray* array)
-    : m_writer(array)
+struct ScxmlExporter::Private
+{
+    Private(QByteArray* array, ScxmlExporter* q);
+    Private(QIODevice* device, ScxmlExporter* q);
+
+    void init();
+
+    bool writeStateMachine(StateMachine* machine);
+    bool writeState(State* state);
+    bool writeStateInner(State* state);
+    bool writeTransition(Transition* transition);
+
+    ScxmlExporter* q;
+    QXmlStreamWriter m_writer;
+};
+
+ScxmlExporter::Private::Private(QByteArray* array, ScxmlExporter* q)
+    : q(q)
+    , m_writer(array)
 {
     init();
+}
+
+ScxmlExporter::Private::Private(QIODevice* device, ScxmlExporter* q)
+    : q(q)
+    , m_writer(device)
+{
+    init();
+}
+
+ScxmlExporter::ScxmlExporter(QByteArray* array)
+    : d(new Private(array, this))
+{
 }
 
 ScxmlExporter::ScxmlExporter(QIODevice* device)
-    : m_writer(device)
+    : d(new Private(device, this))
 {
-    init();
 }
 
-void ScxmlExporter::init()
+ScxmlExporter::~ScxmlExporter()
+{
+}
+
+void ScxmlExporter::Private::init()
 {
     m_writer.setAutoFormatting(true);
 }
@@ -58,15 +91,15 @@ bool ScxmlExporter::exportMachine(StateMachine* machine)
         return false;
     }
 
-    if (m_writer.hasError()) {
+    if (d->m_writer.hasError()) {
         setErrorString("Setting up XML writer failed");
         return false;
     }
 
-    return writeStateMachine(machine);
+    return d->writeStateMachine(machine);
 }
 
-bool ScxmlExporter::writeStateMachine(StateMachine* machine)
+bool ScxmlExporter::Private::writeStateMachine(StateMachine* machine)
 {
     Q_ASSERT(machine);
 
@@ -84,7 +117,7 @@ bool ScxmlExporter::writeStateMachine(StateMachine* machine)
     return !m_writer.hasError();
 }
 
-bool ScxmlExporter::writeState(State* state)
+bool ScxmlExporter::Private::writeState(State* state)
 {
     if (qobject_cast<PseudoState*>(state)) {
         return true; // pseudo states are ignored
@@ -97,10 +130,10 @@ bool ScxmlExporter::writeState(State* state)
     return true;
 }
 
-bool ScxmlExporter::writeStateInner(State* state)
+bool ScxmlExporter::Private::writeStateInner(State* state)
 {
     if (state->label().isEmpty()) {
-        setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
+        q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
         return false;
     }
 
@@ -112,7 +145,7 @@ bool ScxmlExporter::writeStateInner(State* state)
 
     if (State* initial = ElementUtil::findInitialState(state)) {
         if (initial->label().isEmpty()) {
-            setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
+            q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
             return false;
         }
         m_writer.writeAttribute("initial", initial->label());
@@ -130,7 +163,7 @@ bool ScxmlExporter::writeStateInner(State* state)
     return true;
 }
 
-bool ScxmlExporter::writeTransition(Transition* transition)
+bool ScxmlExporter::Private::writeTransition(Transition* transition)
 {
     m_writer.writeStartElement("transition");
     m_writer.writeAttribute("event", transition->label());
