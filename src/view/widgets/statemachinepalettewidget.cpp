@@ -150,8 +150,13 @@ Qt::ItemFlags PaletteModel::flags(const QModelIndex& index) const
     return Qt::ItemIsDragEnabled | flags;
 }
 
+struct StateMachinePaletteWidget::Private
+{
+};
+
 StateMachinePaletteWidget::StateMachinePaletteWidget(QWidget* parent)
     : QWidget(parent)
+    , d(new Private)
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -166,6 +171,10 @@ StateMachinePaletteWidget::StateMachinePaletteWidget(QWidget* parent)
     view->viewport()->setAcceptDrops(false); // disallow internal drops
     layout->addWidget(view);
     view->setModel(new PaletteModel);
+}
+
+StateMachinePaletteWidget::~StateMachinePaletteWidget()
+{
 }
 
 #include "statemachinepalettewidget.moc"

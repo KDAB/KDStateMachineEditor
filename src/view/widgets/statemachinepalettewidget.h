@@ -37,6 +37,11 @@ class KDSME_VIEW_EXPORT StateMachinePaletteWidget : public QWidget
 
 public:
     explicit StateMachinePaletteWidget(QWidget* parent = 0);
+    virtual ~StateMachinePaletteWidget();
+
+private:
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
