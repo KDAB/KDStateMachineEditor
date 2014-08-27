@@ -36,36 +36,59 @@
 
 using namespace KDSME;
 
+struct StateMachineToolBar::Private
+{
+    Private(StateMachineToolBar* q);
+
+    // slots
+    void handleExport();
+
+    void init();
+
+    void exportToFile(StateMachine* machine, const QString& fileName);
+
+    StateMachineToolBar* q;
+    StateMachineView* m_view;
+
+    QAction* m_exportAction;
+};
+
+StateMachineToolBar::Private::Private(StateMachineToolBar* q)
+    : q(q)
+{
+}
+
 StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent)
     : QToolBar(parent)
-    , m_view(view)
+    , d(new Private(this))
 {
+    d->m_view = view;
+
     setWindowTitle(tr("State Machine Tool Bar"));
-    m_exportAction = new QAction(tr("Export to file"), this);
-    m_exportAction->setStatusTip("Export current State Machine to file");
-    connect(m_exportAction, &QAction::triggered, this, &StateMachineToolBar::handleExport);
+    d->m_exportAction = new QAction(tr("Export to file"), this);
+    d->m_exportAction->setStatusTip("Export current State Machine to file");
+    connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
 
-    setupToolBar();
+    addAction(d->m_exportAction);
 }
 
-void StateMachineToolBar::setupToolBar()
+StateMachineToolBar::~StateMachineToolBar()
 {
-    addAction(m_exportAction);
 }
 
-void StateMachineToolBar::handleExport()
+void StateMachineToolBar::Private::handleExport()
 {
     StateMachine* stateMachine = m_view->view()->stateMachine();
     if (!stateMachine) {
-        QMessageBox::information(this, QString(), "State machine unavailable");
+        QMessageBox::information(q, QString(), "State machine unavailable");
         return;
     }
 
-    const QString fileName = QFileDialog::getSaveFileName(this, tr("Save to File"), QString(), "SCXML/QML files (*.scxml, *.qml)");
+    const QString fileName = QFileDialog::getSaveFileName(q, tr("Save to File"), QString(), "SCXML/QML files (*.scxml, *.qml)");
     exportToFile(stateMachine, fileName);
 }
 
-void StateMachineToolBar::exportToFile(StateMachine* machine, const QString& fileName)
+void StateMachineToolBar::Private::exportToFile(StateMachine* machine, const QString& fileName)
 {
     if (!machine || fileName.isEmpty())
         return;
@@ -87,3 +110,5 @@ void StateMachineToolBar::exportToFile(StateMachine* machine, const QString& fil
     }
     exporter->exportMachine(machine);
 }
+
+#include "moc_statemachinetoolbar.cpp"

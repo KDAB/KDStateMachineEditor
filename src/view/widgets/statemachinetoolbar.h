@@ -42,18 +42,13 @@ class KDSME_VIEW_EXPORT StateMachineToolBar : public QToolBar
 
 public:
     explicit StateMachineToolBar(StateMachineView* view, QWidget* parent = 0);
-
-private Q_SLOTS:
-    void handleExport();
+    virtual ~StateMachineToolBar();
 
 private:
-    void setupToolBar();
+    struct Private;
+    QScopedPointer<Private> d;
 
-    void exportToFile(StateMachine* machine, const QString& fileName);
-
-    StateMachineView* m_view;
-
-    QAction* m_exportAction;
+    Q_PRIVATE_SLOT(d, void handleExport());
 };
 
 }
