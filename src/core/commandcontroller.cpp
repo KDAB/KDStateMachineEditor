@@ -31,28 +31,44 @@
 
 using namespace KDSME;
 
+struct CommandController::Private
+{
+    Private();
+
+    QUndoStack* m_undoStack;
+};
+
+CommandController::Private::Private()
+{
+}
+
 CommandController::CommandController(QUndoStack* undoStack, QObject* parent)
     : QObject(parent)
-    , m_undoStack(undoStack)
+    , d(new Private)
 {
-    Q_ASSERT(m_undoStack);
+    d->m_undoStack = undoStack;
+    Q_ASSERT(d->m_undoStack);
 
     qRegisterMetaType<Command*>();
 }
 
+CommandController::~CommandController()
+{
+}
+
 QUndoStack* CommandController::undoStack() const
 {
-    return m_undoStack;
+    return d->m_undoStack;
 }
 
 void CommandController::push(KDSME::Command* command)
 {
     Q_ASSERT(command);
     QQmlEngine::setObjectOwnership(command, QQmlEngine::CppOwnership); // transfer ownership
-    m_undoStack->push(command);
+    d->m_undoStack->push(command);
 }
 
 void CommandController::clear()
 {
-    m_undoStack->clear();
+    d->m_undoStack->clear();
 }
