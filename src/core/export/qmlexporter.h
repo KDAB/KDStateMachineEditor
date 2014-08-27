@@ -27,14 +27,11 @@
 
 #include "abstractexporter.h"
 
-#include <QTextStream>
+class QIODevice;
 
 namespace KDSME {
 
-class FinalState;
-class State;
 class StateMachine;
-class Transition;
 
 class KDSME_CORE_EXPORT QmlExporter : public AbstractExporter
 {

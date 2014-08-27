@@ -31,6 +31,7 @@
 #include "elementutil.h"
 
 #include <QDebug>
+#include <QTextStream>
 
 #include <algorithm>
 
