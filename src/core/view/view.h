@@ -30,10 +30,6 @@
 #include "abstractview.h"
 
 #include <QObject>
-#include <QMap>
-#include <QPointer>
-
-class QTimer;
 
 namespace KDSME {
 

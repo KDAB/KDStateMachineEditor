@@ -84,16 +84,39 @@ static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
     return s;
 }
 
-StateMachineView::StateMachineView(QWidget* parent)
-    : QQuickWidget(parent)
+struct StateMachineView::Private
+{
+    Private(StateMachineView* q);
+
+    StateMachineView* q;
+
+    View* m_view;
+
+    CommandController* m_controller;
+    ConfigurationController* m_configurationController;
+    EditController* m_editController;
+
+    bool m_editModeEnabled;
+
+    QRectF adjustedViewRect();
+
+    // slots
+    void handleNewLayout();
+    void handleNewStateMachine();
+};
+
+StateMachineView::Private::Private(StateMachineView* q)
+    : q(q)
     , m_view(nullptr)
-    , m_controller(new CommandController(new QUndoStack(this), this))
-    , m_configurationController(new ConfigurationController(this))
-    , m_editController(new EditController(this))
     , m_editModeEnabled(false)
 {
-    setResizeMode(QQuickWidget::SizeRootObjectToView);
 
+}
+
+StateMachineView::StateMachineView(QWidget* parent)
+    : QQuickWidget(parent)
+    , d(new Private(this))
+{
     qRegisterMetaType<QPainterPath>();
     qRegisterMetaType<Qt::PenStyle>();
     qRegisterMetaType<CommandController*>();
@@ -137,54 +160,63 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterSingletonType<QuickKDSMEGlobal>(KDSME_QML_NAMESPACE, 1, 0, "Global", kdsme_global_singletontype_provider);
     qmlRegisterSingletonType<CommandFactory>(KDSME_QML_NAMESPACE, 1, 0, "CommandFactory", kdsme_commandFactory_singletontype_provider);
 
+    d->m_controller = new CommandController(new QUndoStack(this), this);
+    d->m_configurationController = new ConfigurationController(this);
+    d->m_editController = new EditController(this);
+
     engine()->rootContext()->setContextProperty("_quickView", this);
 
     QSurfaceFormat format;
     format.setSamples(4);
     setFormat(format);
-
+    setResizeMode(QQuickWidget::SizeRootObjectToView);
     setSource(QUrl("qrc:/kdsme/qml/StateMachineView.qml"));
     Q_ASSERT_X(errors().isEmpty(), __FUNCTION__, qPrintable(kdsme_qmlErrorString(errors())));
 }
 
+StateMachineView::~StateMachineView()
+{
+}
+
+
 View* StateMachineView::view() const
 {
-    return m_view;
+    return d->m_view;
 }
 
 void StateMachineView::setView(View* view)
 {
-    if (m_view == view)
+    if (d->m_view == view)
         return;
 
-    if (m_view) {
-        disconnect(m_view, &View::rootLayoutItemChanged, this, &StateMachineView::handleNewLayout);
-        disconnect(m_view, &View::stateMachineChanged, this, &StateMachineView::handleNewStateMachine);
+    if (d->m_view) {
+        disconnect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(handleNewLayout()));
+        disconnect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(handleNewStateMachine()));
     }
-    m_view = view;
-    if (m_view) {
-        connect(m_view, &View::rootLayoutItemChanged, this, &StateMachineView::handleNewLayout);
-        connect(m_view, &View::stateMachineChanged, this, &StateMachineView::handleNewStateMachine);
+    d->m_view = view;
+    if (d->m_view) {
+        connect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(handleNewLayout()));
+        connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(handleNewStateMachine()));
     }
 
-    m_configurationController->setView(m_view);
+    d->m_configurationController->setView(d->m_view);
 
-    emit viewChanged(m_view);
+    emit viewChanged(d->m_view);
 }
 
 CommandController* StateMachineView::commandController() const
 {
-    return m_controller;
+    return d->m_controller;
 }
 
 ConfigurationController* StateMachineView::configurationController() const
 {
-    return m_configurationController;
+    return d->m_configurationController;
 }
 
 EditController* StateMachineView::editController() const
 {
-    return m_editController;
+    return d->m_editController;
 }
 
 QQuickItem* StateMachineView::viewPortObject() const
@@ -201,20 +233,20 @@ QQuickItem* StateMachineView::sceneObject() const
     return item;
 }
 
-void StateMachineView::handleNewLayout()
+void StateMachineView::Private::handleNewLayout()
 {
 }
 
-void StateMachineView::handleNewStateMachine()
+void StateMachineView::Private::handleNewStateMachine()
 {
 }
 
 void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 {
-    Q_ASSERT(m_view);
-    ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(m_view);
+    Q_ASSERT(d->m_view);
+    ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(d->m_view);
     cmd->setStateMachine(stateMachine);
-    if (m_view->stateMachine()) {
+    if (d->m_view->stateMachine()) {
         commandController()->push(cmd);
     } else {
         cmd->redo();
@@ -334,7 +366,7 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, LayoutItem* target, con
     };
 
     Element *targetElement = target ? target->element() : 0;
-    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(m_view, type, targetElement, QPointF(pos));
+    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(d->m_view, type, targetElement, QPointF(pos));
     commandController()->push(cmd);
 
     return true;
@@ -355,9 +387,9 @@ void StateMachineView::setZoom(qreal value)
     scene->setScale(value);
 }
 
-QRectF StateMachineView::adjustedViewRect()
+QRectF StateMachineView::Private::adjustedViewRect()
 {
-    const QQuickItem* viewPort = viewPortObject();
+    const QQuickItem* viewPort = q->viewPortObject();
     const QRectF viewRect(viewPort->x(), viewPort->y(), viewPort->width(), viewPort->height());
     if (viewRect.isEmpty())
         return QRectF();
@@ -376,7 +408,7 @@ void StateMachineView::fitInView(const QRectF& rect)
         r = QRectF(0, 0, width, height);
     }
 
-    QRectF viewrect = adjustedViewRect();
+    QRectF viewrect = d->adjustedViewRect();
 
     if (r.isEmpty() || viewrect.isEmpty())
         return;
@@ -389,3 +421,5 @@ void StateMachineView::fitInView(const QRectF& rect)
     scene->setTransformOrigin(QQuickItem::TopLeft);
     scene->setScale(scale);
 }
+
+#include "moc_statemachineview.cpp"

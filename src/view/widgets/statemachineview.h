@@ -48,6 +48,7 @@ class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 
 public:
     explicit StateMachineView(QWidget* parent = 0);
+    virtual ~StateMachineView();
 
     View* view() const;
     void setView(View* m_view);
@@ -72,20 +73,12 @@ protected:
 Q_SIGNALS:
     void viewChanged(KDSME::View* view);
 
-private Q_SLOTS:
-    void handleNewLayout();
-    void handleNewStateMachine();
-
 private:
-    View* m_view;
+    struct Private;
+    QScopedPointer<Private> d;
 
-    CommandController* m_controller;
-    ConfigurationController* m_configurationController;
-    EditController* m_editController;
-
-    bool m_editModeEnabled;
-
-    QRectF adjustedViewRect();
+    Q_PRIVATE_SLOT(d, void handleNewLayout());
+    Q_PRIVATE_SLOT(d, void handleNewStateMachine());
 };
 
 }
