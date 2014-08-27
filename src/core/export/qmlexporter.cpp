@@ -63,7 +63,7 @@ QString elementToComponent(Element* element)
     case Element::HistoryStateType:
         return "HistoryState";
     case Element::StateType:
-        return "BasicState";
+        return "StateBase";
     case Element::TransitionType:
         return "Transition";
     case Element::SignalTransitionType:
@@ -217,7 +217,7 @@ bool QmlExporter::Private::writeStateInner(State* state)
     }
 
     if (state->childMode() == State::ParallelStates) {
-        m_out << indention() << "mode: BasicState.ParallelStates\n";
+        m_out << indention() << "childMode: QState.ParallelStates\n";
     }
 
     if (State* initial = ElementUtil::findInitialState(state)) {
@@ -263,7 +263,7 @@ bool QmlExporter::Private::writeTransition(Transition* transition)
             m_out << indention() << QString("id: %1\n").arg(toQmlId(transition->label()));
         }
         if (transition->targetState()) {
-            m_out << indention() << QString("target: %1\n").arg(transition->targetState()->label());
+            m_out << indention() << QString("targetState: %1\n").arg(transition->targetState()->label());
         }
         if (transition->type() == Element::SignalTransitionType) {
             auto t = qobject_cast<SignalTransition*>(transition);
