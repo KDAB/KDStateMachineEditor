@@ -28,17 +28,10 @@
 
 #include "kdsme_view_export.h"
 
-#include <QHash>
 #include <QStackedWidget>
-#include <QPointer>
 
 class QItemSelectionModel;
 class QModelIndex;
-
-namespace Ui {
-class StatePropertyEditor;
-class TransitionPropertyEditor;
-}
 
 namespace KDSME {
 
@@ -56,33 +49,18 @@ public:
     void setSelectionModel(QItemSelectionModel* selectionModel);
     void setCommandController(CommandController *cmdController);
 
-private Q_SLOTS:
-    void updateSimpleProperty();
-    void setInitalState(const QString& label);
-    void setDefaultState(const QString& label);
-    void setSourceState(const QString& label);
-    void setTargetState(const QString& label);
-    void childModeChanged();
-
-    void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    void loadFromCurrentElement();
-
 private:
-    template <typename T> inline T* current() const
-    {
-        return qobject_cast<T*>(m_currentElement);
-    }
+    struct Private;
+    QScopedPointer<Private> d;
 
-    void monitorElement(KDSME::Element* element);
-
-    QItemSelectionModel* m_selectionModel;
-    CommandController *m_commandController;
-    QPointer<KDSME::Element> m_currentElement;
-    Ui::StatePropertyEditor* m_stateWidget;
-    Ui::TransitionPropertyEditor* m_transitionWidget;
-    int m_noWidgetIndex, m_stateWidgetIndex, m_transitionWidgetIndex;
-
-    QHash<QObject*, QString> m_widgetToPropertyMap;
+    Q_PRIVATE_SLOT(d, void updateSimpleProperty());
+    Q_PRIVATE_SLOT(d, void setInitalState(const QString& label));
+    Q_PRIVATE_SLOT(d, void setDefaultState(const QString& label));
+    Q_PRIVATE_SLOT(d, void setSourceState(const QString& label));
+    Q_PRIVATE_SLOT(d, void setTargetState(const QString& label));
+    Q_PRIVATE_SLOT(d, void childModeChanged());
+    Q_PRIVATE_SLOT(d, void currentChanged(const QModelIndex &current, const QModelIndex &previous));
+    Q_PRIVATE_SLOT(d, void loadFromCurrentElement());
 };
 
 } // namespace KDSME

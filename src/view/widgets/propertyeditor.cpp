@@ -36,78 +36,117 @@
 #include "ui_statepropertyeditor.h"
 #include "ui_transitionpropertyeditor.h"
 
+#include <QHash>
 #include <QItemSelectionModel>
 #include <QMetaProperty>
 
 using namespace KDSME;
 
-PropertyEditor::PropertyEditor(QWidget *parent)
-    : QStackedWidget(parent)
+struct PropertyEditor::Private
+{
+    Private(PropertyEditor* q);
+
+    template <typename T> inline T* current() const
+    {
+        return qobject_cast<T*>(m_currentElement);
+    }
+
+    void monitorElement(KDSME::Element* element);
+
+    // slots
+    void updateSimpleProperty();
+    void setInitalState(const QString& label);
+    void setDefaultState(const QString& label);
+    void setSourceState(const QString& label);
+    void setTargetState(const QString& label);
+    void childModeChanged();
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void loadFromCurrentElement();
+
+    PropertyEditor* q;
+    QItemSelectionModel* m_selectionModel;
+    CommandController *m_commandController;
+    QPointer<KDSME::Element> m_currentElement;
+    Ui::StatePropertyEditor* m_stateWidget;
+    Ui::TransitionPropertyEditor* m_transitionWidget;
+    int m_noWidgetIndex, m_stateWidgetIndex, m_transitionWidgetIndex;
+
+    QHash<QObject*, QString> m_widgetToPropertyMap;
+};
+
+PropertyEditor::Private::Private(PropertyEditor* q)
+    : q(q)
     , m_selectionModel(nullptr)
     , m_commandController(nullptr)
 {
-    m_stateWidget = new Ui::StatePropertyEditor;
-    m_transitionWidget = new Ui::TransitionPropertyEditor;
-    m_noWidgetIndex = addWidget(new QWidget(this));
+}
+
+PropertyEditor::PropertyEditor(QWidget *parent)
+    : QStackedWidget(parent)
+    , d(new Private(this))
+{
+    d->m_stateWidget = new Ui::StatePropertyEditor;
+    d->m_transitionWidget = new Ui::TransitionPropertyEditor;
+    d->m_noWidgetIndex = addWidget(new QWidget(this));
 
     QWidget* w = new QWidget(this);
-    m_stateWidget->setupUi(w);
-    m_stateWidgetIndex = addWidget(w);
+    d->m_stateWidget->setupUi(w);
+    d->m_stateWidgetIndex = addWidget(w);
     w = new QWidget(this);
-    m_transitionWidget->setupUi(w);
-    m_transitionWidgetIndex = addWidget(w);
+    d->m_transitionWidget->setupUi(w);
+    d->m_transitionWidgetIndex = addWidget(w);
 
-    m_widgetToPropertyMap.insert(m_stateWidget->labelLineEdit, "label");
-    m_widgetToPropertyMap.insert(m_stateWidget->onEntryEditor, "onEntry");
-    m_widgetToPropertyMap.insert(m_stateWidget->onExitEditor, "onExit");
-    m_widgetToPropertyMap.insert(m_stateWidget->childModeEdit, "childMode");
-    m_widgetToPropertyMap.insert(m_stateWidget->historyTypeEdit, "historyType");
-    m_widgetToPropertyMap.insert(m_transitionWidget->labelLineEdit, "label");
-    m_widgetToPropertyMap.insert(m_transitionWidget->guardEditor, "guard");
-    m_widgetToPropertyMap.insert(m_transitionWidget->signalEdit, "signal");
-    m_widgetToPropertyMap.insert(m_transitionWidget->timeoutEdit, "timeout");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->labelLineEdit, "label");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onEntryEditor, "onEntry");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onExitEditor, "onExit");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->childModeEdit, "childMode");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->historyTypeEdit, "historyType");
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->labelLineEdit, "label");
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->guardEditor, "guard");
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->signalEdit, "signal");
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->timeoutEdit, "timeout");
 
-    connect(m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-    connect(m_stateWidget->initialStateComboBox, SIGNAL(activated(QString)), SLOT(setInitalState(QString)));
-    connect(m_stateWidget->defaultStateComboBox, SIGNAL(activated(QString)), SLOT(setDefaultState(QString)));
-    connect(m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
-    connect(m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(childModeChanged()));
-    connect(m_stateWidget->historyTypeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->initialStateComboBox, SIGNAL(activated(QString)), SLOT(setInitalState(QString)));
+    connect(d->m_stateWidget->defaultStateComboBox, SIGNAL(activated(QString)), SLOT(setDefaultState(QString)));
+    connect(d->m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(childModeChanged()));
+    connect(d->m_stateWidget->historyTypeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
 
-    connect(m_transitionWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-    connect(m_transitionWidget->sourceStateComboBox, SIGNAL(activated(QString)), SLOT(setSourceState(QString)));
-    connect(m_transitionWidget->targetStateComboBox, SIGNAL(activated(QString)), SLOT(setTargetState(QString)));
-    connect(m_transitionWidget->guardEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(m_transitionWidget->signalEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-    connect(m_transitionWidget->timeoutEdit, SIGNAL(valueChanged(int)), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->sourceStateComboBox, SIGNAL(activated(QString)), SLOT(setSourceState(QString)));
+    connect(d->m_transitionWidget->targetStateComboBox, SIGNAL(activated(QString)), SLOT(setTargetState(QString)));
+    connect(d->m_transitionWidget->guardEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->signalEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->timeoutEdit, SIGNAL(valueChanged(int)), SLOT(updateSimpleProperty()));
 
-    setCurrentIndex(m_noWidgetIndex);
+    setCurrentIndex(d->m_noWidgetIndex);
 }
 
 PropertyEditor::~PropertyEditor()
 {
-    delete m_stateWidget;
-    delete m_transitionWidget;
+    delete d->m_stateWidget;
+    delete d->m_transitionWidget;
 }
 
 void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 {
-    if (m_selectionModel) {
-        disconnect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged(QModelIndex,QModelIndex)));
+    if (d->m_selectionModel) {
+        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged(QModelIndex,QModelIndex)));
     }
 
-    m_selectionModel = selectionModel;
+    d->m_selectionModel = selectionModel;
 
-    if (m_selectionModel) {
-        connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+    if (d->m_selectionModel) {
+        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
     }
 }
 
 void PropertyEditor::setCommandController(CommandController* cmdController)
 {
-    m_commandController = cmdController;
+    d->m_commandController = cmdController;
 }
 
 static QStringList allStates(const State * state)
@@ -140,17 +179,18 @@ static QStringList childStates(const State * state)
     return ret;
 }
 
-void PropertyEditor::currentChanged(const QModelIndex &currentIndex, const QModelIndex &/*previous*/)
+void PropertyEditor::Private::currentChanged(const QModelIndex &currentIndex, const QModelIndex &/*previous*/)
 {
-    if (m_currentElement)
-        disconnect(m_currentElement, 0, this, SLOT(loadFromCurrentElement()));
+    if (m_currentElement) {
+        q->disconnect(m_currentElement, 0, q, SLOT(loadFromCurrentElement()));
+    }
 
     m_currentElement = currentIndex.data(StateModel::ElementRole).value<Element*>();
     loadFromCurrentElement();
     monitorElement(m_currentElement);
 }
 
-void PropertyEditor::monitorElement(KDSME::Element* element)
+void PropertyEditor::Private::monitorElement(KDSME::Element* element)
 {
     if (!element)
         return;
@@ -159,11 +199,11 @@ void PropertyEditor::monitorElement(KDSME::Element* element)
         const QMetaProperty prop = element->metaObject()->property(i);
         if (!prop.hasNotifySignal())
             continue;
-        connect(element, "2" + prop.notifySignal().methodSignature(), this, SLOT(loadFromCurrentElement()));
+        q->connect(element, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement()));
     }
 }
 
-void PropertyEditor::loadFromCurrentElement()
+void PropertyEditor::Private::loadFromCurrentElement()
 {
     State *state = current<State>();
     if (state && state->type() != Element::PseudoStateType) {
@@ -204,7 +244,7 @@ void PropertyEditor::loadFromCurrentElement()
         if (historyState)
             m_stateWidget->historyTypeEdit->setCurrentIndex(historyState->historyType());
 
-        setCurrentIndex(m_stateWidgetIndex); // State page
+        q->setCurrentIndex(m_stateWidgetIndex); // State page
 
     } else if (Transition *transition = current<Transition>()) {
         m_transitionWidget->labelLineEdit->setText(transition->label());
@@ -227,7 +267,7 @@ void PropertyEditor::loadFromCurrentElement()
             m_transitionWidget->targetStateComboBox->setCurrentText(QString());
 
         m_transitionWidget->guardEditor->setPlainText(transition->guard());
-        setCurrentIndex(m_transitionWidgetIndex); // Transition page
+        q->setCurrentIndex(m_transitionWidgetIndex); // Transition page
 
         SignalTransition *signalTransition = current<SignalTransition>();
         m_transitionWidget->signalLabel->setVisible(signalTransition);
@@ -242,26 +282,27 @@ void PropertyEditor::loadFromCurrentElement()
             m_transitionWidget->timeoutEdit->setValue(timeoutTransition->timeout());
 
     } else {
-        setCurrentIndex(m_noWidgetIndex);
+        q->setCurrentIndex(m_noWidgetIndex);
     }
 }
 
-void PropertyEditor::updateSimpleProperty()
+void PropertyEditor::Private::updateSimpleProperty()
 {
-    if (!sender() || !m_currentElement || !sender()->metaObject()->userProperty().isValid())
+    QObject* object = q->sender();
+    if (!object || !m_currentElement || !object->metaObject()->userProperty().isValid())
         return;
 
-    const QString propertyName = m_widgetToPropertyMap.value(sender());
+    const QString propertyName = m_widgetToPropertyMap.value(object);
     Q_ASSERT(!propertyName.isEmpty());
 
     const QVariant currentValue = m_currentElement->property(propertyName.toUtf8());
 
     QVariant newValue;
-    QComboBox *comboBox = qobject_cast<QComboBox*>(sender());
+    QComboBox *comboBox = qobject_cast<QComboBox*>(object);
     if (comboBox && currentValue.type() != QVariant::String) { // the user property on QComboBox is currentString, not always what we want
         newValue = comboBox->currentIndex();
     } else {
-        newValue = sender()->metaObject()->userProperty().read(sender());
+        newValue = object->metaObject()->userProperty().read(object);
     }
     if (currentValue == newValue)
         return;
@@ -271,7 +312,7 @@ void PropertyEditor::updateSimpleProperty()
     m_commandController->undoStack()->push(command);
 }
 
-void PropertyEditor::setInitalState(const QString &label)
+void PropertyEditor::Private::setInitalState(const QString &label)
 {
     State* state = current<State>();
     Q_ASSERT(state);
@@ -285,7 +326,7 @@ void PropertyEditor::setInitalState(const QString &label)
     }
 }
 
-void PropertyEditor::setDefaultState(const QString& label)
+void PropertyEditor::Private::setDefaultState(const QString& label)
 {
     HistoryState* state = current<HistoryState>();
     Q_ASSERT(state);
@@ -298,7 +339,7 @@ void PropertyEditor::setDefaultState(const QString& label)
     }
 }
 
-void PropertyEditor::setSourceState(const QString &label)
+void PropertyEditor::Private::setSourceState(const QString &label)
 {
     Transition* transition = current<Transition>();
     Q_ASSERT(transition);
@@ -312,7 +353,7 @@ void PropertyEditor::setSourceState(const QString &label)
     }
 }
 
-void PropertyEditor::setTargetState(const QString &label)
+void PropertyEditor::Private::setTargetState(const QString &label)
 {
     Transition* transition = current<Transition>();
     Q_ASSERT(transition);
@@ -326,10 +367,13 @@ void PropertyEditor::setTargetState(const QString &label)
     }
 }
 
-void PropertyEditor::childModeChanged()
+void PropertyEditor::Private::childModeChanged()
 {
     const bool parallelMode = m_stateWidget->childModeEdit->currentIndex() == State::ParallelStates;
 
     m_stateWidget->initialStateLabel->setEnabled(!parallelMode);
     m_stateWidget->initialStateComboBox->setEnabled(!parallelMode);
 }
+
+#include "moc_propertyeditor.cpp"
+
