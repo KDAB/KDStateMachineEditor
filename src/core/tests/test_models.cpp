@@ -198,8 +198,8 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
     QVERIFY(o2);
 
     // Want to set parent of o2 to o1
-    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-    QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+    QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
     {
         ObjectTreeModel::ReparentOperation reparent(&model, o2, o1);
         QCOMPARE(spy1.count(), 1);
@@ -241,7 +241,7 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 
     {
         // Want to set parent of o1 to root (root is already parent of o1!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
         {
             ObjectTreeModel::ReparentOperation reparent(&model, o1, root.data());
             QCOMPARE(spy1.count(), 0);
@@ -251,7 +251,7 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 
     {
         // Want to set parent of o1 to o1 (circular link!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
         {
             ObjectTreeModel::ReparentOperation reparent(&model, o1, o1);
             QCOMPARE(spy1.count(), 0);
