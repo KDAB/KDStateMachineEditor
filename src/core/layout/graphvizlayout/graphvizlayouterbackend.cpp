@@ -509,10 +509,14 @@ void GraphvizLayouterBackend::saveToFile(const QString& filePath, const QString&
 
     LocaleLocker lock;
     QFile file(filePath);
-    file.open(QIODevice::WriteOnly);
-    const int rc = gvRenderFilename(d->m_context, d->m_graph, qPrintable(format), qPrintable(filePath));
-    if (rc != 0) {
-        qDebug() << "gvRenderFilename to" << filePath << "failed with return-code:" <<  rc;
+    if (file.open(QIODevice::WriteOnly)) {
+        const int rc = gvRenderFilename(d->m_context, d->m_graph, qPrintable(format), qPrintable(filePath));
+        if (rc != 0) {
+            qDebug() << "gvRenderFilename to" << filePath << "failed with return-code:" <<  rc;
+        }
+    } else {
+        qDebug() << "Cannot render image, cannot open:" << filePath;
+        return;
     }
 }
 

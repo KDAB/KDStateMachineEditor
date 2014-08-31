@@ -78,6 +78,11 @@ PropertyEditor::Private::Private(PropertyEditor* q)
     : q(q)
     , m_selectionModel(nullptr)
     , m_commandController(nullptr)
+    , m_stateWidget(nullptr)
+    , m_transitionWidget(nullptr)
+    , m_noWidgetIndex(-1)
+    , m_stateWidgetIndex(-1)
+    , m_transitionWidgetIndex(-1)
 {
 }
 
@@ -199,7 +204,7 @@ void PropertyEditor::Private::monitorElement(KDSME::Element* element)
         const QMetaProperty prop = element->metaObject()->property(i);
         if (!prop.hasNotifySignal())
             continue;
-        q->connect(element, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement()));
+        q->connect(element, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); //krazy:exclude=doublequote_chars
     }
 }
 

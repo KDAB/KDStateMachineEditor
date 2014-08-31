@@ -39,6 +39,7 @@ struct CommandController::Private
 };
 
 CommandController::Private::Private()
+    : m_undoStack(nullptr)
 {
 }
 

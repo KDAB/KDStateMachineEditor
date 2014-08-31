@@ -79,8 +79,9 @@ static QObject* kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, 
 static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
 {
     QString s;
-    Q_FOREACH(const QQmlError &e, errors)
-        s += e.toString() + "\n";
+    Q_FOREACH (const QQmlError &e, errors) {
+        s += e.toString() + '\n';
+    }
     return s;
 }
 
@@ -108,9 +109,11 @@ struct StateMachineView::Private
 StateMachineView::Private::Private(StateMachineView* q)
     : q(q)
     , m_view(nullptr)
+    , m_controller(nullptr)
+    , m_configurationController(nullptr)
+    , m_editController(nullptr)
     , m_editModeEnabled(false)
 {
-
 }
 
 StateMachineView::StateMachineView(QWidget* parent)

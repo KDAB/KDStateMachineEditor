@@ -38,7 +38,7 @@ class KDSME_CORE_EXPORT ObjectTreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    class KDSME_CORE_EXPORT AppendOperation
+    class KDSME_CORE_EXPORT AppendOperation //krazy:exclude=dpointer
     {
     public:
         AppendOperation(ObjectTreeModel* model, QObject* parent, int count = 1);
@@ -48,7 +48,7 @@ public:
         ObjectTreeModel* m_model;
     };
 
-    class KDSME_CORE_EXPORT RemoveOperation
+    class KDSME_CORE_EXPORT RemoveOperation //krazy:exclude=dpointer
     {
     public:
         RemoveOperation(ObjectTreeModel* model, QObject* object);
@@ -58,7 +58,7 @@ public:
         ObjectTreeModel* m_model;
     };
 
-    class KDSME_CORE_EXPORT ResetOperation
+    class KDSME_CORE_EXPORT ResetOperation //krazy:exclude=dpointer
     {
     public:
         explicit ResetOperation(ObjectTreeModel* model);
@@ -68,7 +68,7 @@ public:
         ObjectTreeModel* m_model;
     };
 
-    class KDSME_CORE_EXPORT ReparentOperation
+    class KDSME_CORE_EXPORT ReparentOperation //krazy:exclude=dpointer
     {
     public:
         ReparentOperation(ObjectTreeModel* model, QObject* object, QObject* newParent);

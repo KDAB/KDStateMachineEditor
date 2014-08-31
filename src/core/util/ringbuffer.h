@@ -21,7 +21,7 @@
   Contact info@kdab.com if any conditions of this licensing are not
   clear to you.
 */
-
+//krazy:excludeall=inline as this is a template
 #ifndef KDSME_UTIL_RINGBUFFER_H
 #define KDSME_UTIL_RINGBUFFER_H
 

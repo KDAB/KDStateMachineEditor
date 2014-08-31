@@ -21,6 +21,7 @@
   Contact info@kdab.com if any conditions of this licensing are not
   clear to you.
 */
+//krazy:excludeall=captruefalse as TRUE/FALSE are defined by graphviz
 
 #include "gvutils.h"
 

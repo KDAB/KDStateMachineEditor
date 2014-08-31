@@ -116,7 +116,7 @@ void QuickMaskedMouseArea::setTolerance(qreal tolerance)
         return;
     }
 
-    m_tolerance = qMax(tolerance, 0.);
+    m_tolerance = qMax(tolerance, qreal(0.0));
     emit toleranceChanged(m_tolerance);
 }
 

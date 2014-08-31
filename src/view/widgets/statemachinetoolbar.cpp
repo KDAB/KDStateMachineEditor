@@ -55,6 +55,8 @@ struct StateMachineToolBar::Private
 
 StateMachineToolBar::Private::Private(StateMachineToolBar* q)
     : q(q)
+    , m_view(nullptr)
+    , m_exportAction(nullptr)
 {
 }
 
