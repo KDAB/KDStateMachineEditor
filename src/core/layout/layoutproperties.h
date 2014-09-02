@@ -37,10 +37,10 @@ namespace KDSME {
 class KDSME_CORE_EXPORT LayoutProperties : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qreal regionMargins READ regionMargins WRITE setRegionMargins FINAL)
-    Q_PROPERTY(QFont regionLabelFont READ regionLabelFont WRITE setRegionLabelFont FINAL)
-    Q_PROPERTY(qreal regionLabelMargins READ regionLabelMargins WRITE setRegionLabelMargins FINAL)
-    Q_PROPERTY(QSizeF regionLabelButtonBoxSize READ regionLabelButtonBoxSize WRITE setRegionLabelButtonBoxSize FINAL)
+    Q_PROPERTY(qreal regionMargins READ regionMargins WRITE setRegionMargins NOTIFY regionMarginsChanged FINAL)
+    Q_PROPERTY(QFont regionLabelFont READ regionLabelFont WRITE setRegionLabelFont NOTIFY regionLabelFontChanged FINAL)
+    Q_PROPERTY(qreal regionLabelMargins READ regionLabelMargins WRITE setRegionLabelMargins NOTIFY regionLabelMarginsChanged FINAL)
+    Q_PROPERTY(QSizeF regionLabelButtonBoxSize READ regionLabelButtonBoxSize WRITE setRegionLabelButtonBoxSize NOTIFY regionLabelButtonBoxSizeChanged FINAL)
 
 public:
     explicit LayoutProperties(QObject* parent = 0);
