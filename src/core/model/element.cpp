@@ -435,8 +435,13 @@ bool State::event(QEvent* event)
     return QObject::event(event);
 }
 
+struct StateMachine::Private
+{
+};
+
 StateMachine::StateMachine(QObject* parent)
     : State(nullptr)
+    , d(new Private)
 {
     // Can't pass the parent to the State constructor, as it expects a State
     // But this works as expected regardless of whether parent is a State or not
@@ -502,8 +507,17 @@ void HistoryState::setHistoryType(HistoryState::HistoryType historyType)
     emit historyTypeChanged();
 }
 
+struct FinalState::Private
+{
+};
+
 FinalState::FinalState(State* parent)
     : State(parent)
+    , d(new Private)
+{
+}
+
+FinalState::~FinalState()
 {
 }
 

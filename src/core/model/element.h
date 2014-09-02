@@ -261,8 +261,13 @@ class KDSME_CORE_EXPORT FinalState : public State
 
 public:
     explicit FinalState(State* parent = 0);
+    virtual ~FinalState();
 
     virtual Type type() const Q_DECL_OVERRIDE;
+
+private:
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 class KDSME_CORE_EXPORT StateMachine : public State
@@ -274,6 +279,10 @@ public:
     virtual ~StateMachine();
 
     virtual Type type() const Q_DECL_OVERRIDE;
+
+private:
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 class KDSME_CORE_EXPORT PseudoState : public State
@@ -348,7 +357,7 @@ public:
 Q_SIGNALS:
     void timeoutChanged(int timeout);
 
-public:
+private:
     struct Private;
     QScopedPointer<Private> d;
 };
