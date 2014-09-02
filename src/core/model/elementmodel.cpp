@@ -52,9 +52,25 @@ Qt::ItemFlags toItemFlags(Element::Flags flags)
 
 }
 
+struct StateModel::Private
+{
+    Private();
+
+    CommandController* m_commandController;
+};
+
+StateModel::Private::Private()
+    : m_commandController(0)
+{
+};
+
 StateModel::StateModel(QObject* parent)
     : ObjectTreeModel(parent)
-    , m_commandController(0)
+    , d(new Private)
+{
+}
+
+StateModel::~StateModel()
 {
 }
 
@@ -70,7 +86,7 @@ void StateModel::setState(State* state)
 
 void StateModel::setCommandController(CommandController* cmdController)
 {
-    m_commandController = cmdController;
+    d->m_commandController = cmdController;
 }
 
 QVariant StateModel::data(const QModelIndex& index, int role) const
@@ -96,7 +112,7 @@ QVariant StateModel::data(const QModelIndex& index, int role) const
 
 bool StateModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    Q_ASSERT(m_commandController);
+    Q_ASSERT(d->m_commandController);
 
     Element* element = data(index, ElementRole).value<Element*>();
     if (!element || !value.isValid())
@@ -104,7 +120,7 @@ bool StateModel::setData(const QModelIndex &index, const QVariant &value, int ro
 
     if (role ==  Qt::EditRole) {
         ModifyPropertyCommand *cmd = new ModifyPropertyCommand(element, "label", value);
-        m_commandController->undoStack()->push(cmd);
+        d->m_commandController->undoStack()->push(cmd);
         emit dataChanged(index, index);
         return true;
     }
@@ -136,8 +152,17 @@ Qt::ItemFlags StateModel::flags(const QModelIndex& index) const
     return toItemFlags(element->flags());
 }
 
+struct TransitionModel::Private
+{
+};
+
 TransitionModel::TransitionModel(QObject* parent)
     : QSortFilterProxyModel(parent)
+    , d(new Private)
+{
+}
+
+TransitionModel::~TransitionModel()
 {
 }
 
@@ -169,9 +194,26 @@ bool TransitionModel::filterAcceptsRow(int source_row, const QModelIndex& source
     return true;
 }
 
+struct TransitionListModel::Private
+{
+    Private();
+
+    State* m_state;
+    QList<Transition*> m_transitions;
+};
+
+TransitionListModel::Private::Private()
+    : m_state(nullptr)
+{
+}
+
 TransitionListModel::TransitionListModel(QObject* parent)
     : QAbstractListModel(parent)
-    , m_state(0)
+    , d(new Private)
+{
+}
+
+TransitionListModel::~TransitionListModel()
 {
 }
 
@@ -180,7 +222,7 @@ int TransitionListModel::rowCount(const QModelIndex& parent) const
     if (parent.isValid())
         return 0;
 
-    return m_transitions.size();
+    return d->m_transitions.size();
 }
 
 int TransitionListModel::columnCount(const QModelIndex& parent) const
@@ -195,7 +237,7 @@ QVariant TransitionListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    Transition* transition = m_transitions[index.row()];
+    Transition* transition = d->m_transitions[index.row()];
     Q_ASSERT(transition);
     if (role == Qt::DisplayRole) {
         const int column = index.column();
@@ -241,14 +283,14 @@ QHash< int, QByteArray > TransitionListModel::roleNames() const
 
 State* TransitionListModel::state() const
 {
-    return m_state;
+    return d->m_state;
 }
 
 void TransitionListModel::setState(State* state)
 {
     beginResetModel();
-    m_state = state;
-    m_transitions = (state ? state->findChildren<Transition*>() : QList<Transition*>());
+    d->m_state = state;
+    d->m_transitions = (state ? state->findChildren<Transition*>() : QList<Transition*>());
     // TODO: Track updates to object (newly created/removed transtions)?
     endResetModel();
 }

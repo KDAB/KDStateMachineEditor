@@ -52,10 +52,15 @@ class KDSME_CORE_EXPORT TransitionModel : public QSortFilterProxyModel
 
 public:
     explicit TransitionModel(QObject* parent = 0);
+    virtual ~TransitionModel();
 
     virtual void setSourceModel(QAbstractItemModel* sourceModel);
 
     virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+
+private:
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 class KDSME_CORE_EXPORT TransitionListModel : public QAbstractListModel
@@ -76,6 +81,7 @@ public:
     };
 
     explicit TransitionListModel(QObject* parent = 0);
+    virtual ~TransitionListModel();
 
     State* state() const;
     void setState(State* list);
@@ -87,9 +93,8 @@ public:
     virtual QHash< int, QByteArray > roleNames() const Q_DECL_OVERRIDE;
 
 private:
-    State* m_state;
-
-    QList<Transition*> m_transitions;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 class KDSME_CORE_EXPORT StateModel : public ObjectTreeModel
@@ -102,6 +107,7 @@ public:
     };
 
     explicit StateModel(QObject* parent = 0);
+    virtual ~StateModel();
 
     State* state() const;
     void setState(State* state);
@@ -114,7 +120,8 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
 
 private:
-    CommandController *m_commandController;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
