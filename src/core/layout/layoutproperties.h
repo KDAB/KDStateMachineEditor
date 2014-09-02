@@ -37,18 +37,36 @@ namespace KDSME {
 class KDSME_CORE_EXPORT LayoutProperties : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qreal regionMargins MEMBER regionMargins CONSTANT)
-    Q_PROPERTY(QFont regionLabelFont MEMBER regionLabelFont CONSTANT)
-    Q_PROPERTY(qreal regionLabelMargins MEMBER regionLabelMargins CONSTANT)
-    Q_PROPERTY(QSizeF regionLabelButtonBoxSize MEMBER regionLabelButtonBoxSize CONSTANT)
+    Q_PROPERTY(qreal regionMargins READ regionMargins WRITE setRegionMargins FINAL)
+    Q_PROPERTY(QFont regionLabelFont READ regionLabelFont WRITE setRegionLabelFont FINAL)
+    Q_PROPERTY(qreal regionLabelMargins READ regionLabelMargins WRITE setRegionLabelMargins FINAL)
+    Q_PROPERTY(QSizeF regionLabelButtonBoxSize READ regionLabelButtonBoxSize WRITE setRegionLabelButtonBoxSize FINAL)
 
 public:
     explicit LayoutProperties(QObject* parent = 0);
+    virtual ~LayoutProperties();
 
-    qreal regionMargins;
-    QFont regionLabelFont;
-    qreal regionLabelMargins;
-    QSizeF regionLabelButtonBoxSize;
+    qreal regionMargins() const;
+    void setRegionMargins(qreal margins);
+
+    QFont regionLabelFont() const;
+    void setRegionLabelFont(const QFont& font);
+
+    qreal regionLabelMargins() const;
+    void setRegionLabelMargins(qreal margins);
+
+    QSizeF regionLabelButtonBoxSize() const;
+    void setRegionLabelButtonBoxSize(const QSizeF& size);
+
+Q_SIGNALS:
+    void regionMarginsChanged(qreal);
+    void regionLabelFontChanged(const QFont&);
+    void regionLabelMarginsChanged(qreal);
+    void regionLabelButtonBoxSizeChanged(const QSizeF&);
+
+private:
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }

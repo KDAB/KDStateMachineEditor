@@ -55,11 +55,11 @@ QRectF boundingRectForCollapsedRegion(StateLayoutItem* state, View* view)
 
     const LayoutProperties& prop = *(view->layoutProperties());
     const QString label = state->element()->label();
-    const QFontMetricsF fm(prop.regionLabelFont);
+    const QFontMetricsF fm(prop.regionLabelFont());
     const qreal width = fm.width(label);
     const qreal height = fm.height();
-    const qreal margin = prop.regionLabelMargins;
-    return QRectF(0, 0, width + prop.regionLabelButtonBoxSize.width() + 2*margin, height + 2*margin);
+    const qreal margin = prop.regionLabelMargins();
+    return QRectF(0, 0, width + prop.regionLabelButtonBoxSize().width() + 2*margin, height + 2*margin);
 }
 
 }
@@ -82,10 +82,10 @@ void RegionLayouter::layoutRegion(StateLayoutItem* state, const QRectF& bounding
 
     const LayoutProperties& properties = *(view->layoutProperties());
 
-    const qreal fontHeight = properties.regionLabelFont.pointSizeF();
-    const qreal regionLabelMargin = properties.regionMargins;
+    const qreal fontHeight = properties.regionLabelFont().pointSizeF();
+    const qreal regionLabelMargin = properties.regionMargins();
     const qreal regionLabelHeight = regionLabelMargin + fontHeight + regionLabelMargin;
-    const qreal innerMargin = properties.regionMargins;
+    const qreal innerMargin = properties.regionMargins();
 
     const QPointF offset = QPointF(innerMargin, innerMargin + regionLabelHeight);
     state->setWidth(boundingRect.width() + 2*innerMargin);
