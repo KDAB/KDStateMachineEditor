@@ -118,6 +118,8 @@ Rectangle {
     }
 
     Rectangle {
+        id: contentsRect
+
         anchors {
             top: header.bottom
             bottom: parent.bottom
@@ -143,7 +145,7 @@ Rectangle {
         State {
             when: dropArea.containsDrag
             PropertyChanges {
-                target: rect
+                target: contentsRect
                 color: "#DDDDDD"
             }
         }
