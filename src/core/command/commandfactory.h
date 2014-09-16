@@ -34,6 +34,7 @@
 namespace KDSME {
 
 class CreateElementCommand;
+class DeleteElementCommand;
 class LayoutItem;
 class LayoutSnapshotCommand;
 class ModifyPropertyCommand;
@@ -58,6 +59,7 @@ public:
     void setModel(StateModel* model);
 
     Q_INVOKABLE KDSME::CreateElementCommand* createElement(KDSME::StateModel* model, KDSME::Element::Type type, KDSME::Element* parentElement = nullptr) const;
+    Q_INVOKABLE KDSME::DeleteElementCommand* deleteElement(KDSME::View* view, KDSME::Element* element) const;
     Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::View* view, const QString& text = QString()) const;
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());

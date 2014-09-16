@@ -41,7 +41,7 @@ public:
     class KDSME_CORE_EXPORT AppendOperation //krazy:exclude=dpointer
     {
     public:
-        AppendOperation(ObjectTreeModel* model, QObject* parent, int count = 1);
+        AppendOperation(ObjectTreeModel* model, QObject* parent, int count = 1, int index = -1);
         ~AppendOperation();
 
     private:

@@ -99,6 +99,8 @@ Q_SIGNALS:
     /// Notify that properties of any descendant of @p item including @p item may have changed
     void contentsUpdated(LayoutItem* item);
 
+    void currentItemChanged(const QModelIndex& current, const QModelIndex& previous);
+
 protected Q_SLOTS:
     virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
 

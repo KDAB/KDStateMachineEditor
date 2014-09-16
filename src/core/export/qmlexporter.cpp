@@ -221,6 +221,12 @@ bool QmlExporter::Private::writeStateInner(State* state)
         m_out << indention() << QString("id: %1\n").arg(toQmlId(state->label()));
     }
 
+    if (StateMachine *stateMachine = qobject_cast<StateMachine*>(state)) {
+        const QString running = stateMachine->property("com.kdab.KDSME.DSMExporter.running").toString();
+        if (!running.isEmpty())
+            m_out << indention() << QString("running: %1\n").arg(running);
+    }
+
     if (state->childMode() == State::ParallelStates) {
         m_out << indention() << "childMode: QState.ParallelStates\n";
     }

@@ -7,6 +7,7 @@ set(LIB_SRCS
   command/command.cpp
   command/commandfactory.cpp
   command/createelementcommand.cpp
+  command/deleteelementcommand.cpp
   command/layoutsnapshotcommand.cpp
   command/modifyinitialstatecommand.cpp
   command/modifydefaultstatecommand.cpp

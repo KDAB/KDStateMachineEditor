@@ -37,6 +37,7 @@ class ConfigurationController;
 class LayoutItem;
 class View;
 class StateMachine;
+class Element;
 
 class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 {
@@ -65,6 +66,7 @@ public:
     Q_INVOKABLE bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
 
     Q_INVOKABLE void changeStateMachine(KDSME::StateMachine *stateMachine);
+    Q_INVOKABLE void deleteElement(KDSME::Element *element);
 
 protected:
     QQuickItem* viewPortObject() const;

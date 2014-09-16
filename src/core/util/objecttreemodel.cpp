@@ -90,13 +90,13 @@ QModelIndex ObjectTreeModelPrivate::indexForObject(QObject* object) const
     return q->index(row, 0, indexForObject(object->parent()));
 }
 
-ObjectTreeModel::AppendOperation::AppendOperation(ObjectTreeModel* model, QObject* parent, int count)
+ObjectTreeModel::AppendOperation::AppendOperation(ObjectTreeModel* model, QObject* parent, int count, int index)
     : m_model(model)
 {
     Q_ASSERT(m_model);
     const QModelIndex parentIndex = m_model->indexForObject(parent);
     Q_ASSERT(parentIndex.isValid());
-    int first = m_model->rowCount(parentIndex);
+    int first = index >= 0 ? index : m_model->rowCount(parentIndex);
     int last = first + count-1;
     Q_ASSERT(first >= 0 && last >= 0);
     Q_ASSERT(first <= last);

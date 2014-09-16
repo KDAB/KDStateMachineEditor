@@ -30,6 +30,7 @@
 #include "command/command.h"
 #include "command/commandfactory.h"
 #include "command/createelementcommand.h"
+#include "command/deleteelementcommand.h"
 #include "command/changestatemachinecommand.h"
 #include "command/modifylayoutitemcommand.h"
 #include "common/metatypedeclarations.h"
@@ -255,6 +256,12 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
         cmd->redo();
         delete cmd;
     }
+}
+
+void StateMachineView::deleteElement(KDSME::Element *element)
+{
+    DeleteElementCommand* cmd = new DeleteElementCommand(d->m_view, element);
+    commandController()->push(cmd);
 }
 
 bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)

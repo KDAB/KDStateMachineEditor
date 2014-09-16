@@ -26,6 +26,7 @@
 
 #include "command.h"
 #include "createelementcommand.h"
+#include "deleteelementcommand.h"
 #include "layoutsnapshotcommand.h"
 #include "modifylayoutitemcommand.h"
 #include "modifypropertycommand.h"
@@ -70,6 +71,11 @@ CreateElementCommand* CommandFactory::createElement(StateModel* model, Element::
     auto cmd = new CreateElementCommand(model, type);
     cmd->setParentElement(parentElement);
     return cmd;
+}
+
+DeleteElementCommand* CommandFactory::deleteElement(KDSME::View* view, KDSME::Element* element) const
+{
+    return new DeleteElementCommand(view, element);
 }
 
 LayoutSnapshotCommand* CommandFactory::layoutSnapshot(KDSME::View* view, const QString& text) const

@@ -1,5 +1,5 @@
 /*
-  command.h
+  deleteelementcommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,50 +22,42 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_COMMAND_H
-#define KDSME_COMMAND_COMMAND_H
+#ifndef KDSME_COMMAND_DELETEELEMENTCOMMAND_H
+#define KDSME_COMMAND_DELETEELEMENTCOMMAND_H
 
-#include "kdsme_core_export.h"
+#include "command.h"
+#include "element.h"
 
-#include <QUndoCommand>
+#include <QPointer>
+#include <QJsonObject>
 
 namespace KDSME {
-class StateModel;
 
-class KDSME_CORE_EXPORT Command : public QObject, public QUndoCommand
+class View;
+
+class KDSME_CORE_EXPORT DeleteElementCommand : public Command
 {
     Q_OBJECT
 
 public:
-    enum Id {
-        CreateElement = 0,
-        DeleteElement,
-        LayoutSnapshot,
-        ModifyProperty,
-        ModifyInitialState,
-        ModifyDefaultState,
+    explicit DeleteElementCommand(View* view, Element* deletedElement, QUndoCommand* parent = nullptr);
+    virtual ~DeleteElementCommand();
 
-        ReparentElement,
+    virtual int id() const Q_DECL_OVERRIDE { return DeleteElement; }
 
-        ModifyTransition,
-
-        ModifyLayoutItem,
-        ModifyTransitionLayoutItem,
-
-        ChangeStateMachine
-    };
-
-    explicit Command(StateModel* model, QUndoCommand* parent = 0);
-    explicit Command(const QString& text = QString(), QUndoCommand* parent = 0);
-
-    StateModel* model() const;
+    virtual void redo() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
 
 private:
-    StateModel* m_model;
+    void updateText();
+
+    QPointer<View> m_view;
+    int m_index;
+    QJsonObject m_layout;
+    QPointer<Element> m_parentElement;
+    QPointer<Element> m_deletedElement;
 };
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Command*);
-
-#endif // COMMAND_H
+#endif

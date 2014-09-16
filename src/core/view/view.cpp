@@ -448,6 +448,8 @@ void View::currentChanged(const QModelIndex& current, const QModelIndex& previou
     if (previousItem) {
         previousItem->setSelected(false);
     }
+
+    emit currentItemChanged(current, previous);
 }
 
 void View::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
