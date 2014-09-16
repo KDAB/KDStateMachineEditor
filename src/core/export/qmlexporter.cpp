@@ -54,6 +54,10 @@ private:
 /// Maps the type of @p element to the QML Component ID
 QString elementToComponent(Element* element)
 {
+    const QString customType = element->property("com.kdab.KDSME.DSMExporter.customType").toString();
+    if (!customType.isEmpty())
+        return customType;
+
     const Element::Type type = element->type();
     switch (type) {
     case Element::StateMachineType:
@@ -183,7 +187,8 @@ bool QmlExporter::Private::writeStateMachine(StateMachine* machine)
         m_out << customImport << '\n';
     m_out << '\n';
 
-    m_out << indention() << QString("StateMachine {\n");
+    const QString qmlComponent = elementToComponent(machine);
+    m_out << indention() << QString("%1 {\n").arg(qmlComponent);
     if (!writeStateInner(machine))
         return false;
     m_out << indention() << QString("}\n");
