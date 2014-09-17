@@ -103,8 +103,8 @@ struct StateMachineView::Private
     QRectF adjustedViewRect();
 
     // slots
-    void handleNewLayout();
-    void handleNewStateMachine();
+    void onRootLayoutItemChanged(KDSME::LayoutItem* root);
+    void onStateMachineChanged(KDSME::StateMachine* stateMachine);
 };
 
 StateMachineView::Private::Private(StateMachineView* q)
@@ -194,13 +194,12 @@ void StateMachineView::setView(View* view)
         return;
 
     if (d->m_view) {
-        disconnect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(handleNewLayout()));
-        disconnect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(handleNewStateMachine()));
+        disconnect(d->m_view, 0, this, 0);
     }
     d->m_view = view;
     if (d->m_view) {
-        connect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(handleNewLayout()));
-        connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(handleNewStateMachine()));
+        connect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(onRootLayoutItemChanged(KDSME::LayoutItem*)));
+        connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
     }
 
     d->m_configurationController->setView(d->m_view);
@@ -237,12 +236,14 @@ QQuickItem* StateMachineView::sceneObject() const
     return item;
 }
 
-void StateMachineView::Private::handleNewLayout()
+void StateMachineView::Private::onRootLayoutItemChanged(KDSME::LayoutItem* root)
 {
+    Q_UNUSED(root);
 }
 
-void StateMachineView::Private::handleNewStateMachine()
+void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine* stateMachine)
 {
+    Q_UNUSED(stateMachine);
 }
 
 void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)

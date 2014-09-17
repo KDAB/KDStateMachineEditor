@@ -42,7 +42,7 @@ Item {
     property real nominalScale: Math.min(width / (scene.width/scene.scale), height / (scene.height/scene.scale))
 
     /**
-     * Move Flickable viewport to position defined by (contentX, contentY
+     * Move Flickable viewport to position defined by contentX and contentY
      *
      * @note Respects content size and does not move beyond bonds
      */
