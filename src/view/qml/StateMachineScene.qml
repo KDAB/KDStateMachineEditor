@@ -39,8 +39,8 @@ Item {
     /// Debug: Draw filled semi-opaque rectangles around regions
     property bool debug: false
 
-    width: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.width : 0)
-    height: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.height : 0)
+    width: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.pos.x + currentView.rootLayoutItem.width : 0)
+    height: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.pos.y + currentView.rootLayoutItem.height : 0)
 
     transformOrigin: Item.TopLeft
 
