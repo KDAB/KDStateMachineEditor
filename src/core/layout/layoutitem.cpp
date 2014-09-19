@@ -151,6 +151,33 @@ void LayoutItem::setSelected(bool selected)
     emit selectedChanged(d->m_selected);
 }
 
+QSizeF LayoutItem::preferredSize() const
+{
+    if (!element())
+        return QSizeF();
+    QSizeF size;
+    switch (element()->type())
+    {
+    case Element::HistoryStateType:
+    case Element::StateType:
+        size = LayoutUtils::sizeForLabel(element()->label());
+        break;
+    case Element::StateMachineType:
+        size = boundingRect().size().expandedTo(LayoutUtils::sizeForLabel(element()->label()));
+        break;
+    case Element::FinalStateType:
+        size = QSizeF(32, 32);
+        break;
+    case Element::ElementType:
+    case Element::TransitionType:
+    case Element::SignalTransitionType:
+    case Element::TimeoutTransitionType:
+    case Element::PseudoStateType:
+        break;
+    }
+    return size;
+}
+
 QRectF LayoutItem::boundingRect() const
 {
     const QRectF rect(pos().x(), pos().y(), width(), height());

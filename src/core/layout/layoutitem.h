@@ -87,6 +87,7 @@ public:
     bool isSelected() const;
     void setSelected(bool selected);
 
+    QSizeF preferredSize() const;
     virtual QRectF boundingRect() const;
 
     View* view() const;

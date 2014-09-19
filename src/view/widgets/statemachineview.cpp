@@ -352,12 +352,17 @@ bool StateMachineView::sendDropEvent(LayoutItem* sender, LayoutItem* target, con
             Q_ASSERT(m_view->rootLayoutItem());
             LayoutImportExport::importLayout(doc.object(), m_view->rootLayoutItem());
 
-            // Now move the new element to its position
+            // move the new element to its position and set a sane initial size
             LayoutItem* layoutitem = m_view->layoutItemForElement(element);
             Q_ASSERT(layoutitem);
             ModifyLayoutItemCommand poscmd(layoutitem);
-            QPointF p = m_pos - layoutitem->pos();
-            poscmd.moveBy(p.x(), p.y());
+            QPointF pos = m_pos;
+            QSizeF size = layoutitem->preferredSize();
+            if (size.width() > 0)
+                pos.setX(qMax<qreal>(0, pos.x() - size.width()/2));
+            if (size.height() > 0)
+                pos.setY(qMax<qreal>(0, pos.y() - size.height()/2));
+            poscmd.setGeometry(QRectF(pos, size));
             poscmd.redo();
 
             // TODO this rearranges the just created and positioned element, why?
