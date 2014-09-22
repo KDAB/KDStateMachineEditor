@@ -20,4 +20,4 @@ SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
 SKIP /cmake/MacroLogFeature.cmake|/cmake/DeployQt5.cmake
 
 #if you have a build subdir, skip it
-SKIP /build
+SKIP /build-
