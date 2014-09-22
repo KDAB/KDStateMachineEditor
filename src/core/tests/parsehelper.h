@@ -47,6 +47,6 @@ namespace ParseHelper
     KDSME::StateMachine* parseFile(const QString& fileName);
 
     QByteArray readFile(const QString& fileName);
-};
+}
 
 #endif

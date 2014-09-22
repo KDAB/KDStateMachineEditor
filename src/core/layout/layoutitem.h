@@ -53,7 +53,7 @@ class KDSME_CORE_EXPORT LayoutItem : public QObject
     /// Whether this item is marked as selected
     Q_PROPERTY(bool selected READ isSelected WRITE setSelected NOTIFY selectedChanged FINAL)
     /// The element this item is representing
-    Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged FINAL);
+    Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged FINAL)
     /// The element type of this object
     Q_PROPERTY(Type type READ type CONSTANT)
 
@@ -202,6 +202,6 @@ QDebug operator<<(QDebug dbg, const TransitionLayoutItem& item);
 
 }
 
-Q_DECLARE_METATYPE(KDSME::LayoutItem*);
+Q_DECLARE_METATYPE(KDSME::LayoutItem*)
 
 #endif

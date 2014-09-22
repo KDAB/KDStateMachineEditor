@@ -39,7 +39,7 @@ public:
     virtual bool intersects(const QRectF& rect) const = 0;
 };
 
-Q_DECLARE_METATYPE(AbstractMask*);
+Q_DECLARE_METATYPE(AbstractMask*)
 
 class PainterPathMask : public AbstractMask
 {

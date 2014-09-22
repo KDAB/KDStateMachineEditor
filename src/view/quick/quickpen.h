@@ -41,7 +41,7 @@ class QuickPen : public QObject
     Q_OBJECT
     Q_PROPERTY(qreal width READ width WRITE setWidth NOTIFY penChanged)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY penChanged)
-    Q_PROPERTY(Qt::PenStyle style READ style WRITE setStyle NOTIFY penChanged);
+    Q_PROPERTY(Qt::PenStyle style READ style WRITE setStyle NOTIFY penChanged)
 
 public:
     explicit QuickPen(QObject* parent = 0);

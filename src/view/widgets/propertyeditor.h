@@ -53,14 +53,14 @@ private:
     struct Private;
     QScopedPointer<Private> d;
 
-    Q_PRIVATE_SLOT(d, void updateSimpleProperty());
-    Q_PRIVATE_SLOT(d, void setInitalState(const QString& label));
-    Q_PRIVATE_SLOT(d, void setDefaultState(const QString& label));
-    Q_PRIVATE_SLOT(d, void setSourceState(const QString& label));
-    Q_PRIVATE_SLOT(d, void setTargetState(const QString& label));
-    Q_PRIVATE_SLOT(d, void childModeChanged());
-    Q_PRIVATE_SLOT(d, void currentChanged(const QModelIndex &current, const QModelIndex &previous));
-    Q_PRIVATE_SLOT(d, void loadFromCurrentElement());
+    Q_PRIVATE_SLOT(d, void updateSimpleProperty())
+    Q_PRIVATE_SLOT(d, void setInitalState(const QString& label))
+    Q_PRIVATE_SLOT(d, void setDefaultState(const QString& label))
+    Q_PRIVATE_SLOT(d, void setSourceState(const QString& label))
+    Q_PRIVATE_SLOT(d, void setTargetState(const QString& label))
+    Q_PRIVATE_SLOT(d, void childModeChanged())
+    Q_PRIVATE_SLOT(d, void currentChanged(const QModelIndex &current, const QModelIndex &previous))
+    Q_PRIVATE_SLOT(d, void loadFromCurrentElement())
 };
 
 } // namespace KDSME

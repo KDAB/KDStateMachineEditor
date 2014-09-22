@@ -115,6 +115,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::View*);
+Q_DECLARE_METATYPE(KDSME::View*)
 
 #endif // VIEW_H

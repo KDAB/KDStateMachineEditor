@@ -78,6 +78,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::CommandFactory*);
+Q_DECLARE_METATYPE(KDSME::CommandFactory*)
 
 #endif

@@ -66,6 +66,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Command*);
+Q_DECLARE_METATYPE(KDSME::Command*)
 
 #endif // COMMAND_H

@@ -39,7 +39,7 @@ namespace LayoutImportExport
 
     KDSME_CORE_EXPORT QJsonObject exportLayout(const StateLayoutItem* rootItem);
     KDSME_CORE_EXPORT void importLayout(const QJsonObject& data, StateLayoutItem* rootItem);
-};
+}
 
 }
 

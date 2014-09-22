@@ -102,7 +102,7 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::AbstractView*);
+Q_DECLARE_METATYPE(KDSME::AbstractView*)
 Q_DECLARE_METATYPE(KDSME::AbstractView::ViewState)
 
 #endif // ABSTRACTVIEW_H

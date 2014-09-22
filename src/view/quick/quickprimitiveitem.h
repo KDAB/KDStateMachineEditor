@@ -45,8 +45,8 @@ class QuickGeometryItem : public QObject
     Q_PROPERTY(float lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChanged)
 
     Q_PROPERTY(unsigned int drawingMode READ drawingMode READ drawingMode WRITE setDrawingMode NOTIFY drawingModeChanged)
-    Q_ENUMS(VertexDataType);
-    Q_ENUMS(DrawingMode);
+    Q_ENUMS(VertexDataType)
+    Q_ENUMS(DrawingMode)
 
 public:
     enum VertexDataType {
@@ -101,8 +101,8 @@ private:
     float m_lineWidth;
 };
 
-Q_DECLARE_METATYPE(QuickGeometryItem::VertexDataType);
-Q_DECLARE_METATYPE(QuickGeometryItem::DrawingMode);
+Q_DECLARE_METATYPE(QuickGeometryItem::VertexDataType)
+Q_DECLARE_METATYPE(QuickGeometryItem::DrawingMode)
 
 class QuickPrimitiveItem : public QQuickItem
 {

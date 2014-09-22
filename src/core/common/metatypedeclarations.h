@@ -28,9 +28,9 @@
 #include <QMetaType>
 #include <QPainterPath>
 
-Q_DECLARE_METATYPE(QPainterPath);
-Q_DECLARE_METATYPE(Qt::PenStyle);
+Q_DECLARE_METATYPE(QPainterPath)
+Q_DECLARE_METATYPE(Qt::PenStyle)
 
-Q_DECLARE_METATYPE(QUndoCommand*);
+Q_DECLARE_METATYPE(QUndoCommand*)
 
 #endif

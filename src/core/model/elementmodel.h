@@ -126,7 +126,7 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::TransitionModel*);
-Q_DECLARE_METATYPE(KDSME::StateModel*);
+Q_DECLARE_METATYPE(KDSME::TransitionModel*)
+Q_DECLARE_METATYPE(KDSME::StateModel*)
 
 #endif

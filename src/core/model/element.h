@@ -61,7 +61,7 @@ public:
         FinalStateType,
         PseudoStateType
     };
-    Q_ENUMS(Type);
+    Q_ENUMS(Type)
 
     enum Flag {
         NoFlags = 0x0,
@@ -294,7 +294,7 @@ public:
     enum Kind {
         InitialState
     };
-    Q_ENUMS(Kind);
+    Q_ENUMS(Kind)
 
     explicit PseudoState(Kind kind = InitialState, State* parent = 0);
     virtual ~PseudoState();
@@ -366,8 +366,8 @@ KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const PseudoState* representativ
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Element::Type);
-Q_DECLARE_METATYPE(KDSME::Element*);
-Q_DECLARE_METATYPE(KDSME::PseudoState::Kind);
+Q_DECLARE_METATYPE(KDSME::Element::Type)
+Q_DECLARE_METATYPE(KDSME::Element*)
+Q_DECLARE_METATYPE(KDSME::PseudoState::Kind)
 
 #endif // TREESTRUCTURE_H

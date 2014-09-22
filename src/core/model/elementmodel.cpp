@@ -62,7 +62,7 @@ struct StateModel::Private
 StateModel::Private::Private()
     : m_commandController(0)
 {
-};
+}
 
 StateModel::StateModel(QObject* parent)
     : ObjectTreeModel(parent)

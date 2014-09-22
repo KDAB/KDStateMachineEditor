@@ -108,6 +108,6 @@ public:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::ObjectTreeModel*);
+Q_DECLARE_METATYPE(KDSME::ObjectTreeModel*)
 
 #endif
