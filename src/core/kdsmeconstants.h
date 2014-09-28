@@ -25,8 +25,8 @@
 #ifndef KDSME_CONSTANTS_H
 #define KDSME_CONSTANTS_H
 
-static const char* const KDSME_QML_NAMESPACE = "com.kdab.kdsme";
+static const char KDSME_QML_NAMESPACE[] = "com.kdab.kdsme";
 
-static const char* const KDSME_QML_URI_PREFIX = "kdsme";
+static const char KDSME_QML_URI_PREFIX[] = "kdsme";
 
 #endif

@@ -55,7 +55,7 @@ using namespace KDSME::GVUtils;
 namespace {
 
 /// Default Graphviz layouting  tool, see http://www.graphviz.org/
-const char* const DEFAULT_LAYOUT_TOOL = "dot";
+const char DEFAULT_LAYOUT_TOOL[] = "dot";
 
 /**
  * Default DPI for dot.
