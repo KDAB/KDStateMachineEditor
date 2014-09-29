@@ -24,7 +24,7 @@
 
 import QtQuick 2.0
 
-import "qrc:///kdsme/qml/util/theme.js" as Theme
+import "qrc:///kdsme/qml/util"
 
 Rectangle {
     id: root

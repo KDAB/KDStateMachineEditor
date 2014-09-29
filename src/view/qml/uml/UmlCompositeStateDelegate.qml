@@ -27,7 +27,6 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
 import "qrc:///kdsme/qml/util/"
-import "qrc:///kdsme/qml/util/theme.js" as Theme
 
 /**
  * Composite State representation
@@ -43,8 +42,7 @@ Rectangle {
 
     // TODO: Tint background color based on level in hierarchy
     color: Theme.compositeStateLabelBackgroundColor
-    readonly property color activeBorderColor: Theme.compositeStateBorderColor_Active // only needed to force type conversion to a color object
-    border.color: Qt.tint(Theme.compositeStateBorderColor, Qt.rgba(activeBorderColor.r, activeBorderColor.g, activeBorderColor.b, activeness))
+    border.color: Qt.tint(Theme.compositeStateBorderColor, Theme.alphaTint(Theme.compositeStateBorderColor_Active, activeness))
     border.width: (activeness > 0 ? 2 : 1)
     radius: 5
 

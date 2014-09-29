@@ -26,7 +26,6 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 
 import "qrc:///kdsme/qml/util/"
-import "qrc:///kdsme/qml/util/theme.js" as Theme
 
 /**
  * Final State representation

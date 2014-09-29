@@ -28,14 +28,12 @@ import QtQuick.Controls 1.0
 import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util/"
-import "qrc:///kdsme/qml/util/theme.js" as Theme
 
 UmlElement {
     id: root
 
     property rect labelRect: item.labelBoundingRect
     property var path: item.shape
-    readonly property color activeEdgeColor: Theme.transitionEdgeColor_Active // only needed to force type conversion to a color object
 
     width: container.width
     height: container.height
@@ -108,7 +106,7 @@ UmlElement {
                 path: root.path
             }
 
-            color: Qt.tint(Theme.transitionEdgeColor, Qt.rgba(activeEdgeColor.r, activeEdgeColor.g, activeEdgeColor.b, activeness))
+            color: Qt.tint(Theme.transitionEdgeColor, Theme.alphaTint(Theme.transitionEdgeColor_Active, activeness))
 
             ArrowHead {
                 function angle() {

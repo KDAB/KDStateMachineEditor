@@ -27,7 +27,6 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
 import "qrc:///kdsme/qml/util/"
-import "qrc:///kdsme/qml/util/theme.js" as Theme
 
 /**
  * State Machine representation

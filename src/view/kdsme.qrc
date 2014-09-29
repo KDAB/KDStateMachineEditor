@@ -17,7 +17,7 @@
         <file>qml/util/functions.js</file>
         <file>qml/util/MoveArea.qml</file>
         <file>qml/util/SquareButton.qml</file>
-        <file>qml/util/theme.js</file>
+        <file>qml/util/Theme.qml</file>
         <file>qml/util/ToolTip.qml</file>
         <file>qml/LayoutItemLoader.qml</file>
         <file>qml/uml/UmlPseudoState.qml</file>
@@ -26,6 +26,7 @@
         <file>qml/uml/UmlHistoryState.qml</file>
         <file>qml/uml/UmlCompositeStateDelegate.qml</file>
         <file>qml/uml/UmlSimpleStateDelegate.qml</file>
+        <file>qml/util/qmldir</file>
         <file>icons/deep_history.png</file>
         <file>icons/final_state.png</file>
         <file>icons/init_state.png</file>

@@ -28,7 +28,6 @@ import QtQuick.Controls 1.0
 import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util/"
-import "qrc:///kdsme/qml/util/theme.js" as Theme
 
 Item {
     id: root
