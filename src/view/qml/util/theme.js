@@ -39,5 +39,6 @@ var stateBorderColor = "#BABABA";
 var stateBorderColor_Active = "#FF0000";
 var stateLabelFontColor = "white";
 var transitionEdgeColor = "#BABABA";
+var transitionEdgeColor_Active = "#FF0000";
 var transitionLabelFontColor = "#BABABA";
 var viewBackgroundColor = "#262626";

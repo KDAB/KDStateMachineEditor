@@ -35,6 +35,7 @@ UmlElement {
 
     property rect labelRect: item.labelBoundingRect
     property var path: item.shape
+    readonly property color activeEdgeColor: Theme.transitionEdgeColor_Active // only needed to force type conversion to a color object
 
     width: container.width
     height: container.height
@@ -105,10 +106,9 @@ UmlElement {
 
             geometry: PainterPathGeometry {
                 path: root.path
-                lineWidth: (activeness > 0 ? 3 : 1)
             }
 
-            color: Theme.transitionEdgeColor
+            color: Qt.tint(Theme.transitionEdgeColor, Qt.rgba(activeEdgeColor.r, activeEdgeColor.g, activeEdgeColor.b, activeness))
 
             ArrowHead {
                 function angle() {
