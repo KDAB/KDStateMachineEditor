@@ -41,7 +41,7 @@ UmlElement {
         anchors.fill: parent
 
         color: Theme.stateBackgroundColor
-        border.color: Theme.stateBorderColor
+        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
         radius: width
 
         Rectangle {
@@ -50,7 +50,7 @@ UmlElement {
                 margins: 5
             }
 
-            color: Qt.darker(Theme.stateBorderColor, 1.5)
+            color: Qt.darker(parent.border.color, 1.5)
             radius: parent.radius*0.5
         }
     }
