@@ -211,7 +211,7 @@ void PropertyEditor::Private::monitorElement(KDSME::Element* element)
 void PropertyEditor::Private::loadFromCurrentElement()
 {
     State *state = current<State>();
-    if (state && state->type() != Element::PseudoStateType) {
+    if (state && state->flags().testFlag(Element::ElementIsEditable)) {
         m_stateWidget->labelLineEdit->setText(state->label());
         m_stateWidget->initialStateComboBox->clear();
         m_stateWidget->defaultStateComboBox->clear();
