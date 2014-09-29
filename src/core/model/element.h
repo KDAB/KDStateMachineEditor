@@ -42,7 +42,7 @@ class KDSME_CORE_EXPORT Element : public QObject
     Q_OBJECT
     Q_ENUMS(Flags)
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
-    Q_PROPERTY(Flags flags READ flags CONSTANT FINAL)
+    Q_PROPERTY(Flags flags READ flags WRITE setFlags NOTIFY flagsChanged FINAL)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged FINAL)
 
 public:
@@ -76,7 +76,8 @@ public:
 
     virtual Type type() const;
 
-    virtual Flags flags() const;
+    Flags flags() const;
+    void setFlags(Flags flags);
 
     /**
      * Label of this state (required to be unique)
@@ -104,6 +105,7 @@ public:
     Q_INVOKABLE static Type stringToType(const char* type);
 
 Q_SIGNALS:
+    void flagsChanged(Flags flags);
     void labelChanged(const QString& label);
 
 private:
@@ -301,8 +303,6 @@ public:
     virtual ~PseudoState();
 
     virtual Type type() const Q_DECL_OVERRIDE;
-
-    virtual Flags flags() const Q_DECL_OVERRIDE;
 
     Kind kind() const;
     void setKind(Kind kind);

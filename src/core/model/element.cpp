@@ -66,10 +66,12 @@ struct Element::Private
 {
     Private()
         : m_id(0)
+        , m_flags(ElementIsEnabled | ElementIsSelectable | ElementIsEditable)
     {}
 
     QString m_label;
     quintptr m_id;
+    Element::Flags m_flags;
 };
 
 Element::Element(QObject* parent)
@@ -89,7 +91,15 @@ Element::Type Element::type() const
 
 Element::Flags Element::flags() const
 {
-    return Flags(ElementIsEnabled | ElementIsSelectable | ElementIsEditable);
+    return d->m_flags;
+}
+
+void Element::setFlags(Element::Flags flags)
+{
+    if (d->m_flags == flags)
+        return;
+    d->m_flags = flags;
+    emit flagsChanged(flags);
 }
 
 QString Element::label() const
@@ -556,6 +566,7 @@ PseudoState::PseudoState(Kind kind, State* parent)
     , d(new Private)
 {
     d->m_kind = kind;
+    setFlags(flags() & ~ElementIsEnabled);
 }
 
 PseudoState::~PseudoState()
@@ -565,12 +576,6 @@ PseudoState::~PseudoState()
 Element::Type PseudoState::type() const
 {
     return PseudoStateType;
-}
-
-Element::Flags PseudoState::flags() const
-{
-    auto flags = Element::flags();
-    return flags & ~ElementIsEnabled;
 }
 
 PseudoState::Kind PseudoState::kind() const
