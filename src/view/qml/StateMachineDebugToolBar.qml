@@ -38,6 +38,8 @@ ToolBar {
     property var configurationController: (stateMachineView ? stateMachineView.configurationController : null)
 
     RowLayout {
+        anchors.fill: parent
+
         ToolButton {
             visible: (root.configurationController ? root.configurationController.isRunning : false)
             action: Action {

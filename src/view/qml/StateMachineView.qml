@@ -120,16 +120,15 @@ Rectangle {
         configurationController: root.configurationController
     }
 
-    ColumnLayout {
+    Item {
         id: topDock
 
         width: parent.width
+        height: childrenRect.height
         z: 1
 
         StateMachineViewToolBar {
             stateMachineView: root
-
-            Layout.fillWidth: true
         }
     }
 
@@ -140,7 +139,7 @@ Rectangle {
             top: topDock.bottom
             left: parent.left
             right: parent.right
-            bottom: bottomDock.top
+            bottom: bottomDockArea.top
         }
 
         Flickable {
@@ -221,7 +220,7 @@ Rectangle {
         scene: stateMachineScene
 
         anchors {
-            bottom: bottomDock.top
+            bottom: bottomDockArea.top
             right: parent.right
             margins: 20
         }
@@ -231,45 +230,43 @@ Rectangle {
         }
     }
 
-    ColumnLayout {
-        id: bottomDock
+    Item {
+        id: bottomDockArea
 
-        anchors.bottom: statusBar.top
+        anchors.bottom: statusBarArea.top
         width: parent.width
+        height: childrenRect.height
         z: 1
 
         StateMachineDebugToolBar {
             visible: !editController.editModeEnabled && (root.configurationController ? root.configurationController.isRunning : false)
-            Layout.fillWidth: true
 
             stateMachineView: root
         }
     }
 
-    StatusBar {
-        id: statusBar
+    Item {
+        id: statusBarArea
 
-        z: 1
         anchors.bottom: parent.bottom
+        width: parent.width
+        height: childrenRect.height
+        z: 1
 
-        RowLayout {
-            Label {
-                property string label: (currentView && currentView.stateMachine ? currentView.stateMachine.label : "")
-                text: qsTr("State Machine: ") + (label !== "" ? label : qsTr("<Unnamed>"))
-            }
-            Label { text: "|" }
-            Label {
-                text: qsTr("Zoom: ") + Math.round(stateMachineScene.scale * 100) + " %"
-            }
+        StatusBar {
+            id: statusBar
 
-            // Debugging
-
-            /*
-            Label { text: "|" }
-            Label {
-                text: ("Active region: " + (configurationController ? configurationController.activeRegion : "N/A"))
+            RowLayout {
+                Label {
+                    property string label: (currentView && currentView.stateMachine ? currentView.stateMachine.label : "")
+                    text: qsTr("State Machine: ") + (label !== "" ? label : qsTr("<Unnamed>"))
+                }
+                Label { text: "|" }
+                Label {
+                    text: qsTr("Zoom: ") + Math.round(stateMachineScene.scale * 100) + " %"
+                }
             }
-            */
         }
     }
+
 }

@@ -37,6 +37,8 @@ ToolBar {
     property var stateMachineView
 
     RowLayout {
+        anchors.fill: parent
+
         ToolButton {
             action: Action {
                 text: qsTr("Fit in View")
