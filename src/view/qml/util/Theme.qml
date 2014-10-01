@@ -41,15 +41,15 @@ QtObject {
     readonly property color compositeStateLabelBackgroundColor: "#363636";
     readonly property color compositeStateLabelFontColor: "white";
     readonly property color compositeStateBorderColor: "#BABABA";
-    readonly property color compositeStateBorderColor_Active: "#FF0000";
+    readonly property color compositeStateBorderColor_Active: "#90E7FF";
     readonly property color compositeStateBackgroundColor_Lightest: "#525252";
     readonly property color compositeStateBackgroundColor_Darkest: "#444444";
     readonly property color stateBackgroundColor: "#262626";
     readonly property color stateBorderColor: "#BABABA";
-    readonly property color stateBorderColor_Active: "#FF0000";
+    readonly property color stateBorderColor_Active: "#90E7FF";
     readonly property color stateLabelFontColor: "white";
     readonly property color transitionEdgeColor: "#BABABA";
-    readonly property color transitionEdgeColor_Active: "#FF0000";
+    readonly property color transitionEdgeColor_Active: "#90E7FF";
     readonly property color transitionLabelFontColor: "#BABABA";
     readonly property color viewBackgroundColor: "#262626";
 }

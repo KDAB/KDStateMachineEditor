@@ -42,6 +42,7 @@ UmlElement {
 
         color: Theme.stateBackgroundColor
         border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+        border.width: (activeness > 0 ? 2 : 1)
         radius: width
 
         Rectangle {

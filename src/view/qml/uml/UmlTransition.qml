@@ -104,6 +104,7 @@ UmlElement {
 
             geometry: PainterPathGeometry {
                 path: root.path
+                lineWidth: (activeness > 0 ? 2 : 1)
             }
 
             color: Qt.tint(Theme.transitionEdgeColor, Theme.alphaTint(Theme.transitionEdgeColor_Active, activeness))

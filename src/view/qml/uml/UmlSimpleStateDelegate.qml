@@ -29,10 +29,13 @@ import "qrc:///kdsme/qml/util/"
 Rectangle {
     id: root
 
+    readonly property bool isActive: activeness === 1.0
+
     anchors.fill: parent
 
-    color: Theme.stateBackgroundColor
-    border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+    // If active, let's invert the colors
+    color: isActive ? Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, 0.8)) : Theme.stateBackgroundColor
+    border.color: isActive ? Theme.stateBackgroundColor : Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
     border.width: (activeness > 0 ? 2 : 1)
     radius: width*0.2
 
@@ -40,7 +43,7 @@ Rectangle {
         anchors.centerIn: parent
 
         text: control.name
-        color: Theme.stateLabelFontColor
+        color: isActive ? Theme.stateBackgroundColor : Theme.stateLabelFontColor
         elide: Text.ElideRight
     }
 
