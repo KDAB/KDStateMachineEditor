@@ -9,8 +9,6 @@ configure_file(
 )
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(KDSME_CORELIB ${CMAKE_PROJECT_NAME}_core)
 add_subdirectory(core)
-set(KDSME_VIEWLIB ${CMAKE_PROJECT_NAME}_view)
 add_subdirectory(view)
 add_subdirectory(app)

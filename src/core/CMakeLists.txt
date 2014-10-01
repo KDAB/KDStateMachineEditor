@@ -54,8 +54,8 @@ if(Graphviz_FOUND)
 endif()
 
 add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
-add_library(${KDSME_CORELIB} SHARED ${LIB_SRCS})
-target_link_libraries(${KDSME_CORELIB}
+add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
+target_link_libraries(kdstatemachineeditor_core
   LINK_PRIVATE
     Qt5::Quick
     Qt5::Widgets # QUndo* classes
@@ -63,24 +63,24 @@ target_link_libraries(${KDSME_CORELIB}
     Qt5::Core
     Qt5::Gui
 )
-set_target_properties(${KDSME_CORELIB} PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION})
-generate_export_header(${KDSME_CORELIB} EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
+set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION})
+generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(Graphviz_FOUND)
-  target_link_libraries(${KDSME_CORELIB} LINK_PRIVATE Graphviz::gvc)
+  target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::gvc)
 
   if(TARGET Graphviz::cgraph AND Graphviz_VERSION VERSION_GREATER 2.30.0)
     message(STATUS "Enabling use of experimental 'cgraph' library of GraphViz")
-    target_link_libraries(${KDSME_CORELIB} LINK_PRIVATE Graphviz::cgraph)
+    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::cgraph)
   else()
-    target_link_libraries(${KDSME_CORELIB} LINK_PRIVATE Graphviz::graph)
+    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::graph)
   endif()
   list(APPEND LIB_EXTRA_INCLUDES
     # TODO: Work-around issue in graphviz/types.h header
     # <cgraph.h> is included there, but it should rather be "cgraph.h"
     ${Graphviz_INCLUDE_DIR}/graphviz
   )
-  target_compile_definitions(${KDSME_CORELIB} PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${Graphviz_VERSION_MAJOR} -DGRAPHVIZ_MINOR_VERSION=${Graphviz_VERSION_MINOR})
+  target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${Graphviz_VERSION_MAJOR} -DGRAPHVIZ_MINOR_VERSION=${Graphviz_VERSION_MINOR})
 endif()
 
 set(build_iface_dirs
@@ -92,7 +92,7 @@ set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/util
   ${CMAKE_CURRENT_SOURCE_DIR}/view
 )
-target_include_directories(${KDSME_CORELIB}
+target_include_directories(kdstatemachineeditor_core
   PUBLIC
     "$<BUILD_INTERFACE:${build_iface_dirs}>"
     # FIXME: It is recommended to use a relative path here.
@@ -103,11 +103,11 @@ target_include_directories(${KDSME_CORELIB}
     ${LIB_EXTRA_INCLUDES}
 )
 
-add_custom_command(TARGET ${KDSME_CORELIB} POST_BUILD
+add_custom_command(TARGET kdstatemachineeditor_core POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/${XDG_DATA_INSTALL_DIR}/data"
 )
 
-install(TARGETS ${KDSME_CORELIB} EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(DIRECTORY data/ DESTINATION ${XDG_DATA_INSTALL_DIR}/data)
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_core_export.h

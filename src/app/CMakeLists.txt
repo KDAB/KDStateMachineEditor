@@ -13,6 +13,6 @@ qt5_wrap_ui(BIN_SRCS ${BIN_UIS})
 add_executable(${KDSME_APPBIN} WIN32 ${BIN_SRCS})
 target_link_libraries(${KDSME_APPBIN}
   Qt5::QuickWidgets
-  ${KDSME_CORELIB}
-  ${KDSME_VIEWLIB}
+  kdstatemachineeditor_core
+  kdstatemachineeditor_view
 )

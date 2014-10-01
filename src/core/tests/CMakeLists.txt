@@ -17,7 +17,7 @@ add_library(kdsme_testhelper STATIC
 )
 target_link_libraries(kdsme_testhelper
   ${Qt5Test_LIBRARIES}
-  ${KDSME_CORELIB}
+  kdstatemachineeditor_core
 )
 
 if(Graphviz_FOUND)
@@ -40,7 +40,7 @@ target_link_libraries(test_commands
   Qt5::Widgets
   ${Qt5Test_LIBRARIES}
   ${KDSME_TESTHELPER_EXTRA_LIBS}
-  ${KDSME_CORELIB}
+  kdstatemachineeditor_core
 )
 add_test(NAME test_commands COMMAND test_commands)
 
@@ -48,7 +48,7 @@ add_executable(test_models test_models.cpp)
 target_link_libraries(test_models
   Qt5::Gui
   ${Qt5Test_LIBRARIES}
-  ${KDSME_CORELIB}
+  kdstatemachineeditor_core
 )
 add_test(NAME test_models COMMAND test_models)
 
@@ -68,7 +68,7 @@ add_executable(test_scxmlexport test_scxmlexport.cpp)
 target_link_libraries(test_scxmlexport
   ${Qt5Test_LIBRARIES}
   ${KDSME_TESTHELPER_EXTRA_LIBS}
-  ${KDSME_CORELIB}
+  kdstatemachineeditor_core
 )
 add_test(NAME test_scxmlexport COMMAND test_scxmlexport)
 
@@ -89,6 +89,6 @@ add_executable(test_layoutinformation test_layoutinformation.cpp)
 target_link_libraries(test_layoutinformation
   Qt5::Gui
   ${Qt5Test_LIBRARIES}
-  ${KDSME_CORELIB}
+  kdstatemachineeditor_core
 )
 add_test(NAME test_layoutinformation COMMAND test_layoutinformation)

@@ -49,25 +49,25 @@ set(QML_FILES
   qml/StateMachineScene.qml
 )
 
-add_library(${KDSME_VIEWLIB} SHARED ${LIB_SRCS} ${LIB_QRCS} ${QML_FILES})
-target_link_libraries(${KDSME_VIEWLIB}
+add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_QRCS} ${QML_FILES})
+target_link_libraries(kdstatemachineeditor_view
   LINK_PRIVATE
-    ${KDSME_CORELIB}
+    kdstatemachineeditor_core
   LINK_PUBLIC
     Qt5::Quick
     Qt5::QuickWidgets
     Qt5::Widgets
 )
-set_target_properties(${KDSME_VIEWLIB} PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION})
-generate_export_header(${KDSME_VIEWLIB} EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
-target_include_directories(${KDSME_VIEWLIB}
+set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION})
+generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
+target_include_directories(kdstatemachineeditor_view
   # FIXME: It is recommended to use a relative path here.
   # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
   INTERFACE "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
   PRIVATE ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
 )
 
-install(TARGETS ${KDSME_VIEWLIB} EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kdstatemachineeditor_view EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_view_export.h
 
