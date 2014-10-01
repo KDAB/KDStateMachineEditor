@@ -1,6 +1,6 @@
 # Top-level CMakeLists.txt file for the KDAB State Machine Editor Library.
 
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.12) # because of ALIAS targets
 
 project(kdstatemachineeditor)
 
