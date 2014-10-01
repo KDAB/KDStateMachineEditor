@@ -108,6 +108,7 @@ struct QmlExporter::Private
     bool writeState(State* state);
     bool writeStateInner(State* state);
     bool writeTransition(Transition* transition);
+    void writeAttribute(Element* element, const QString &name, const QString &value);
 
     QString indention() const;
 
@@ -202,12 +203,31 @@ bool QmlExporter::Private::writeState(State* state)
     if (qobject_cast<PseudoState*>(state))
         return true; // pseudo states are ignored
 
+    if (!state->property("com.kdab.KDSME.DSMExporter.externalSource").isNull())
+        return true; // external defined states, like sourced from other qml files, are not exported
+
     const QString qmlComponent = elementToComponent(state);
     m_out << indention() << QString("%1 {\n").arg(qmlComponent);
     if (!writeStateInner(state))
         return false;
     m_out << indention() << QString("}\n");
     return true;
+}
+
+void QmlExporter::Private::writeAttribute(Element* element, const QString &name, const QString &value)
+{
+    if (value.isEmpty())
+        return;
+
+    QVariant implBindingNames = element->property("com.kdab.KDSME.DSMExporter.implBindingNames");
+    if (!implBindingNames.isNull()) {
+        QString v = implBindingNames.toMap().value(name).toString();
+        if (value == v) {
+            return;
+        }
+    }
+
+    m_out << indention() << QString("%1: %2\n").arg(name).arg(value);
 }
 
 bool QmlExporter::Private::writeStateInner(State* state)
@@ -217,37 +237,30 @@ bool QmlExporter::Private::writeStateInner(State* state)
     LevelIncrementer levelinc(&m_level);
     Q_UNUSED(levelinc);
 
-    if (!state->label().isEmpty()) {
-        m_out << indention() << QString("id: %1\n").arg(toQmlId(state->label()));
-    }
+    writeAttribute(state, "id", toQmlId(state->label()));
 
     if (StateMachine *stateMachine = qobject_cast<StateMachine*>(state)) {
         const QString running = stateMachine->property("com.kdab.KDSME.DSMExporter.running").toString();
-        if (!running.isEmpty())
-            m_out << indention() << QString("running: %1\n").arg(running);
+        writeAttribute(state, "running", running);
     }
 
     if (state->childMode() == State::ParallelStates) {
-        m_out << indention() << "childMode: QState.ParallelStates\n";
+        writeAttribute(state, "childMode", "QState.ParallelStates");
     }
 
     if (State* initial = ElementUtil::findInitialState(state)) {
-        m_out << indention() << QString("initialState: %1\n").arg(initial->label());
+        writeAttribute(state, "initialState", initial->label());
     }
 
     if (HistoryState *historyState = qobject_cast<HistoryState*>(state)) {
         if (State *defaultState = historyState->defaultState())
-            m_out << indention() << QString("defaultState: %1\n").arg(toQmlId(defaultState->label()));
+            writeAttribute(state, "defaultState", toQmlId(defaultState->label()));
         if (historyState->historyType() == HistoryState::DeepHistory)
-            m_out << indention() << "historyType: HistoryState.DeepHistory\n";
+            writeAttribute(state, "historyType", "HistoryState.DeepHistory");
     }
 
-    if (!state->onEntry().isEmpty()) {
-        m_out << indention() << "onEntered: " << state->onEntry() << '\n';
-    }
-    if (!state->onExit().isEmpty()) {
-        m_out << indention() << "onExited: " << state->onExit() << '\n';
-    }
+    writeAttribute(state, "onEntered", state->onEntry());
+    writeAttribute(state, "onExited", state->onExit());
 
     foreach (State* child, state->childStates()) {
         if (!writeState(child))
@@ -270,27 +283,25 @@ bool QmlExporter::Private::writeTransition(Transition* transition)
         LevelIncrementer levelinc(&m_level);
         Q_UNUSED(levelinc);
 
-        if (!transition->label().isEmpty()) {
-            m_out << indention() << QString("id: %1\n").arg(toQmlId(transition->label()));
-        }
+        writeAttribute(transition, "id", toQmlId(transition->label()));
+
         if (transition->targetState()) {
-            m_out << indention() << QString("targetState: %1\n").arg(transition->targetState()->label());
+            writeAttribute(transition, "targetState", toQmlId(transition->targetState()->label()));
         }
+
         if (transition->type() == Element::SignalTransitionType) {
             auto t = qobject_cast<SignalTransition*>(transition);
-            if (!t->signal().isEmpty()) {
-                m_out << indention() << QString("signal: %1").arg(t->signal()) << '\n';
-            }
+            writeAttribute(transition, "signal", t->signal());
         }
+
         if (transition->type() == Element::TimeoutTransitionType) {
             auto t = qobject_cast<TimeoutTransition*>(transition);
             if (t->timeout() != -1) {
-                m_out << indention() << QString("timeout: %1").arg(t->timeout()) << '\n';
+                writeAttribute(transition, "timeout", QString::number(t->timeout()));
             }
         }
-        if (!transition->guard().isEmpty()) {
-            m_out << indention() << "guard: " << transition->guard() << '\n';
-        }
+
+        writeAttribute(transition, "guard", transition->guard());
     }
     m_out << indention() << QString("}\n");
     return true;
