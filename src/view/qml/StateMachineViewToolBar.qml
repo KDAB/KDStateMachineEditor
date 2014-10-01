@@ -104,19 +104,14 @@ ToolBar {
 
             minimumValue: Constants.minimumZoomLevel
             maximumValue: Constants.maximumZoomLevel
-            value: 1
+            value: root.stateMachineView.zoom
             tickmarksEnabled: true
             stepSize: Constants.zoomStepSize
             onValueChanged: {
-                if (!root.stateMachineView)
+                if (!root.stateMachineView || !pressed)
                     return;
 
                 root.stateMachineView.zoom = value;
-            }
-
-            Connections {
-                target: root.stateMachineView
-                onZoomChanged: zoomSlider.value = zoom
             }
         }
 

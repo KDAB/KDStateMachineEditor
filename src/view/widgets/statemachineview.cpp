@@ -399,17 +399,20 @@ void StateMachineView::setZoom(qreal value)
     QQuickItem* scene = sceneObject();
     if (qFuzzyCompare(scene->scale(), value))
         return;
+
     scene->setTransformOrigin(QQuickItem::TopLeft);
     scene->setScale(value);
 }
 
 QRectF StateMachineView::Private::adjustedViewRect()
 {
-    const QQuickItem* viewPort = q->viewPortObject();
+    static const int margin = 10;
+
+    const QQuickItem* viewPort = q->rootObject()->findChild<QQuickItem*>("scrollView");
     const QRectF viewRect(viewPort->x(), viewPort->y(), viewPort->width(), viewPort->height());
     if (viewRect.isEmpty())
         return QRectF();
-    static const int margin = 10;
+
     return viewRect.adjusted(margin, margin, -margin, -margin);
 }
 
@@ -417,24 +420,23 @@ void StateMachineView::fitInView(const QRectF& rect)
 {
     const QQuickItem* viewPort = viewPortObject();
 
-    QRectF r = rect;
+    QRectF sceneRect = rect;
     if (rect.isEmpty()) {
         const qreal width = viewPort->property("contentWidth").toReal();
         const qreal height = viewPort->property("contentHeight").toReal();
-        r = QRectF(0, 0, width, height);
+        sceneRect = QRectF(0, 0, width, height);
     }
 
-    QRectF viewrect = d->adjustedViewRect();
+    QRectF viewRect = d->adjustedViewRect();
 
-    if (r.isEmpty() || viewrect.isEmpty())
+    if (sceneRect.isEmpty() || viewRect.isEmpty())
         return;
 
-    qreal horizontalScale = viewrect.width() / r.width();
-    qreal verticalScale = viewrect.height() / r.height();
+    qreal horizontalScale = viewRect.width() / sceneRect.width();
+    qreal verticalScale = viewRect.height() / sceneRect.height();
 
     QQuickItem* scene = sceneObject();
     const qreal scale = scene->scale() * qMin(horizontalScale, verticalScale);
-    scene->setTransformOrigin(QQuickItem::TopLeft);
     scene->setScale(scale);
 }
 

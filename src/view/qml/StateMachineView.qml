@@ -133,7 +133,8 @@ Rectangle {
     }
 
     ScrollView {
-        id: centralContent
+        id: scrollView
+        objectName: "scrollView"
 
         anchors {
             top: topDock.bottom
@@ -190,7 +191,7 @@ Rectangle {
         readonly property alias view: stateMachineViewport
         readonly property alias scene: stateMachineScene
 
-        anchors.fill: centralContent
+        anchors.fill: scrollView
 
         propagateComposedEvents: true
         hoverEnabled: true
