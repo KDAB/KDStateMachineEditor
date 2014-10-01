@@ -2,7 +2,6 @@
     <qresource prefix="/kdsme">
         <file>qml/StateMachineScene.qml</file>
         <file>qml/uml/UmlState.qml</file>
-        <file>qml/StateMachineDebugToolBar.qml</file>
         <file>qml/StateMachineView.qml</file>
         <file>qml/StateMachineViewToolBar.qml</file>
         <file>qml/uml/UmlElement.qml</file>
@@ -14,6 +13,7 @@
         <file>qml/util/DragPoint.qml</file>
         <file>qml/util/DragPointDelegate.qml</file>
         <file>qml/util/DragPointGroup.qml</file>
+        <file>qml/util/ToolBarSeparator.qml</file>
         <file>qml/util/functions.js</file>
         <file>qml/util/MoveArea.qml</file>
         <file>qml/util/SquareButton.qml</file>

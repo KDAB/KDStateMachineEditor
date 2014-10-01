@@ -139,7 +139,7 @@ Rectangle {
             top: topDock.bottom
             left: parent.left
             right: parent.right
-            bottom: bottomDockArea.top
+            bottom: statusBarArea.top
         }
 
         Flickable {
@@ -220,28 +220,13 @@ Rectangle {
         scene: stateMachineScene
 
         anchors {
-            bottom: bottomDockArea.top
+            bottom: statusBarArea.top
             right: parent.right
             margins: 20
         }
 
         Behavior on opacity {
             NumberAnimation { duration: 500 }
-        }
-    }
-
-    Item {
-        id: bottomDockArea
-
-        anchors.bottom: statusBarArea.top
-        width: parent.width
-        height: childrenRect.height
-        z: 1
-
-        StateMachineDebugToolBar {
-            visible: !editController.editModeEnabled && (root.configurationController ? root.configurationController.isRunning : false)
-
-            stateMachineView: root
         }
     }
 

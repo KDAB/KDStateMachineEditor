@@ -26,7 +26,6 @@ qt5_add_resources(LIB_SRCS ${LIB_QRCS})
 # Make the files show up in Qt Creator
 set(QML_FILES
   qml/LayoutItemLoader.qml
-  qml/StateMachineDebugToolBar.qml
   qml/util/ChannelizedDropArea.qml
   qml/util/DragPointGroup.qml
   qml/util/SquareButton.qml

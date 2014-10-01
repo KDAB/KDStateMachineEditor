@@ -28,6 +28,8 @@ import QtQuick.Layouts 1.0
 
 import com.kdab.kdsme 1.0
 
+import "qrc:///kdsme/qml/util"
+
 import "util/constants.js" as Constants
 
 ToolBar {
@@ -36,8 +38,45 @@ ToolBar {
     /// Provide an instance of StateMachineView.qml here
     property var stateMachineView
 
+    /// Internal
+    readonly property var configurationController: (stateMachineView ? stateMachineView.configurationController : null)
+
+    readonly property bool debuggingActive: configurationController ? configurationController.isRunning : false
+
     RowLayout {
         anchors.fill: parent
+
+        ToolButton {
+            visible: root.debuggingActive
+            action: Action {
+                text: qsTr("Follow Active Region")
+                checked: followActiveRegion
+                checkable: true
+                onToggled: {
+                    stateMachineView.followActiveRegion = checked;
+                    if (stateMachineView.followActiveRegion) {
+                        stateMachineView.zoom = 1.0;
+                        stateMachineView.centerOnActiveRegion();
+                    }
+                }
+            }
+        }
+        /*
+        ToolButton {
+            visible: root.debuggingActive
+            action: Action {
+                text: qsTr("Enable Semantic Zoom")
+                checked: stateMachineView.semanticZoom
+                checkable: true
+                onTriggered: {
+                    stateMachineView.semanticZoom = !stateMachineView.semanticZoom
+                }
+            }
+        }
+        */
+        ToolBarSeparator {
+            visible: root.debuggingActive
+        }
 
         ToolButton {
             action: Action {
@@ -80,5 +119,7 @@ ToolBar {
                 onZoomChanged: zoomSlider.value = zoom
             }
         }
+
+        Item { Layout.fillWidth: true } // spacer
     }
 }
