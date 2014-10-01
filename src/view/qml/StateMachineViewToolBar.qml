@@ -74,10 +74,11 @@ ToolBar {
 
                 root.stateMachineView.zoom = value;
             }
-        }
-        Connections {
-            target: stateMachineView
-            onZoomChanged: zoomSlider.value = zoom
+
+            Connections {
+                target: root.stateMachineView
+                onZoomChanged: zoomSlider.value = zoom
+            }
         }
     }
 }
