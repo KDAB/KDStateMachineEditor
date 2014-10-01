@@ -113,6 +113,8 @@ configure_file(cmake/KDSMEConfig.cmake
 
 set(CMAKECONFIG_INSTALL_DIR lib/cmake/${CONFIG_DIR})
 install(EXPORT KDSME_TARGETS
+  NAMESPACE
+    KDSME::
   FILE
     KDSMETargets.cmake
   DESTINATION

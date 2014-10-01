@@ -55,6 +55,7 @@ endif()
 
 add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
+add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(kdstatemachineeditor_core
   LINK_PRIVATE
     Qt5::Quick
@@ -63,7 +64,7 @@ target_link_libraries(kdstatemachineeditor_core
     Qt5::Core
     Qt5::Gui
 )
-set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION})
+set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME Core)
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(Graphviz_FOUND)
