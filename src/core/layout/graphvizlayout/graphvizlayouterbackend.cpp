@@ -86,6 +86,13 @@ QVector<QPair<const char*, const char*>> attributesForState(const State* state)
         }
     }
 
+    if (state->type() == State::HistoryStateType) {
+        return ResultType()
+                << EntryType("label", "H*") // get rid off 'no space for label' warnings
+                << EntryType("shape", "circle")
+                << EntryType("fixedsize", "true");
+    }
+
     if (state->type() == State::FinalStateType) {
         return ResultType()
             << EntryType("shape", "doublecircle")

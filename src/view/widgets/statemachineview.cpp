@@ -157,6 +157,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterUncreatableType<View>(KDSME_QML_NAMESPACE, 1, 0, "View", "Access to object");
     qmlRegisterUncreatableType<StateModel>(KDSME_QML_NAMESPACE, 1, 0, "StateModel", "Access to object");
     qmlRegisterUncreatableType<Element>(KDSME_QML_NAMESPACE, 1, 0, "Element", "Access to object");
+    qmlRegisterUncreatableType<HistoryState>(KDSME_QML_NAMESPACE, 1, 0, "HistoryState", "Access to object");
     qmlRegisterUncreatableType<PseudoState>(KDSME_QML_NAMESPACE, 1, 0, "PseudoState", "Access to object");
     qmlRegisterUncreatableType<Transition>(KDSME_QML_NAMESPACE, 1, 0, "Transition", "Access to object");
 
