@@ -73,20 +73,37 @@ Item {
         radius: 5
     }
 
-    Rectangle {
+    Item {
         id: header
 
-        color: Theme.compositeStateLabelBackgroundColor
-        radius: 5
+        clip: true
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            margins: rect.border.width
+        width: parent.width
+        height: text.height + 2*root.regionLabelMargins
+
+        Rectangle {
+            id: headerRect
+
+            width: parent.width
+            height: rect.height
+
+            radius: rect.radius
+
+            color: Theme.compositeStateLabelBackgroundColor
+            border.color: rect.border.color
+            border.width: rect.border.width
         }
 
-        width: parent.width - rect.border.width*2
-        height: text.height + 2*root.regionLabelMargins
+        Rectangle {
+            id: headerRectBottomBorder
+
+            anchors.bottom: parent.bottom
+
+            width: parent.width
+            height: rect.border.width
+
+            color: rect.border.color
+        }
 
         Item {
             anchors {
