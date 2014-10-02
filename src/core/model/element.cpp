@@ -465,6 +465,13 @@ HistoryState::HistoryState(State* parent)
 {
 }
 
+HistoryState::HistoryState(HistoryState::HistoryType type, State* parent)
+    : State(parent)
+    , d(new Private)
+{
+    d->m_historyType = type;
+}
+
 HistoryState::~HistoryState()
 {
 }
