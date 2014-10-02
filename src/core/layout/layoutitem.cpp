@@ -155,10 +155,13 @@ QSizeF LayoutItem::preferredSize() const
 {
     if (!element())
         return QSizeF();
+
     QSizeF size;
     switch (element()->type())
     {
     case Element::HistoryStateType:
+        size = QSizeF(32, 32);
+        break;
     case Element::StateType:
         size = LayoutUtils::sizeForLabel(element()->label());
         break;
