@@ -56,7 +56,7 @@ Item {
         visible: active
 
         glowRadius: 10
-        spread: 0.2
+        spread: 0.1
         color: Theme.stateBorderColor_Glow
         cornerRadius: rect.radius
     }
