@@ -25,26 +25,22 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtGraphicalEffects 1.0
 
 import "qrc:///kdsme/qml/util/"
 
 /**
  * Composite State representation
  */
-Rectangle {
+Item {
     id: root
 
     // Appearance
     readonly property real regionLabelMargins: view.layoutProperties.regionLabelMargins
     readonly property size regionLabelButtonBoxSize: view.layoutProperties.regionLabelButtonBoxSize
 
+    readonly property bool active: activeness === 1.0
     readonly property bool expanded: control.item.expanded
-
-    // TODO: Tint background color based on level in hierarchy
-    color: Theme.compositeStateLabelBackgroundColor
-    border.color: Qt.tint(Theme.compositeStateBorderColor, Theme.alphaTint(Theme.compositeStateBorderColor_Active, activeness))
-    border.width: (activeness > 0 ? 2 : 1)
-    radius: 5
 
     Behavior on width {
         SmoothedAnimation { duration: 200 }
@@ -53,14 +49,43 @@ Rectangle {
         SmoothedAnimation { duration: 200 }
     }
 
-    Item {
+    RectangularGlow {
+        id: effect
+
+        anchors.fill: rect
+        visible: active
+
+        glowRadius: 10
+        spread: 0.2
+        color: Theme.stateBorderColor_Glow
+        cornerRadius: rect.radius
+    }
+
+    Rectangle {
+        id: rect
+
+        anchors.fill: parent
+
+        // TODO: Tint background color based on level in hierarchy
+        color: Theme.compositeStateBackgroundColor_Lightest
+        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+        border.width: (activeness > 0 ? 2 : 1)
+        radius: 5
+    }
+
+    Rectangle {
         id: header
+
+        color: Theme.compositeStateLabelBackgroundColor
+        radius: 5
 
         anchors {
             top: parent.top
+            left: parent.left
+            margins: rect.border.width
         }
 
-        width: parent.width
+        width: parent.width - rect.border.width*2
         height: text.height + 2*root.regionLabelMargins
 
         Item {
@@ -115,23 +140,6 @@ Rectangle {
         }
     }
 
-    Rectangle {
-        id: contentsRect
-
-        anchors {
-            top: header.bottom
-            bottom: parent.bottom
-        }
-
-        width: parent.width
-
-        color: Theme.compositeStateBackgroundColor_Lightest
-        border.color: root.border.color
-        border.width: root.border.width
-
-        clip: true
-    }
-
     ChannelizedDropArea {
         id: dropArea
         anchors.fill: parent
@@ -143,7 +151,7 @@ Rectangle {
         State {
             when: dropArea.containsDrag
             PropertyChanges {
-                target: contentsRect
+                target: rect
                 color: "#DDDDDD"
             }
         }

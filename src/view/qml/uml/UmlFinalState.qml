@@ -24,6 +24,7 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtGraphicalEffects 1.0
 
 import "qrc:///kdsme/qml/util/"
 
@@ -34,6 +35,20 @@ import "qrc:///kdsme/qml/util/"
  */
 UmlElement {
     id: root
+
+    readonly property bool active: activeness === 1.0
+
+    RectangularGlow {
+        id: effect
+
+        anchors.fill: rect
+        visible: active
+
+        glowRadius: 10
+        spread: 0.2
+        color: Theme.stateBorderColor_Glow
+        cornerRadius: rect.radius
+    }
 
     Rectangle {
         id: rect

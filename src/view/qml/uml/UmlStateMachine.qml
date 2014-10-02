@@ -56,7 +56,7 @@ UmlElement {
             height: text.height + 2*margins
 
             color: Theme.compositeStateLabelBackgroundColor
-            border.color: Theme.compositeStateBorderColor
+            border.color: Theme.stateBorderColor
             border.width: 2
 
             Text {

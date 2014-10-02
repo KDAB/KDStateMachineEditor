@@ -23,28 +23,46 @@
 */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 
 import "qrc:///kdsme/qml/util/"
 
-Rectangle {
+Item {
     id: root
 
-    readonly property bool isActive: activeness === 1.0
+    readonly property bool active: activeness === 1.0
 
     anchors.fill: parent
 
-    // If active, let's invert the colors
-    color: isActive ? Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, 0.8)) : Theme.stateBackgroundColor
-    border.color: isActive ? Theme.stateBackgroundColor : Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
-    border.width: (activeness > 0 ? 2 : 1)
-    radius: width*0.2
+    RectangularGlow {
+        id: effect
 
-    Text {
-        anchors.centerIn: parent
+        anchors.fill: rect
+        visible: active
 
-        text: control.name
-        color: isActive ? Theme.stateBackgroundColor : Theme.stateLabelFontColor
-        elide: Text.ElideRight
+        glowRadius: 10
+        spread: 0.2
+        color: Theme.stateBorderColor_Glow
+        cornerRadius: rect.radius
+    }
+
+    Rectangle {
+        id: rect
+
+        anchors.fill: parent
+
+        color: Theme.stateBackgroundColor
+        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+        border.width: (activeness > 0 ? 2 : 1)
+        radius: 5
+
+        Text {
+            anchors.centerIn: parent
+
+            text: control.name
+            color: Theme.stateLabelFontColor
+            elide: Text.ElideRight
+        }
     }
 
     ChannelizedDropArea {
