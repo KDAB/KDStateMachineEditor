@@ -233,7 +233,7 @@ public:
     };
 
     explicit HistoryState(State* parent = 0);
-    HistoryState(HistoryType type, State* parent = nullptr);
+    explicit HistoryState(HistoryType type, State* parent = nullptr);
     virtual ~HistoryState();
 
     virtual Type type() const Q_DECL_OVERRIDE;
