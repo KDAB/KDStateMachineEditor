@@ -122,7 +122,7 @@ bool ModifyLayoutItemCommand::mergeWith(const QUndoCommand* other)
 
 void KDSME::ModifyLayoutItemCommand::updateText()
 {
-    const QString itemLabel = m_item->element() ? m_item->element()->label() : tr("<Unknown>");
+    const QString itemLabel = m_item && m_item->element() ? m_item->element()->label() : tr("<Unknown>");
 
     switch (m_operation) {
     case MoveOperation:
