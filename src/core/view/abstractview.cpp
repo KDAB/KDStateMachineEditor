@@ -158,6 +158,11 @@ void AbstractView::setState(AbstractView::ViewState state)
     emit stateChanged(d->m_state);
 }
 
+QModelIndex AbstractView::currentIndex() const
+{
+    return d->m_selectionModel ? d->m_selectionModel->currentIndex() : QModelIndex();
+}
+
 void AbstractView::setCurrentIndex(const QModelIndex& index)
 {
     if (!d->m_selectionModel) {

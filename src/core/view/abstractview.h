@@ -73,6 +73,8 @@ public:
 
     ViewState state() const;
 
+    QModelIndex currentIndex() const;
+
 public Q_SLOTS:
     void setCurrentIndex(const QModelIndex& index);
 

@@ -174,6 +174,11 @@ void View::setItemSelected(LayoutItem* item, bool selected)
     selectionModel()->select(index, (selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect));
 }
 
+LayoutItem* View::currentItem() const
+{
+    return layoutItemForElement(currentIndex().data(StateModel::ElementRole).value<Element*>());
+}
+
 void View::setCurrentItem(LayoutItem* item)
 {
     if (!stateModel() || !item || !item->element())
@@ -426,7 +431,7 @@ QList<LayoutItem*> View::layoutItems() const
     return d->m_elementToLayoutItemMap.values();
 }
 
-LayoutItem* View::layoutItemForElement(Element* element)
+LayoutItem* View::layoutItemForElement(Element* element) const
 {
     return d->m_elementToLayoutItemMap.value(element);
 }
@@ -449,7 +454,7 @@ void View::currentChanged(const QModelIndex& current, const QModelIndex& previou
         previousItem->setSelected(false);
     }
 
-    emit currentItemChanged(current, previous);
+    emit currentItemChanged(currentItem);
 }
 
 void View::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)

@@ -49,6 +49,7 @@ class KDSME_CORE_EXPORT View : public AbstractView
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
+    Q_PROPERTY(KDSME::LayoutItem* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutItem* rootLayoutItem READ rootLayoutItem NOTIFY rootLayoutItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
 
@@ -77,13 +78,15 @@ public:
     Q_INVOKABLE bool isItemSelected(KDSME::LayoutItem* item);
     Q_INVOKABLE void setItemSelected(KDSME::LayoutItem* item, bool selected);
 
+    KDSME::LayoutItem* currentItem() const;
     Q_INVOKABLE void setCurrentItem(KDSME::LayoutItem* item);
+
     Q_INVOKABLE KDSME::Element* currentState();
 
     StateLayoutItem* rootLayoutItem() const;
 
     QList<LayoutItem*> layoutItems() const;
-    LayoutItem* layoutItemForElement(Element* element);
+    LayoutItem* layoutItemForElement(Element* element) const;
 
 public Q_SLOTS:
     void import();
@@ -99,7 +102,7 @@ Q_SIGNALS:
     /// Notify that properties of any descendant of @p item including @p item may have changed
     void contentsUpdated(LayoutItem* item);
 
-    void currentItemChanged(const QModelIndex& current, const QModelIndex& previous);
+    void currentItemChanged(KDSME::LayoutItem* currentItem);
 
 protected Q_SLOTS:
     virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
