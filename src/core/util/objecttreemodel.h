@@ -83,7 +83,7 @@ public:
         UserRole = Qt::UserRole + 100
     };
 
-    explicit ObjectTreeModel(QObject *parent = 0);
+    explicit ObjectTreeModel(QObject *parent = nullptr);
     ~ObjectTreeModel();
 
     void appendRootObject(QObject* object);
@@ -92,12 +92,12 @@ public:
     void setRootObjects(const QList<QObject*>& rootObjects);
     void clear();
 
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-    virtual QModelIndex parent(const QModelIndex &index) const;
-    virtual QHash< int, QByteArray > roleNames() const;
+    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    virtual QModelIndex parent(const QModelIndex &index) const override;
+    virtual QHash< int, QByteArray > roleNames() const override;
 
     QModelIndex indexForObject(QObject* object) const;
 

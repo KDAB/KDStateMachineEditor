@@ -43,7 +43,7 @@ class KDSME_CORE_EXPORT CommandController : public QObject
     Q_PROPERTY(QUndoStack* undoStack READ undoStack CONSTANT)
 
 public:
-    explicit CommandController(QUndoStack* undoStack, QObject* parent = 0);
+    explicit CommandController(QUndoStack* undoStack, QObject* parent = nullptr);
     virtual ~CommandController();
 
     Q_INVOKABLE void push(KDSME::Command* command);

@@ -43,7 +43,7 @@ class KDSME_CORE_EXPORT LayoutProperties : public QObject
     Q_PROPERTY(QSizeF regionLabelButtonBoxSize READ regionLabelButtonBoxSize WRITE setRegionLabelButtonBoxSize NOTIFY regionLabelButtonBoxSizeChanged FINAL)
 
 public:
-    explicit LayoutProperties(QObject* parent = 0);
+    explicit LayoutProperties(QObject* parent = nullptr);
     virtual ~LayoutProperties();
 
     qreal regionMargins() const;

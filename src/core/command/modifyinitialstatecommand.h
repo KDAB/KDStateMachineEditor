@@ -37,7 +37,7 @@ class KDSME_CORE_EXPORT ModifyInitialStateCommand : public Command
 {
     Q_OBJECT
 public:
-    explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = 0);
+    explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = nullptr);
     ~ModifyInitialStateCommand();
 
     int id() const Q_DECL_OVERRIDE;

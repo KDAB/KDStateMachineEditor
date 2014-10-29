@@ -51,7 +51,7 @@ class KDSME_CORE_EXPORT ConfigurationController : public QObject
 public:
     typedef QSet<State*> Configuration;
 
-    explicit ConfigurationController(QObject* parent = 0);
+    explicit ConfigurationController(QObject* parent = nullptr);
     virtual ~ConfigurationController();
 
     View* view() const;

@@ -42,7 +42,7 @@ class KDSME_CORE_EXPORT RegionLayouter : public QObject
     Q_OBJECT
 
 public:
-    explicit RegionLayouter(QObject* parent = 0);
+    explicit RegionLayouter(QObject* parent = nullptr);
 
     void layoutRegion(StateLayoutItem* state, const QRectF& boundingRectHint, View* view);
 };
@@ -52,7 +52,7 @@ class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
     Q_OBJECT
 
 public:
-    explicit LayerwiseLayouter(QObject* parent = 0);
+    explicit LayerwiseLayouter(QObject* parent = nullptr);
 
     virtual QRectF layout(StateLayoutItem* state, View* view) Q_DECL_OVERRIDE;
 

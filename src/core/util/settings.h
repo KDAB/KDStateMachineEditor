@@ -38,7 +38,7 @@ class Settings : public QObject
     Q_OBJECT
 
 public:
-    explicit Settings(QObject* parent = 0);
+    explicit Settings(QObject* parent = nullptr);
 
     Q_INVOKABLE void setValue(const QString& key, const QVariant& value);
     Q_INVOKABLE QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant()) const;

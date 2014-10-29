@@ -53,7 +53,7 @@ class KDSME_CORE_EXPORT CommandFactory : public QObject
     Q_PROPERTY(KDSME::StateModel* model READ model WRITE setModel NOTIFY modelChanged)
 
 public:
-    explicit CommandFactory(QObject* parent = 0);
+    explicit CommandFactory(QObject* parent = nullptr);
 
     StateModel* model() const;
     void setModel(StateModel* model);

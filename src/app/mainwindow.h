@@ -55,7 +55,7 @@ public:
         PresetsInputMode,
     };
 
-    explicit MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
     virtual ~MainWindow();
 
     /// When in PresetsInputMode, return the currently selected file name

@@ -59,7 +59,7 @@ public:
     };
     Q_ENUMS(ViewState)
 
-    explicit AbstractView(QObject* parent = 0);
+    explicit AbstractView(QObject* parent = nullptr);
     virtual ~AbstractView();
 
     virtual void setModel(QAbstractItemModel *model);

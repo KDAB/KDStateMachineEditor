@@ -55,8 +55,8 @@ public:
         ChangeStateMachine
     };
 
-    explicit Command(StateModel* model, QUndoCommand* parent = 0);
-    explicit Command(const QString& text = QString(), QUndoCommand* parent = 0);
+    explicit Command(StateModel* model, QUndoCommand* parent = nullptr);
+    explicit Command(const QString& text = QString(), QUndoCommand* parent = nullptr);
 
     StateModel* model() const;
 

@@ -33,7 +33,7 @@ class AbstractMask : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractMask(QObject* parent = 0);
+    explicit AbstractMask(QObject* parent = nullptr);
 
     virtual bool contains(const QPointF& point) const = 0;
     virtual bool intersects(const QRectF& rect) const = 0;
@@ -47,7 +47,7 @@ class PainterPathMask : public AbstractMask
     Q_PROPERTY(QPainterPath path READ path WRITE setPath NOTIFY pathChanged)
 
 public:
-    explicit PainterPathMask(QObject* parent = 0);
+    explicit PainterPathMask(QObject* parent = nullptr);
 
     QPainterPath path() const;
     void setPath(const QPainterPath& path);
@@ -71,7 +71,7 @@ class QuickMaskedMouseArea : public QQuickItem
     Q_PROPERTY(qreal tolerance READ tolerance WRITE setTolerance NOTIFY toleranceChanged)
 
 public:
-    explicit QuickMaskedMouseArea(QQuickItem* parent = 0);
+    explicit QuickMaskedMouseArea(QQuickItem* parent = nullptr);
 
     bool isPressed() const { return m_pressed; }
     bool containsMouse() const { return m_containsMouse; }

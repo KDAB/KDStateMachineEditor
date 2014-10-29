@@ -42,7 +42,7 @@ class QuickPainterPath : public QObject
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY isEmptyChanged)
 
 public:
-    explicit QuickPainterPath(QObject* parent = 0);
+    explicit QuickPainterPath(QObject* parent = nullptr);
 
     QPainterPath path() const;
     void setPath(const QPainterPath& path);
@@ -83,7 +83,7 @@ class QuickPainterPathGeometryItem : public QuickGeometryItem
     Q_PROPERTY(QPainterPath path READ path WRITE setPath NOTIFY pathChanged)
 
 public:
-    explicit QuickPainterPathGeometryItem(QQuickItem *parent = 0);
+    explicit QuickPainterPathGeometryItem(QQuickItem *parent = nullptr);
 
     QPainterPath path() const;
     void setPath(const QPainterPath& path);

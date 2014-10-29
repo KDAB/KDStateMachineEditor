@@ -41,7 +41,7 @@ class KDSME_CORE_EXPORT SemanticZoomManager : public QObject
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
-    explicit SemanticZoomManager(QObject* parent = 0);
+    explicit SemanticZoomManager(QObject* parent = nullptr);
 
     ConfigurationController* configurationController() const;
     void setConfigurationController(ConfigurationController* controller);

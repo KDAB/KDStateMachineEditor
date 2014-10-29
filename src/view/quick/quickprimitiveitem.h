@@ -70,7 +70,7 @@ public:
         */
     };
 
-    explicit QuickGeometryItem(QObject* parent = 0);
+    explicit QuickGeometryItem(QObject* parent = nullptr);
 
     QList<qreal> vertexData() const;
     void setVertexData(const QList<qreal>& vertexData);
@@ -111,7 +111,7 @@ class QuickPrimitiveItem : public QQuickItem
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
-    explicit QuickPrimitiveItem(QQuickItem* parent = 0);
+    explicit QuickPrimitiveItem(QQuickItem* parent = nullptr);
 
     QuickGeometryItem* geometryItem() const;
     void setGeometryItem(QuickGeometryItem* item);

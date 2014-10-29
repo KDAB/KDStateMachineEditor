@@ -36,7 +36,7 @@ class KDSME_VIEW_EXPORT StateMachinePaletteWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit StateMachinePaletteWidget(QWidget* parent = 0);
+    explicit StateMachinePaletteWidget(QWidget* parent = nullptr);
     virtual ~StateMachinePaletteWidget();
 
 private:
