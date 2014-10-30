@@ -52,12 +52,11 @@ set(QML_FILES
 add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_QRCS} ${QML_FILES})
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(kdstatemachineeditor_view
-  LINK_PRIVATE
-    kdstatemachineeditor_core
   LINK_PUBLIC
     Qt5::Quick
     Qt5::QuickWidgets
     Qt5::Widgets
+    kdstatemachineeditor_core
 )
 set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View)
 generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
