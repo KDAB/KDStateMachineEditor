@@ -1,11 +1,11 @@
 /*
-  reparentelementcommand.h
+  ModifyDefaultStateCommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Volker Krause <volker.krause@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,8 +22,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
-#define KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#define KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
 
 #include "command.h"
 
@@ -31,34 +31,26 @@
 
 namespace KDSME {
 
-class Element;
-class View;
+class State;
+class HistoryState;
 
-class KDSME_CORE_EXPORT ReparentElementCommand : public Command
+class KDSME_VIEW_EXPORT ModifyDefaultStateCommand : public Command
 {
     Q_OBJECT
-
 public:
-    ReparentElementCommand(View* view, Element* element, QUndoCommand* parent = 0);
+    explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
+    ~ModifyDefaultStateCommand();
 
-    virtual int id() const { return ReparentElement; }
-
-    Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
-
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    int id() const Q_DECL_OVERRIDE;
+    void undo() Q_DECL_OVERRIDE;
+    void redo() Q_DECL_OVERRIDE;
 
 private:
-    QPointer<View> m_view;
-    QPointer<Element> m_element;
-
-    /// Whether this command is valid (ie. if redo/undo is doing something)
-    bool m_valid;
-
-    QPointer<Element> m_newParentElement;
-    QPointer<Element> m_oldParentElement;
+    QPointer<HistoryState> m_state;
+    QPointer<State> m_defaultState;
+    QPointer<State> m_oldDefaultState;
 };
 
 }
 
-#endif // REPARENTELEMENTCOMMAND_H
+#endif // KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H

@@ -1,5 +1,5 @@
 /*
-  createelementcommand.h
+  modifypropertycommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,51 +22,40 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_CREATEELEMENTCOMMAND_H
-#define KDSME_COMMAND_CREATEELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
+#define KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
 
 #include "command.h"
-#include "element.h"
+
+#include <QHash>
+#include <QPointer>
+
+class QJsonObject;
+class QVariant;
 
 namespace KDSME {
 
-class KDSME_CORE_EXPORT CreateElementCommand : public Command
+class KDSME_VIEW_EXPORT ModifyPropertyCommand : public KDSME::Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::Element* parentElement READ parentElement WRITE setParentElement NOTIFY parentElementChanged)
-    Q_PROPERTY(KDSME::Element::Type type READ type WRITE setType NOTIFY typeChanged)
 
 public:
-    explicit CreateElementCommand(StateModel* model = nullptr,
-				  Element::Type type = Element::ElementType,
-				  QUndoCommand* parent = nullptr);
+    ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = 0);
+    ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = 0);
 
-    Element* parentElement() const;
-    void setParentElement(Element* parentElement);
-
-    Element::Type type() const;
-    void setType(Element::Type type);
-
-    Element* createdElement() const;
-
-    virtual int id() const Q_DECL_OVERRIDE { return CreateElement; }
+    virtual int id() const Q_DECL_OVERRIDE { return ModifyProperty; }
 
     virtual void redo() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
 
-Q_SIGNALS:
-    void parentElementChanged(Element* parentElement);
-    void typeChanged(Element::Type type);
-
 private:
-    void updateText();
+    void init();
 
-    Element* m_parentElement;
-    Element::Type m_type;
-
-    Element* m_createdElement;
+    QPointer<QObject> m_object;
+    QHash<QByteArray, QVariant> m_propertyMap;
+    QHash<QByteArray, QVariant> m_oldPropertyMap;
 };
 
 }
 
-#endif
+#endif // MODIFYPROPERTYCOMMAND_H

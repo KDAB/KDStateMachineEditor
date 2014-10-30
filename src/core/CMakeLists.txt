@@ -1,23 +1,4 @@
 set(LIB_SRCS
-  commandcontroller.cpp
-  configurationcontroller.cpp
-  editcontroller.cpp
-  semanticzoommanager.cpp
-
-  command/command.cpp
-  command/commandfactory.cpp
-  command/createelementcommand.cpp
-  command/deleteelementcommand.cpp
-  command/layoutsnapshotcommand.cpp
-  command/modifyinitialstatecommand.cpp
-  command/modifydefaultstatecommand.cpp
-  command/modifylayoutitemcommand.cpp
-  command/modifypropertycommand.cpp
-  command/modifytransitionlayoutitemcommand.cpp
-  command/modifytransitioncommand.cpp
-  command/reparentelementcommand.cpp
-  command/changestatemachinecommand.cpp
-
   export/abstractexporter.cpp
   export/qmlexporter.cpp
   export/scxmlexporter.cpp
@@ -59,7 +40,6 @@ add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(kdstatemachineeditor_core
   LINK_PRIVATE
     Qt5::Quick
-    Qt5::Widgets # QUndo* classes
   LINK_PUBLIC
     Qt5::Core
     Qt5::Gui
@@ -85,7 +65,6 @@ if(Graphviz_FOUND)
 endif()
 
 set(build_iface_dirs
-  ${CMAKE_CURRENT_SOURCE_DIR}/command
   ${CMAKE_CURRENT_SOURCE_DIR}/common
   ${CMAKE_CURRENT_SOURCE_DIR}/import
   ${CMAKE_CURRENT_SOURCE_DIR}/layout
@@ -113,12 +92,9 @@ install(DIRECTORY data/ DESTINATION ${XDG_DATA_INSTALL_DIR}/data)
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_core_export.h
 
-  commandcontroller.h
-  editcontroller.h
   export/abstractexporter.h
   export/qmlexporter.h
   export/scxmlexporter.h
-  configurationcontroller.h
   model/element.h
   model/elementmodel.h
   model/elementutil.h

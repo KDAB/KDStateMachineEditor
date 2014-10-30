@@ -25,7 +25,7 @@
 #ifndef KDSME_SEMANTICZOOMMANAGER_H
 #define KDSME_SEMANTICZOOMMANAGER_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
 #include <QObject>
 
@@ -34,7 +34,7 @@ namespace KDSME {
 class ConfigurationController;
 class State;
 
-class KDSME_CORE_EXPORT SemanticZoomManager : public QObject
+class KDSME_VIEW_EXPORT SemanticZoomManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::ConfigurationController* configurationController READ configurationController WRITE setConfigurationController NOTIFY configurationControllerChanged)

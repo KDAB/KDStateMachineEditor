@@ -1,4 +1,18 @@
 set(LIB_SRCS
+  command/command.cpp
+  command/commandfactory.cpp
+  command/createelementcommand.cpp
+  command/deleteelementcommand.cpp
+  command/layoutsnapshotcommand.cpp
+  command/modifyinitialstatecommand.cpp
+  command/modifydefaultstatecommand.cpp
+  command/modifylayoutitemcommand.cpp
+  command/modifypropertycommand.cpp
+  command/modifytransitionlayoutitemcommand.cpp
+  command/modifytransitioncommand.cpp
+  command/reparentelementcommand.cpp
+  command/changestatemachinecommand.cpp
+
   quick/qopengl2pexvertexarray.cpp # Copy because QtGui doesn't export all symbols
   quick/quickmaskedmousearea.cpp
   quick/quickpainterpath.cpp
@@ -11,6 +25,12 @@ set(LIB_SRCS
   widgets/statemachinetoolbar.cpp
   widgets/statemachineview.cpp
   widgets/statemachinepalettewidget.cpp
+
+  abstractcontroller.cpp
+  commandcontroller.cpp
+  configurationcontroller.cpp
+  editcontroller.cpp
+  semanticzoommanager.cpp
 )
 
 set(LIB_UIS
@@ -58,12 +78,21 @@ target_link_libraries(kdstatemachineeditor_view
     Qt5::Widgets
     kdstatemachineeditor_core
 )
+
+set(build_iface_dirs
+  ${CMAKE_CURRENT_SOURCE_DIR}/command
+)
+
 set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View)
 generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
 target_include_directories(kdstatemachineeditor_view
   # FIXME: It is recommended to use a relative path here.
   # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
-  INTERFACE "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
+  PUBLIC
+    "$<BUILD_INTERFACE:${build_iface_dirs}>"
+    # FIXME: It is recommended to use a relative path here.
+    # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
+    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
   PRIVATE ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
 )
 
@@ -71,9 +100,16 @@ install(TARGETS kdstatemachineeditor_view EXPORT KDSME_TARGETS ${INSTALL_TARGETS
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_view_export.h
 
+  abstractcontroller.h
+  commandcontroller.h
+  configurationcontroller.h
+  editcontroller.h
+
   widgets/propertyeditor.h
   widgets/statemachinepalettewidget.h
   widgets/statemachineview.h
   widgets/statemachinetoolbar.h
   DESTINATION ${INCLUDE_INSTALL_DIR}/view
 )
+
+add_subdirectory(tests)

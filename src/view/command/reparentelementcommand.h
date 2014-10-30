@@ -1,11 +1,11 @@
 /*
-  changestatemachinecommand.h
+  reparentelementcommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Sebastian Sauer <sebastian.sauer@kdab.com>
+  Author: Kevin Funk <kevin.funk@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,8 +22,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
-#define KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
+#ifndef KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
+#define KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
 
 #include "command.h"
 
@@ -31,31 +31,32 @@
 
 namespace KDSME {
 
+class Element;
 class View;
-class StateMachine;
 
-class KDSME_CORE_EXPORT ChangeStateMachineCommand : public Command
+class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
-    explicit ChangeStateMachineCommand(KDSME::View* view, QUndoCommand* parent = 0);
+    ReparentElementCommand(View* view, Element* element, QUndoCommand* parent = 0);
 
-    virtual int id() const { return ChangeStateMachine; }
+    virtual int id() const { return ReparentElement; }
 
-    KDSME::StateMachine* stateMachine() const;
-    void setStateMachine(KDSME::StateMachine* statemachine);
+    Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
 
     virtual void redo() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
 
-signals:
-    void stateMachineChanged(KDSME::StateMachine* statemachine);
-
 private:
     QPointer<View> m_view;
-    QPointer<StateMachine> m_oldStateMachine, m_newStateMachine;
+    QPointer<Element> m_element;
+
+    /// Whether this command is valid (ie. if redo/undo is doing something)
+    bool m_valid;
+
+    QPointer<Element> m_newParentElement;
+    QPointer<Element> m_oldParentElement;
 };
 
 }

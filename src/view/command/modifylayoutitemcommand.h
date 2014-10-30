@@ -35,7 +35,7 @@ namespace KDSME {
 
 class LayoutItem;
 
-class KDSME_CORE_EXPORT ModifyLayoutItemCommand : public Command
+class KDSME_VIEW_EXPORT ModifyLayoutItemCommand : public Command
 {
     Q_OBJECT
 

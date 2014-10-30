@@ -1,5 +1,5 @@
 /*
-  commandcontroller.h
+  editcontroller.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,35 +22,35 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMANDCONTROLLER_H
-#define KDSME_COMMANDCONTROLLER_H
+#ifndef KDSME_EDITCONTROLLER_H
+#define KDSME_EDITCONTROLLER_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
-#include <QObject>
-
-class QUndoCommand;
-class QUndoStack;
+#include "abstractcontroller.h"
 
 namespace KDSME {
-class Command;
-class State;
-class StateModel;
 
-class KDSME_CORE_EXPORT CommandController : public QObject
+class LayoutItem;
+
+class KDSME_VIEW_EXPORT EditController : public AbstractController
 {
     Q_OBJECT
-    Q_PROPERTY(QUndoStack* undoStack READ undoStack CONSTANT)
+    Q_PROPERTY(bool editModeEnabled READ editModeEnabled WRITE setEditModeEnabled NOTIFY editModeEnabledChanged)
 
 public:
-    explicit CommandController(QUndoStack* undoStack, QObject* parent = nullptr);
-    virtual ~CommandController();
+    explicit EditController(StateMachineView* parent = nullptr);
+    virtual ~EditController();
 
-    Q_INVOKABLE void push(KDSME::Command* command);
+    bool editModeEnabled() const;
+    void setEditModeEnabled(bool editModeEnabled);
 
-    void clear();
+public Q_SLOTS:
+    bool sendDragEnterEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
+    bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
 
-    QUndoStack* undoStack() const;
+Q_SIGNALS:
+    void editModeEnabledChanged(bool editModeEnabled);
 
 private:
     struct Private;
@@ -59,6 +59,4 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::CommandController*)
-
-#endif // COMMANDCONTROLLER_H
+#endif // EDITCONTROLLER_H

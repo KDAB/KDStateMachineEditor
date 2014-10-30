@@ -26,8 +26,8 @@
 
 #include "objecthelper.h"
 #include "kdsmeconstants.h"
-#include "commandcontroller.h"
-#include "command/modifypropertycommand.h"
+//#include "commandcontroller.h"
+//#include "command/modifypropertycommand.h"
 
 #include <QAbstractTransition>
 #include <QDebug>
@@ -119,8 +119,9 @@ bool StateModel::setData(const QModelIndex &index, const QVariant &value, int ro
         return false;
 
     if (role ==  Qt::EditRole) {
-        ModifyPropertyCommand *cmd = new ModifyPropertyCommand(element, "label", value);
-        d->m_commandController->undoStack()->push(cmd);
+        //ModifyPropertyCommand *cmd = new ModifyPropertyCommand(element, "label", value);
+        //d->m_commandController->undoStack()->push(cmd);
+        //FIXME: Move logic to view module
         emit dataChanged(index, index);
         return true;
     }

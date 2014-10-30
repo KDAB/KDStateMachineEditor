@@ -1,11 +1,11 @@
 /*
-  modifytransitionlayoutitemcommand.h
+  changestatemachinecommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Sebastian Sauer <sebastian.sauer@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,46 +22,42 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYTRANSITIONLAYOUTITEMCOMMAND_H
-#define KDSME_COMMAND_MODIFYTRANSITIONLAYOUTITEMCOMMAND_H
+#ifndef KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
+#define KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
 
 #include "command.h"
 
-#include <QPainterPath>
 #include <QPointer>
 
 namespace KDSME {
 
-class TransitionLayoutItem;
+class View;
+class StateMachine;
 
-class KDSME_CORE_EXPORT ModifyTransitionLayoutItemCommand : public Command
+class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
-    explicit ModifyTransitionLayoutItemCommand(TransitionLayoutItem* item, QUndoCommand* parent = nullptr);
+    explicit ChangeStateMachineCommand(KDSME::View* view, QUndoCommand* parent = 0);
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyTransitionLayoutItem; }
+    virtual int id() const { return ChangeStateMachine; }
+
+    KDSME::StateMachine* stateMachine() const;
+    void setStateMachine(KDSME::StateMachine* statemachine);
 
     virtual void redo() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
-    virtual bool mergeWith(const QUndoCommand* other) Q_DECL_OVERRIDE;
 
-    Q_INVOKABLE void setShape(const QPainterPath& path);
+signals:
+    void stateMachineChanged(KDSME::StateMachine* statemachine);
 
 private:
-    void updateText();
-
-    QPointer<TransitionLayoutItem> m_item;
-
-    enum Operation {
-        NoOperation,
-        SetShapeOperation
-    } m_operation;
-
-    QPainterPath m_shape, m_oldShape;
+    QPointer<View> m_view;
+    QPointer<StateMachine> m_oldStateMachine, m_newStateMachine;
 };
 
 }
 
-#endif // MODIFYTRANSITIONLAYOUTITEM_H
+#endif // REPARENTELEMENTCOMMAND_H

@@ -35,15 +35,6 @@ target_link_libraries(test_layoutitem
 )
 add_test(NAME test_layoutitem COMMAND test_layoutitem)
 
-add_executable(test_commands test_commands.cpp)
-target_link_libraries(test_commands
-  Qt5::Widgets
-  ${Qt5Test_LIBRARIES}
-  ${KDSME_TESTHELPER_EXTRA_LIBS}
-  kdstatemachineeditor_core
-)
-add_test(NAME test_commands COMMAND test_commands)
-
 add_executable(test_models test_models.cpp)
 target_link_libraries(test_models
   Qt5::Gui

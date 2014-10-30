@@ -1,5 +1,5 @@
 /*
-  modifypropertycommand.h
+  command.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,40 +22,50 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
-#define KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
+#ifndef KDSME_COMMAND_COMMAND_H
+#define KDSME_COMMAND_COMMAND_H
 
-#include "command.h"
+#include "kdsme_view_export.h"
 
-#include <QHash>
-#include <QPointer>
-
-class QJsonObject;
-class QVariant;
+#include <QUndoCommand>
 
 namespace KDSME {
+class StateModel;
 
-class KDSME_CORE_EXPORT ModifyPropertyCommand : public KDSME::Command
+class KDSME_VIEW_EXPORT Command : public QObject, public QUndoCommand
 {
     Q_OBJECT
 
 public:
-    ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = 0);
-    ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = 0);
+    enum Id {
+        CreateElement = 0,
+        DeleteElement,
+        LayoutSnapshot,
+        ModifyProperty,
+        ModifyInitialState,
+        ModifyDefaultState,
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyProperty; }
+        ReparentElement,
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+        ModifyTransition,
+
+        ModifyLayoutItem,
+        ModifyTransitionLayoutItem,
+
+        ChangeStateMachine
+    };
+
+    explicit Command(StateModel* model, QUndoCommand* parent = nullptr);
+    explicit Command(const QString& text = QString(), QUndoCommand* parent = nullptr);
+
+    StateModel* model() const;
 
 private:
-    void init();
-
-    QPointer<QObject> m_object;
-    QHash<QByteArray, QVariant> m_propertyMap;
-    QHash<QByteArray, QVariant> m_oldPropertyMap;
+    StateModel* m_model;
 };
 
 }
 
-#endif // MODIFYPROPERTYCOMMAND_H
+Q_DECLARE_METATYPE(KDSME::Command*)
+
+#endif // COMMAND_H

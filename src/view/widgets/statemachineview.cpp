@@ -56,8 +56,6 @@
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickView>
-#include <QJsonDocument>
-#include <QJsonObject>
 
 using namespace KDSME;
 
@@ -203,8 +201,6 @@ void StateMachineView::setView(View* view)
         connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
     }
 
-    d->m_configurationController->setView(d->m_view);
-
     emit viewChanged(d->m_view);
 }
 
@@ -266,129 +262,6 @@ void StateMachineView::deleteElement(KDSME::Element *element)
     commandController()->push(cmd);
 }
 
-bool StateMachineView::sendDragEnterEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
-{
-    Q_UNUSED(pos);
-
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
-
-    // For the case a TransitionLayoutItem is dragged onto a StateLayoutItem that
-    // StateLayoutItem will turns into the new source/target of the transition.
-    if (qobject_cast<TransitionLayoutItem*>(sender)) {
-        return qobject_cast<StateLayoutItem*>(target);
-    }
-
-    // No sender means we expect a URL to be given.
-    if (urls.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "No urls";
-        return false;
-    }
-
-    // we only accept one item only for now
-    const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
-        return false;
-    }
-
-    return true;
-}
-
-bool StateMachineView::sendDropEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
-{
-    Q_UNUSED(sender);
-    Q_UNUSED(pos);
-
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
-
-    if (urls.isEmpty()) {
-        qDebug()<< Q_FUNC_INFO << "No urls";
-        return false;
-    }
-
-    // we only accept one item only for now
-    const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
-        return false;
-    }
-
-    const QString str = url.toString(QUrl::RemoveScheme);
-    const QString typeString = str.split('/').last();
-    if (typeString.isEmpty())
-        return false;
-
-    Element::Type type = Element::stringToType(qPrintable(typeString));
-
-    // TODO should we probably either move that command to kdstatemachine/commands
-    // for reuse or even extend the existing CreateElementCommand to set optionally
-    // an initial position/geometry?
-    class CreateAndPositionCommand : public Command {
-    public:
-        CreateAndPositionCommand(View *view, Element::Type type, Element *targetElement, const QPointF &pos)
-            : Command(view->stateModel())
-            , m_view(view)
-            , m_createcmd(new CreateElementCommand(view->stateModel(), type))
-            , m_pos(pos)
-        {
-            m_createcmd->setParentElement(targetElement);
-            setText(m_createcmd->text());
-        }
-        virtual void redo()
-        {
-            // save the current layout
-            Q_ASSERT(m_view->rootLayoutItem());
-            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootLayoutItem()));
-
-            m_createcmd->redo();
-
-            Element *element = m_createcmd->createdElement();
-            if (!element) // creating the element failed, abort here
-                return;
-
-            // re-import is needed so the newly created element gets a LayoutItem
-            m_view->import();
-
-            // restore the previous layout
-            Q_ASSERT(m_view->rootLayoutItem());
-            LayoutImportExport::importLayout(doc.object(), m_view->rootLayoutItem());
-
-            // move the new element to its position and set a sane initial size
-            LayoutItem* layoutitem = m_view->layoutItemForElement(element);
-            Q_ASSERT(layoutitem);
-            ModifyLayoutItemCommand poscmd(layoutitem);
-            QPointF pos = m_pos;
-            QSizeF size = layoutitem->preferredSize();
-            if (size.width() > 0)
-                pos.setX(qMax<qreal>(0, pos.x() - size.width()/2));
-            if (size.height() > 0)
-                pos.setY(qMax<qreal>(0, pos.y() - size.height()/2));
-            poscmd.setGeometry(QRectF(pos, size));
-            poscmd.redo();
-
-            // TODO this rearranges the just created and positioned element, why?
-            //m_view->layout();
-
-            // Mark the new LayoutItem as current one what means the item is selected
-            // as if a user clicked on it.
-            m_view->setCurrentItem(layoutitem);
-        }
-        virtual void undo() {
-            m_createcmd->undo();
-        }
-    private:
-        View *m_view;
-        QScopedPointer<CreateElementCommand> m_createcmd;
-        QPointF m_pos;
-    };
-
-    Element *targetElement = target ? target->element() : 0;
-    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(d->m_view, type, targetElement, QPointF(pos));
-    commandController()->push(cmd);
-
-    return true;
-}
-
 qreal StateMachineView::zoom() const
 {
     QQuickItem* scene = sceneObject();
@@ -439,6 +312,12 @@ void StateMachineView::fitInView(const QRectF& rect)
     QQuickItem* scene = sceneObject();
     const qreal scale = scene->scale() * qMin(horizontalScale, verticalScale);
     scene->setScale(scale);
+}
+
+void StateMachineView::sendCommand(Command* cmd)
+{
+    Q_ASSERT(commandController());
+    commandController()->undoStack()->push(cmd);
 }
 
 #include "moc_statemachineview.cpp"

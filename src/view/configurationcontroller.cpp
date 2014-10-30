@@ -78,8 +78,8 @@ void ConfigurationController::Private::updateActiveRegion()
     emit q->activeRegionChanged(m_activeRegion);
 }
 
-ConfigurationController::ConfigurationController(QObject* parent)
-    : QObject(parent)
+ConfigurationController::ConfigurationController(StateMachineView* parent)
+    : AbstractController(parent)
     , d(new Private(this))
 {
     qRegisterMetaType<QSet<State*>>();
@@ -87,20 +87,6 @@ ConfigurationController::ConfigurationController(QObject* parent)
 
 ConfigurationController::~ConfigurationController()
 {
-}
-
-View* ConfigurationController::view() const
-{
-    return d->m_view;
-}
-
-void ConfigurationController::setView(View* view)
-{
-    if (d->m_view == view)
-        return;
-
-    d->m_view = view;
-    emit viewChanged(d->m_view);
 }
 
 int ConfigurationController::historySize() const

@@ -31,6 +31,7 @@
 
 namespace KDSME {
 
+class Command;
 class EditController;
 class CommandController;
 class ConfigurationController;
@@ -58,12 +59,11 @@ public:
     ConfigurationController* configurationController() const;
     EditController* editController() const;
 
+    Q_INVOKABLE void sendCommand(KDSME::Command* cmd);
+
     Q_INVOKABLE qreal zoom() const;
     Q_INVOKABLE void setZoom(qreal value);
     Q_INVOKABLE void fitInView(const QRectF& rect = QRectF());
-
-    Q_INVOKABLE bool sendDragEnterEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
-    Q_INVOKABLE bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
 
     Q_INVOKABLE void changeStateMachine(KDSME::StateMachine *stateMachine);
     Q_INVOKABLE void deleteElement(KDSME::Element *element);

@@ -1,5 +1,5 @@
 /*
-  layoutsnapshotcommand.h
+  abstractcontroller.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,34 +22,33 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
-#define KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
+#ifndef KDSME_ABSTRACTCONTROLLER_H
+#define KDSME_ABSTRACTCONTROLLER_H
 
-#include "command.h"
+#include "kdsme_view_export.h"
 
-#include <QPointer>
+#include <QObject>
 
 namespace KDSME {
 
-class View;
+class StateMachineView;
 
-class KDSME_CORE_EXPORT LayoutSnapshotCommand : public KDSME::Command
+class KDSME_VIEW_EXPORT AbstractController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::StateMachineView* stateMachineView READ stateMachineView CONSTANT)
 
 public:
-    explicit LayoutSnapshotCommand(View* view, QUndoCommand* parent = nullptr);
-    LayoutSnapshotCommand(View* view, const QString& text, QUndoCommand* parent = 0);
+    AbstractController(StateMachineView* view);
+    virtual ~AbstractController();
 
-    virtual int id() const Q_DECL_OVERRIDE { return LayoutSnapshot; }
-
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    StateMachineView* stateMachineView() const;
 
 private:
-    QPointer<View> m_view;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
 
-#endif // LAYOUTCHANGECOMMAND_H
+#endif // ABSTRACTCONTROLLER_H

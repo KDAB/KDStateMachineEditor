@@ -1,5 +1,5 @@
 /*
-  commandcontroller.cpp
+  deleteelementcommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,54 +22,42 @@
   clear to you.
 */
 
-#include "commandcontroller.h"
+#ifndef KDSME_COMMAND_DELETEELEMENTCOMMAND_H
+#define KDSME_COMMAND_DELETEELEMENTCOMMAND_H
 
 #include "command.h"
 #include "element.h"
 
-#include <QQmlEngine>
+#include <QPointer>
+#include <QJsonObject>
 
-using namespace KDSME;
+namespace KDSME {
 
-struct CommandController::Private
+class View;
+
+class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
 {
-    Private();
+    Q_OBJECT
 
-    QUndoStack* m_undoStack;
+public:
+    explicit DeleteElementCommand(View* view, Element* deletedElement, QUndoCommand* parent = nullptr);
+    virtual ~DeleteElementCommand();
+
+    virtual int id() const Q_DECL_OVERRIDE { return DeleteElement; }
+
+    virtual void redo() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+
+private:
+    void updateText();
+
+    QPointer<View> m_view;
+    int m_index;
+    QJsonObject m_layout;
+    QPointer<Element> m_parentElement;
+    QPointer<Element> m_deletedElement;
 };
 
-CommandController::Private::Private()
-    : m_undoStack(nullptr)
-{
 }
 
-CommandController::CommandController(QUndoStack* undoStack, QObject* parent)
-    : QObject(parent)
-    , d(new Private)
-{
-    d->m_undoStack = undoStack;
-    Q_ASSERT(d->m_undoStack);
-
-    qRegisterMetaType<Command*>();
-}
-
-CommandController::~CommandController()
-{
-}
-
-QUndoStack* CommandController::undoStack() const
-{
-    return d->m_undoStack;
-}
-
-void CommandController::push(KDSME::Command* command)
-{
-    Q_ASSERT(command);
-    QQmlEngine::setObjectOwnership(command, QQmlEngine::CppOwnership); // transfer ownership
-    d->m_undoStack->push(command);
-}
-
-void CommandController::clear()
-{
-    d->m_undoStack->clear();
-}
+#endif

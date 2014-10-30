@@ -1,5 +1,5 @@
 /*
-  deleteelementcommand.h
+  createelementcommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,40 +22,49 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_DELETEELEMENTCOMMAND_H
-#define KDSME_COMMAND_DELETEELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_CREATEELEMENTCOMMAND_H
+#define KDSME_COMMAND_CREATEELEMENTCOMMAND_H
 
 #include "command.h"
 #include "element.h"
 
-#include <QPointer>
-#include <QJsonObject>
-
 namespace KDSME {
 
-class View;
-
-class KDSME_CORE_EXPORT DeleteElementCommand : public Command
+class KDSME_VIEW_EXPORT CreateElementCommand : public Command
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::Element* parentElement READ parentElement WRITE setParentElement NOTIFY parentElementChanged)
+    Q_PROPERTY(KDSME::Element::Type type READ type WRITE setType NOTIFY typeChanged)
 
 public:
-    explicit DeleteElementCommand(View* view, Element* deletedElement, QUndoCommand* parent = nullptr);
-    virtual ~DeleteElementCommand();
+    explicit CreateElementCommand(StateModel* model = nullptr,
+				  Element::Type type = Element::ElementType,
+				  QUndoCommand* parent = nullptr);
 
-    virtual int id() const Q_DECL_OVERRIDE { return DeleteElement; }
+    Element* parentElement() const;
+    void setParentElement(Element* parentElement);
+
+    Element::Type type() const;
+    void setType(Element::Type type);
+
+    Element* createdElement() const;
+
+    virtual int id() const Q_DECL_OVERRIDE { return CreateElement; }
 
     virtual void redo() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
 
+Q_SIGNALS:
+    void parentElementChanged(Element* parentElement);
+    void typeChanged(Element::Type type);
+
 private:
     void updateText();
 
-    QPointer<View> m_view;
-    int m_index;
-    QJsonObject m_layout;
-    QPointer<Element> m_parentElement;
-    QPointer<Element> m_deletedElement;
+    Element* m_parentElement;
+    Element::Type m_type;
+
+    Element* m_createdElement;
 };
 
 }

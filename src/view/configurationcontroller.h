@@ -25,11 +25,11 @@
 #ifndef KDSME_CONFIGURATIONCONTROLLER_H
 #define KDSME_CONFIGURATIONCONTROLLER_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
+#include "abstractcontroller.h"
 #include "ringbuffer.h"
 
-#include <QObject>
 #include <QRectF>
 #include <QSet>
 
@@ -39,10 +39,9 @@ class State;
 class Transition;
 class View;
 
-class KDSME_CORE_EXPORT ConfigurationController : public QObject
+class KDSME_VIEW_EXPORT ConfigurationController : public AbstractController
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::View* view READ view WRITE setView NOTIFY viewChanged)
     Q_PROPERTY(QSet<KDSME::State*> activeConfiguration READ activeConfiguration WRITE setActiveConfiguration NOTIFY activeConfigurationChanged)
     Q_PROPERTY(KDSME::Transition* lastTransition READ lastTransition WRITE setLastTransition NOTIFY lastTransitionChanged)
     Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged)
@@ -51,11 +50,8 @@ class KDSME_CORE_EXPORT ConfigurationController : public QObject
 public:
     typedef QSet<State*> Configuration;
 
-    explicit ConfigurationController(QObject* parent = nullptr);
+    explicit ConfigurationController(StateMachineView* parent);
     virtual ~ConfigurationController();
-
-    View* view() const;
-    void setView(View* view);
 
     Configuration activeConfiguration() const;
     QList<Configuration> lastConfigurations() const;
@@ -79,7 +75,6 @@ public:
     void clear();
 
 Q_SIGNALS:
-    void viewChanged(View* view);
     void activeConfigurationChanged(const QSet<State*>& configuration);
     void lastTransitionChanged(Transition* transition);
     void isRunningChanged(bool isRunning);

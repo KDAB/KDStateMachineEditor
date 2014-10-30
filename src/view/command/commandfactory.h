@@ -25,7 +25,7 @@
 #ifndef KDSME_COMMAND_COMMANDFACTORY_H
 #define KDSME_COMMAND_COMMANDFACTORY_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
 #include "element.h"
 
@@ -47,7 +47,7 @@ class StateModel;
 class TransitionLayoutItem;
 class View;
 
-class KDSME_CORE_EXPORT CommandFactory : public QObject
+class KDSME_VIEW_EXPORT CommandFactory : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateModel* model READ model WRITE setModel NOTIFY modelChanged)

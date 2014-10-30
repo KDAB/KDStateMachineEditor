@@ -38,14 +38,14 @@ DropArea {
     onEntered: {
         var sender = drag.source.dragData != undefined ? drag.source.dragData.item : null;
         var target = item
-        if (!_quickView.sendDragEnterEvent(sender, item, Qt.point(drag.x, drag.y), drag.urls)) {
+        if (!_quickView.editController.sendDragEnterEvent(sender, item, Qt.point(drag.x, drag.y), drag.urls)) {
             drag.accepted = false
         }
     }
 
     onDropped: {
         var sender = drop.source.dragData != undefined ? drop.source.dragData.item : null;
-        if (!_quickView.sendDropEvent(sender, item, Qt.point(drop.x, drop.y), drop.urls)) {
+        if (!_quickView.editController.sendDropEvent(sender, item, Qt.point(drop.x, drop.y), drop.urls)) {
             drop.accepted = false
         }
     }

@@ -1,5 +1,5 @@
 /*
-  command.h
+  commandcontroller.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,50 +22,43 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_COMMAND_H
-#define KDSME_COMMAND_COMMAND_H
+#ifndef KDSME_COMMANDCONTROLLER_H
+#define KDSME_COMMANDCONTROLLER_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
-#include <QUndoCommand>
+#include "abstractcontroller.h"
+
+class QUndoCommand;
+class QUndoStack;
 
 namespace KDSME {
+class Command;
+class State;
 class StateModel;
 
-class KDSME_CORE_EXPORT Command : public QObject, public QUndoCommand
+class KDSME_VIEW_EXPORT CommandController : public AbstractController
 {
     Q_OBJECT
+    Q_PROPERTY(QUndoStack* undoStack READ undoStack CONSTANT)
 
 public:
-    enum Id {
-        CreateElement = 0,
-        DeleteElement,
-        LayoutSnapshot,
-        ModifyProperty,
-        ModifyInitialState,
-        ModifyDefaultState,
+    explicit CommandController(QUndoStack* undoStack, StateMachineView* parent);
+    virtual ~CommandController();
 
-        ReparentElement,
+    Q_INVOKABLE void push(KDSME::Command* command);
 
-        ModifyTransition,
+    void clear();
 
-        ModifyLayoutItem,
-        ModifyTransitionLayoutItem,
-
-        ChangeStateMachine
-    };
-
-    explicit Command(StateModel* model, QUndoCommand* parent = nullptr);
-    explicit Command(const QString& text = QString(), QUndoCommand* parent = nullptr);
-
-    StateModel* model() const;
+    QUndoStack* undoStack() const;
 
 private:
-    StateModel* m_model;
+    struct Private;
+    QScopedPointer<Private> d;
 };
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Command*)
+Q_DECLARE_METATYPE(KDSME::CommandController*)
 
-#endif // COMMAND_H
+#endif // COMMANDCONTROLLER_H

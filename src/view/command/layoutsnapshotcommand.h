@@ -1,5 +1,5 @@
 /*
-  editcontroller.cpp
+  layoutsnapshotcommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,44 +22,34 @@
   clear to you.
 */
 
-#include "editcontroller.h"
+#ifndef KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
+#define KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
 
-using namespace KDSME;
+#include "command.h"
 
-struct EditController::Private
+#include <QPointer>
+
+namespace KDSME {
+
+class View;
+
+class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
 {
-    Private();
+    Q_OBJECT
 
-    bool m_editModeEnabled;
+public:
+    explicit LayoutSnapshotCommand(View* view, QUndoCommand* parent = nullptr);
+    LayoutSnapshotCommand(View* view, const QString& text, QUndoCommand* parent = 0);
+
+    virtual int id() const Q_DECL_OVERRIDE { return LayoutSnapshot; }
+
+    virtual void redo() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+
+private:
+    QPointer<View> m_view;
 };
 
-EditController::Private::Private()
-    : m_editModeEnabled(false)
-{
-
 }
 
-EditController::EditController(QObject* parent)
-    : QObject(parent)
-    , d(new Private)
-{
-}
-
-EditController::~EditController()
-{
-}
-
-bool EditController::editModeEnabled() const
-{
-    return d->m_editModeEnabled;
-}
-
-void EditController::setEditModeEnabled(bool editModeEnabled)
-{
-    if (d->m_editModeEnabled == editModeEnabled)
-        return;
-
-    d->m_editModeEnabled = editModeEnabled;
-    emit editModeEnabledChanged(d->m_editModeEnabled);
-}
-
+#endif // LAYOUTCHANGECOMMAND_H

@@ -27,6 +27,7 @@
 #include "configurationcontroller.h"
 #include "element.h"
 #include "layoutitemwalker.h"
+#include "widgets/statemachineview.h"
 #include "view.h"
 
 using namespace KDSME;
@@ -79,7 +80,8 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
     if (!m_enabled)
         return;
 
-    View* view = m_configurationController->view();
+    auto stateMachineView = m_configurationController->stateMachineView();
+    auto view = stateMachineView->view();
     StateLayoutItem* rootItem = view->rootLayoutItem();
     LayoutWalker walker(LayoutWalker::PreOrderTraversal);
     walker.walkChildren(rootItem, [&](LayoutItem* i) -> LayoutWalker::VisitResult {

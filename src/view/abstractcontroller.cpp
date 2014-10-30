@@ -1,5 +1,5 @@
 /*
-  editcontroller.h
+  abstractcontroller.cpp
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,35 +22,33 @@
   clear to you.
 */
 
-#ifndef KDSME_EDITCONTROLLER_H
-#define KDSME_EDITCONTROLLER_H
+#include "abstractcontroller.h"
 
-#include <QObject>
+#include "widgets/statemachineview.h"
 
-#include "kdsme_core_export.h"
+using namespace KDSME;
 
-namespace KDSME {
-
-class KDSME_CORE_EXPORT EditController : public QObject
+struct AbstractController::Private
 {
-    Q_OBJECT
-    Q_PROPERTY(bool editModeEnabled READ editModeEnabled WRITE setEditModeEnabled NOTIFY editModeEnabledChanged)
+    Private()
+        : m_view(nullptr)
+    {}
 
-public:
-    explicit EditController(QObject* parent = nullptr);
-    virtual ~EditController();
-
-    bool editModeEnabled() const;
-    void setEditModeEnabled(bool editModeEnabled);
-
-Q_SIGNALS:
-    void editModeEnabledChanged(bool editModeEnabled);
-
-private:
-    struct Private;
-    QScopedPointer<Private> d;
+    StateMachineView* m_view;
 };
 
+AbstractController::AbstractController(StateMachineView* parent)
+    : QObject(parent)
+    , d(new Private)
+{
+    d->m_view = parent;
 }
 
-#endif // EDITCONTROLLER_H
+AbstractController::~AbstractController()
+{
+}
+
+StateMachineView* AbstractController::stateMachineView() const
+{
+    return d->m_view;
+}

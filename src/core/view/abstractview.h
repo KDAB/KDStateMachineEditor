@@ -25,7 +25,7 @@
 #ifndef KDSME_VIEW_ABSTRACTVIEW_H
 #define KDSME_VIEW_ABSTRACTVIEW_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 
 #include <QObject>
 #include <QPointer>
@@ -40,7 +40,7 @@ namespace KDSME {
 /**
  * @brief QAbstractItemView-like class without actual visual representation (i.e. no dependency on QWidget)
  */
-class KDSME_CORE_EXPORT AbstractView : public QObject
+class KDSME_VIEW_EXPORT AbstractView : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)

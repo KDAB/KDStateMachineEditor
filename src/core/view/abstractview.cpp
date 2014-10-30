@@ -44,7 +44,6 @@ AbstractView::Private::Private()
     , m_editTriggers(NoEditTriggers)
     , m_state(NoState)
 {
-
 }
 
 AbstractView::AbstractView(QObject* parent)

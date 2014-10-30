@@ -1,5 +1,5 @@
 /*
-  ModifyDefaultStateCommand.h
+  modifyinitialstatecommand.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,8 +22,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
-#define KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_H
+#define KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_H
 
 #include "command.h"
 
@@ -32,25 +32,24 @@
 namespace KDSME {
 
 class State;
-class HistoryState;
 
-class KDSME_CORE_EXPORT ModifyDefaultStateCommand : public Command
+class KDSME_VIEW_EXPORT ModifyInitialStateCommand : public Command
 {
     Q_OBJECT
 public:
-    explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
-    ~ModifyDefaultStateCommand();
+    explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = nullptr);
+    ~ModifyInitialStateCommand();
 
     int id() const Q_DECL_OVERRIDE;
     void undo() Q_DECL_OVERRIDE;
     void redo() Q_DECL_OVERRIDE;
 
 private:
-    QPointer<HistoryState> m_state;
-    QPointer<State> m_defaultState;
-    QPointer<State> m_oldDefaultState;
+    QPointer<State> m_state;
+    QPointer<State> m_initialState;
+    QPointer<State> m_oldInitialState;
 };
 
 }
 
-#endif // KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#endif // KDSME_MODIFYINITIALSTATECOMMAND_H

@@ -26,7 +26,7 @@
 #ifndef KDSME_VIEW_VIEW_H
 #define KDSME_VIEW_VIEW_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_view_export.h"
 #include "abstractview.h"
 
 #include <QObject>
@@ -45,7 +45,7 @@ class Transition;
 class TransitionLayoutItem;
 class View;
 
-class KDSME_CORE_EXPORT View : public AbstractView
+class KDSME_VIEW_EXPORT View : public AbstractView
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)

@@ -34,7 +34,7 @@ namespace KDSME {
 class State;
 class Transition;
 
-class KDSME_CORE_EXPORT ModifyTransitionCommand : public Command
+class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
 {
     Q_OBJECT
 
