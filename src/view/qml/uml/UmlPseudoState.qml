@@ -32,7 +32,7 @@ import "qrc:///kdsme/qml/util"
 UmlElement {
     id: root
 
-    property int kind: item.element.kind
+    property int kind: item.kind
 
     Loader {
         id: loader

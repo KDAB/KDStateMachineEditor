@@ -32,14 +32,14 @@
 
 namespace KDSME {
 
-class TransitionLayoutItem;
+class Transition;
 
 class KDSME_VIEW_EXPORT ModifyTransitionLayoutItemCommand : public Command
 {
     Q_OBJECT
 
 public:
-    explicit ModifyTransitionLayoutItemCommand(TransitionLayoutItem* item, QUndoCommand* parent = nullptr);
+    explicit ModifyTransitionLayoutItemCommand(Transition* item, QUndoCommand* parent = nullptr);
 
     virtual int id() const Q_DECL_OVERRIDE { return ModifyTransitionLayoutItem; }
 
@@ -52,7 +52,7 @@ public:
 private:
     void updateText();
 
-    QPointer<TransitionLayoutItem> m_item;
+    QPointer<Transition> m_item;
 
     enum Operation {
         NoOperation,

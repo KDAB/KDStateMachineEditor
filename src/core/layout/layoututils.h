@@ -33,8 +33,8 @@ class QString;
 
 namespace KDSME {
 
-class LayoutItem;
-class StateLayoutItem;
+class Element;
+class State;
 
 class KDSME_CORE_EXPORT LayoutUtils
 {
@@ -42,9 +42,9 @@ public:
     static QSizeF sizeForLabel(const QString& label);
 
     /// Move all direct children of state @p state by offset @p offset
-    static bool moveInner(StateLayoutItem* state, const QPointF& offset);
+    static bool moveInner(State* state, const QPointF& offset);
 
-    static bool fixupLayout(StateLayoutItem* state);
+    static bool fixupLayout(State*);
 
     /**
      * Moves item @p item to the new parent @p parentItem
@@ -52,7 +52,7 @@ public:
      * Keeps the item at the same position as before, by translating its
      * KDSME::Item::pos to the new parent's coordinate system
      */
-    static bool moveToParent(LayoutItem* item, LayoutItem* parentItem);
+    static bool moveToParent(Element* item, Element* parentItem);
 };
 
 }

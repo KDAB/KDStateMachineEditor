@@ -25,7 +25,6 @@
 #include "element.h"
 
 #include "layoutimportexport.h"
-#include "layoutitem.h"
 #include "layoututils.h"
 
 #include <QDebug>
@@ -35,30 +34,30 @@ using namespace KDSME;
 
 namespace {
 
-void compare(const TransitionLayoutItem *obj1, const TransitionLayoutItem *obj2)
+void compare(const Transition *state1, const Transition *state2)
 {
-    QCOMPARE(obj1->pos(), obj2->pos());
-    QCOMPARE(obj1->labelBoundingRect(), obj2->labelBoundingRect());
-    QCOMPARE(obj1->shape(), obj2->shape());
+    QCOMPARE(state1->pos(), state2->pos());
+    QCOMPARE(state1->labelBoundingRect(), state2->labelBoundingRect());
+    QCOMPARE(state1->shape(), state2->shape());
 }
 
-void compare(const StateLayoutItem *obj1, const StateLayoutItem *obj2)
+void compare(const State *state1, const State *state2)
 {
-    QCOMPARE(obj1->element()->label(), obj2->element()->label());
-    QCOMPARE(obj1->pos(), obj2->pos());
-    QCOMPARE(obj1->width(), obj2->width());
-    QCOMPARE(obj1->height(), obj2->height());
+    QCOMPARE(state1->label(), state2->label());
+    QCOMPARE(state1->pos(), state2->pos());
+    QCOMPARE(state1->width(), state2->width());
+    QCOMPARE(state1->height(), state2->height());
 
-    auto copyChildren = obj2->childStates();
-    foreach (const StateLayoutItem *child, obj1->childStates()) {
-        auto copyChild = std::find_if(copyChildren.begin(), copyChildren.end(), [&child](StateLayoutItem *obj)->bool{return obj->element()->label() == child->element()->label();});
+    auto copyChildren = state2->childStates();
+    foreach (const State *child, state1->childStates()) {
+        auto copyChild = std::find_if(copyChildren.begin(), copyChildren.end(), [&child](State *state)->bool{return state->label() == child->label();});
         if (copyChild != copyChildren.end())
             compare(child, *copyChild);
     }
 
-    auto copyTransitions = obj2->transitions();
-    foreach (const TransitionLayoutItem *item, obj1->transitions()) {
-        auto copyTransition = std::find_if(copyTransitions.begin(), copyTransitions.end(), [&item](TransitionLayoutItem *obj)->bool{return obj->element()->label() == item->element()->label();});
+    auto copyTransitions = state2->transitions();
+    foreach (const Transition *item, state1->transitions()) {
+        auto copyTransition = std::find_if(copyTransitions.begin(), copyTransitions.end(), [&item](Transition *state)->bool{return state->label() == item->label();});
         if (copyTransition != copyTransitions.end()) {
             compare(item, *copyTransition);
         }
@@ -102,52 +101,42 @@ void LayoutInformationTest::testLayoutInformation()
     State rootState, copyState;
     rootState.setLabel("root");
     copyState.setLabel("root");
-    StateLayoutItem rootLayoutItem, copyLayoutItem;
-    rootLayoutItem.setElement(&rootState);
-    copyLayoutItem.setElement(&copyState);
-
-    rootLayoutItem.setPos(QPointF(123,456));
-    rootLayoutItem.setWidth(1.2);
-    rootLayoutItem.setHeight(3.4);
-    StateLayoutItem *lastState = nullptr;
-    StateLayoutItem *lastCopyState = nullptr;
+    rootState.setPos(QPointF(123,456));
+    rootState.setWidth(1.2);
+    rootState.setHeight(3.4);
+    State *lastState = nullptr;
+    State *lastCopyState = nullptr;
     for (int i = 0; i < 3 ; ++i) {
-        StateLayoutItem *obj = new StateLayoutItem(&rootLayoutItem);
-        obj->setElement(new State(&rootState));
-        obj->element()->setLabel(QString("obj %1").arg(i));
-        obj->setPos(QPointF(i, 10 * i));
-        obj->setWidth(100 + i);
-        obj->setHeight(50 + i);
+        State *state = new State();
+        state->setLabel(QString("state %1").arg(i));
+        state->setPos(QPointF(i, 10 * i));
+        state->setWidth(100 + i);
+        state->setHeight(50 + i);
         if (lastState) {
-            TransitionLayoutItem *transition = new TransitionLayoutItem(lastState);
-            Transition *t = new Transition(static_cast<State*>(lastState->element()));
-            t->setLabel(QString("trans %1").arg(i));
-            t->setTargetState(static_cast<State*>(obj->element()));
-            transition->setElement(t);
-            transition->setTargetState(obj);
+            Transition *transition = new Transition(lastState);
+            transition->setLabel(QString("trans %1").arg(i));
+            transition->setTargetState(static_cast<State*>(state));
+            transition->setTargetState(state);
             transition->setPos(QPointF(i * 10, i * 10));
             transition->setLabelBoundingRect(QRectF(10 + i, 10 + i * 10, 10 + i, 10 + i));
             transition->setShape(createPath(transition->pos()));
         }
-        lastState = obj;
+        lastState = state;
 
-        obj = new StateLayoutItem(&copyLayoutItem);
-        obj->setElement(new State(&copyState));
-        obj->element()->setLabel(QString("obj %1").arg(i));
+        state = new State();
+        state->setLabel(QString("state %1").arg(i));
         if (lastCopyState) {
-            TransitionLayoutItem *transition = new TransitionLayoutItem(lastCopyState);
-            Transition *t = new Transition(static_cast<State*>(lastCopyState->element()));
-            t->setLabel(QString("trans %1").arg(i));
-            t->setTargetState(static_cast<State*>(obj->element()));
-            transition->setElement(t);
-            transition->setTargetState(obj);
+            Transition *transition = new Transition(lastCopyState);
+            transition->setLabel(QString("trans %1").arg(i));
+            transition->setTargetState(static_cast<State*>(state));
+            transition->setTargetState(state);
         }
-        lastCopyState = obj;
+        lastCopyState = state;
     }
 
-    QJsonDocument doc(LayoutImportExport::exportLayout(&rootLayoutItem));
-    LayoutImportExport::importLayout(QJsonDocument::fromBinaryData(doc.toBinaryData()).object(), &copyLayoutItem);
-    compare(&rootLayoutItem, &copyLayoutItem);
+    QJsonDocument doc(LayoutImportExport::exportLayout(&rootState));
+    LayoutImportExport::importLayout(QJsonDocument::fromBinaryData(doc.toBinaryData()).object(), &copyState);
+    compare(&rootState, &copyState);
 }
 
 void LayoutInformationTest::testLayoutMatches()
@@ -156,31 +145,25 @@ void LayoutInformationTest::testLayoutMatches()
         // check switching label of an element
         State s1;
         s1.setLabel("s1");
-        StateLayoutItem i1;
-        i1.setElement(&s1);
 
-        QJsonDocument doc(LayoutImportExport::exportLayout(&i1));
-        QVERIFY(LayoutImportExport::matches(doc.object(), &i1));
+        QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
+        QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
         s1.setLabel("s2");
-        QVERIFY(!LayoutImportExport::matches(doc.object(), &i1));
+        QVERIFY(!LayoutImportExport::matches(doc.object(), &s1));
     }
     {
         // check keeping ids but turn them into another type (transition <-> state)
         State s1;
         s1.setLabel("s1");
-        StateLayoutItem si1;
-        si1.setElement(&s1);
 
         Transition t1(&s1);
         t1.setLabel("t1");
-        TransitionLayoutItem ti1;
-        ti1.setElement(&t1);
 
-        QJsonDocument doc(LayoutImportExport::exportLayout(&si1));
-        QVERIFY(LayoutImportExport::matches(doc.object(), &si1));
+        QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
+        QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
         s1.setLabel("t1");
         t1.setLabel("s1");
-        QVERIFY(!LayoutImportExport::matches(doc.object(), &si1));
+        QVERIFY(!LayoutImportExport::matches(doc.object(), &s1));
     }
 }
 

@@ -25,11 +25,10 @@
 #include "modifytransitionlayoutitemcommand.h"
 
 #include "element.h"
-#include "layoutitem.h"
 
 using namespace KDSME;
 
-ModifyTransitionLayoutItemCommand::ModifyTransitionLayoutItemCommand(TransitionLayoutItem* item, QUndoCommand* parent)
+ModifyTransitionLayoutItemCommand::ModifyTransitionLayoutItemCommand(Transition* item, QUndoCommand* parent)
     : Command(QString(), parent)
     , m_item(item)
     , m_operation(NoOperation)
@@ -89,10 +88,8 @@ void ModifyTransitionLayoutItemCommand::setShape(const QPainterPath& shape)
 
 void ModifyTransitionLayoutItemCommand::updateText()
 {
-    const QString itemLabel = m_item->element() ? m_item->element()->label() : tr("<Unknown>");
-
     if (m_operation == SetShapeOperation) {
-        setText(tr("Modify path of '%1'").arg(itemLabel));
+        setText(tr("Modify path of '%1'").arg(m_item->label()));
     }
 }
 

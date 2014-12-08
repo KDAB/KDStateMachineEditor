@@ -28,8 +28,6 @@
 #include "createelementcommand.h"
 #include "command.h"
 #include "element.h"
-#include "layoutitem.h"
-#include "layoutitemmodel.h"
 #include "layoutimportexport.h"
 #include "kdsmeconstants.h"
 #include "modifylayoutitemcommand.h"
@@ -52,7 +50,6 @@ struct EditController::Private
 EditController::Private::Private()
     : m_editModeEnabled(false)
 {
-
 }
 
 EditController::EditController(StateMachineView* parent)
@@ -79,16 +76,16 @@ void EditController::setEditModeEnabled(bool editModeEnabled)
     emit editModeEnabledChanged(d->m_editModeEnabled);
 }
 
-bool EditController::sendDragEnterEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
+bool EditController::sendDragEnterEvent(Element* sender, Element* target, const QPoint& pos, const QList<QUrl>& urls)
 {
     Q_UNUSED(pos);
 
     qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
-    // For the case a TransitionLayoutItem is dragged onto a StateLayoutItem that
-    // StateLayoutItem will turns into the new source/target of the transition.
-    if (qobject_cast<TransitionLayoutItem*>(sender)) {
-        return qobject_cast<StateLayoutItem*>(target);
+    // For the case a Transition is dragged onto a State that
+    // State will turns into the new source/target of the transition.
+    if (qobject_cast<Transition*>(sender)) {
+        return qobject_cast<State*>(target);
     }
 
     // No sender means we expect a URL to be given.
@@ -107,7 +104,7 @@ bool EditController::sendDragEnterEvent(LayoutItem* sender, LayoutItem* target, 
     return true;
 }
 
-bool EditController::sendDropEvent(LayoutItem* sender, LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls)
+bool EditController::sendDropEvent(Element* sender, Element* target, const QPoint& pos, const QList<QUrl>& urls)
 {
     Q_UNUSED(sender);
     Q_UNUSED(pos);
@@ -150,8 +147,8 @@ bool EditController::sendDropEvent(LayoutItem* sender, LayoutItem* target, const
         virtual void redo()
         {
             // save the current layout
-            Q_ASSERT(m_view->rootLayoutItem());
-            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootLayoutItem()));
+            Q_ASSERT(m_view->stateMachine());
+            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->stateMachine()));
 
             m_createcmd->redo();
 
@@ -159,19 +156,12 @@ bool EditController::sendDropEvent(LayoutItem* sender, LayoutItem* target, const
             if (!element) // creating the element failed, abort here
                 return;
 
-            // re-import is needed so the newly created element gets a LayoutItem
-            m_view->import();
-
-            // restore the previous layout
-            Q_ASSERT(m_view->rootLayoutItem());
-            LayoutImportExport::importLayout(doc.object(), m_view->rootLayoutItem());
+            LayoutImportExport::importLayout(doc.object(), m_view->stateMachine());
 
             // move the new element to its position and set a sane initial size
-            LayoutItem* layoutitem = m_view->layoutItemForElement(element);
-            Q_ASSERT(layoutitem);
-            ModifyLayoutItemCommand poscmd(layoutitem);
+            ModifyLayoutItemCommand poscmd(element);
             QPointF pos = m_pos;
-            QSizeF size = layoutitem->preferredSize();
+            QSizeF size = element->preferredSize();
             if (size.width() > 0)
                 pos.setX(qMax<qreal>(0, pos.x() - size.width()/2));
             if (size.height() > 0)
@@ -179,12 +169,9 @@ bool EditController::sendDropEvent(LayoutItem* sender, LayoutItem* target, const
             poscmd.setGeometry(QRectF(pos, size));
             poscmd.redo();
 
-            // TODO this rearranges the just created and positioned element, why?
-            //m_view->layout();
-
-            // Mark the new LayoutItem as current one what means the item is selected
+            // Mark the new Element as current one what means the item is selected
             // as if a user clicked on it.
-            m_view->setCurrentItem(layoutitem);
+            m_view->setCurrentItem(element);
         }
         virtual void undo() {
             m_createcmd->undo();
@@ -195,10 +182,9 @@ bool EditController::sendDropEvent(LayoutItem* sender, LayoutItem* target, const
         QPointF m_pos;
     };
 
-    Element *targetElement = target ? target->element() : 0;
     // TODO: Try to decouple more
     auto view = stateMachineView()->view();
-    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(view, type, targetElement, QPointF(pos));
+    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(view, type, target, QPointF(pos));
     stateMachineView()->sendCommand(cmd);
 
     return true;

@@ -31,14 +31,14 @@ class QJsonObject;
 
 namespace KDSME {
 
-class StateLayoutItem;
+class State;
 
 namespace LayoutImportExport
 {
-    KDSME_CORE_EXPORT bool matches(const QJsonObject& data, StateLayoutItem* rootItem);
+    KDSME_CORE_EXPORT bool matches(const QJsonObject& data, State* rootItem);
 
-    KDSME_CORE_EXPORT QJsonObject exportLayout(const StateLayoutItem* rootItem);
-    KDSME_CORE_EXPORT void importLayout(const QJsonObject& data, StateLayoutItem* rootItem);
+    KDSME_CORE_EXPORT QJsonObject exportLayout(const State* rootItem);
+    KDSME_CORE_EXPORT void importLayout(const QJsonObject& data, State* rootItem);
 }
 
 }

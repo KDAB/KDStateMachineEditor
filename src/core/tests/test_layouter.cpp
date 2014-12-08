@@ -27,13 +27,12 @@
 #include "util.h"
 
 #include "layouter.h"
-#include "layoutitem.h"
 #include "layerwiselayouter.h"
+#include "layoutproperties.h"
 #include "objecthelper.h"
 #include "parsehelper.h"
 #include "scxmlparser.h"
 #include "element.h"
-#include "view/view.h"
 
 #include <QtTest>
 #include <QFile>
@@ -42,8 +41,8 @@
 #define QVERIFY_RETURN(statement, retval) \
     do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
 
-using namespace ObjectHelper;
 using namespace KDSME;
+using namespace ObjectHelper;
 
 class LayouterTest : public QObject
 {
@@ -54,34 +53,34 @@ private Q_SLOTS:
     void testParallelState();
 
 private:
-    static void assertStatesHorizontallyAligned(const QList<StateLayoutItem*>& items, qreal epsilonY = 1.0)
+    static void assertStatesHorizontallyAligned(const QList<State*>& states, qreal epsilonY = 1.0)
     {
-        QVERIFY(!items.isEmpty());
-        const StateLayoutItem* reference = items[0];
+        QVERIFY(!states.isEmpty());
+        const State* reference = states[0];
 
         const qreal referenceCenterY = reference->pos().y() + reference->height()/2;
-        foreach (StateLayoutItem* item, items) {
+        foreach (State* item, states) {
             const qreal centerY = item->pos().y() + item->height()/2;
             QVERIFY2(qAbs(centerY - referenceCenterY) < epsilonY, "Not horizontally aligned");
         }
     }
 
-    static void assertStatesVerticallyAligned(const QList<StateLayoutItem*>& items, qreal epsilonX = 1.0)
+    static void assertStatesVerticallyAligned(const QList<State*>& states, qreal epsilonX = 1.0)
     {
-        QVERIFY(!items.isEmpty());
-        const StateLayoutItem* reference = items[0];
+        QVERIFY(!states.isEmpty());
+        const State* reference = states[0];
 
         const qreal referenceCenterX = reference->pos().x() + reference->width()/2;
-        foreach (StateLayoutItem* item, items) {
-            const qreal centerX = item->pos().x() + item->width()/2;
+        foreach (State* state, states) {
+            const qreal centerX = state->pos().x() + state->width()/2;
             QVERIFY2(qAbs(centerX - referenceCenterX) < epsilonX, "Not vertically aligned");
         }
     }
 
-    static void assertRegionContainsStates(StateLayoutItem* region, const QList<StateLayoutItem*> items)
+    static void assertRegionContainsStates(State* region, const QList<State*> states)
     {
         const QRectF rect = region->boundingRect();
-        foreach (StateLayoutItem* item, items) {
+        foreach (State* item, states) {
             QVERIFY(rect.contains(item->boundingRect()));
         }
     }
@@ -95,24 +94,11 @@ void LayouterTest::testBasicState()
     */
     QScopedPointer<StateMachine> machine(ParseHelper::parseFile("scxml/basicstate.scxml"));
 
-    View view;
-    view.setStateMachine(machine.data());
-    view.layout();
-
-    QList<LayoutItem*> layoutItems = view.layoutItems();
-    auto stateItems = copy_if_type<StateLayoutItem*>(layoutItems);
-    auto transitionItems = copy_if_type<TransitionLayoutItem*>(layoutItems);
-    QCOMPARE(stateItems.size(), 5);
-    //QCOMPARE(transitionItems.size(), 3);
-
-
-    StateLayoutItem* rootStateItem = qobject_cast<StateLayoutItem*>(view.rootLayoutItem());
-    QVERIFY(rootStateItem);
-    QCOMPARE(rootStateItem->element(), machine.data());
-    auto pureStateItems = filter(stateItems, [](const StateLayoutItem* item) { return qobject_cast<State*>(item->element())->isComposite(); });
-
-    assertStatesVerticallyAligned(pureStateItems);
-    assertRegionContainsStates(rootStateItem, pureStateItems);
+    auto elements = machine->findChildren<Element*>();
+    auto states = copy_if_type<State*>(elements);
+    auto transitions = copy_if_type<Transition*>(elements);
+    QCOMPARE(states.size(), 4);
+    //QCOMPARE(transitions.size(), 3);
 }
 
 void LayouterTest::testParallelState()
@@ -126,22 +112,18 @@ void LayouterTest::testParallelState()
     QScopedPointer<StateMachine> machine(ParseHelper::parseFile("scxml/parallelstate.scxml"));
     QVERIFY(machine);
 
-    View view;
-    view.setStateMachine(machine.data());
-    view.layout();
+    LayoutProperties properties;
+    LayerwiseLayouter layouter;
+    layouter.layout(machine.data(), &properties);
 
-    QList<LayoutItem*> layoutItems = view.layoutItems();
-    auto stateItems = copy_if_type<StateLayoutItem*>(layoutItems);
-    auto transitionItems = copy_if_type<TransitionLayoutItem*>(layoutItems);
-    QCOMPARE(stateItems.size(), 11);
-    QCOMPARE(transitionItems.size(), 5);
+    auto elements = machine->findChildren<Element*>();
+    auto states = copy_if_type<State*>(elements);
+    auto transitions = copy_if_type<Transition*>(elements);
+    QCOMPARE(states.size(), 10);
+    QCOMPARE(transitions.size(), 5);
+    auto pureStateItems = filter(states, [](const State* state) { return state->isComposite(); });
 
-    StateLayoutItem* rootStateItem = qobject_cast<StateLayoutItem*>(view.rootLayoutItem());
-    QVERIFY(rootStateItem);
-    QCOMPARE(rootStateItem->element(), machine.data());
-    auto pureStateItems = filter(stateItems, [](const StateLayoutItem* item) { return qobject_cast<State*>(item->element())->isComposite(); });
-
-    assertRegionContainsStates(rootStateItem, pureStateItems);
+    assertRegionContainsStates(machine.data(), pureStateItems);
 }
 
 QTEST_MAIN(LayouterTest)

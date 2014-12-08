@@ -68,12 +68,12 @@ UmlElement {
             commandController.push(cmd);
         }
         onDropped: {
-            var transition = root.item.element;
-            while (target && target.parent && (target.item == undefined || target.item.element == undefined)) { // find the state containing the drop area
+            var transition = root.item;
+            while (target && target.parent && (target.item == undefined || target.item == undefined)) { // find the state containing the drop area
                 target = target.parent;
             }
             // If target == null => reparent to root state (the state machine object)
-            var state = (target ? target.item.element : root.item.element.machine());
+            var state = (target ? target.item : root.item.machine());
             if (index == 0) {
                 if (transition.sourceState != state) {
                     var cmd = CommandFactory.reparentElement(view, transition);
@@ -136,7 +136,7 @@ UmlElement {
             height: labelRect.height
             color: Theme.transitionLabelFontColor
             font.italic: true
-            visible: item.element.sourceState.type != Element.PseudoStateType
+            visible: item.sourceState.type != Element.PseudoStateType
                 && labelRect.height > 0 && root.name != ""
 
             text: root.name

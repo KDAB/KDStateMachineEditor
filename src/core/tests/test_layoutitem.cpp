@@ -22,14 +22,14 @@
   clear to you.
 */
 
-#include "layoutitem.h"
+#include "element.h"
 #include "layout/layoututils.h"
 
 #include <QtTest>
 
 using namespace KDSME;
 
-class LayoutItemTest : public QObject
+class ElementTest : public QObject
 {
     Q_OBJECT
 
@@ -39,15 +39,15 @@ private Q_SLOTS:
     void testLayoutUtils_moveToParent();
 };
 
-void LayoutItemTest::testAbsolutePos()
+void ElementTest::testAbsolutePos()
 {
-    LayoutItem i1;
+    Element i1;
     const QPointF i1Pos = QPointF(5, 5);
     i1.setPos(i1Pos);
     QCOMPARE(i1.pos(), i1Pos);
     QCOMPARE(i1.absolutePos(), i1Pos);
 
-    LayoutItem parent;
+    Element parent;
     parent.setPos(QPointF(10, 10));
     i1.setParent(&parent);
     QCOMPARE(i1.pos(), QPointF(5, 5));
@@ -56,15 +56,15 @@ void LayoutItemTest::testAbsolutePos()
     i1.setParent(nullptr);
 }
 
-void LayoutItemTest::testLayoutUtils_moveToParent()
+void ElementTest::testLayoutUtils_moveToParent()
 {
-    LayoutItem i1;
+    Element i1;
     const QPointF i1Pos = QPointF(5, 5);
     i1.setPos(i1Pos);
     QCOMPARE(i1.pos(), i1Pos);
     QCOMPARE(i1.absolutePos(), i1Pos);
 
-    LayoutItem parent;
+    Element parent;
     parent.setPos(QPointF(10, 10));
     LayoutUtils::moveToParent(&i1, &parent);
     QCOMPARE(i1.pos(), QPointF(-5, -5));
@@ -74,6 +74,6 @@ void LayoutItemTest::testLayoutUtils_moveToParent()
     i1.setParent(nullptr);
 }
 
-QTEST_MAIN(LayoutItemTest)
+QTEST_MAIN(ElementTest)
 
 #include "test_layoutitem.moc"

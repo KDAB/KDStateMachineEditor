@@ -35,20 +35,19 @@
 #include "command/modifylayoutitemcommand.h"
 #include "common/metatypedeclarations.h"
 #include "editcontroller.h"
+#include "layoutimportexport.h"
 #include "quick/quickpainterpath.h"
 #include "quick/quickpen.h"
 #include "quick/quickprimitiveitem.h"
 #include "quick/quickmaskedmousearea.h"
 #include "quick/quickkdsmeglobal.h"
+#include "quick/quickrecursiveinstantiator.h"
 #include "element.h"
 #include "elementmodel.h"
-#include "layoutitem.h"
-#include "layoutitemmodel.h"
 #include "layoutproperties.h"
-#include "layoutimportexport.h"
 #include "semanticzoommanager.h"
 #include "kdsmeconstants.h"
-#include "view/view.h"
+#include "view.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -100,8 +99,6 @@ struct StateMachineView::Private
 
     QRectF adjustedViewRect();
 
-    // slots
-    void onRootLayoutItemChanged(KDSME::LayoutItem* root);
     void onStateMachineChanged(KDSME::StateMachine* stateMachine);
 };
 
@@ -123,40 +120,41 @@ StateMachineView::StateMachineView(QWidget* parent)
     qRegisterMetaType<Qt::PenStyle>();
     qRegisterMetaType<CommandController*>();
 
-    qRegisterMetaType<QAbstractItemModel*>();
-    qRegisterMetaType<LayoutItem*>("LayoutItem");
     qRegisterMetaType<LayoutProperties*>();
-    qRegisterMetaType<StateLayoutItem*>();
-    qRegisterMetaType<TransitionLayoutItem*>();
+    qRegisterMetaType<State*>();
+    qRegisterMetaType<Transition*>();
     qRegisterMetaType<Element*>();
     qRegisterMetaType<Element::Type>();
     qRegisterMetaType<State*>();
     qRegisterMetaType<StateMachine*>();
+    qRegisterMetaType<StateModel*>();
+    qRegisterMetaType<ObjectTreeModel*>();
     qRegisterMetaType<AbstractView::ViewState>();
     qRegisterMetaType<GLenum>();
+    qRegisterMetaType<ObjectTreeModel*>();
 
     // creatable types
+    qmlRegisterType<QAbstractItemModel>();
     qmlRegisterType<QuickMaskedMouseArea>(KDSME_QML_NAMESPACE, 1, 0, "MaskedMouseArea");
     qmlRegisterType<QuickPainterPath>(KDSME_QML_NAMESPACE, 1, 0, "PainterPath");
     qmlRegisterType<QuickPainterPathGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathGeometry");
     qmlRegisterType<QuickPen>(KDSME_QML_NAMESPACE, 1, 0, "Pen");
     qmlRegisterType<QuickGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "Geometry");
     qmlRegisterType<QuickPrimitiveItem>(KDSME_QML_NAMESPACE, 1, 0, "Primitive");
-    qmlRegisterType<LayoutItemModel>(KDSME_QML_NAMESPACE, 1, 0, "LayoutInformationModel");
+    qmlRegisterType<QuickRecursiveInstantiator>(KDSME_QML_NAMESPACE, 1, 0, "RecursiveInstantiator");
     qmlRegisterType<PainterPathMask>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathMask");
     qmlRegisterType<SemanticZoomManager>(KDSME_QML_NAMESPACE, 1, 0, "SemanticZoomManager");
+    qmlRegisterType<View>(KDSME_QML_NAMESPACE, 1, 0, "View");
 
     qmlRegisterUncreatableType<AbstractMask>(KDSME_QML_NAMESPACE, 1, 0, "AbstractMask", "Access to object");
     qmlRegisterUncreatableType<AbstractView>(KDSME_QML_NAMESPACE, 1, 0, "AbstractView", "Access to object");
     qmlRegisterUncreatableType<EditController>(KDSME_QML_NAMESPACE, 1, 0, "EditController", "Access to object");
     qmlRegisterUncreatableType<CommandController>(KDSME_QML_NAMESPACE, 1, 0, "CommandController", "Access to object");
     qmlRegisterUncreatableType<ConfigurationController>(KDSME_QML_NAMESPACE, 1, 0, "ConfigurationController", "Access to object");
-    qmlRegisterUncreatableType<LayoutItem>(KDSME_QML_NAMESPACE, 1, 0, "LayoutItem", "Access to object");
-    qmlRegisterUncreatableType<View>(KDSME_QML_NAMESPACE, 1, 0, "View", "Access to object");
-    qmlRegisterUncreatableType<StateModel>(KDSME_QML_NAMESPACE, 1, 0, "StateModel", "Access to object");
     qmlRegisterUncreatableType<Element>(KDSME_QML_NAMESPACE, 1, 0, "Element", "Access to object");
     qmlRegisterUncreatableType<HistoryState>(KDSME_QML_NAMESPACE, 1, 0, "HistoryState", "Access to object");
     qmlRegisterUncreatableType<PseudoState>(KDSME_QML_NAMESPACE, 1, 0, "PseudoState", "Access to object");
+    qmlRegisterUncreatableType<State>(KDSME_QML_NAMESPACE, 1, 0, "State", "Access to object");
     qmlRegisterUncreatableType<Transition>(KDSME_QML_NAMESPACE, 1, 0, "Transition", "Access to object");
 
     // singletons
@@ -197,7 +195,6 @@ void StateMachineView::setView(View* view)
     }
     d->m_view = view;
     if (d->m_view) {
-        connect(d->m_view, SIGNAL(rootLayoutItemChanged(KDSME::LayoutItem*)), this, SLOT(onRootLayoutItemChanged(KDSME::LayoutItem*)));
         connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
     }
 
@@ -231,11 +228,6 @@ QQuickItem* StateMachineView::sceneObject() const
     QQuickItem* item = rootObject()->findChild<QQuickItem*>("stateMachineScene");
     Q_ASSERT(item);
     return item;
-}
-
-void StateMachineView::Private::onRootLayoutItemChanged(KDSME::LayoutItem* root)
-{
-    Q_UNUSED(root);
 }
 
 void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine* stateMachine)

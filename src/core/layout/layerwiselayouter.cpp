@@ -28,12 +28,10 @@
 
 #include "graphvizlayout/graphvizlayerlayouter.h"
 #include "graphvizlayout/graphvizlayouter.h"
-#include "layoutitem.h"
 #include "layoutproperties.h"
 #include "layoututils.h"
-#include "layoutitemwalker.h"
+#include "elementwalker.h"
 #include "element.h"
-#include "view/view.h"
 
 #include <QDebug>
 #include <QElapsedTimer>
@@ -44,7 +42,7 @@ using namespace KDSME;
 
 namespace {
 
-QRectF boundingRectForCollapsedRegion(StateLayoutItem* state, View* view)
+QRectF boundingRectForCollapsedRegion(State* state, const LayoutProperties* prop)
 {
     static const QRectF minimumSize(0, 0, 100, 20);
 
@@ -53,13 +51,12 @@ QRectF boundingRectForCollapsedRegion(StateLayoutItem* state, View* view)
         return minimumSize;
     }
 
-    const LayoutProperties& prop = *(view->layoutProperties());
-    const QString label = state->element()->label();
-    const QFontMetricsF fm(prop.regionLabelFont());
+    const QString label = state->label();
+    const QFontMetricsF fm(prop->regionLabelFont());
     const qreal width = fm.width(label);
     const qreal height = fm.height();
-    const qreal margin = prop.regionLabelMargins();
-    return QRectF(0, 0, width + prop.regionLabelButtonBoxSize().width() + 2*margin, height + 2*margin);
+    const qreal margin = prop->regionLabelMargins();
+    return QRectF(0, 0, width + prop->regionLabelButtonBoxSize().width() + 2*margin, height + 2*margin);
 }
 
 }
@@ -69,7 +66,7 @@ RegionLayouter::RegionLayouter(QObject* parent)
 {
 }
 
-void RegionLayouter::layoutRegion(StateLayoutItem* state, const QRectF& boundingRectHint, View* view)
+void RegionLayouter::layoutRegion(State* state, const QRectF& boundingRectHint, const LayoutProperties* properties)
 {
     Q_ASSERT(state);
     if (state->childStates().isEmpty()) {
@@ -80,12 +77,10 @@ void RegionLayouter::layoutRegion(StateLayoutItem* state, const QRectF& bounding
     Q_ASSERT(!boundingRectHint.isEmpty());
     const QRectF boundingRect = boundingRectHint;
 
-    const LayoutProperties& properties = *(view->layoutProperties());
-
-    const qreal fontHeight = properties.regionLabelFont().pointSizeF();
-    const qreal regionLabelMargin = properties.regionMargins();
+    const qreal fontHeight = properties->regionLabelFont().pointSizeF();
+    const qreal regionLabelMargin = properties->regionMargins();
     const qreal regionLabelHeight = regionLabelMargin + fontHeight + regionLabelMargin;
-    const qreal innerMargin = properties.regionMargins();
+    const qreal innerMargin = properties->regionMargins();
 
     const QPointF offset = QPointF(innerMargin, innerMargin + regionLabelHeight);
     state->setWidth(boundingRect.width() + 2*innerMargin);
@@ -101,19 +96,19 @@ LayerwiseLayouter::LayerwiseLayouter(QObject* parent)
     , m_layerLayouter(nullptr)
 #endif
     , m_regionLayouter(new RegionLayouter(this))
-    , m_view(0)
+    , m_properties(nullptr)
 {
 }
 
-QRectF LayerwiseLayouter::layout(StateLayoutItem* state, View* view)
+QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* properties)
 {
     Q_ASSERT(state);
-    m_view = view;
+    m_properties = properties;
 
     QElapsedTimer timer;
     timer.start();
 
-    LayoutWalker walker(LayoutWalker::PostOrderTraversal);
+    ElementWalker walker(ElementWalker::PostOrderTraversal);
     walker.walkItems(state, std::bind(&LayerwiseLayouter::layoutState, this, std::placeholders::_1));
 
     qDebug() << Q_FUNC_INFO << "Took" << timer.elapsed() << "ms";
@@ -121,26 +116,26 @@ QRectF LayerwiseLayouter::layout(StateLayoutItem* state, View* view)
     return QRect();
 }
 
-LayoutWalker::VisitResult LayerwiseLayouter::layoutState(LayoutItem* item)
+ElementWalker::VisitResult LayerwiseLayouter::layoutState(Element* element)
 {
-    StateLayoutItem* state = qobject_cast<StateLayoutItem*>(item);
+    State* state = qobject_cast<State*>(element);
     if (!state || state->childStates().isEmpty()) {
-        return LayoutWalker::RecursiveWalk;
+        return ElementWalker::RecursiveWalk;
     }
 
     QRectF boundingRect;
 #if HAVE_GRAPHVIZ
     if (state->isExpanded()) {
-        boundingRect = m_layerLayouter->layout(state, m_view);
+        boundingRect = m_layerLayouter->layout(state, m_properties);
     } else {
-        boundingRect = boundingRectForCollapsedRegion(state, m_view);
+        boundingRect = boundingRectForCollapsedRegion(state, m_properties);
     }
 #else
     // let's just show collapsed states in this case
     boundingRect = boundingRectForCollapsedRegion(state, m_view);
 #endif
 
-    m_regionLayouter->layoutRegion(state, boundingRect, m_view);
+    m_regionLayouter->layoutRegion(state, boundingRect, m_properties);
 
-    return LayoutWalker::RecursiveWalk;
+    return ElementWalker::RecursiveWalk;
 }

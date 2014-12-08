@@ -35,7 +35,7 @@ UmlElement {
 
         anchors.fill: parent
 
-        source: root.item.element.isComposite ?
+        source: root.item.isComposite ?
             "UmlCompositeStateDelegate.qml" :
             "UmlSimpleStateDelegate.qml"
     }

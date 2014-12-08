@@ -43,19 +43,19 @@ GraphvizLayouter::~GraphvizLayouter()
     delete m_backend;
 }
 
-QRectF GraphvizLayouter::layout(StateLayoutItem* state, View* view)
+QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties)
 {
     if (!state) {
         qWarning() << "Null state passed to layout function";
         return QRectF();
     }
 
-    if (!view) {
+    if (!properties) {
         qWarning() << "Null view passed to layout function";
         return QRectF();
     }
 
-    qDebug() << Q_FUNC_INFO << state << view;
+    qDebug() << Q_FUNC_INFO << state << properties;
 
     // open context
     //const QString id = state->label();

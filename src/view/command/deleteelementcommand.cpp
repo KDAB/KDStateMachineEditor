@@ -25,10 +25,9 @@
 #include "deleteelementcommand.h"
 
 #include "elementfactory.h"
+#include "layoutimportexport.h"
 #include "elementmodel.h"
 #include "view.h"
-#include "layoutitem.h"
-#include "layoutimportexport.h"
 
 #include <QDebug>
 
@@ -63,12 +62,6 @@ void DeleteElementCommand::redo()
     Q_ASSERT(index.isValid());
     m_index = index.row();
 
-    LayoutItem *layoutItem = m_view->layoutItemForElement(m_deletedElement);
-    Q_ASSERT(layoutItem);
-    StateLayoutItem *stateLayoutItem = dynamic_cast<StateLayoutItem*>(layoutItem);
-    Q_ASSERT(stateLayoutItem);
-    m_layout = LayoutImportExport::exportLayout(stateLayoutItem);
-
     StateModel::RemoveOperation remove(model(), m_deletedElement);
     Q_UNUSED(remove);
     m_deletedElement->setParent(nullptr);
@@ -90,17 +83,6 @@ void DeleteElementCommand::undo()
 
         m_deletedElement->setParent(m_parentElement);
     }
-
-    // re-import is needed so the newly created element gets a LayoutItem
-    m_view->import();
-
-    //m_view->layout();
-
-    LayoutItem *layoutItem = m_view->layoutItemForElement(m_deletedElement);
-    Q_ASSERT(layoutItem);
-    StateLayoutItem *stateLayoutItem = qobject_cast<StateLayoutItem*>(layoutItem);
-    Q_ASSERT(stateLayoutItem);
-    LayoutImportExport::importLayout(m_layout, stateLayoutItem);
 
     m_parentElement = nullptr;
 }

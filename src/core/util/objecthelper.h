@@ -25,6 +25,8 @@
 #ifndef KDSME_UTIL_OBJECTHELPER_H
 #define KDSME_UTIL_OBJECTHELPER_H
 
+#include "kdsme_core_export.h"
+
 #include <algorithm>
 
 #include <QObject>
@@ -33,23 +35,25 @@
 
 class QPointF;
 
+namespace KDSME {
+
 namespace ObjectHelper {
 
-    QString addressToString(const void *p);
+    KDSME_CORE_EXPORT QString addressToString(const void *p);
 
     enum DisplayOption {
         NoStrip,
         StripNameSpace,
     };
-    QString className(const QObject* object, DisplayOption option = NoStrip);
-    QString displayString(const QObject *object, DisplayOption option = NoStrip);
+    KDSME_CORE_EXPORT QString className(const QObject* object, DisplayOption option = NoStrip);
+    KDSME_CORE_EXPORT QString displayString(const QObject *object, DisplayOption option = NoStrip);
 
-    const char* enumToString(const QMetaObject* metaObject, const char* name, int value);
-    int stringToEnum(const QMetaObject* metaObject, const char* name, const char* key);
+    KDSME_CORE_EXPORT const char* enumToString(const QMetaObject* metaObject, const char* name, int value);
+    KDSME_CORE_EXPORT int stringToEnum(const QMetaObject* metaObject, const char* name, const char* key);
 
-    QString toString(const QPointF& point);
-    QString toString(const QSizeF& size);
-    QString toString(const QRectF& rect);
+    KDSME_CORE_EXPORT QString toString(const QPointF& point);
+    KDSME_CORE_EXPORT QString toString(const QSizeF& size);
+    KDSME_CORE_EXPORT QString toString(const QRectF& rect);
 
     /**
      * Filters the list @p list
@@ -97,6 +101,8 @@ namespace ObjectHelper {
         }
         return findParentOfType<T>(object->parent());
     }
+
+}
 
 }
 

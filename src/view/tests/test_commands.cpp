@@ -31,7 +31,6 @@
 #include "commandcontroller.h"
 #include "element.h"
 #include "elementmodel.h"
-#include "layoutitem.h"
 #include "view.h"
 
 #include <QDebug>
@@ -121,47 +120,41 @@ void CommandsTest::testLayoutSnapshot()
     View view;
     view.setStateMachine(&machine);
 
-    auto machineItem = qobject_cast<StateLayoutItem*>(view.rootLayoutItem());
-    QVERIFY(machineItem);
-    machineItem->setPos(QPointF(10, 10));
-    machineItem->setWidth(100);
-    machineItem->setHeight(100);
-    auto stateItem = qobject_cast<StateLayoutItem*>(view.rootLayoutItem()->childStates().value(0));
-    QVERIFY(stateItem);
-    stateItem->setPos(QPointF(20, 20));
-    stateItem->setWidth(200);
-    stateItem->setHeight(200);
-    auto transitionItem = qobject_cast<TransitionLayoutItem*>(view.rootLayoutItem()->transitions().value(0));
-    QVERIFY(transitionItem);
-    transitionItem->setPos(QPointF(30, 30));
-    transitionItem->setShape(QPainterPath(QPointF(300, 300)));
+    machine.setPos(QPointF(10, 10));
+    machine.setWidth(100);
+    machine.setHeight(100);
+    state.setPos(QPointF(20, 20));
+    state.setWidth(200);
+    state.setHeight(200);
+    transition.setPos(QPointF(30, 30));
+    transition.setShape(QPainterPath(QPointF(300, 300)));
 
     // snapshot current layout
     // TODO: Waiting for Bogdan's patch
 
     /*
     // modify
-    machineItem->setPos(QPointF(11, 11));
-    machineItem->setWidth(101);
-    machineItem->setHeight(101);
-    stateItem->setPos(QPointF(11, 11));
-    stateItem->setWidth(101);
-    stateItem->setHeight(101);
-    transitionItem->setPos(QPointF(31, 31));
-    transitionItem->setShape(QPainterPath(QPointF(301, 301)));
+    machine->setPos(QPointF(11, 11));
+    machine->setWidth(101);
+    machine->setHeight(101);
+    state->setPos(QPointF(11, 11));
+    state->setWidth(101);
+    state->setHeight(101);
+    transition->setPos(QPointF(31, 31));
+    transition->setShape(QPainterPath(QPointF(301, 301)));
     */
 
     // restore snapshot
     // TODO: Waiting for Bogdan's patch
 
-    QCOMPARE(machineItem->pos(), QPointF(10, 10));
-    QCOMPARE(machineItem->width(), 100.);
-    QCOMPARE(machineItem->height(), 100.);
-    QCOMPARE(stateItem->pos(), QPointF(20, 20));
-    QCOMPARE(stateItem->width(), 200.);
-    QCOMPARE(stateItem->height(), 200.);
-    QCOMPARE(transitionItem->pos(), QPointF(30, 30));
-    QCOMPARE(transitionItem->shape(), QPainterPath(QPointF(300, 300)));
+    QCOMPARE(machine.pos(), QPointF(10, 10));
+    QCOMPARE(machine.width(), 100.);
+    QCOMPARE(machine.height(), 100.);
+    QCOMPARE(state.pos(), QPointF(20, 20));
+    QCOMPARE(state.width(), 200.);
+    QCOMPARE(state.height(), 200.);
+    QCOMPARE(transition.pos(), QPointF(30, 30));
+    QCOMPARE(transition.shape(), QPainterPath(QPointF(300, 300)));
 }
 
 void CommandsTest::testModifyProperty()
@@ -229,7 +222,7 @@ void CommandsTest::testModifyTransition()
 void CommandsTest::testModifyLayoutItem_moveBy()
 {
     TestHarness harness;
-    LayoutItem item;
+    Element item;
 
     QCOMPARE(item.pos(), QPointF(0, 0));
     auto cmd = new ModifyLayoutItemCommand(&item);
@@ -244,7 +237,7 @@ void CommandsTest::testModifyLayoutItem_moveBy()
 void CommandsTest::testModifyLayoutItem_setGeometry()
 {
     TestHarness harness;
-    LayoutItem item;
+    Element item;
 
     QRectF newGeometry(5, 5, 10, 10);
 
@@ -269,7 +262,7 @@ void CommandsTest::testModifyLayoutItem_setGeometry()
 void CommandsTest::testModifyTransitionLayoutItem()
 {
     TestHarness harness;
-    TransitionLayoutItem transition;
+    Transition transition;
 
     const QPainterPath originalPath;
     const QPainterPath newPath(QPointF(5, 5));
@@ -295,27 +288,24 @@ void CommandsTest::testReparentElement()
         auto cmd = new ReparentElementCommand(&harness.view, &element);
         cmd->setParentElement(&newParentElement);
         QVERIFY(!element.parentElement());
-        harness.undoStack.push(cmd);
-        QCOMPARE(element.parentElement(), &newParentElement);
+        harness.undoStack.push(cmd); // should be a no-op
+        QVERIFY(!element.parentElement());
         harness.undoStack.undo();
         QVERIFY(!element.parentElement());
     }
 
     {
-        Element element;
-        Element oldParentElement;
-        Element newParentElement;
+        Element element(&harness.machine);
+        Element newParentElement(&harness.machine);
 
-        element.setParent(&oldParentElement);
-
-        QCOMPARE(element.parentElement(), &oldParentElement);
+        QCOMPARE(element.parentElement(), &harness.machine);
         auto cmd = new ReparentElementCommand(&harness.view, &element);
         cmd->setParentElement(&newParentElement);
-        QCOMPARE(element.parentElement(), &oldParentElement);
+        QCOMPARE(element.parentElement(), &harness.machine);
         harness.undoStack.push(cmd);
         QCOMPARE(element.parentElement(), &newParentElement);
         harness.undoStack.undo();
-        QCOMPARE(element.parentElement(), &oldParentElement);
+        QCOMPARE(element.parentElement(), &harness.machine);
 
         element.setParent(nullptr); // don't double-delete element
     }

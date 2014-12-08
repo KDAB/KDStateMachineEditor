@@ -27,9 +27,14 @@
 #include "elementutil.h"
 
 #include "objecthelper.h"
+#include "layoututils.h"
 
 #include <QDebug>
 #include <QEvent>
+#include <QPointF>
+#include <QPainterPath>
+#include <QRectF>
+#include <QSizeF>
 #include <QQmlEngine>
 
 using namespace KDSME;
@@ -67,11 +72,23 @@ struct Element::Private
     Private()
         : m_id(0)
         , m_flags(ElementIsEnabled | ElementIsSelectable | ElementIsEditable)
+        , m_visible(true)
+        , m_selected(false)
+        , m_height(0.0)
+        , m_width(0.0)
     {}
 
     QString m_label;
     quintptr m_id;
     Element::Flags m_flags;
+
+    bool m_visible;
+    bool m_selected;
+
+    QPointF m_pos;
+    qreal m_height, m_width;
+
+    View* m_view;
 };
 
 Element::Element(QObject* parent)
@@ -136,6 +153,120 @@ void Element::setInternalPointer(void* ptr)
     d->m_id = reinterpret_cast<quintptr>(ptr);
 }
 
+QPointF Element::pos() const
+{
+    return d->m_pos;
+}
+
+void Element::setPos(const QPointF& pos)
+{
+    if (d->m_pos == pos)
+        return;
+
+    d->m_pos = pos;
+    emit posChanged(pos);
+}
+
+qreal Element::width() const
+{
+    return d->m_width;
+}
+
+void Element::setWidth(qreal width)
+{
+    if (d->m_width == width)
+        return;
+
+    d->m_width = width;
+    emit widthChanged(width);
+}
+
+qreal Element::height() const
+{
+    return d->m_height;
+}
+
+void Element::setHeight(qreal height)
+{
+    if (d->m_height == height)
+        return;
+
+    d->m_height = height;
+    emit heightChanged(height);
+}
+
+QPointF Element::absolutePos() const
+{
+    QPointF point;
+    const Element* current = this;
+    do {
+        point += current->pos();
+        current = current->parentElement();
+    } while (current);
+    return point;
+}
+
+bool Element::isVisible() const
+{
+    return d->m_visible;
+}
+
+void Element::setVisible(bool visible)
+{
+    if (d->m_visible == visible)
+        return;
+
+    d->m_visible = visible;
+    emit visibleChanged(d->m_visible);
+}
+
+bool Element::isSelected() const
+{
+    return d->m_selected;
+}
+
+void Element::setSelected(bool selected)
+{
+    if (d->m_selected == selected)
+        return;
+
+    d->m_selected = selected;
+    emit selectedChanged(d->m_selected);
+}
+
+QSizeF Element::preferredSize() const
+{
+    QSizeF size;
+    switch (type())
+    {
+    case Element::HistoryStateType:
+        size = QSizeF(32, 32);
+        break;
+    case Element::StateType:
+        size = LayoutUtils::sizeForLabel(label());
+        break;
+    case Element::StateMachineType:
+        size = boundingRect().size().expandedTo(LayoutUtils::sizeForLabel(label()));
+        break;
+    case Element::FinalStateType:
+        size = QSizeF(32, 32);
+        break;
+    case Element::ElementType:
+    case Element::TransitionType:
+    case Element::SignalTransitionType:
+    case Element::TimeoutTransitionType:
+    case Element::PseudoStateType:
+        break;
+    }
+    return size;
+}
+
+QRectF Element::boundingRect() const
+{
+    const QRectF rect(pos().x(), pos().y(), width(), height());
+    return rect;
+}
+
 Element* Element::parentElement() const
 {
     return qobject_cast<Element*>(parent());
@@ -174,6 +305,8 @@ struct Transition::Private
 
     State* m_targetState;
     QString m_guard;
+    QPainterPath m_shape;
+    QRectF m_labelBoundingRect;
 };
 
 Transition::Transition(State* sourceState)
@@ -234,6 +367,34 @@ void Transition::setGuard(const QString& guard)
 
     d->m_guard = guard;
     emit guardChanged(d->m_guard);
+}
+
+QPainterPath Transition::shape() const
+{
+    return d->m_shape;
+}
+
+void Transition::setShape(const QPainterPath& shape)
+{
+    if (d->m_shape == shape)
+        return;
+
+    d->m_shape = shape;
+    emit shapeChanged(shape);
+}
+
+QRectF Transition::labelBoundingRect() const
+{
+    return d->m_labelBoundingRect;
+}
+
+void Transition::setLabelBoundingRect(const QRectF& rect)
+{
+    if (d->m_labelBoundingRect == rect)
+        return;
+
+    d->m_labelBoundingRect = rect;
+    emit labelBoundingRectChanged(rect);
 }
 
 struct SignalTransition::Private
@@ -313,12 +474,14 @@ struct State::Private
     Private()
         : m_childMode(ExclusiveStates)
         , m_isComposite(false)
+        , m_isExpanded(true)
     {}
 
     QString m_onEntry;
     QString m_onExit;
     ChildMode m_childMode;
     bool m_isComposite;
+    bool m_isExpanded;
 };
 
 State::State(State* parent)
@@ -423,6 +586,20 @@ void State::setChildMode(ChildMode childMode)
 bool State::isComposite() const
 {
     return d->m_isComposite;
+}
+
+bool State::isExpanded() const
+{
+    return d->m_isExpanded;
+}
+
+void State::setExpanded(bool expanded)
+{
+    if (d->m_isExpanded == expanded)
+        return;
+
+    d->m_isExpanded = expanded;
+    emit expandedChanged(d->m_isExpanded);
 }
 
 StateMachine* State::machine() const

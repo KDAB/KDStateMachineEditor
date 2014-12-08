@@ -34,7 +34,7 @@ Item {
 
     property variant item: null
 
-    property string name: (item.element.label != "" ? item.element.label : qsTr("Unnamed"))
+    property string name: (item.label != "" ? item.label : qsTr("Unnamed"))
     property string toolTipText: ""
     property bool selectable: true
     property bool selected: item.selected

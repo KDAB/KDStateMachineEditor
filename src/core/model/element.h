@@ -32,10 +32,13 @@
 #include <QAbstractState>
 #include <QMetaType>
 
+class QPainterPath;
+
 namespace KDSME {
 
 class State;
 class StateMachine;
+class View;
 
 class KDSME_CORE_EXPORT Element : public QObject
 {
@@ -44,6 +47,14 @@ class KDSME_CORE_EXPORT Element : public QObject
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
     Q_PROPERTY(Flags flags READ flags WRITE setFlags NOTIFY flagsChanged FINAL)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged FINAL)
+    /// The position of the element from the top-left corner
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos NOTIFY posChanged FINAL)
+    Q_PROPERTY(qreal width READ width WRITE setWidth NOTIFY widthChanged FINAL)
+    Q_PROPERTY(qreal height READ height WRITE setHeight NOTIFY heightChanged FINAL)
+    /// Whether this item is visible in the scene
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged FINAL)
+    /// Whether this item is marked as selected
+    Q_PROPERTY(bool selected READ isSelected WRITE setSelected NOTIFY selectedChanged FINAL)
 
 public:
     enum Type {
@@ -96,6 +107,26 @@ public:
     void setInternalPointer(void* ptr);
     void* internalPointer() const;
 
+    QPointF pos() const;
+    void setPos(const QPointF& pos);
+
+    qreal height() const;
+    void setHeight(qreal height);
+
+    qreal width() const;
+    void setWidth(qreal width);
+
+    QPointF absolutePos() const;
+
+    bool isVisible() const;
+    void setVisible(bool visible);
+
+    bool isSelected() const;
+    void setSelected(bool selected);
+
+    QSizeF preferredSize() const;
+    virtual QRectF boundingRect() const;
+
     Element* parentElement() const;
     QList<Element*> childElements() const;
 
@@ -107,6 +138,11 @@ public:
 Q_SIGNALS:
     void flagsChanged(Flags flags);
     void labelChanged(const QString& label);
+    void posChanged(const QPointF& pos);
+    void heightChanged(qreal height);
+    void widthChanged(qreal width);
+    void visibleChanged(bool visible);
+    void selectedChanged(bool selected);
 
 private:
     struct Private;
@@ -119,6 +155,9 @@ class KDSME_CORE_EXPORT Transition : public Element
     Q_PROPERTY(KDSME::State* sourceState READ sourceState WRITE setSourceState NOTIFY sourceStateChanged FINAL)
     Q_PROPERTY(KDSME::State* targetState READ targetState WRITE setTargetState NOTIFY targetStateChanged FINAL)
     Q_PROPERTY(QString guard READ guard WRITE setGuard NOTIFY guardChanged FINAL)
+        /// The exact shape of this transition
+    Q_PROPERTY(QPainterPath shape READ shape WRITE setShape NOTIFY shapeChanged FINAL)
+    Q_PROPERTY(QRectF labelBoundingRect READ labelBoundingRect WRITE setLabelBoundingRect NOTIFY labelBoundingRectChanged FINAL)
 
 public:
     explicit Transition(State* sourceState = 0);
@@ -142,10 +181,19 @@ public:
     QString guard() const;
     void setGuard(const QString& guard);
 
+    QPainterPath shape() const;
+    void setShape(const QPainterPath& path);
+
+    QRectF labelBoundingRect() const;
+    void setLabelBoundingRect(const QRectF& rect);
+
+
 Q_SIGNALS:
     void sourceStateChanged(State* sourceState);
     void targetStateChanged(State* targetState);
     void guardChanged(const QString& guard);
+    void shapeChanged(const QPainterPath& path);
+    void labelBoundingRectChanged(const QRectF& rect);
 
 private:
     struct Private;
@@ -162,6 +210,7 @@ class KDSME_CORE_EXPORT State : public Element
     Q_PROPERTY(QString onExit READ onExit WRITE setOnExit NOTIFY onExitChanged FINAL)
     Q_PROPERTY(ChildMode childMode READ childMode WRITE setChildMode NOTIFY childModeChanged FINAL)
     Q_PROPERTY(bool isComposite READ isComposite NOTIFY isCompositeChanged FINAL)
+    Q_PROPERTY(bool expanded READ isExpanded WRITE setExpanded NOTIFY expandedChanged FINAL)
 
 public:
     enum ChildMode {
@@ -205,6 +254,9 @@ public:
      */
     bool isComposite() const;
 
+    bool isExpanded() const;
+    void setExpanded(bool expanded);
+
     Q_INVOKABLE KDSME::StateMachine* machine() const;
 
 protected:
@@ -215,6 +267,7 @@ Q_SIGNALS:
     void onExitChanged(const QString& onExit);
     void childModeChanged(ChildMode childMode);
     void isCompositeChanged(bool isComposite);
+    void expandedChanged(bool expanded);
 
 private:
     struct Private;

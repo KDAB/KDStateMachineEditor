@@ -93,19 +93,19 @@ ModifyPropertyCommand* CommandFactory::modifyProperty(QObject* object, const QJs
     return new ModifyPropertyCommand(object, propertyMap, text);
 }
 
-ModifyLayoutItemCommand* CommandFactory::modifyLayoutItem(LayoutItem* item)
+ModifyLayoutItemCommand* CommandFactory::modifyLayoutItem(Element* item)
 {
     return new ModifyLayoutItemCommand(item);
 }
 
-ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition)
-{
-    return new ModifyTransitionCommand(transition);
-}
-
-KDSME::ModifyTransitionLayoutItemCommand* CommandFactory::modifyTransitionLayoutItem(TransitionLayoutItem* transition)
+ModifyTransitionLayoutItemCommand* CommandFactory::modifyTransitionLayoutItem(Transition* transition)
 {
     return new ModifyTransitionLayoutItemCommand(transition);
+}
+
+KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition)
+{
+    return new ModifyTransitionCommand(transition);
 }
 
 ReparentElementCommand* CommandFactory::reparentElement(View* view, Element* element)

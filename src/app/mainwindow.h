@@ -81,11 +81,8 @@ private:
     Ui::MainWindow* ui;
 
     QStandardItemModel* m_presetsModel;
-    KDSME::StateModel* m_stateMachineModel;
     KDSME::TransitionListModel* m_transitionsModel;
     KDSME::LayoutItemModel* m_layoutInformationModel;
-
-    KDSME::View* m_view;
 
     KDSME::StateMachineView* m_stateMachineView;
     QScopedPointer<KDSME::StateMachine> m_owningStateMachine;

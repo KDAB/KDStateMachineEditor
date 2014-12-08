@@ -30,8 +30,8 @@
 class QRectF;
 
 namespace KDSME {
-class TransitionLayoutItem;
-class StateLayoutItem;
+class Transition;
+class State;
 class View;
 }
 
@@ -62,15 +62,15 @@ public:
      *
      * @note If RecursiveMode is selected, all descendants of @p state will get imported as well
      */
-    void buildState(KDSME::StateLayoutItem* state);
+    void buildState(KDSME::State* state);
     /**
      * Fill Graphviz with edges based on attributes of the transitions of @p state
      *
      * @note If RecursiveMode is selected, transitions of descendants of @p state will get imported as well
      */
-    void buildTransitions(KDSME::StateLayoutItem* state);
+    void buildTransitions(KDSME::State* state);
 
-    void buildTransition(KDSME::TransitionLayoutItem* transition);
+    void buildTransition(KDSME::Transition* transition);
 
     void layout();
     void import();

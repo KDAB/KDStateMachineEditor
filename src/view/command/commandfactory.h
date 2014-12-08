@@ -44,7 +44,7 @@ class ModifyTransitionLayoutItemCommand;
 class ReparentElementCommand;
 class ChangeStateMachineCommand;
 class StateModel;
-class TransitionLayoutItem;
+class Transition;
 class View;
 
 class KDSME_VIEW_EXPORT CommandFactory : public QObject
@@ -63,9 +63,9 @@ public:
     Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::View* view, const QString& text = QString()) const;
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());
-    Q_INVOKABLE KDSME::ModifyLayoutItemCommand* modifyLayoutItem(KDSME::LayoutItem* item);
+    Q_INVOKABLE KDSME::ModifyLayoutItemCommand* modifyLayoutItem(KDSME::Element* item);
     Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition);
-    Q_INVOKABLE KDSME::ModifyTransitionLayoutItemCommand* modifyTransitionLayoutItem(KDSME::TransitionLayoutItem* transition);
+    Q_INVOKABLE KDSME::ModifyTransitionLayoutItemCommand* modifyTransitionLayoutItem(KDSME::Transition* transition);
     Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::View* view, KDSME::Element* element);
     Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::View* view, KDSME::StateMachine* statemachine);
 

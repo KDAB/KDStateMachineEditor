@@ -25,7 +25,6 @@
 #include "configurationcontroller.h"
 
 #include "element.h"
-#include "layoutitem.h"
 #include "view.h"
 
 using namespace KDSME;
@@ -69,10 +68,7 @@ void ConfigurationController::Private::updateActiveRegion()
     // Calculate the bounding rect of all states in that are currently active
     QRectF activeRegion;
     foreach (State* state, configuration) {
-        LayoutItem* item = m_view->layoutItemForElement(state);
-        if (item) {
-            activeRegion = activeRegion.united(item->boundingRect());
-        }
+        activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;
     emit q->activeRegionChanged(m_activeRegion);

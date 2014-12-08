@@ -52,7 +52,7 @@ void ReparentElementCommand::redo()
     if (!m_element)
         return;
 
-    m_valid = (!m_element->parent() || m_element->parentElement());
+    m_valid = m_element->parentElement();
     if (!m_valid) {
         qDebug() << "No Element* as parent, not reparenting this item";
         return;

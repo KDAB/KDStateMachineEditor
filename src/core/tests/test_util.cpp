@@ -22,8 +22,8 @@
   clear to you.
 */
 
-#include "layout/layoutitem.h"
-#include "layout/layoutitemwalker.h"
+#include "element.h"
+#include "elementwalker.h"
 
 #include <QDebug>
 #include <QVector>
@@ -36,49 +36,49 @@ class UtilTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    void testLayoutWalker();
+    void testElementWalker();
 };
 
-void UtilTest::testLayoutWalker()
+void UtilTest::testElementWalker()
 {
     /// @return List of walked states
-    auto walkAllStates = [](LayoutWalker&& walker, LayoutItem* item) -> QVector<LayoutItem*> {
-        QVector<LayoutItem*> walkedStates;
-        walker.walkItems(item, [&](LayoutItem* state) -> LayoutWalker::VisitResult {
+    auto walkAllStates = [](ElementWalker&& walker, Element* item) -> QVector<Element*> {
+        QVector<Element*> walkedStates;
+        walker.walkItems(item, [&](Element* state) -> ElementWalker::VisitResult {
             walkedStates << state;
-            return LayoutWalker::RecursiveWalk;
+            return ElementWalker::RecursiveWalk;
         });
         return walkedStates;
     };
 
     /// @return Number of calls to our visit-lambda
-    auto walkOneState = [](LayoutWalker&& walker, LayoutItem* item) -> int {
+    auto walkOneState = [](ElementWalker&& walker, Element* item) -> int {
         int counter = -1;
-        walker.walkItems(item, [&](LayoutItem*) -> LayoutWalker::VisitResult {
+        walker.walkItems(item, [&](Element*) -> ElementWalker::VisitResult {
             ++counter;
             if (counter == 1)
-                return LayoutWalker::StopWalk;
-            return LayoutWalker::RecursiveWalk;
+                return ElementWalker::StopWalk;
+            return ElementWalker::RecursiveWalk;
         });
         return counter;
     };
 
-    StateLayoutItem root;
-    StateLayoutItem s1(&root);
-    StateLayoutItem s2(&root);
+    State root;
+    State s1(&root);
+    State s2(&root);
 
     // test pre-order traversal
-    QVector<LayoutItem*> seenStates = walkAllStates(LayoutWalker(), &root);
-    QCOMPARE(seenStates, QVector<LayoutItem*>() << &root << &s1 << &s2);
+    QVector<Element*> seenStates = walkAllStates(ElementWalker(), &root);
+    QCOMPARE(seenStates, QVector<Element*>() << &root << &s1 << &s2);
     // check if walker aborts if requested
-    int count = walkOneState(LayoutWalker(), &root);
+    int count = walkOneState(ElementWalker(), &root);
     QCOMPARE(count, 1);
 
     // test post-order traversal
-    seenStates = walkAllStates(LayoutWalker(LayoutWalker::PostOrderTraversal), &root);
-    QCOMPARE(seenStates, QVector<LayoutItem*>() << &s1 << &s2 << &root);
+    seenStates = walkAllStates(ElementWalker(ElementWalker::PostOrderTraversal), &root);
+    QCOMPARE(seenStates, QVector<Element*>() << &s1 << &s2 << &root);
     // check if walker aborts if requested
-    count = walkOneState(LayoutWalker(LayoutWalker::PostOrderTraversal), &root);
+    count = walkOneState(ElementWalker(ElementWalker::PostOrderTraversal), &root);
     QCOMPARE(count, 1);
 }
 

@@ -19,6 +19,7 @@ set(LIB_SRCS
   quick/quickpen.cpp
   quick/quickprimitiveitem.cpp
   quick/quickkdsmeglobal.cpp
+  quick/quickrecursiveinstantiator.cpp
 
   widgets/codeeditor.cpp
   widgets/propertyeditor.cpp
@@ -26,6 +27,8 @@ set(LIB_SRCS
   widgets/statemachineview.cpp
   widgets/statemachinepalettewidget.cpp
 
+  abstractview.cpp
+  view.cpp
   abstractcontroller.cpp
   commandcontroller.cpp
   configurationcontroller.cpp
@@ -101,9 +104,11 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_view_export.h
 
   abstractcontroller.h
+  abstractview.h
   commandcontroller.h
   configurationcontroller.h
   editcontroller.h
+  view.h
 
   widgets/propertyeditor.h
   widgets/statemachinepalettewidget.h

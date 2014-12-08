@@ -31,7 +31,7 @@
 
 namespace KDSME {
 
-class LayoutItem;
+class Element;
 
 class KDSME_VIEW_EXPORT EditController : public AbstractController
 {
@@ -46,8 +46,8 @@ public:
     void setEditModeEnabled(bool editModeEnabled);
 
 public Q_SLOTS:
-    bool sendDragEnterEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
-    bool sendDropEvent(KDSME::LayoutItem* sender, KDSME::LayoutItem* target, const QPoint& pos, const QList<QUrl>& urls);
+    bool sendDragEnterEvent(KDSME::Element* sender, KDSME::Element* target, const QPoint& pos, const QList<QUrl>& urls);
+    bool sendDropEvent(KDSME::Element* sender, KDSME::Element* target, const QPoint& pos, const QList<QUrl>& urls);
 
 Q_SIGNALS:
     void editModeEnabledChanged(bool editModeEnabled);

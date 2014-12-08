@@ -29,7 +29,6 @@
 #include "gvutils.h"
 
 #include "elementmodel.h"
-#include "layoutitem.h"
 #include "layoututils.h"
 #include "util/objecthelper.h"
 
@@ -42,15 +41,16 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QPainterPath>
 #include <QPoint>
 
 #include <clocale> //for LC_NUMERIC
 
 #define IF_DEBUG(x)
 
-using namespace ObjectHelper;
 using namespace KDSME;
 using namespace KDSME::GVUtils;
+using namespace ObjectHelper;
 
 namespace {
 
@@ -143,15 +143,15 @@ struct GraphvizLayouterBackend::Private
     Private();
     ~Private();
 
-    void buildState(StateLayoutItem* state, Agraph_t* graph);
-    void buildTransitions(StateLayoutItem* state, Agraph_t* graph);
-    void buildTransition(TransitionLayoutItem* transition, Agraph_t* graph);
+    void buildState(State* state, Agraph_t* graph);
+    void buildTransitions(State* state, Agraph_t* graph);
+    void buildTransition(Transition* transition, Agraph_t* graph);
 
     void import();
-    void importItem(LayoutItem* item, void* obj);
-    void importState(StateLayoutItem* state, Agnode_t* node);
-    void importState(StateLayoutItem* state, Agraph_t* graph);
-    void importTransition(TransitionLayoutItem* transition, Agedge_t* edge);
+    void importItem(Element* item, void* obj);
+    void importState(State* state, Agnode_t* node);
+    void importState(State* state, Agraph_t* graph);
+    void importTransition(Transition* transition, Agedge_t* edge);
 
     /// Allocate resources from Graphviz
     void openContext(const QString& id);
@@ -171,7 +171,7 @@ struct GraphvizLayouterBackend::Private
      */
     QPainterPath pathForEdge(Agedge_t* edge) const;
 
-    inline Agnode_t* agnodeForState(StateLayoutItem* state);
+    inline Agnode_t* agnodeForState(State* state);
 
     /// Root Graphviz graph used for layouting
     Agraph_t* m_graph;
@@ -181,7 +181,7 @@ struct GraphvizLayouterBackend::Private
     LayoutMode m_layoutMode;
 
     /// Mapping from state machine items to Graphviz layout items
-    QMap<LayoutItem*, void*> m_elementToPointerMap;
+    QMap<Element*, void*> m_elementToPointerMap;
 };
 
 GraphvizLayouterBackend::Private::Private()
@@ -200,12 +200,12 @@ GraphvizLayouterBackend::Private::~Private()
     closeContext();
 }
 
-void GraphvizLayouterBackend::Private::buildState(StateLayoutItem* state, Agraph_t* graph)
+void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
 {
     Q_ASSERT(state);
     Q_ASSERT(graph);
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << state->element()->label() << *state << graph);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << state->label() << *state << graph);
 
     LocaleLocker lock;
 
@@ -214,11 +214,11 @@ void GraphvizLayouterBackend::Private::buildState(StateLayoutItem* state, Agraph
         const QString graphName = "cluster" + addressToString(state);
         Agraph_t* newGraph = _agsubg(graph, graphName);
         m_elementToPointerMap[state] = newGraph;
-        if (!state->element()->label().isEmpty()) {
-            _agset(newGraph, "label", state->element()->label());
+        if (!state->label().isEmpty()) {
+            _agset(newGraph, "label", state->label());
         }
 
-        Q_FOREACH (StateLayoutItem* childState, state->childStates()) {
+        Q_FOREACH (State* childState, state->childStates()) {
             buildState(childState, newGraph);
         }
     } else {
@@ -230,39 +230,39 @@ void GraphvizLayouterBackend::Private::buildState(StateLayoutItem* state, Agraph
             _agset(newNode, "height", QString::number(state->height() / DISPLAY_DPI));
             _agset(newNode, "fixedsize", "true");
         } else {
-            if (!state->element()->label().isEmpty()) {
-                _agset(newNode, "label", state->element()->label());
+            if (!state->label().isEmpty()) {
+                _agset(newNode, "label", state->label());
             }
         }
 
-        foreach (const auto& kv, attributesForState(qobject_cast<State*>(state->element()))) {
+        foreach (const auto& kv, attributesForState(qobject_cast<State*>(state))) {
             _agset(newNode, kv.first, kv.second);
         }
     }
 }
 
-void GraphvizLayouterBackend::Private::buildTransitions(StateLayoutItem* state, Agraph_t* graph)
+void GraphvizLayouterBackend::Private::buildTransitions(State* state, Agraph_t* graph)
 {
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << state->element()->label() << *state << graph);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << state->label() << *state << graph);
 
-    foreach (TransitionLayoutItem* transition, state->transitions()) {
+    foreach (Transition* transition, state->transitions()) {
         buildTransition(transition, graph);
     }
 
     if (m_layoutMode == RecursiveMode) {
-        foreach (StateLayoutItem* childState, state->childStates()) {
+        foreach (State* childState, state->childStates()) {
             buildTransitions(childState, graph); // recursive call
         }
     }
 }
 
-void GraphvizLayouterBackend::Private::buildTransition(TransitionLayoutItem* transition, Agraph_t* graph)
+void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, Agraph_t* graph)
 {
     if (!transition->targetState()) {
         return;
     }
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << transition->element()->label() << *transition << graph);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << transition->label() << *transition << graph);
 
     Agnode_t* source = agnodeForState(transition->sourceState());
     Q_ASSERT(source);
@@ -270,8 +270,8 @@ void GraphvizLayouterBackend::Private::buildTransition(TransitionLayoutItem* tra
     Q_ASSERT(target);
 
     Agedge_t* edge = _agedge(graph, source, target, addressToString(transition), true);
-    if (!transition->element()->label().isEmpty()) {
-        _agset(edge, "label", transition->element()->label());
+    if (!transition->label().isEmpty()) {
+        _agset(edge, "label", transition->label());
     }
     m_elementToPointerMap[transition] = edge;
     Q_ASSERT(edge);
@@ -282,11 +282,11 @@ void GraphvizLayouterBackend::Private::import()
     IF_DEBUG(qDebug() << Q_FUNC_INFO << m_elementToPointerMap.keys();)
 
     LocaleLocker lock;
-    QSet<LayoutItem*> importedItems;
+    QSet<Element*> importedItems;
     auto it = m_elementToPointerMap.constBegin();
     while (it != m_elementToPointerMap.constEnd()) {
         // always import parent items first
-        LayoutItem* parent = it.key()->parentItem();
+        Element* parent = it.key()->parentElement();
         if (parent && !importedItems.contains(parent) && m_elementToPointerMap.contains(parent)) {
             importItem(parent, m_elementToPointerMap[parent]);
             importedItems << parent;
@@ -300,25 +300,25 @@ void GraphvizLayouterBackend::Private::import()
     }
 }
 
-void GraphvizLayouterBackend::Private::importItem(LayoutItem* item, void* obj)
+void GraphvizLayouterBackend::Private::importItem(Element* item, void* obj)
 {
-    if (StateLayoutItem* state = qobject_cast<StateLayoutItem*>(item)) {
+    if (State* state = qobject_cast<State*>(item)) {
         if (m_layoutMode == RecursiveMode && !state->childStates().isEmpty()) {
             importState(state, static_cast<Agraph_t*>(obj));
         } else {
             importState(state, static_cast<Agnode_t*>(obj));
         }
-    } else if (TransitionLayoutItem* transition = qobject_cast<TransitionLayoutItem*>(item)) {
+    } else if (Transition* transition = qobject_cast<Transition*>(item)) {
         importTransition(transition, static_cast<Agedge_t*>(obj));
     }
 }
 
-void GraphvizLayouterBackend::Private::importState(StateLayoutItem* state, Agnode_t* node)
+void GraphvizLayouterBackend::Private::importState(State* state, Agnode_t* node)
 {
     Q_ASSERT(state);
     Q_ASSERT(node);
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << "before" << state->element()->label() << *state << node);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << "before" << state->label() << *state << node);
 
     // Fetch the X coordinate, apply the DPI conversion rate (actual DPI / 72, used by dot)
     const qreal x = ND_coord(node).x * TO_DOT_DPI_RATIO;
@@ -332,15 +332,15 @@ void GraphvizLayouterBackend::Private::importState(StateLayoutItem* state, Agnod
     const QPointF pos = QPointF(x - state->width()/2, y - state->height()/2);
     state->setPos(pos);
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << "after" << state->element()->label() << *state << node);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << "after" << state->label() << *state << node);
 }
 
-void GraphvizLayouterBackend::Private::importState(StateLayoutItem* state, Agraph_t* graph)
+void GraphvizLayouterBackend::Private::importState(State* state, Agraph_t* graph)
 {
     Q_ASSERT(state);
     Q_ASSERT(graph);
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << "before" << state->element()->label() << *state << graph);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << "before" << state->label() << *state << graph);
 
     QRectF rect = boundingRectForGraph(graph);
 
@@ -348,10 +348,10 @@ void GraphvizLayouterBackend::Private::importState(StateLayoutItem* state, Agrap
     state->setHeight(rect.height());
     state->setPos(rect.topLeft());
 
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << "after" << state->element()->label() << *state << graph);
+    IF_DEBUG(qDebug() << Q_FUNC_INFO << "after" << state->label() << *state << graph);
 }
 
-void GraphvizLayouterBackend::Private::importTransition(TransitionLayoutItem* transition, Agedge_t* edge)
+void GraphvizLayouterBackend::Private::importTransition(Transition* transition, Agedge_t* edge)
 {
     Q_ASSERT(transition);
     Q_ASSERT(edge);
@@ -362,8 +362,8 @@ void GraphvizLayouterBackend::Private::importTransition(TransitionLayoutItem* tr
     const QRectF labelRect = labelRectForEdge(edge);
     const QRectF boundingRect = labelRect.united(path.boundingRect());
     const QPointF absolutePos = boundingRect.topLeft();
-    Q_ASSERT(transition->parentItem());
-    const QPointF relativePos = absolutePos - transition->parentItem()->pos();
+    Q_ASSERT(transition->parentElement());
+    const QPointF relativePos = absolutePos - transition->parentElement()->pos();
     transition->setPos(relativePos);
     transition->setShape(path.translated(-absolutePos));
     transition->setLabelBoundingRect(labelRect.translated(-absolutePos));
@@ -474,7 +474,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t* edge) const
     return path;
 }
 
-Agnode_t* GraphvizLayouterBackend::Private::agnodeForState(StateLayoutItem* state)
+Agnode_t* GraphvizLayouterBackend::Private::agnodeForState(State* state)
 {
     Q_ASSERT(state);
     Q_ASSERT(m_elementToPointerMap.contains(state));
@@ -537,17 +537,17 @@ void GraphvizLayouterBackend::closeContext()
     d->closeContext();
 }
 
-void GraphvizLayouterBackend::buildState(StateLayoutItem* state)
+void GraphvizLayouterBackend::buildState(State* state)
 {
     d->buildState(state, d->m_graph);
 }
 
-void GraphvizLayouterBackend::buildTransitions(StateLayoutItem* state)
+void GraphvizLayouterBackend::buildTransitions(State* state)
 {
     d->buildTransitions(state, d->m_graph);
 }
 
-void GraphvizLayouterBackend::buildTransition(TransitionLayoutItem* transition)
+void GraphvizLayouterBackend::buildTransition(Transition* transition)
 {
     d->buildTransition(transition, d->m_graph);
 }

@@ -34,8 +34,8 @@ class QRectF;
 
 namespace KDSME {
 
-class StateLayoutItem;
-class View;
+class LayoutProperties;
+class State;
 
 class KDSME_CORE_EXPORT Layouter : public QObject
 {
@@ -44,7 +44,7 @@ class KDSME_CORE_EXPORT Layouter : public QObject
 public:
     explicit Layouter(QObject* parent = 0);
 
-    virtual QRectF layout(StateLayoutItem* state, View* view) = 0;
+    virtual QRectF layout(State* state, const LayoutProperties* properties) = 0;
 };
 
 }

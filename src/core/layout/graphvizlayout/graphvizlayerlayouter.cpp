@@ -26,8 +26,6 @@
 
 #include "graphvizlayouterbackend.h"
 #include "element.h"
-#include "layoutitem.h"
-#include "view/view.h"
 
 #include <QDebug>
 #include <QRectF>
@@ -47,25 +45,25 @@ GraphvizLayerLayouter::~GraphvizLayerLayouter()
     delete m_backend;
 }
 
-QRectF GraphvizLayerLayouter::layout(StateLayoutItem* state, View* view)
+QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* properties)
 {
     Q_ASSERT(state);
-    Q_ASSERT(view);
+    Q_ASSERT(properties);
 
     // open context
     //const QString id = state->label();
     m_backend->openContext();
 
-    const QList<StateLayoutItem*> childStates = state->childStates();
+    const QList<State*> childStates = state->childStates();
 
     // Step 1: Create Graphviz structures out of the State/Transition tree
     // Step 1.1: build nodes
-    foreach (StateLayoutItem* state, childStates) {
+    foreach (State* state, childStates) {
         m_backend->buildState(state);
     }
     // Step 1.2: build edges
-    foreach (StateLayoutItem* state, childStates) {
-        foreach (TransitionLayoutItem* transition, state->transitions()) {
+    foreach (State* state, childStates) {
+        foreach (Transition* transition, state->transitions()) {
             // TODO: What to do with transitions crossing hierarchies?
             if (!childStates.contains(transition->targetState())) {
                 continue; // ignore for now
@@ -83,8 +81,8 @@ QRectF GraphvizLayerLayouter::layout(StateLayoutItem* state, View* view)
 
 #if 0
     //  Debugging
-    const QString machineName = (qobject_cast<State*>(state->element())->machine() ? qobject_cast<State*>(state->element())->machine()->label() : state->element()->label());
-    const QString fileName = QString("/tmp/gvgraph_%1_%2.png").arg(machineName).arg(state->element()->label());
+    const QString machineName = (qobject_cast<State*>(state)->machine() ? qobject_cast<State*>(state)->machine()->label() : state->label());
+    const QString fileName = QString("/tmp/gvgraph_%1_%2.png").arg(machineName).arg(state->label());
     m_backend->saveToFile(fileName);
 #endif
 

@@ -76,7 +76,7 @@ Item {
         State {
             when: dropArea.containsDrag
             PropertyChanges {
-                target: root
+                target: rect
                 color: "#DDDDDD"
             }
         }

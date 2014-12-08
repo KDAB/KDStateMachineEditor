@@ -25,7 +25,6 @@
 #include "modifylayoutitemcommand.h"
 
 #include "element.h"
-#include "layout/layoutitem.h"
 
 #include <QDebug>
 
@@ -33,7 +32,7 @@ using namespace KDSME;
 
 namespace {
 
-void setLayoutItemGeometry(LayoutItem* item, const QRectF& geometry)
+void setElementGeometry(Element* item, const QRectF& geometry)
 {
     item->setPos(geometry.topLeft());
     item->setWidth(geometry.width());
@@ -42,7 +41,7 @@ void setLayoutItemGeometry(LayoutItem* item, const QRectF& geometry)
 
 }
 
-KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(KDSME::LayoutItem* item, QUndoCommand* parent)
+KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(Element* item, QUndoCommand* parent)
     : Command(QString(), parent)
     , m_operation(NoOperation)
     , m_item(item)
@@ -50,7 +49,7 @@ KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(KDSME::LayoutItem* item,
     Q_ASSERT(item);
 }
 
-KDSME::LayoutItem* KDSME::ModifyLayoutItemCommand::item() const
+Element* KDSME::ModifyLayoutItemCommand::item() const
 {
     return m_item;
 }
@@ -82,7 +81,7 @@ void KDSME::ModifyLayoutItemCommand::redo()
         break;
     case SetGeometryOperation:
         m_oldGeometry = QRectF(m_item->pos(), QSizeF(m_item->width(), m_item->height()));
-        setLayoutItemGeometry(m_item.data(), m_newGeometry);
+        setElementGeometry(m_item.data(), m_newGeometry);
         break;
     }
 }
@@ -99,7 +98,7 @@ void KDSME::ModifyLayoutItemCommand::undo()
         m_item->setPos(m_item->pos() - m_moveByData);
         break;
     case SetGeometryOperation:
-        setLayoutItemGeometry(m_item.data(), m_oldGeometry);
+        setElementGeometry(m_item.data(), m_oldGeometry);
         break;
     }
 }
@@ -122,7 +121,7 @@ bool ModifyLayoutItemCommand::mergeWith(const QUndoCommand* other)
 
 void KDSME::ModifyLayoutItemCommand::updateText()
 {
-    const QString itemLabel = m_item && m_item->element() ? m_item->element()->label() : tr("<Unknown>");
+    const QString itemLabel = m_item && m_item ? m_item->label() : tr("<Unknown>");
 
     switch (m_operation) {
     case MoveOperation:

@@ -26,7 +26,7 @@
 
 #include "configurationcontroller.h"
 #include "element.h"
-#include "layoutitemwalker.h"
+#include "elementwalker.h"
 #include "widgets/statemachineview.h"
 #include "view.h"
 
@@ -82,19 +82,17 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
 
     auto stateMachineView = m_configurationController->stateMachineView();
     auto view = stateMachineView->view();
-    StateLayoutItem* rootItem = view->rootLayoutItem();
-    LayoutWalker walker(LayoutWalker::PreOrderTraversal);
-    walker.walkChildren(rootItem, [&](LayoutItem* i) -> LayoutWalker::VisitResult {
-        StateLayoutItem* stateItem = qobject_cast<StateLayoutItem*>(i);
-        if (!stateItem) {
-            return LayoutWalker::RecursiveWalk;
+    auto root = stateMachineView->view()->stateMachine();
+    ElementWalker walker(ElementWalker::PreOrderTraversal);
+    walker.walkChildren(root, [&](Element* i) -> ElementWalker::VisitResult {
+        auto state = qobject_cast<State*>(i);
+        if (!state) {
+            return ElementWalker::RecursiveWalk;
         }
 
-        State* state = qobject_cast<State*>(stateItem->element());
-        Q_ASSERT(state);
         const bool expand = configuration.contains(state);
-        view->setItemExpanded(stateItem, expand);
-        return LayoutWalker::RecursiveWalk;
+        state->setExpanded(expand);
+        return ElementWalker::RecursiveWalk;
     });
 
     view->layout();

@@ -25,17 +25,17 @@
 #ifndef KDSME_LAYOUT_LAYERWISELAYOUTER_H
 #define KDSME_LAYOUT_LAYERWISELAYOUTER_H
 
-#include "layouter.h"
 #include "kdsme_core_export.h"
-#include "layoutitem.h"
-#include "layoutitemwalker.h"
+
+#include "layouter.h"
+#include "elementwalker.h"
 
 #include <QtCore/qglobal.h>
 
 namespace KDSME {
 
 class GraphvizLayerLayouter;
-class StateLayoutItem;
+class LayoutProperties;
 
 class KDSME_CORE_EXPORT RegionLayouter : public QObject
 {
@@ -44,7 +44,7 @@ class KDSME_CORE_EXPORT RegionLayouter : public QObject
 public:
     explicit RegionLayouter(QObject* parent = nullptr);
 
-    void layoutRegion(StateLayoutItem* state, const QRectF& boundingRectHint, View* view);
+    void layoutRegion(State* state, const QRectF& boundingRectHint, const LayoutProperties* properties);
 };
 
 class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
@@ -54,14 +54,14 @@ class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
 public:
     explicit LayerwiseLayouter(QObject* parent = nullptr);
 
-    virtual QRectF layout(StateLayoutItem* state, View* view) Q_DECL_OVERRIDE;
+    virtual QRectF layout(State* state, const LayoutProperties* properties) Q_DECL_OVERRIDE;
 
 private:
-    LayoutWalker::VisitResult layoutState(LayoutItem* state);
+    ElementWalker::VisitResult layoutState(Element* element);
 
     GraphvizLayerLayouter* m_layerLayouter;
     RegionLayouter* m_regionLayouter;
-    View* m_view;
+    const LayoutProperties* m_properties;
 };
 
 }

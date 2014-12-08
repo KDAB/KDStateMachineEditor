@@ -46,8 +46,8 @@ AbstractView::Private::Private()
 {
 }
 
-AbstractView::AbstractView(QObject* parent)
-    : QObject(parent)
+AbstractView::AbstractView(QQuickItem* parent)
+    : QQuickItem(parent)
     , d(new Private)
 {
 }

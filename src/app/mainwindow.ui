@@ -70,7 +70,7 @@
      <x>0</x>
      <y>0</y>
      <width>1058</width>
-     <height>20</height>
+     <height>31</height>
     </rect>
    </property>
   </widget>
@@ -121,25 +121,6 @@
         <string>Debug Views</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QGroupBox" name="groupBox_5">
-          <property name="title">
-           <string>Layout</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_8">
-           <item>
-            <widget class="QTreeView" name="layoutInformationView">
-             <property name="rootIsDecorated">
-              <bool>true</bool>
-             </property>
-             <property name="sortingEnabled">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
         <item>
          <widget class="QGroupBox" name="groupBox">
           <property name="title">

@@ -30,70 +30,28 @@ import com.kdab.kdsme 1.0
 
 import "uml/"
 
-Item {
+View {
     id: root
 
-    property var currentView: null
     property var configurationController: null
 
     /// Debug: Draw filled semi-opaque rectangles around regions
     property bool debug: false
 
-    width: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.pos.x + currentView.rootLayoutItem.width : 0)
-    height: ((currentView && currentView.rootLayoutItem) ? currentView.rootLayoutItem.pos.y + currentView.rootLayoutItem.height : 0)
+    width: stateMachine ? stateMachine.width : 0
+    height: stateMachine ? stateMachine.height : 0
 
     transformOrigin: Item.TopLeft
 
-    LayoutInformationModel {
-        id: layoutInformationModel
-        view: (root.currentView ? root.currentView : null)
-    }
+    RecursiveInstantiator {
+        id: instantiator
 
-    Component {
-        id: recursiveDelegate
+        anchors.fill: parent
 
-        Repeater {
-            model: VisualDataModel {
-                id: visualDataModel
-
-                model: layoutInformationModel
-                rootIndex: (typeof(myRootIndex) === 'undefined' ? visualDataModel.rootIndex : myRootIndex)
-                delegate: LayoutItemLoader {
-                    id: delegate
-
-                    view: root.currentView
-                    configurationController: root.configurationController
-
-                    Loader {
-                        property variant myRootIndex: visualDataModel.modelIndex(index)
-                        anchors {
-                            left: parent.left
-                            top: parent.top
-                        }
-                        asynchronous: true
-                        sourceComponent: (hasModelChildren ? recursiveDelegate : undefined)
-                        Component.onDestruction: {
-                            // force unloading the source component
-                            sourceComponent = undefined
-                        }
-                    }
-
-                    Rectangle {
-                        id: debugBoundingRect
-
-                        anchors.fill: parent
-                        visible: root.debug
-                        color: (object.selected ? "green" : "red")
-                        opacity: 0.5
-                    }
-                }
-            }
+        model: root.model
+        delegate: LayoutItemLoader {
+            view: root
+            configurationController: root.configurationController
         }
-    }
-
-    Loader {
-        id: loader
-
-        sourceComponent: recursiveDelegate
     }
 }

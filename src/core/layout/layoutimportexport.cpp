@@ -25,20 +25,22 @@
 #include "layoutimportexport.h"
 
 #include "element.h"
-#include "layoutitem.h"
 
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QPainterPath>
+#include <QPointF>
+#include <QRectF>
 
 using namespace KDSME;
 
 namespace {
 
-QJsonObject stateLayoutToJson(const StateLayoutItem* stateItem)
+QJsonObject stateLayoutToJson(const State* stateItem)
 {
     QJsonObject res;
-    res["label"] = stateItem->element()->label();
+    res["label"] = stateItem->label();
     res["x"] = stateItem->pos().x();
     res["y"] = stateItem->pos().y();
     res["width"] = stateItem->width();
@@ -46,13 +48,13 @@ QJsonObject stateLayoutToJson(const StateLayoutItem* stateItem)
     return res;
 }
 
-QJsonObject transitionLayoutToJson(const TransitionLayoutItem* layoutItem)
+QJsonObject transitionLayoutToJson(const Transition* transition)
 {
     QJsonObject res;
-    res["label"] = layoutItem->element()->label();
-    res["x"] = layoutItem->pos().x();
-    res["y"] = layoutItem->pos().y();
-    QRectF labelRect = layoutItem->labelBoundingRect();
+    res["label"] = transition->label();
+    res["x"] = transition->pos().x();
+    res["y"] = transition->pos().y();
+    QRectF labelRect = transition->labelBoundingRect();
     QJsonObject lbr;
     lbr["x"] = labelRect.x();
     lbr["y"] = labelRect.y();
@@ -61,12 +63,12 @@ QJsonObject transitionLayoutToJson(const TransitionLayoutItem* layoutItem)
     res["labelBoundingRect"] = lbr;
     QByteArray shapeData;
     QDataStream ds(&shapeData, QIODevice::WriteOnly);
-    ds << layoutItem->shape();
+    ds << transition->shape();
     res["shape"] = QLatin1String(shapeData.toBase64());
     return res;
 }
 
-void importStateLayout(const QJsonObject& data, StateLayoutItem* stateItem)
+void importStateLayout(const QJsonObject& data, State* stateItem)
 {
     QJsonObject::const_iterator x = data.find("x");
     if (x == data.end())
@@ -89,27 +91,27 @@ void importStateLayout(const QJsonObject& data, StateLayoutItem* stateItem)
     stateItem->setHeight((*height).toDouble());
 }
 
-bool isValidState(const QJsonObject& data, StateLayoutItem *item)
+bool isValidState(const QJsonObject& data, State *item)
 {
     return
-        data.value("label") == item->element()->label() &&
+        data.value("label") == item->label() &&
         data.contains("x") &&
         data.contains("y") &&
         data.contains("width") &&
         data.contains("height");
 }
 
-bool isValidTransition(const QJsonObject& data, TransitionLayoutItem *item)
+bool isValidTransition(const QJsonObject& data, Transition *item)
 {
     return
-        data.value("label") == item->element()->label() &&
+        data.value("label") == item->label() &&
         data.contains("x") &&
         data.contains("y") &&
         data.contains("labelBoundingRect") &&
         data.contains("shape");
 }
 
-void importTransitionLayout(const QJsonObject& data, TransitionLayoutItem* transitionItem)
+void importTransitionLayout(const QJsonObject& data, Transition* transitionItem)
 {
     QJsonObject::const_iterator x = data.find("x");
     if (x == data.end())
@@ -142,41 +144,41 @@ void importTransitionLayout(const QJsonObject& data, TransitionLayoutItem* trans
 
 } // anonymous namespace
 
-void LayoutImportExport::importLayout(const QJsonObject &rootData, StateLayoutItem *state)
+void LayoutImportExport::importLayout(const QJsonObject &rootData, State *state)
 {
     importStateLayout(rootData, state);
 
     const QJsonArray states = rootData.value("childStates").toArray();
     for (int i = 0; i < states.size() && i < state->childStates().size(); ++i) {
-        StateLayoutItem *item = state->childStates().at(i);
+        State *item = state->childStates().at(i);
         importLayout(states.at(i).toObject(), item);
     }
 
     const QJsonArray transitions = rootData.value("transitions").toArray();
     for (int i = 0; i < transitions.size() && i < state->transitions().size(); ++i) {
-        TransitionLayoutItem *item = state->transitions().at(i);
+        Transition *item = state->transitions().at(i);
         importTransitionLayout(transitions.at(i).toObject(), item);
     }
 }
 
-QJsonObject LayoutImportExport::exportLayout(const StateLayoutItem *rootItem)
+QJsonObject LayoutImportExport::exportLayout(const State *rootItem)
 {
     QJsonObject res = stateLayoutToJson(rootItem);
 
     QJsonArray states;
-    foreach (StateLayoutItem *item, rootItem->childStates())
+    foreach (State *item, rootItem->childStates())
         states.push_back(exportLayout(item));
     res["childStates"] = states;
 
     QJsonArray transitions;
-    foreach (TransitionLayoutItem *item, rootItem->transitions())
+    foreach (Transition *item, rootItem->transitions())
         transitions.push_back(transitionLayoutToJson(item));
     res["transitions"] = transitions;
 
     return res;
 }
 
-bool LayoutImportExport::matches(const QJsonObject& data, StateLayoutItem* state)
+bool LayoutImportExport::matches(const QJsonObject& data, State* state)
 {
     if (!isValidState(data, state))
         return false;
@@ -186,7 +188,7 @@ bool LayoutImportExport::matches(const QJsonObject& data, StateLayoutItem* state
         return false;
 
     for (int i = 0; i < states.size(); ++i) {
-        StateLayoutItem *item = state->childStates().at(i);
+        State *item = state->childStates().at(i);
         if (!matches(states.at(i).toObject(), item))
             return false;
     }
@@ -196,7 +198,7 @@ bool LayoutImportExport::matches(const QJsonObject& data, StateLayoutItem* state
         return false;
 
     for (int i = 0; i < transitions.size(); ++i) {
-        TransitionLayoutItem *item = state->transitions().at(i);
+        Transition *item = state->transitions().at(i);
         if (!isValidTransition(transitions.at(i).toObject(), item))
             return false;
     }

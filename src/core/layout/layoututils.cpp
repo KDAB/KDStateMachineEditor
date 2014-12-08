@@ -25,8 +25,6 @@
 #include "layoututils.h"
 
 #include "element.h"
-#include "layoutitem.h"
-#include "layoutitemwalker.h"
 
 #include <QGuiApplication>
 #include <QDebug>
@@ -46,45 +44,45 @@ QSizeF LayoutUtils::sizeForLabel(const QString& label)
     return QSizeF(width + 2*margin, fm.height() + 2*margin);
 }
 
-bool LayoutUtils::moveInner(StateLayoutItem* state, const QPointF& offset)
+bool LayoutUtils::moveInner(State* state, const QPointF& offset)
 {
     if (!state) {
         return false;
     }
 
-    foreach (StateLayoutItem* childState, state->childStates()) {
+    foreach (State* childState, state->childStates()) {
         childState->setPos(childState->pos() + offset);
     }
     return true;
 }
 
-bool LayoutUtils::fixupLayout(StateLayoutItem* /*state*/)
+bool LayoutUtils::fixupLayout(State* /*state*/)
 {
     /*
     LayoutWalker walker;
-    walker.walkItems(state, [&](LayoutItem* item) -> LayoutWalker::VisitResult {
+    walker.walkItems(state, [&](Element* obj) -> LayoutWalker::VisitResult {
         return LayoutWalker::RecursiveWalk;
     });
     */
     return true;
 }
 
-bool LayoutUtils::moveToParent(LayoutItem* item, LayoutItem* newParentItem)
+bool LayoutUtils::moveToParent(Element* obj, Element* newParent)
 {
-    if (!item || !newParentItem)
+    if (!obj || !newParent)
         return false;
 
-    auto oldParentItem = item->parentItem();
-    if (oldParentItem == newParentItem)
+    auto oldParent = obj->parentElement();
+    if (oldParent == newParent)
         return false; // do nothing
 
     // map item coordinates to new parent item's coordinate system
-    const QPointF oldParentPos = (oldParentItem ? oldParentItem->absolutePos() : QPointF(0, 0));
-    const QPointF newParentPos = newParentItem->absolutePos();
+    const QPointF oldParentPos = (oldParent ? oldParent->absolutePos() : QPointF(0, 0));
+    const QPointF newParentPos = newParent->absolutePos();
     const QPointF delta = oldParentPos - newParentPos;
 
-    item->setParent(newParentItem);
-    const QPointF itemRelPos = item->pos();
-    item->setPos(itemRelPos + delta);
+    obj->setParent(newParent);
+    const QPointF itemRelPos = obj->pos();
+    obj->setPos(itemRelPos + delta);
     return true;
 }

@@ -33,16 +33,16 @@
 
 namespace KDSME {
 
-class LayoutItem;
+class Element;
 
 class KDSME_VIEW_EXPORT ModifyLayoutItemCommand : public Command
 {
     Q_OBJECT
 
 public:
-    explicit ModifyLayoutItemCommand(LayoutItem* item, QUndoCommand* parent = 0);
+    explicit ModifyLayoutItemCommand(Element* item, QUndoCommand* parent = 0);
 
-    LayoutItem* item() const;
+    Element* item() const;
 
     virtual int id() const Q_DECL_OVERRIDE { return ModifyLayoutItem; }
 
@@ -67,7 +67,7 @@ protected:
 private:
     void updateText();
 
-    QPointer<LayoutItem> m_item;
+    QPointer<Element> m_item;
 
     // data
     QPointF m_moveByData;

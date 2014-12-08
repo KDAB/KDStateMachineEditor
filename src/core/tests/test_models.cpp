@@ -22,8 +22,6 @@
   clear to you.
 */
 
-#include "layoutitem.h"
-#include "layoutitemmodel.h"
 #include "objecttreemodel.h"
 
 #include <QDebug>
@@ -68,7 +66,6 @@ private Q_SLOTS:
     void testObjectTreeModel_ResetOperation_SingleObject();
     void testObjectTreeModel_ReparentOperation_SingleObject();
     void testObjectTreeModel_ReparentOperation_SingleObject_Invalid();
-    void testLayoutInformationModel();
 };
 
 void ModelsTest::testObjectTreeModel()
@@ -258,35 +255,6 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
             o2->setParent(o1);
         }
     }
-}
-
-void ModelsTest::testLayoutInformationModel()
-{
-    LayoutItemModel model;
-
-    StateLayoutItem* o1 = new StateLayoutItem;
-    StateLayoutItem* o11 = new StateLayoutItem(o1);
-    StateLayoutItem* o12 = new StateLayoutItem(o1);
-    o1->dumpObjectTree();
-    model.appendRootObject(o1);
-    QCOMPARE(model.rowCount(), 1);
-    QModelIndex rootIndex = model.index(0, 0);
-    QCOMPARE(model.rowCount(rootIndex), 2);
-    QCOMPARE(rootIndex.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  o1);
-
-    // check additional columns
-    QCOMPARE(rootIndex.sibling(0, LayoutItemModel::NameColumn).data().toString(),
-             QLatin1String("StateLayoutItem"));
-    QVERIFY(!rootIndex.sibling(0, LayoutItemModel::ElementColumn).data().toString().isEmpty());
-    QVERIFY(!rootIndex.sibling(0, LayoutItemModel::AttributesColumn).data().toString().isEmpty());
-
-    qDebug() << (void*)o1 << (void*)o11 << (void*)o12;
-    QModelIndex index = model.index(0, 0, rootIndex);
-    QCOMPARE(model.rowCount(index), 0);
-    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  o11);
-    index = model.index(1, 0, rootIndex);
-    QCOMPARE(model.rowCount(index), 0);
-    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  o12);
 }
 
 QTEST_MAIN(ModelsTest)

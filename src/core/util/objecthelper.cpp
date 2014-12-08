@@ -29,6 +29,8 @@
 #include <QRectF>
 #include <QSizeF>
 
+using namespace KDSME;
+
 namespace {
 
 QString stripNameSpace(const QString& className)

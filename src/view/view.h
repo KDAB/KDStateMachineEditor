@@ -35,26 +35,21 @@ namespace KDSME {
 
 class Element;
 class Layouter;
-class LayoutItem;
 class LayoutProperties;
 class State;
-class StateLayoutItem;
 class StateMachine;
 class StateModel;
 class Transition;
-class TransitionLayoutItem;
-class View;
 
 class KDSME_VIEW_EXPORT View : public AbstractView
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
-    Q_PROPERTY(KDSME::LayoutItem* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
-    Q_PROPERTY(KDSME::LayoutItem* rootLayoutItem READ rootLayoutItem NOTIFY rootLayoutItemChanged)
+    Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
 
 public:
-    explicit View(QObject* parent = 0);
+    explicit View(QQuickItem* parent = nullptr);
     virtual ~View();
 
     StateModel* stateModel() const;
@@ -70,39 +65,26 @@ public:
 
     LayoutProperties* layoutProperties() const;
 
-    Q_INVOKABLE void collapseItem(KDSME::StateLayoutItem* state);
-    Q_INVOKABLE void expandItem(KDSME::StateLayoutItem* state);
-    bool isItemExpanded(KDSME::StateLayoutItem* state) const;
-    void setItemExpanded(KDSME::StateLayoutItem* state, bool expand);
+    Q_INVOKABLE void collapseItem(KDSME::State* state);
+    Q_INVOKABLE void expandItem(KDSME::State* state);
+    bool isItemExpanded(KDSME::State* state) const;
+    void setItemExpanded(KDSME::State* state, bool expand);
 
-    Q_INVOKABLE bool isItemSelected(KDSME::LayoutItem* item);
-    Q_INVOKABLE void setItemSelected(KDSME::LayoutItem* item, bool selected);
+    Q_INVOKABLE bool isItemSelected(KDSME::Element* item);
+    Q_INVOKABLE void setItemSelected(KDSME::Element* item, bool selected);
 
-    KDSME::LayoutItem* currentItem() const;
-    Q_INVOKABLE void setCurrentItem(KDSME::LayoutItem* item);
+    KDSME::Element* currentItem() const;
+    Q_INVOKABLE void setCurrentItem(KDSME::Element* item);
 
     Q_INVOKABLE KDSME::Element* currentState();
 
-    StateLayoutItem* rootLayoutItem() const;
-
-    QList<LayoutItem*> layoutItems() const;
-    LayoutItem* layoutItemForElement(Element* element) const;
-
 public Q_SLOTS:
-    void import();
     void layout();
 
 Q_SIGNALS:
     void stateMachineChanged(KDSME::StateMachine* stateMachine);
-    void rootLayoutItemChanged(KDSME::LayoutItem* root);
 
-    void contentsAboutToBeChanged();
-    void contentsChanged();
-
-    /// Notify that properties of any descendant of @p item including @p item may have changed
-    void contentsUpdated(LayoutItem* item);
-
-    void currentItemChanged(KDSME::LayoutItem* currentItem);
+    void currentItemChanged(KDSME::Element* currentItem);
 
 protected Q_SLOTS:
     virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;

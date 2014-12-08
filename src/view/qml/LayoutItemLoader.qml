@@ -63,19 +63,17 @@ Item {
 
         sourceComponent: {
             // TODO: Can we make all this more declarative?
-            if (object.type === LayoutItem.StateType) {
-                if (object.element.type === Element.StateMachineType) {
-                    return umlStateMachine;
-                } else if (object.element.type === Element.FinalStateType) {
-                    return umlFinalState;
-                } else if (object.element.type === Element.HistoryStateType) {
-                    return umlHistoryState;
-                } else if (object.element.type === Element.PseudoStateType) {
-                    return umlPseudoState;
-                } else {
-                    return umlState;
-                }
-            } else if (object.type === LayoutItem.TransitionType) {
+            if (object.type === Element.StateMachineType) {
+                return umlStateMachine;
+            } else if (object.type === Element.FinalStateType) {
+                return umlFinalState;
+            } else if (object.type === Element.HistoryStateType) {
+                return umlHistoryState;
+            } else if (object.type === Element.PseudoStateType) {
+                return umlPseudoState;
+            } else if (object.type === Element.StateType) {
+                return umlState;
+            } else if (object.type === Element.TransitionType) {
                 return umlTransition;
             } else {
                 console.log("Unknown LayoutItem type: " + object.type);
@@ -88,7 +86,7 @@ Item {
         id: umlState
         UmlState {
             item: object
-            activeness: activenessForState(object.element)
+            activeness: activenessForState(object)
         }
     }
 
@@ -103,7 +101,7 @@ Item {
         id: umlFinalState
         UmlFinalState {
             item: object
-            activeness: activenessForState(object.element)
+            activeness: activenessForState(object)
         }
     }
 
@@ -111,7 +109,7 @@ Item {
         id: umlHistoryState
         UmlHistoryState {
             item: object
-            activeness: activenessForState(object.element)
+            activeness: activenessForState(object)
         }
     }
 
@@ -119,7 +117,7 @@ Item {
         id: umlPseudoState
         UmlPseudoState {
             item: object
-            activeness: activenessForState(object.element)
+            activeness: activenessForState(object)
         }
     }
 
@@ -127,7 +125,7 @@ Item {
         id: umlTransition
         UmlTransition {
             item: object
-            activeness: activenessForTransition(object.element)
+            activeness: activenessForTransition(object)
         }
     }
 }

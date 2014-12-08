@@ -100,6 +100,7 @@ private:
 class KDSME_CORE_EXPORT StateModel : public ObjectTreeModel
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::State* state READ state WRITE setState)
 
 public:
     enum Role {

@@ -27,7 +27,7 @@
 
 #include "kdsme_view_export.h"
 
-#include <QObject>
+#include <QQuickItem>
 #include <QPointer>
 
 class QAbstractItemModel;
@@ -37,10 +37,7 @@ class QModelIndex;
 
 namespace KDSME {
 
-/**
- * @brief QAbstractItemView-like class without actual visual representation (i.e. no dependency on QWidget)
- */
-class KDSME_VIEW_EXPORT AbstractView : public QObject
+class KDSME_VIEW_EXPORT AbstractView : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
@@ -59,7 +56,7 @@ public:
     };
     Q_ENUMS(ViewState)
 
-    explicit AbstractView(QObject* parent = nullptr);
+    explicit AbstractView(QQuickItem* parent = nullptr);
     virtual ~AbstractView();
 
     virtual void setModel(QAbstractItemModel *model);

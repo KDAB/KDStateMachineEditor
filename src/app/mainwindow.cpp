@@ -30,12 +30,10 @@
 #include "editcontroller.h"
 #include "util/settings.h"
 #include "layouter.h"
-#include "layoutitem.h"
-#include "layoutitemmodel.h"
 #include "elementmodel.h"
 #include "scxmlparser.h"
 #include "element.h"
-#include "view/view.h"
+#include "view.h"
 #include "commandcontroller.h"
 #include "widgets/statemachineview.h"
 #include "widgets/statemachinetoolbar.h"
@@ -86,15 +84,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     : QMainWindow(parent, f)
     , ui(new Ui::MainWindow)
     , m_presetsModel(new QStandardItemModel(this))
-    , m_stateMachineModel(new StateModel(this))
     , m_transitionsModel(new TransitionListModel(this))
-    , m_layoutInformationModel(new LayoutItemModel(this))
-    , m_view(new View)
     , m_stateMachineView(0)
 {
     ui->setupUi(this);
-
-    m_view->setModel(m_stateMachineModel);
 
     setupPresetsView();
     setupStateMachineView();
@@ -111,13 +104,14 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
+    m_stateMachineView->view()->setStateMachine(nullptr);
+
     delete ui;
 }
 
 void MainWindow::setupStateMachineView()
 {
     m_stateMachineView = new StateMachineView;
-    m_stateMachineView->setView(m_view);
     m_stateMachineView->editController()->setEditModeEnabled(true);
 
     ui->sceneBox->layout()->addWidget(m_stateMachineView);
@@ -151,18 +145,9 @@ void MainWindow::setupPresetsView()
 
 void MainWindow::setupObjectInspector()
 {
-    m_stateMachineModel->setCommandController(m_stateMachineView->commandController());
-
     // object inspectors for the state machine object tree
-    ui->statesView->setModel(m_stateMachineModel);
+    ui->statesView->setModel(m_stateMachineView->view()->stateModel());
     ui->transitionsView->setModel(m_transitionsModel);
-
-    // views for debugging the application
-    m_layoutInformationModel->setView(m_view);
-    QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel;
-    proxyModel->setSourceModel(m_layoutInformationModel);
-    proxyModel->sort(0);
-    ui->layoutInformationView->setModel(proxyModel);
 
     ui->undoView->setStack(m_stateMachineView->commandController()->undoStack());
 }
@@ -176,8 +161,10 @@ void MainWindow::setupActions()
 
 void MainWindow::setStateMachine(StateMachine* stateMachine)
 {
-    if (stateMachine && m_view->stateMachine() == stateMachine)
+    if (stateMachine && m_stateMachineView->view()->stateMachine() == stateMachine)
         return;
+
+    m_stateMachineView->view()->setStateMachine(nullptr);
 
     if (!stateMachine) {
         stateMachine = new StateMachine;
@@ -186,20 +173,18 @@ void MainWindow::setStateMachine(StateMachine* stateMachine)
     }
 
     // update state chart
-    m_view->setStateMachine(stateMachine);
-    m_view->layout();
+    m_stateMachineView->view()->setStateMachine(stateMachine);
+    m_stateMachineView->view()->layout();
 
-    m_stateMachineModel->setState(stateMachine);
     m_transitionsModel->setState(stateMachine);
 
-    QItemSelectionModel* selectionModel = new QItemSelectionModel(m_stateMachineModel);
-    m_view->setSelectionModel(selectionModel);
+    auto selectionModel = m_stateMachineView->view()->selectionModel();
+    Q_ASSERT(selectionModel);
     ui->statesView->setSelectionModel(selectionModel);
     ui->propertyEditorWidget->setSelectionModel(selectionModel);
     ui->propertyEditorWidget->setCommandController(m_stateMachineView->commandController());
 
     ui->statesView->expandAll();
-    ui->layoutInformationView->expandAll();
 }
 
 void MainWindow::setInputMode(MainWindow::InputMode mode)

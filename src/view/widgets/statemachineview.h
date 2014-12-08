@@ -79,7 +79,6 @@ private:
     struct Private;
     QScopedPointer<Private> d;
 
-    Q_PRIVATE_SLOT(d, void onRootLayoutItemChanged(KDSME::LayoutItem*))
     Q_PRIVATE_SLOT(d, void onStateMachineChanged(KDSME::StateMachine*))
 };
 

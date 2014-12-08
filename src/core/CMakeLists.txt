@@ -6,8 +6,6 @@ set(LIB_SRCS
   layout/layerwiselayouter.cpp
   layout/layouter.cpp
   layout/layoutimportexport.cpp
-  layout/layoutitem.cpp
-  layout/layoutitemmodel.cpp
   layout/layoutproperties.cpp
   layout/layoututils.cpp
 
@@ -15,14 +13,12 @@ set(LIB_SRCS
   model/elementfactory.cpp
   model/elementmodel.cpp
   model/elementutil.cpp
+
   import/scxmlparser.cpp
 
   util/objecthelper.cpp
   util/objecttreemodel.cpp
   util/settings.cpp
-
-  view/abstractview.cpp
-  view/view.cpp
 )
 
 if(Graphviz_FOUND)
@@ -39,7 +35,7 @@ add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(kdstatemachineeditor_core
   LINK_PRIVATE
-    Qt5::Quick
+    Qt5::Quick # TODO: Get rid off this
   LINK_PUBLIC
     Qt5::Core
     Qt5::Gui
@@ -70,7 +66,6 @@ set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/layout
   ${CMAKE_CURRENT_SOURCE_DIR}/model
   ${CMAKE_CURRENT_SOURCE_DIR}/util
-  ${CMAKE_CURRENT_SOURCE_DIR}/view
 )
 target_include_directories(kdstatemachineeditor_core
   PUBLIC
@@ -100,10 +95,7 @@ install(FILES
   model/elementutil.h
   layout/layouter.h
   layout/layoutimportexport.h
-  layout/layoutitem.h
   layout/layoutproperties.h
-  view/abstractview.h
-  view/view.h
   util/objecttreemodel.h
   util/ringbuffer.h
   util/treewalker.h
