@@ -1,5 +1,5 @@
 /*
-  ChannelizedDropArea.qml
+  quicksceneitem.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,31 +22,32 @@
   clear to you.
 */
 
-import QtQuick 2.0
+#ifndef KDSME_QUICK_QUICKSCENEITEM_H
+#define KDSME_QUICK_QUICKSCENEITEM_H
 
-import com.kdab.kdsme 1.0
+#include <QQuickItem>
 
-DropArea {
-    id: root
-
-    // A list of QMimeData.data's the DropArea accepts.
-    keys: ["external"]
-
-    // The UmlElement.element this DropArea is attached to.
-    property variant element: null
-
-    onEntered: {
-        var sender = drag.source.dragData != undefined ? drag.source.dragData.element : null;
-        var target = element
-        if (!_quickView.editController.sendDragEnterEvent(sender, element, Qt.point(drag.x, drag.y), drag.urls)) {
-            drag.accepted = false
-        }
-    }
-
-    onDropped: {
-        var sender = drop.source.dragData != undefined ? drop.source.dragData.element : null;
-        if (!_quickView.editController.sendDropEvent(sender, element, Qt.point(drop.x, drop.y), drop.urls)) {
-            drop.accepted = false
-        }
-    }
+namespace KDSME {
+class Element;
 }
+
+class QuickSceneItem : public QQuickItem
+{
+    Q_OBJECT
+    Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged)
+
+public:
+    explicit QuickSceneItem(QQuickItem* parent = nullptr);
+    virtual ~QuickSceneItem();
+
+    KDSME::Element* element() const;
+    void setElement(KDSME::Element* element);
+
+Q_SIGNALS:
+    void elementChanged(KDSME::Element* element);
+
+private:
+    KDSME::Element* m_element;
+};
+
+#endif // KDSME_QUICK_QUICKSCENEITEM_H

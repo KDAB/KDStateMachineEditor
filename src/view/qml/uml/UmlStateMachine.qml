@@ -34,7 +34,7 @@ import "qrc:///kdsme/qml/util/"
 UmlElement {
     id: root
 
-    width: Math.max(item.width, textBox.width)
+    width: Math.max(element.width, textBox.width)
 
     Rectangle {
         id: regionRect
@@ -79,7 +79,7 @@ UmlElement {
         //keys: ["StateType", "HistoryStateType", "FinalStateType", "PseudoStateType"]
         keys: ["StateType"]
 
-        item: root.item
+        element: root.element
     }
 
     states: [

@@ -43,9 +43,9 @@ Item {
      * @return type:Qt.point
      */
     function pointAt(index) {
-        var item = repeater.itemAt(index);
-        var x = item.x+item.width/2;
-        var y = item.y+item.height/2;
+        var element = repeater.itemAt(index);
+        var x = element.x+element.width/2;
+        var y = element.y+element.height/2;
         return Qt.point(x, y);
     }
 

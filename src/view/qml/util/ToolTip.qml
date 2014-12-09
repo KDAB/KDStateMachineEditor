@@ -71,7 +71,7 @@ Rectangle {
 
     // Work-around: Used to get the size of the label
     // If we depended on the size of 'label', we'd get binding loops, because
-    // anchors.centerIn is used for this particular item
+    // anchors.centerIn is used for this particular element
     Text {
         id: dummyItem
         text: root.text

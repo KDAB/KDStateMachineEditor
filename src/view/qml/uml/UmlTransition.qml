@@ -32,8 +32,8 @@ import "qrc:///kdsme/qml/util/"
 UmlElement {
     id: root
 
-    property rect labelRect: item.labelBoundingRect
-    property var path: item.shape
+    property rect labelRect: element.labelBoundingRect
+    property var path: element.shape
 
     width: container.width
     height: container.height
@@ -63,17 +63,17 @@ UmlElement {
             var path = Global.createPath(start);
             path.lineTo(end);
 
-            var cmd = CommandFactory.modifyTransitionLayoutItem(root.item);
+            var cmd = CommandFactory.modifyTransitionLayoutItem(root.element);
             cmd.setShape(path.path);
             commandController.push(cmd);
         }
         onDropped: {
-            var transition = root.item;
-            while (target && target.parent && (target.item == undefined || target.item == undefined)) { // find the state containing the drop area
+            var transition = root.element;
+            while (target && target.parent && (target.element == undefined || target.element == undefined)) { // find the state containing the drop area
                 target = target.parent;
             }
             // If target == null => reparent to root state (the state machine object)
-            var state = (target ? target.item : root.item.machine());
+            var state = (target ? target.element : root.element.machine());
             if (index == 0) {
                 if (transition.sourceState != state) {
                     var cmd = CommandFactory.reparentElement(view, transition);
@@ -136,7 +136,7 @@ UmlElement {
             height: labelRect.height
             color: Theme.transitionLabelFontColor
             font.italic: true
-            visible: item.sourceState.type != Element.PseudoStateType
+            visible: element.sourceState.type != Element.PseudoStateType
                 && labelRect.height > 0 && root.name != ""
 
             text: root.name

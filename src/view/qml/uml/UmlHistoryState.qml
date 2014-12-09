@@ -45,7 +45,7 @@ UmlElement {
         Text {
             anchors.centerIn: parent
 
-            text: root.item.historyType === HistoryState.ShallowHistory ? "H" : "H*"
+            text: root.element.historyType === HistoryState.ShallowHistory ? "H" : "H*"
             color: Theme.stateLabelFontColor
             elide: Text.ElideRight
         }

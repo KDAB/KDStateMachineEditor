@@ -75,7 +75,7 @@ UmlElement {
         id: dropArea
         anchors.fill: parent
         keys: ["TransitionType"]
-        item: root.item
+        element: root.element
     }
 
     states: [

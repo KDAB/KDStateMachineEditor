@@ -27,13 +27,13 @@ import QtQuick.Layouts 1.0
 
 /**
  * This is simply a horizontal or vertical line depending on @p layoutDirection
- * which can be used as separator item inside a Qt Quick Layout
+ * which can be used as separator element inside a Qt Quick Layout
  */
 Item {
     id: root
 
     /**
-     * How to layout this item
+     * How to layout this element
      *
      * E.g. in a RowLayout you may want to set this to Qt.Vertical in order to display a horizontal line
      *

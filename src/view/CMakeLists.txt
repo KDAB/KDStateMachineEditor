@@ -20,6 +20,7 @@ set(LIB_SRCS
   quick/quickprimitiveitem.cpp
   quick/quickkdsmeglobal.cpp
   quick/quickrecursiveinstantiator.cpp
+  quick/quicksceneitem.cpp
 
   widgets/codeeditor.cpp
   widgets/propertyeditor.cpp

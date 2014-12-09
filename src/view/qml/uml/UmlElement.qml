@@ -29,15 +29,13 @@ import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util/"
 
-Item {
+SceneItem {
     id: root
 
-    property variant item: null
-
-    property string name: (item.label != "" ? item.label : qsTr("Unnamed"))
+    property string name: (element.label != "" ? element.label : qsTr("Unnamed"))
     property string toolTipText: ""
     property bool selectable: true
-    property bool selected: item.selected
+    property bool selected: element.selected
     property bool resizable: false
     property bool movable: true
     property alias hovered: mouseArea.containsMouse
@@ -45,9 +43,9 @@ Item {
     property real activeness: 0
 
     /**
-     * Delegate which is marked as visible as soon as the item is selected
+     * Delegate which is marked as visible as soon as the element is selected
      *
-     * This is a rectangular shaped item by default
+     * This is a rectangular shaped element by default
      */
     property Component selectionComponent: Rectangle {
         border {
@@ -63,7 +61,7 @@ Item {
             height: root.height
 
             function move(dx, dy) {
-                var cmd = CommandFactory.modifyLayoutItem(root.item);
+                var cmd = CommandFactory.modifyLayoutItem(root.element);
                 cmd.moveBy(dx, dy);
                 commandController.push(cmd);
             }
@@ -78,9 +76,9 @@ Item {
     }
 
     /**
-     * Delegate which is marked as visible as soon as the item is selected
+     * Delegate which is marked as visible as soon as the element is selected
      *
-     * This is a rectangular shaped item by default
+     * This is a rectangular shaped element by default
      */
     property Component draggingComponent: DragPointGroup {
         function adjusted(rect, xp1, yp1, xp2, yp2)
@@ -100,10 +98,10 @@ Item {
         ]
 
         onChanged: {
-            var item = root.item;
+            var element = root.element;
             var point = pointAt(index);
-            var rect = Qt.rect(item.pos.x, item.pos.y, item.width, item.height);
-            var cmd = CommandFactory.modifyLayoutItem(root.item)
+            var rect = Qt.rect(element.pos.x, element.pos.y, element.width, element.height);
+            var cmd = CommandFactory.modifyLayoutItem(root.element)
             switch (index) {
             // TODO: Implement me
             }
@@ -118,9 +116,9 @@ Item {
         top: parent.top
     }
 
-    width: item.width
-    height: item.height
-    visible: item.visible
+    width: element.width
+    height: element.height
+    visible: element.visible
 
     onClicked: view.setCurrentItem(object)
 

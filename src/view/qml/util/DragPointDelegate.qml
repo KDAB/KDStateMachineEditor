@@ -29,7 +29,7 @@ import "qrc:///kdsme/qml/util"
 Rectangle {
     id: root
 
-    /// Whether it is possible to drag this item around
+    /// Whether it is possible to drag this element around
     property alias enabled: mouseArea.enabled
 
     property var dragData

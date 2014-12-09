@@ -40,7 +40,7 @@ Item {
     readonly property size regionLabelButtonBoxSize: view.layoutProperties.regionLabelButtonBoxSize
 
     readonly property bool active: activeness === 1.0
-    readonly property bool expanded: control.item.expanded
+    readonly property bool expanded: control.element.expanded
 
     Behavior on width {
         SmoothedAnimation { duration: 200 }
@@ -146,9 +146,9 @@ Item {
                     text: (control.expanded ? "-" : "+")
                     onClicked: {
                         if (control.expanded) {
-                            view.collapseItem(control.item)
+                            view.collapseItem(control.element)
                         } else {
-                            view.expandItem(control.item)
+                            view.expandItem(control.element)
                         }
                     }
                 }
@@ -161,7 +161,7 @@ Item {
         id: dropArea
         anchors.fill: parent
         //keys: ["StateType", "TransitionType", "external"]
-        item: control.item
+        element: control.element
     }
 
     states: [

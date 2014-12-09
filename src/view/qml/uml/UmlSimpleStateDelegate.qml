@@ -69,7 +69,7 @@ Item {
         id: dropArea
         anchors.fill: parent
         keys: ["StateType", "TransitionType", "external"]
-        item: control.item
+        element: control.element
     }
 
     states: [

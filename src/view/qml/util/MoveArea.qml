@@ -27,7 +27,7 @@ import QtQuick 2.0
 Item {
     id: root
 
-    /// Whether this item accepts mouse events
+    /// Whether this element accepts mouse events
     property alias enabled: mouseArea.enabled
 
     Drag.active: mouseArea.drag.active

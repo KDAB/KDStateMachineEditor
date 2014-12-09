@@ -42,6 +42,7 @@
 #include "quick/quickmaskedmousearea.h"
 #include "quick/quickkdsmeglobal.h"
 #include "quick/quickrecursiveinstantiator.h"
+#include "quick/quicksceneitem.h"
 #include "element.h"
 #include "elementmodel.h"
 #include "layoutproperties.h"
@@ -142,6 +143,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterType<QuickGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "Geometry");
     qmlRegisterType<QuickPrimitiveItem>(KDSME_QML_NAMESPACE, 1, 0, "Primitive");
     qmlRegisterType<QuickRecursiveInstantiator>(KDSME_QML_NAMESPACE, 1, 0, "RecursiveInstantiator");
+    qmlRegisterType<QuickSceneItem>(KDSME_QML_NAMESPACE, 1, 0, "SceneItem");
     qmlRegisterType<PainterPathMask>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathMask");
     qmlRegisterType<SemanticZoomManager>(KDSME_QML_NAMESPACE, 1, 0, "SemanticZoomManager");
     qmlRegisterType<View>(KDSME_QML_NAMESPACE, 1, 0, "View");

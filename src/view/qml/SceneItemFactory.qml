@@ -75,7 +75,7 @@ Loader {
     Component {
         id: umlState
         UmlState {
-            item: object
+            element: object
             activeness: activenessForState(object)
         }
     }
@@ -83,14 +83,14 @@ Loader {
     Component {
         id: umlStateMachine
         UmlStateMachine {
-            item: object
+            element: object
         }
     }
 
     Component {
         id: umlFinalState
         UmlFinalState {
-            item: object
+            element: object
             activeness: activenessForState(object)
         }
     }
@@ -98,7 +98,7 @@ Loader {
     Component {
         id: umlHistoryState
         UmlHistoryState {
-            item: object
+            element: object
             activeness: activenessForState(object)
         }
     }
@@ -106,7 +106,7 @@ Loader {
     Component {
         id: umlPseudoState
         UmlPseudoState {
-            item: object
+            element: object
             activeness: activenessForState(object)
         }
     }
@@ -114,7 +114,7 @@ Loader {
     Component {
         id: umlTransition
         UmlTransition {
-            item: object
+            element: object
             activeness: activenessForTransition(object)
         }
     }
