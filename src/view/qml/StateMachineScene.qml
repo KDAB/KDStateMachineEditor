@@ -49,7 +49,7 @@ View {
         anchors.fill: parent
 
         model: root.model
-        delegate: LayoutItemLoader {
+        delegate: SceneItemFactory {
             view: root
             configurationController: root.configurationController
         }

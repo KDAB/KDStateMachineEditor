@@ -1,5 +1,5 @@
 /*
-  LayoutItemLoader.qml
+  SceneItemFactory.qml
 
   This file is part of the KDAB State Machine Editor Library.
 

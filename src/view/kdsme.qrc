@@ -2,6 +2,7 @@
     <qresource prefix="/kdsme">
         <file>qml/StateMachineScene.qml</file>
         <file>qml/uml/UmlState.qml</file>
+        <file>qml/SceneItemFactory.qml</file>
         <file>qml/StateMachineView.qml</file>
         <file>qml/StateMachineViewToolBar.qml</file>
         <file>qml/uml/UmlElement.qml</file>
@@ -19,7 +20,6 @@
         <file>qml/util/SquareButton.qml</file>
         <file>qml/util/Theme.qml</file>
         <file>qml/util/ToolTip.qml</file>
-        <file>qml/LayoutItemLoader.qml</file>
         <file>qml/uml/UmlPseudoState.qml</file>
         <file>qml/uml/UmlStateMachine.qml</file>
         <file>qml/uml/UmlFinalState.qml</file>
