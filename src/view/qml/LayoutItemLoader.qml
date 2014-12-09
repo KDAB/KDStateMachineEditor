@@ -30,16 +30,35 @@ import com.kdab.kdsme 1.0
 
 import "uml/"
 
-Item {
+Loader {
     id: root
+
+    property var configurationController
+    property var view
 
     x: object.pos.x
     y: object.pos.y
-    width: loader.width
-    height: loader.height
 
-    property var view
-    property var configurationController
+    asynchronous: true
+
+    sourceComponent: {
+        if (object.type === Element.StateMachineType) {
+            return umlStateMachine;
+        } else if (object.type === Element.FinalStateType) {
+            return umlFinalState;
+        } else if (object.type === Element.HistoryStateType) {
+            return umlHistoryState;
+        } else if (object.type === Element.PseudoStateType) {
+            return umlPseudoState;
+        } else if (object.type === Element.StateType) {
+            return umlState;
+        } else if (object.type === Element.TransitionType) {
+            return umlTransition;
+        } else {
+            console.log("Unknown Element type: " + object.type);
+            return null;
+        }
+    }
 
     function activenessForState(state) {
         configurationController.activeConfiguration; // bind to active configuration
@@ -51,36 +70,7 @@ Item {
         return configurationController.activenessForTransition(transition)
     }
 
-    Loader {
-        id: loader
 
-        anchors {
-            left: parent.left
-            top: parent.top
-        }
-
-        asynchronous: true
-
-        sourceComponent: {
-            // TODO: Can we make all this more declarative?
-            if (object.type === Element.StateMachineType) {
-                return umlStateMachine;
-            } else if (object.type === Element.FinalStateType) {
-                return umlFinalState;
-            } else if (object.type === Element.HistoryStateType) {
-                return umlHistoryState;
-            } else if (object.type === Element.PseudoStateType) {
-                return umlPseudoState;
-            } else if (object.type === Element.StateType) {
-                return umlState;
-            } else if (object.type === Element.TransitionType) {
-                return umlTransition;
-            } else {
-                console.log("Unknown LayoutItem type: " + object.type);
-                return null;
-            }
-        }
-    }
 
     Component {
         id: umlState
