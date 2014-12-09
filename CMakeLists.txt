@@ -21,6 +21,12 @@ include(MacroLogFeature)
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
 find_package(Qt5 5.3 REQUIRED QuickWidgets)
 find_package(Qt5 5.3 OPTIONAL_COMPONENTS XmlPatterns)
+set_package_properties(Qt5XmlPatterns PROPERTIES
+  TYPE OPTIONAL
+  DESCRIPTION "Qt5 XmlPatterns library"
+  PURPOSE "Required for unit tests dealing with XML input/output"
+)
+
 
 option(DEPLOY_DEPENDENCIES "install Qt5 and graphviz" ON)
 
