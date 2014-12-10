@@ -33,6 +33,7 @@ set(LIB_SRCS
   abstractcontroller.cpp
   commandcontroller.cpp
   configurationcontroller.cpp
+  debug.cpp
   editcontroller.cpp
   semanticzoommanager.cpp
 )

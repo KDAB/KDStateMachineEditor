@@ -24,7 +24,7 @@
 
 #include "quicksceneitem.h"
 
-#include <QDebug>
+#include "debug.h"
 
 //using namespace KDSME;
 

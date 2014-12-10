@@ -28,7 +28,7 @@
 #include "elementmodel.h"
 #include "view.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 
@@ -56,7 +56,7 @@ void ChangeStateMachineCommand::setStateMachine(KDSME::StateMachine* statemachin
 
 void ChangeStateMachineCommand::redo()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO;
 
     Q_ASSERT(m_view);
     Q_ASSERT(m_view->stateModel());
@@ -71,7 +71,7 @@ void ChangeStateMachineCommand::redo()
 
 void ChangeStateMachineCommand::undo()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO;
 
     Q_ASSERT(m_view);
     Q_ASSERT(m_view->stateModel());

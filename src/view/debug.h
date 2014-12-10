@@ -1,5 +1,5 @@
 /*
-  settings.cpp
+  debug.cpp
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,23 +22,11 @@
   clear to you.
 */
 
-#include "settings.h"
+#ifndef KDSME_VIEW_DEBUG_H
+#define KDSME_VIEW_DEBUG_H
 
-#include "debug.h"
+#include <QtCore/QLoggingCategory>
 
-Settings::Settings(QObject *parent)
-    : QObject(parent)
-{
-}
+Q_DECLARE_LOGGING_CATEGORY(KDSME_VIEW)
 
-void Settings::setValue(const QString& key, const QVariant & value)
-{
-    QSettings settings;
-    settings.setValue(key, value);
-}
-
-QVariant Settings::getValue( const QString& key, const QVariant& defaultValue) const
-{
-    QSettings settings;
-    return settings.value(key, defaultValue);
-}
+#endif // KDSME_VIEW_DEBUG_H

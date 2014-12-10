@@ -27,7 +27,7 @@
 #include "element.h"
 #include "kdsmeconstants.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QListView>
 #include <QMimeData>
 #include <QUrl>

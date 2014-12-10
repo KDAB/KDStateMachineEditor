@@ -24,7 +24,7 @@
 
 #include "quickmaskedmousearea.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QGuiApplication>
 #include <QStyleHints>
 

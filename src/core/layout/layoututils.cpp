@@ -27,7 +27,7 @@
 #include "element.h"
 
 #include <QGuiApplication>
-#include <QDebug>
+#include "debug.h"
 #include <QFontMetricsF>
 #include <QSizeF>
 

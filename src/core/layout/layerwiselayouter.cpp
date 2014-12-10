@@ -33,7 +33,7 @@
 #include "elementwalker.h"
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QElapsedTimer>
 #include <QFontMetrics>
 #include <QRectF>
@@ -111,7 +111,7 @@ QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* propertie
     ElementWalker walker(ElementWalker::PostOrderTraversal);
     walker.walkItems(state, std::bind(&LayerwiseLayouter::layoutState, this, std::placeholders::_1));
 
-    qDebug() << Q_FUNC_INFO << "Took" << timer.elapsed() << "ms";
+    qCDebug(KDSME_CORE) << Q_FUNC_INFO << "Took" << timer.elapsed() << "ms";
 
     return QRect();
 }

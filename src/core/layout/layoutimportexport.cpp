@@ -26,7 +26,7 @@
 
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QPainterPath>

@@ -35,7 +35,7 @@
 #include "reparentelementcommand.h"
 #include "changestatemachinecommand.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 

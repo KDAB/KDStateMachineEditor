@@ -27,7 +27,7 @@
 #include "objecttreemodel.h"
 
 #include <QAbstractItemModel>
-#include <QDebug>
+#include "debug.h"
 #include <QQmlComponent>
 #include <QQmlContext>
 #include <QQmlEngine>

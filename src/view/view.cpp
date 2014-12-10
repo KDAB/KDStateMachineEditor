@@ -31,7 +31,7 @@
 #include "layoututils.h"
 #include "elementmodel.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QDir>
 #include <QElapsedTimer>
 #include <QItemSelectionModel>
@@ -223,7 +223,7 @@ void View::setLayouter(Layouter* layouter)
 
 void View::layout()
 {
-    qDebug() << Q_FUNC_INFO << d->m_layouter << d->m_stateMachine;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << d->m_layouter << d->m_stateMachine;
 
     if (!d->m_layouter || !d->m_stateMachine) {
         return;

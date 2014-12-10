@@ -19,6 +19,8 @@ set(LIB_SRCS
   util/objecthelper.cpp
   util/objecttreemodel.cpp
   util/settings.cpp
+
+  debug.cpp
 )
 
 if(Graphviz_FOUND)

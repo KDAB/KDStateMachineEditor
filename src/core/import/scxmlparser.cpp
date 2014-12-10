@@ -26,7 +26,7 @@
 
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 
 #define IF_DEBUG(x)
 
@@ -82,7 +82,7 @@ QString ScxmlParser::errorString() const
 StateMachine* ScxmlParser::visitScxml()
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "scxml");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     const QXmlStreamAttributes attributes = m_reader.attributes();
 
@@ -112,7 +112,7 @@ StateMachine* ScxmlParser::visitScxml()
 void ScxmlParser::visitParallel(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "parallel");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     State* state = createState<State>(parent);
     tryCreateInitialState(state);
@@ -141,7 +141,7 @@ void ScxmlParser::visitParallel(State* parent)
 void ScxmlParser::visitState(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "state");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     // TODO: This could be a atomic or composite state
     // How to resolve?
@@ -176,7 +176,7 @@ void ScxmlParser::visitState(State* parent)
 void ScxmlParser::visitInitial(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "initial");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     // Must have exactly one <transition> child
     Transition* transition = 0;
@@ -201,7 +201,7 @@ void ScxmlParser::visitInitial(State* parent)
 void ScxmlParser::visitFinal(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "final");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     createState<FinalState>(parent);
 
@@ -211,7 +211,7 @@ void ScxmlParser::visitFinal(State* parent)
 void ScxmlParser::visitTransiton(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     const QXmlStreamAttributes attributes = m_reader.attributes();
     const QString event = attributes.value("event").toString();
@@ -228,7 +228,7 @@ void ScxmlParser::visitHistory(State* parent)
 {
     Q_UNUSED(parent);
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
-    IF_DEBUG(qDebug() << Q_FUNC_INFO;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     qWarning() << "NYI";
 
@@ -237,7 +237,7 @@ void ScxmlParser::visitHistory(State* parent)
 
 void ScxmlParser::resolveTargetStates()
 {
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << m_nameToStateMap;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << m_nameToStateMap;)
 
     auto it = m_unresolvedTargetStateIds.constBegin();
     while (it != m_unresolvedTargetStateIds.constEnd()) {
@@ -271,7 +271,7 @@ T* ScxmlParser::createState(State* parent)
 {
     const QXmlStreamAttributes attributes = m_reader.attributes();
     const QString id = attributes.value("id").toString();
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << parent->label() << id;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << parent->label() << id;)
     if (id.isEmpty()) {
         qWarning() << "Unnamed state at offset:" << m_reader.characterOffset();
     }
@@ -283,7 +283,7 @@ T* ScxmlParser::createState(State* parent)
 
 Transition* ScxmlParser::createTransition(State* parent, const QString& targetStateId)
 {
-    IF_DEBUG(qDebug() << Q_FUNC_INFO << parent->label() << targetStateId);
+    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << parent->label() << targetStateId);
     if (targetStateId.isEmpty()) {
         return nullptr;
     }

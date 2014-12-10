@@ -33,7 +33,7 @@
 #include "elementmodel.h"
 #include "view.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QAction>
 #include <QtTest>
 

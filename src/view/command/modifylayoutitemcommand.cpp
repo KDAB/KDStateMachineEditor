@@ -26,7 +26,7 @@
 
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 
@@ -71,7 +71,7 @@ void ModifyLayoutItemCommand::setGeometry(const QRectF& geometry)
 void KDSME::ModifyLayoutItemCommand::redo()
 {
     if (!m_item || m_operation == NoOperation) {
-        qDebug() << Q_FUNC_INFO << "Invalid item or no operation requested";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
         return;
     }
 
@@ -89,7 +89,7 @@ void KDSME::ModifyLayoutItemCommand::redo()
 void KDSME::ModifyLayoutItemCommand::undo()
 {
     if (!m_item || m_operation == NoOperation) {
-        qDebug() << Q_FUNC_INFO << "Invalid item or no operation requested";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
         return;
     }
 

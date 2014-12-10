@@ -30,7 +30,7 @@
 #include "element.h"
 #include "elementutil.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QTextStream>
 
 #include <algorithm>

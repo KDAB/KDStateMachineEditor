@@ -30,7 +30,7 @@
 //#include "command/modifypropertycommand.h"
 
 #include <QAbstractTransition>
-#include <QDebug>
+#include "debug.h"
 #include <QVariant>
 #include <QStateMachine>
 

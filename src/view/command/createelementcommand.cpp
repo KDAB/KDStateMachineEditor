@@ -27,7 +27,7 @@
 #include "elementfactory.h"
 #include "elementmodel.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 
@@ -78,7 +78,7 @@ void CreateElementCommand::redo()
     static const ElementFactory factory;
 
     if (!model() || m_type == Element::ElementType) {
-        qDebug() << Q_FUNC_INFO << "Can't redo, invalid model or type";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Can't redo, invalid model or type";
         return;
     }
 
@@ -86,7 +86,7 @@ void CreateElementCommand::redo()
     StateModel::AppendOperation append(model(), parentElement);
     Element* element = factory.create(m_type);
     if (!element) {
-        qDebug() << Q_FUNC_INFO << "Element could not be instantiated, type:" << m_type;
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Element could not be instantiated, type:" << m_type;
         return;
     }
 
@@ -99,7 +99,7 @@ void CreateElementCommand::redo()
 void CreateElementCommand::undo()
 {
     if (!m_createdElement) {
-        qDebug() << Q_FUNC_INFO << "Aborting undo, element was never created";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Aborting undo, element was never created";
         return;
     }
 

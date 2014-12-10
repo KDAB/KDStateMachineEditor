@@ -34,7 +34,7 @@
 #include "view.h"
 
 #include <QUrl>
-#include <QDebug>
+#include "debug.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -80,7 +80,7 @@ bool EditController::sendDragEnterEvent(Element* sender, Element* target, const 
 {
     Q_UNUSED(pos);
 
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
     // For the case a Transition is dragged onto a State that
     // State will turns into the new source/target of the transition.
@@ -90,14 +90,14 @@ bool EditController::sendDragEnterEvent(Element* sender, Element* target, const 
 
     // No sender means we expect a URL to be given.
     if (urls.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "No urls";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "No urls";
         return false;
     }
 
     // we only accept one item only for now
     const QUrl url = urls.first();
     if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
+        qCDebug(KDSME_VIEW)<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
 
@@ -109,17 +109,17 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
     Q_UNUSED(sender);
     Q_UNUSED(pos);
 
-    qDebug() << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
     if (urls.isEmpty()) {
-        qDebug()<< Q_FUNC_INFO << "No urls";
+        qCDebug(KDSME_VIEW)<< Q_FUNC_INFO << "No urls";
         return false;
     }
 
     // we only accept one item only for now
     const QUrl url = urls.first();
     if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qDebug()<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
+        qCDebug(KDSME_VIEW)<< Q_FUNC_INFO << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
 

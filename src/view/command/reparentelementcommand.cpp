@@ -28,7 +28,7 @@
 #include "elementmodel.h"
 #include "view.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 
@@ -54,7 +54,7 @@ void ReparentElementCommand::redo()
 
     m_valid = m_element->parentElement();
     if (!m_valid) {
-        qDebug() << "No Element* as parent, not reparenting this item";
+        qCDebug(KDSME_VIEW) << "No Element* as parent, not reparenting this item";
         return;
     }
 

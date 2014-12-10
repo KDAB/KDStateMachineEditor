@@ -28,7 +28,7 @@
 #include "element.h"
 #include "elementutil.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QXmlStreamWriter>
 
 using namespace KDSME;

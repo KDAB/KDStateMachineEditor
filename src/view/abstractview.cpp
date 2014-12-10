@@ -24,7 +24,7 @@
 
 #include "abstractview.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QItemSelectionModel>
 
 using namespace KDSME;

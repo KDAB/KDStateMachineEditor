@@ -30,7 +30,7 @@
 #include "view.h"
 
 #include <QAction>
-#include <QDebug>
+#include "debug.h"
 #include <QFileDialog>
 #include <QMessageBox>
 

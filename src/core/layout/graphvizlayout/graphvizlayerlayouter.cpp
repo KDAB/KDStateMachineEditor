@@ -27,7 +27,7 @@
 #include "graphvizlayouterbackend.h"
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QRectF>
 
 using namespace KDSME;

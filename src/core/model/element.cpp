@@ -29,7 +29,7 @@
 #include "objecthelper.h"
 #include "layoututils.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QEvent>
 #include <QPointF>
 #include <QPainterPath>

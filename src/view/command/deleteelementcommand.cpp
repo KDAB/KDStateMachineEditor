@@ -29,7 +29,7 @@
 #include "elementmodel.h"
 #include "view.h"
 
-#include <QDebug>
+#include "debug.h"
 
 using namespace KDSME;
 
@@ -52,7 +52,7 @@ DeleteElementCommand::~DeleteElementCommand()
 
 void DeleteElementCommand::redo()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO;
 
     Q_ASSERT(m_deletedElement);
 
@@ -69,10 +69,10 @@ void DeleteElementCommand::redo()
 
 void DeleteElementCommand::undo()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO;
 
     if (!m_parentElement) {
-        qDebug() << Q_FUNC_INFO << "Aborting undo, element was never deleted";
+        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Aborting undo, element was never deleted";
         return;
     }
 

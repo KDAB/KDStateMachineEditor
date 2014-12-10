@@ -30,7 +30,6 @@
 #include "kdsme_core_export.h"
 
 #include <QAbstractItemModel>
-#include <QDebug>
 #include <QObject>
 #include <QPointer>
 #include <QSortFilterProxyModel>

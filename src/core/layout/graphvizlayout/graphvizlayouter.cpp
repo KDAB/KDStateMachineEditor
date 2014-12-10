@@ -27,7 +27,7 @@
 #include "graphvizlayouterbackend.h"
 #include "element.h"
 
-#include <QDebug>
+#include "debug.h"
 #include <QRectF>
 
 using namespace KDSME;
@@ -55,7 +55,7 @@ QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties
         return QRectF();
     }
 
-    qDebug() << Q_FUNC_INFO << state << properties;
+    qCDebug(KDSME_CORE) << Q_FUNC_INFO << state << properties;
 
     // open context
     //const QString id = state->label();
