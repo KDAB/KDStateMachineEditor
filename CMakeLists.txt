@@ -80,7 +80,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   if(HAVE_GCC_REORDER)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wreorder")
   endif()
-  if(MINGW)
+
+  if(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++") # required in C++11 mode
+  elseif(MINGW)
     # mingw will error out on the crazy casts in probe.cpp without this
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
   else()
