@@ -24,19 +24,19 @@
 
 #include "layoutsnapshotcommand.h"
 
-#include "view.h"
+#include "statemachinescene.h"
 
 using namespace KDSME;
 
-LayoutSnapshotCommand::LayoutSnapshotCommand(View* view,  QUndoCommand* parent)
+LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene* scene,  QUndoCommand* parent)
     : Command(0, parent)
-    , m_view(view)
+    , m_scene(scene)
 {
 }
 
-LayoutSnapshotCommand::LayoutSnapshotCommand(View* view, const QString& text, QUndoCommand* parent)
+LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent)
     : Command(text, parent)
-    , m_view(view)
+    , m_scene(scene)
 {
 }
 

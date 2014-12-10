@@ -32,14 +32,14 @@
 namespace KDSME {
 
 class Element;
-class View;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
 {
     Q_OBJECT
 
 public:
-    ReparentElementCommand(View* view, Element* element, QUndoCommand* parent = 0);
+    ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = 0);
 
     virtual int id() const { return ReparentElement; }
 
@@ -49,7 +49,7 @@ public:
     virtual void undo() Q_DECL_OVERRIDE;
 
 private:
-    QPointer<View> m_view;
+    QPointer<StateMachineScene> m_view;
     QPointer<Element> m_element;
 
     /// Whether this command is valid (ie. if redo/undo is doing something)

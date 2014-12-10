@@ -31,7 +31,7 @@ class GraphvizLayouterBackend;
 
 namespace KDSME {
 
-class View;
+class StateMachineScene;
 
 class GraphvizLayouter : public Layouter
 {

@@ -27,7 +27,7 @@
 #include "export/scxmlexporter.h"
 #include "export/qmlexporter.h"
 #include "statemachineview.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include <QAction>
 #include "debug.h"
@@ -80,7 +80,7 @@ StateMachineToolBar::~StateMachineToolBar()
 
 void StateMachineToolBar::Private::handleExport()
 {
-    StateMachine* stateMachine = m_view->view()->stateMachine();
+    StateMachine* stateMachine = m_view->scene()->stateMachine();
     if (!stateMachine) {
         QMessageBox::information(q, QString(), "State machine unavailable");
         return;

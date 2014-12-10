@@ -31,15 +31,15 @@
 
 namespace KDSME {
 
-class View;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
 {
     Q_OBJECT
 
 public:
-    explicit LayoutSnapshotCommand(View* view, QUndoCommand* parent = nullptr);
-    LayoutSnapshotCommand(View* view, const QString& text, QUndoCommand* parent = 0);
+    explicit LayoutSnapshotCommand(StateMachineScene* scene, QUndoCommand* parent = nullptr);
+    LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = 0);
 
     virtual int id() const Q_DECL_OVERRIDE { return LayoutSnapshot; }
 
@@ -47,7 +47,7 @@ public:
     virtual void undo() Q_DECL_OVERRIDE;
 
 private:
-    QPointer<View> m_view;
+    QPointer<StateMachineScene> m_scene;
 };
 
 }

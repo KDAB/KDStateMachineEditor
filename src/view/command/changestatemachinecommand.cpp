@@ -26,13 +26,13 @@
 
 #include "element.h"
 #include "elementmodel.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include "debug.h"
 
 using namespace KDSME;
 
-ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::View* view, QUndoCommand* parent)
+ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent)
     : Command(tr("Change Statemachine"), parent)
     , m_view(view)
     , m_oldStateMachine(0)

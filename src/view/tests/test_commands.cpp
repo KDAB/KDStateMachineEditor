@@ -31,7 +31,7 @@
 #include "commandcontroller.h"
 #include "element.h"
 #include "elementmodel.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include "debug.h"
 #include <QAction>
@@ -46,7 +46,7 @@ public:
 
     StateMachine machine;
     StateModel model;
-    View view;
+    StateMachineScene view;
     QUndoStack undoStack;
 };
 
@@ -117,7 +117,7 @@ void CommandsTest::testLayoutSnapshot()
     State state(&machine);
     Transition transition(&machine);
 
-    View view;
+    StateMachineScene view;
     view.setStateMachine(&machine);
 
     machine.setPos(QPointF(10, 10));

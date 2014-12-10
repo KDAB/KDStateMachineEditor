@@ -45,7 +45,7 @@ class ReparentElementCommand;
 class ChangeStateMachineCommand;
 class StateModel;
 class Transition;
-class View;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT CommandFactory : public QObject
 {
@@ -59,15 +59,15 @@ public:
     void setModel(StateModel* model);
 
     Q_INVOKABLE KDSME::CreateElementCommand* createElement(KDSME::StateModel* model, KDSME::Element::Type type, KDSME::Element* parentElement = nullptr) const;
-    Q_INVOKABLE KDSME::DeleteElementCommand* deleteElement(KDSME::View* view, KDSME::Element* element) const;
-    Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::View* view, const QString& text = QString()) const;
+    Q_INVOKABLE KDSME::DeleteElementCommand* deleteElement(KDSME::StateMachineScene* view, KDSME::Element* element) const;
+    Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::StateMachineScene* view, const QString& text = QString()) const;
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyLayoutItemCommand* modifyLayoutItem(KDSME::Element* item);
     Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition);
     Q_INVOKABLE KDSME::ModifyTransitionLayoutItemCommand* modifyTransitionLayoutItem(KDSME::Transition* transition);
-    Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::View* view, KDSME::Element* element);
-    Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::View* view, KDSME::StateMachine* statemachine);
+    Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::StateMachineScene* view, KDSME::Element* element);
+    Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine);
 
 Q_SIGNALS:
     void modelChanged(StateModel* model);

@@ -32,7 +32,7 @@ class QRectF;
 namespace KDSME {
 class Transition;
 class State;
-class View;
+class StateMachineScene;
 }
 
 class GraphvizLayouterBackend

@@ -29,7 +29,7 @@ set(LIB_SRCS
   widgets/statemachinepalettewidget.cpp
 
   abstractview.cpp
-  view.cpp
+  statemachinescene.cpp
   abstractcontroller.cpp
   commandcontroller.cpp
   configurationcontroller.cpp
@@ -71,7 +71,7 @@ set(QML_FILES
   qml/uml/UmlStateMachine.qml
   qml/uml/UmlState.qml
   qml/uml/UmlSimpleStateDelegate.qml
-  qml/StateMachineScene.qml
+  qml/Scene.qml
 )
 
 add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_QRCS} ${QML_FILES})
@@ -110,7 +110,7 @@ install(FILES
   commandcontroller.h
   configurationcontroller.h
   editcontroller.h
-  view.h
+  statemachinescene.h
 
   widgets/propertyeditor.h
   widgets/statemachinepalettewidget.h

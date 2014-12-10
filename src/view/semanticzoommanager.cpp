@@ -28,7 +28,7 @@
 #include "element.h"
 #include "elementwalker.h"
 #include "widgets/statemachineview.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 using namespace KDSME;
 
@@ -81,8 +81,8 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
         return;
 
     auto stateMachineView = m_configurationController->stateMachineView();
-    auto view = stateMachineView->view();
-    auto root = stateMachineView->view()->stateMachine();
+    auto view = stateMachineView->scene();
+    auto root = stateMachineView->scene()->stateMachine();
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkChildren(root, [&](Element* i) -> ElementWalker::VisitResult {
         auto state = qobject_cast<State*>(i);

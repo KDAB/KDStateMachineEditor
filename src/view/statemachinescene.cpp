@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "view.h"
+#include "statemachinescene.h"
 
 #include "element.h"
 #include "layerwiselayouter.h"
@@ -57,9 +57,9 @@ QList<Element*> elementsAt(const QModelIndex& parent, int start, int end)
 
 }
 
-struct View::Private
+struct StateMachineScene::Private
 {
-    Private(View* view);
+    Private(StateMachineScene* view);
 
     State* importState(State* state);
 
@@ -70,7 +70,7 @@ struct View::Private
     void importTransitions(State* state);
     Transition* importTransition(Transition* transition);
 
-    View* q;
+    StateMachineScene* q;
 
     QPointer<StateMachine> m_stateMachine;
     Layouter* m_layouter;
@@ -79,7 +79,7 @@ struct View::Private
     State* m_expandedItem;
 };
 
-View::Private::Private(View* view)
+StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
     , m_layouter(new LayerwiseLayouter(q))
     , m_properties(new LayoutProperties(q))
@@ -87,23 +87,23 @@ View::Private::Private(View* view)
 {
 }
 
-View::View(QQuickItem* parent)
+StateMachineScene::StateMachineScene(QQuickItem* parent)
     : AbstractView(parent)
     , d(new Private(this))
 {
     setModel(new StateModel(this));
 }
 
-View::~View()
+StateMachineScene::~StateMachineScene()
 {
 }
 
-LayoutProperties* View::layoutProperties() const
+LayoutProperties* StateMachineScene::layoutProperties() const
 {
     return d->m_properties;
 }
 
-void View::collapseItem(State* state)
+void StateMachineScene::collapseItem(State* state)
 {
     if (!state || !state->isExpanded())
         return;
@@ -112,7 +112,7 @@ void View::collapseItem(State* state)
     d->updateChildItemVisibility(state, false);
 }
 
-void View::expandItem(State* state)
+void StateMachineScene::expandItem(State* state)
 {
     if (!state || state->isExpanded())
         return;
@@ -123,12 +123,12 @@ void View::expandItem(State* state)
     d->m_expandedItem = state;
 }
 
-bool View::isItemExpanded(State* state) const
+bool StateMachineScene::isItemExpanded(State* state) const
 {
     return state ? state->isExpanded() : false;
 }
 
-void View::setItemExpanded(State* state, bool expand)
+void StateMachineScene::setItemExpanded(State* state, bool expand)
 {
     if (expand) {
         expandItem(state);
@@ -137,7 +137,7 @@ void View::setItemExpanded(State* state, bool expand)
     }
 }
 
-bool View::isItemSelected(Element* item)
+bool StateMachineScene::isItemSelected(Element* item)
 {
     if (!stateModel() || !item)
         return false;
@@ -146,7 +146,7 @@ bool View::isItemSelected(Element* item)
     return selectionModel()->isSelected(index);
 }
 
-void View::setItemSelected(Element* item, bool selected)
+void StateMachineScene::setItemSelected(Element* item, bool selected)
 {
     if (!stateModel() || !item || !item)
         return;
@@ -155,12 +155,12 @@ void View::setItemSelected(Element* item, bool selected)
     selectionModel()->select(index, (selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect));
 }
 
-Element* View::currentItem() const
+Element* StateMachineScene::currentItem() const
 {
     return currentIndex().data(StateModel::ElementRole).value<Element*>();
 }
 
-void View::setCurrentItem(Element* item)
+void StateMachineScene::setCurrentItem(Element* item)
 {
     if (!stateModel() || !item || !item)
         return;
@@ -169,7 +169,7 @@ void View::setCurrentItem(Element* item)
     setCurrentIndex(index);
 }
 
-Element* View::currentState()
+Element* StateMachineScene::currentState()
 {
     Element *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element*>();
     if (!element || element->type() == Element::ElementType)
@@ -182,12 +182,12 @@ Element* View::currentState()
     return element;
 }
 
-StateMachine* View::stateMachine() const
+StateMachine* StateMachineScene::stateMachine() const
 {
     return d->m_stateMachine;
 }
 
-void View::setStateMachine(StateMachine* stateMachine)
+void StateMachineScene::setStateMachine(StateMachine* stateMachine)
 {
     Q_ASSERT(stateModel());
     stateModel()->setState(stateMachine);
@@ -199,12 +199,12 @@ void View::setStateMachine(StateMachine* stateMachine)
     emit stateMachineChanged(d->m_stateMachine);
 }
 
-Layouter* View::layouter() const
+Layouter* StateMachineScene::layouter() const
 {
     return d->m_layouter;
 }
 
-void View::setLayouter(Layouter* layouter)
+void StateMachineScene::setLayouter(Layouter* layouter)
 {
     if (d->m_layouter == layouter)
         return;
@@ -221,7 +221,7 @@ void View::setLayouter(Layouter* layouter)
     layout();
 }
 
-void View::layout()
+void StateMachineScene::layout()
 {
     qCDebug(KDSME_VIEW) << Q_FUNC_INFO << d->m_layouter << d->m_stateMachine;
 
@@ -232,12 +232,12 @@ void View::layout()
     d->m_layouter->layout(d->m_stateMachine, layoutProperties());
 }
 
-StateModel* View::stateModel() const
+StateModel* StateMachineScene::stateModel() const
 {
     return qobject_cast<StateModel*>(model());
 }
 
-void View::setModel(QAbstractItemModel* model)
+void StateMachineScene::setModel(QAbstractItemModel* model)
 {
     StateModel* stateModel = qobject_cast<StateModel*>(model);
     if (!stateModel) {
@@ -247,7 +247,7 @@ void View::setModel(QAbstractItemModel* model)
     KDSME::AbstractView::setModel(stateModel);
 }
 
-void View::Private::updateChildItemVisibility(State* state, bool expand)
+void StateMachineScene::Private::updateChildItemVisibility(State* state, bool expand)
 {
     if (!state)
         return;
@@ -271,7 +271,7 @@ void View::Private::updateChildItemVisibility(State* state, bool expand)
     });
 }
 
-void View::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void StateMachineScene::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     AbstractView::currentChanged(current, previous);
 
@@ -292,19 +292,17 @@ void View::currentChanged(const QModelIndex& current, const QModelIndex& previou
     emit currentItemChanged(currentItem);
 }
 
-void View::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
+void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     AbstractView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void View::rowsInserted(const QModelIndex& parent, int start, int end)
+void StateMachineScene::rowsInserted(const QModelIndex& parent, int start, int end)
 {
     AbstractView::rowsInserted(parent, start, end);
 }
 
-void View::layoutChanged()
+void StateMachineScene::layoutChanged()
 {
     AbstractView::layoutChanged();
 }
-
-#include "moc_view.cpp"

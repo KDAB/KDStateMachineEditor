@@ -38,7 +38,7 @@ namespace KDSME {
 
 class State;
 class StateMachine;
-class View;
+class StateMachineScene;
 
 class KDSME_CORE_EXPORT Element : public QObject
 {

@@ -33,8 +33,8 @@
 #include "elementmodel.h"
 #include "scxmlparser.h"
 #include "element.h"
-#include "view.h"
 #include "commandcontroller.h"
+#include "statemachinescene.h"
 #include "widgets/statemachineview.h"
 #include "widgets/statemachinetoolbar.h"
 
@@ -104,7 +104,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
-    m_stateMachineView->view()->setStateMachine(nullptr);
+    m_stateMachineView->scene()->setStateMachine(nullptr);
 
     delete ui;
 }
@@ -146,7 +146,7 @@ void MainWindow::setupPresetsView()
 void MainWindow::setupObjectInspector()
 {
     // object inspectors for the state machine object tree
-    ui->statesView->setModel(m_stateMachineView->view()->stateModel());
+    ui->statesView->setModel(m_stateMachineView->scene()->stateModel());
     ui->transitionsView->setModel(m_transitionsModel);
 
     ui->undoView->setStack(m_stateMachineView->commandController()->undoStack());
@@ -161,10 +161,10 @@ void MainWindow::setupActions()
 
 void MainWindow::setStateMachine(StateMachine* stateMachine)
 {
-    if (stateMachine && m_stateMachineView->view()->stateMachine() == stateMachine)
+    if (stateMachine && m_stateMachineView->scene()->stateMachine() == stateMachine)
         return;
 
-    m_stateMachineView->view()->setStateMachine(nullptr);
+    m_stateMachineView->scene()->setStateMachine(nullptr);
 
     if (!stateMachine) {
         stateMachine = new StateMachine;
@@ -173,12 +173,12 @@ void MainWindow::setStateMachine(StateMachine* stateMachine)
     }
 
     // update state chart
-    m_stateMachineView->view()->setStateMachine(stateMachine);
-    m_stateMachineView->view()->layout();
+    m_stateMachineView->scene()->setStateMachine(stateMachine);
+    m_stateMachineView->scene()->layout();
 
     m_transitionsModel->setState(stateMachine);
 
-    auto selectionModel = m_stateMachineView->view()->selectionModel();
+    auto selectionModel = m_stateMachineView->scene()->selectionModel();
     Q_ASSERT(selectionModel);
     ui->statesView->setSelectionModel(selectionModel);
     ui->propertyEditorWidget->setSelectionModel(selectionModel);

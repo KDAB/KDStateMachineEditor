@@ -48,7 +48,7 @@
 #include "layoutproperties.h"
 #include "semanticzoommanager.h"
 #include "kdsmeconstants.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -90,7 +90,7 @@ struct StateMachineView::Private
 
     StateMachineView* q;
 
-    View* m_view;
+    StateMachineScene* m_scene;
 
     CommandController* m_controller;
     ConfigurationController* m_configurationController;
@@ -105,7 +105,7 @@ struct StateMachineView::Private
 
 StateMachineView::Private::Private(StateMachineView* q)
     : q(q)
-    , m_view(nullptr)
+    , m_scene(nullptr)
     , m_controller(nullptr)
     , m_configurationController(nullptr)
     , m_editController(nullptr)
@@ -146,7 +146,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterType<QuickSceneItem>(KDSME_QML_NAMESPACE, 1, 0, "SceneItem");
     qmlRegisterType<PainterPathMask>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathMask");
     qmlRegisterType<SemanticZoomManager>(KDSME_QML_NAMESPACE, 1, 0, "SemanticZoomManager");
-    qmlRegisterType<View>(KDSME_QML_NAMESPACE, 1, 0, "View");
+    qmlRegisterType<StateMachineScene>(KDSME_QML_NAMESPACE, 1, 0, "StateMachineScene");
 
     qmlRegisterUncreatableType<AbstractMask>(KDSME_QML_NAMESPACE, 1, 0, "AbstractMask", "Access to object");
     qmlRegisterUncreatableType<AbstractView>(KDSME_QML_NAMESPACE, 1, 0, "AbstractView", "Access to object");
@@ -182,25 +182,25 @@ StateMachineView::~StateMachineView()
 }
 
 
-View* StateMachineView::view() const
+StateMachineScene* StateMachineView::scene() const
 {
-    return d->m_view;
+    return d->m_scene;
 }
 
-void StateMachineView::setView(View* view)
+void StateMachineView::setScene(StateMachineScene* scene)
 {
-    if (d->m_view == view)
+    if (d->m_scene == scene)
         return;
 
-    if (d->m_view) {
-        disconnect(d->m_view, 0, this, 0);
+    if (d->m_scene) {
+        disconnect(d->m_scene, 0, this, 0);
     }
-    d->m_view = view;
-    if (d->m_view) {
-        connect(d->m_view, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
+    d->m_scene = scene;
+    if (d->m_scene) {
+        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
     }
 
-    emit viewChanged(d->m_view);
+    emit sceneChanged(d->m_scene);
 }
 
 CommandController* StateMachineView::commandController() const
@@ -239,10 +239,10 @@ void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine* state
 
 void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 {
-    Q_ASSERT(d->m_view);
-    ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(d->m_view);
+    Q_ASSERT(d->m_scene);
+    ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(d->m_scene);
     cmd->setStateMachine(stateMachine);
-    if (d->m_view->stateMachine()) {
+    if (d->m_scene->stateMachine()) {
         commandController()->push(cmd);
     } else {
         cmd->redo();
@@ -252,7 +252,7 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 
 void StateMachineView::deleteElement(KDSME::Element *element)
 {
-    DeleteElementCommand* cmd = new DeleteElementCommand(d->m_view, element);
+    DeleteElementCommand* cmd = new DeleteElementCommand(d->m_scene, element);
     commandController()->push(cmd);
 }
 

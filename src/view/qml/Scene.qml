@@ -30,7 +30,7 @@ import com.kdab.kdsme 1.0
 
 import "uml/"
 
-View {
+StateMachineScene {
     id: root
 
     property var configurationController: null

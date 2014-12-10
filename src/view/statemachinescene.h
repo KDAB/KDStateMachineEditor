@@ -1,5 +1,5 @@
 /*
-  view.h
+  statemachinescene.h
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -23,8 +23,8 @@
 */
 
 
-#ifndef KDSME_VIEW_VIEW_H
-#define KDSME_VIEW_VIEW_H
+#ifndef KDSME_VIEW_STATEMACHINESCENE_H
+#define KDSME_VIEW_STATEMACHINESCENE_H
 
 #include "kdsme_view_export.h"
 #include "abstractview.h"
@@ -41,7 +41,7 @@ class StateMachine;
 class StateModel;
 class Transition;
 
-class KDSME_VIEW_EXPORT View : public AbstractView
+class KDSME_VIEW_EXPORT StateMachineScene : public AbstractView
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
@@ -49,8 +49,8 @@ class KDSME_VIEW_EXPORT View : public AbstractView
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
 
 public:
-    explicit View(QQuickItem* parent = nullptr);
-    virtual ~View();
+    explicit StateMachineScene(QQuickItem* parent = nullptr);
+    virtual ~StateMachineScene();
 
     StateModel* stateModel() const;
     virtual void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
@@ -100,6 +100,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::View*)
+Q_DECLARE_METATYPE(KDSME::StateMachineScene*)
 
 #endif // VIEW_H

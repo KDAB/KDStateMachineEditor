@@ -73,12 +73,12 @@ CreateElementCommand* CommandFactory::createElement(StateModel* model, Element::
     return cmd;
 }
 
-DeleteElementCommand* CommandFactory::deleteElement(KDSME::View* view, KDSME::Element* element) const
+DeleteElementCommand* CommandFactory::deleteElement(KDSME::StateMachineScene* view, KDSME::Element* element) const
 {
     return new DeleteElementCommand(view, element);
 }
 
-LayoutSnapshotCommand* CommandFactory::layoutSnapshot(KDSME::View* view, const QString& text) const
+LayoutSnapshotCommand* CommandFactory::layoutSnapshot(KDSME::StateMachineScene* view, const QString& text) const
 {
     return new LayoutSnapshotCommand(view, text);
 }
@@ -108,12 +108,12 @@ KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* tra
     return new ModifyTransitionCommand(transition);
 }
 
-ReparentElementCommand* CommandFactory::reparentElement(View* view, Element* element)
+ReparentElementCommand* CommandFactory::reparentElement(StateMachineScene* view, Element* element)
 {
     return new ReparentElementCommand(view, element);
 }
 
-ChangeStateMachineCommand* CommandFactory::changeStateMachineElement(KDSME::View* view, KDSME::StateMachine* statemachine)
+ChangeStateMachineCommand* CommandFactory::changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine)
 {
     ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(view);
     cmd->setStateMachine(statemachine);

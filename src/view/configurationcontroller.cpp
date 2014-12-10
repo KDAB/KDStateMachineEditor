@@ -25,7 +25,7 @@
 #include "configurationcontroller.h"
 
 #include "element.h"
-#include "view.h"
+#include "statemachinescene.h"
 #include "ringbuffer.h"
 
 using namespace KDSME;
@@ -54,7 +54,7 @@ struct ConfigurationController::Private
     void updateActiveRegion();
 
     ConfigurationController* q;
-    View* m_view;
+    StateMachineScene* m_view;
 
     RingBuffer<Configuration> m_lastConfigurations;
     RingBuffer<Transition*> m_lastTransitions;

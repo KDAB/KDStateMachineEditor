@@ -33,14 +33,14 @@
 
 namespace KDSME {
 
-class View;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
 {
     Q_OBJECT
 
 public:
-    explicit DeleteElementCommand(View* view, Element* deletedElement, QUndoCommand* parent = nullptr);
+    explicit DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent = nullptr);
     virtual ~DeleteElementCommand();
 
     virtual int id() const Q_DECL_OVERRIDE { return DeleteElement; }
@@ -51,7 +51,7 @@ public:
 private:
     void updateText();
 
-    QPointer<View> m_view;
+    QPointer<StateMachineScene> m_scene;
     int m_index;
     QJsonObject m_layout;
     QPointer<Element> m_parentElement;

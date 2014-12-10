@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/kdsme">
-        <file>qml/StateMachineScene.qml</file>
+        <file>qml/Scene.qml</file>
         <file>qml/uml/UmlState.qml</file>
         <file>qml/SceneItemFactory.qml</file>
         <file>qml/StateMachineView.qml</file>

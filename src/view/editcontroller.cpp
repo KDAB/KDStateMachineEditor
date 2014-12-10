@@ -31,7 +31,7 @@
 #include "layoutimportexport.h"
 #include "kdsmeconstants.h"
 #include "modifylayoutitemcommand.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include <QUrl>
 #include "debug.h"
@@ -135,7 +135,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
     // an initial position/geometry?
     class CreateAndPositionCommand : public Command {
     public:
-        CreateAndPositionCommand(View *view, Element::Type type, Element *targetElement, const QPointF &pos)
+        CreateAndPositionCommand(StateMachineScene *view, Element::Type type, Element *targetElement, const QPointF &pos)
             : Command(view->stateModel())
             , m_view(view)
             , m_createcmd(new CreateElementCommand(view->stateModel(), type))
@@ -177,13 +177,13 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             m_createcmd->undo();
         }
     private:
-        View *m_view;
+        StateMachineScene *m_view;
         QScopedPointer<CreateElementCommand> m_createcmd;
         QPointF m_pos;
     };
 
     // TODO: Try to decouple more
-    auto view = stateMachineView()->view();
+    auto view = stateMachineView()->scene();
     CreateAndPositionCommand *cmd = new CreateAndPositionCommand(view, type, target, QPointF(pos));
     stateMachineView()->sendCommand(cmd);
 

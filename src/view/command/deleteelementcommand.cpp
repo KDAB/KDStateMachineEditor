@@ -27,15 +27,15 @@
 #include "elementfactory.h"
 #include "layoutimportexport.h"
 #include "elementmodel.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include "debug.h"
 
 using namespace KDSME;
 
-DeleteElementCommand::DeleteElementCommand(View* view, Element* deletedElement, QUndoCommand* parent)
-    : Command(view->stateModel(), parent)
-    , m_view(view)
+DeleteElementCommand::DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent)
+    : Command(scene->stateModel(), parent)
+    , m_scene(scene)
     , m_index(-1)
     , m_parentElement(0)
     , m_deletedElement(deletedElement)

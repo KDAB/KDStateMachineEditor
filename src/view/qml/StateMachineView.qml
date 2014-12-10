@@ -159,14 +159,14 @@ Rectangle {
                 followActiveRegion = false;
             }
 
-            StateMachineScene {
+            Scene {
                 id: stateMachineScene
                 objectName: "stateMachineScene"
 
                 configurationController: root.configurationController
 
                 Component.onCompleted: {
-                    _quickView.view = stateMachineScene
+                    _quickView.scene = stateMachineScene
                 }
             }
 

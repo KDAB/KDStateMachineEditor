@@ -26,13 +26,13 @@
 
 #include "element.h"
 #include "elementmodel.h"
-#include "view.h"
+#include "statemachinescene.h"
 
 #include "debug.h"
 
 using namespace KDSME;
 
-ReparentElementCommand::ReparentElementCommand(View* view, Element* element, QUndoCommand* parent)
+ReparentElementCommand::ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent)
     : Command(tr("Set parent of '%1'").arg(element->label()), parent)
     , m_view(view)
     , m_element(element)

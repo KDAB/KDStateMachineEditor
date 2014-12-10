@@ -36,14 +36,14 @@ class EditController;
 class CommandController;
 class ConfigurationController;
 class LayoutItem;
-class View;
+class StateMachineScene;
 class StateMachine;
 class Element;
 
 class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::View* view READ view WRITE setView NOTIFY viewChanged)
+    Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged)
     Q_PROPERTY(KDSME::CommandController* commandController READ commandController CONSTANT)
     Q_PROPERTY(KDSME::ConfigurationController* configurationController READ configurationController CONSTANT)
     Q_PROPERTY(KDSME::EditController* editController READ editController CONSTANT)
@@ -52,8 +52,7 @@ public:
     explicit StateMachineView(QWidget* parent = 0);
     virtual ~StateMachineView();
 
-    View* view() const;
-    void setView(View* m_view);
+    StateMachineScene* scene() const;
 
     CommandController* commandController() const;
     ConfigurationController* configurationController() const;
@@ -73,11 +72,13 @@ protected:
     QQuickItem* sceneObject() const;
 
 Q_SIGNALS:
-    void viewChanged(KDSME::View* view);
+    void sceneChanged(KDSME::StateMachineScene* scene);
 
 private:
     struct Private;
     QScopedPointer<Private> d;
+
+    void setScene(StateMachineScene* scene);
 
     Q_PRIVATE_SLOT(d, void onStateMachineChanged(KDSME::StateMachine*))
 };

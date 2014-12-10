@@ -88,7 +88,7 @@ struct Element::Private
     QPointF m_pos;
     qreal m_height, m_width;
 
-    View* m_view;
+    StateMachineScene* m_view;
 };
 
 Element::Element(QObject* parent)

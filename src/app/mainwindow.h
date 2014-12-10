@@ -33,7 +33,7 @@ class StateMachine;
 class StateMachineView;
 class StateModel;
 class TransitionListModel;
-class View;
+class StateMachineScene;
 }
 
 class QStandardItemModel;

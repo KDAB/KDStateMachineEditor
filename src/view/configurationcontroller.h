@@ -36,7 +36,7 @@ namespace KDSME {
 
 class State;
 class Transition;
-class View;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT ConfigurationController : public AbstractController
 {
