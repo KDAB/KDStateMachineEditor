@@ -54,6 +54,10 @@ Loader {
             return umlState;
         } else if (object.type === Element.TransitionType) {
             return umlTransition;
+        } else if (object.type === Element.SignalTransitionType) {
+            return umlTransition; // no special representation for now
+        } else if (object.type === Element.TimeoutTransitionType) {
+            return umlTransition; // no special representation for now
         } else {
             console.log("Unknown Element type: " + object.type);
             return null;
