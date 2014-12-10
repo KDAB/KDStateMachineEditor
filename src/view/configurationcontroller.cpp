@@ -26,6 +26,7 @@
 
 #include "element.h"
 #include "view.h"
+#include "ringbuffer.h"
 
 using namespace KDSME;
 

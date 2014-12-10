@@ -28,7 +28,6 @@
 #include "kdsme_view_export.h"
 
 #include "abstractcontroller.h"
-#include "ringbuffer.h"
 
 #include <QRectF>
 #include <QSet>
