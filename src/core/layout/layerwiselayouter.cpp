@@ -132,7 +132,7 @@ ElementWalker::VisitResult LayerwiseLayouter::layoutState(Element* element)
     }
 #else
     // let's just show collapsed states in this case
-    boundingRect = boundingRectForCollapsedRegion(state, m_view);
+    boundingRect = boundingRectForCollapsedRegion(state, m_properties);
 #endif
 
     m_regionLayouter->layoutRegion(state, boundingRect, m_properties);
