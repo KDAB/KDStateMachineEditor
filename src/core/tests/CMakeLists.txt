@@ -7,7 +7,9 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/config-test.h
 )
 
-if(Qt5XmlPatterns_FOUND)
+# QtXmlPatterns fails badly on OSX -- see https://bugreports.qt-project.org/browse/QTBUG-40818
+if(Qt5XmlPatterns_FOUND AND NOT APPLE)
+  add_definitions(-DUSE_QT_XMLPATTERNS_LIB)
   list(APPEND KDSME_TESTHELPER_EXTRA_LIBS ${Qt5XmlPatterns_LIBRARIES})
 endif()
 

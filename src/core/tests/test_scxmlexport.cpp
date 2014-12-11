@@ -31,7 +31,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#ifdef QT_XMLPATTERNS_LIB
+#ifdef USE_QT_XMLPATTERNS_LIB
 #include <QXmlQuery>
 #endif
 
@@ -42,7 +42,7 @@ using namespace KDSME;
 
 namespace {
 
-#ifdef QT_XMLPATTERNS_LIB
+#ifdef USE_QT_XMLPATTERNS_LIB
 QStringList query(QByteArray xml, const QString& sourceCode)
 {
     static const QString preamble = \
@@ -113,7 +113,7 @@ void ScxmlExportTest::testSimpleStateMachine()
     QVERIFY(success);
     QVERIFY(!output.isEmpty());
 
-#ifdef QT_XMLPATTERNS_LIB
+#ifdef USE_QT_XMLPATTERNS_LIB
     QStringList stateMachineIds = query(output, "doc($input)/scxml/@name/string()");
     QCOMPARE(stateMachineIds, QStringList() << "root");
     QStringList stateIds = query(output, "doc($input)/scxml/state/@id/string()");
