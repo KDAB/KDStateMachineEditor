@@ -23,7 +23,8 @@
 */
 
 #include "export/qmlexporter.h"
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QtTest>
 #include <QFile>

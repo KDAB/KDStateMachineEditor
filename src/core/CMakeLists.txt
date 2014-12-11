@@ -13,6 +13,8 @@ set(LIB_SRCS
   model/elementfactory.cpp
   model/elementmodel.cpp
   model/elementutil.cpp
+  model/state.cpp
+  model/transition.cpp
 
   import/scxmlparser.cpp
 
@@ -95,6 +97,8 @@ install(FILES
   model/element.h
   model/elementmodel.h
   model/elementutil.h
+  model/state.h
+  model/transition.h
   layout/layouter.h
   layout/layoutimportexport.h
   layout/layoutproperties.h

@@ -34,6 +34,8 @@
 #include "modifytransitionlayoutitemcommand.h"
 #include "reparentelementcommand.h"
 #include "changestatemachinecommand.h"
+#include "state.h"
+#include "transition.h"
 
 #include "debug.h"
 
@@ -119,3 +121,5 @@ ChangeStateMachineCommand* CommandFactory::changeStateMachineElement(KDSME::Stat
     cmd->setStateMachine(statemachine);
     return cmd;
 }
+
+#include "moc_commandfactory.cpp"

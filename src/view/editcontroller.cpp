@@ -27,7 +27,8 @@
 
 #include "createelementcommand.h"
 #include "command.h"
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 #include "layoutimportexport.h"
 #include "kdsmeconstants.h"
 #include "modifylayoutitemcommand.h"

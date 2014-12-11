@@ -28,6 +28,8 @@
 
 #include "gvutils.h"
 
+#include "state.h"
+#include "transition.h"
 #include "elementmodel.h"
 #include "layoututils.h"
 #include "util/objecthelper.h"

@@ -25,11 +25,12 @@
 #include "elementutil.h"
 
 #include "element.h"
+#include "state.h"
+#include "transition.h"
 
-namespace KDSME {
-namespace ElementUtil {
+using namespace KDSME;
 
-State* findInitialState(const KDSME::State* state)
+State* ElementUtil::findInitialState(const KDSME::State* state)
 {
     if (!state)
         return nullptr;
@@ -45,7 +46,7 @@ State* findInitialState(const KDSME::State* state)
     return nullptr;
 }
 
-void setInitialState(State* state, State* initialState)
+void ElementUtil::setInitialState(State* state, State* initialState)
 {
     if (!state)
         return;
@@ -80,7 +81,7 @@ void setInitialState(State* state, State* initialState)
     tr->setTargetState(initialState);
 }
 
-State* findState(State* root, const QString &label)
+State* ElementUtil::findState(State* root, const QString &label)
 {
     if (!root || root->label().isEmpty())
         return nullptr;
@@ -95,5 +96,17 @@ State* findState(State* root, const QString &label)
     return nullptr;
 }
 
-} // namespace ElementUtil
-} // namespace KDSME
+StateMachine* ElementUtil::findStateMachine(const Element* element)
+{
+    if (!element) {
+        return nullptr;
+    }
+
+    QObject *current = element->parent();
+    while (current != 0) {
+        if (StateMachine *machine = qobject_cast<StateMachine*>(current))
+            return machine;
+        current = current->parent();
+    }
+    return nullptr;
+}

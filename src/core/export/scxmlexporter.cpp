@@ -27,6 +27,8 @@
 #include "objecthelper.h"
 #include "element.h"
 #include "elementutil.h"
+#include "state.h"
+#include "transition.h"
 
 #include "debug.h"
 #include <QXmlStreamWriter>

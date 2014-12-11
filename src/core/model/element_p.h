@@ -1,11 +1,10 @@
 /*
-  layoutimportexport.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
   Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Volker Krause <volker.krause@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,25 +21,34 @@
   clear to you.
 */
 
-#ifndef KDSME_LAYOUT_LAYOUTIMPORTEXPORT_H
-#define KDSME_LAYOUT_LAYOUTIMPORTEXPORT_H
+#include "element.h"
 
-#include "kdsme_core_export.h"
-
-class QJsonObject;
+#include <QPointF>
+#include <QRectF>
+#include <QSizeF>
 
 namespace KDSME {
 
-class State;
-
-namespace LayoutImportExport
+struct Element::Private
 {
-    KDSME_CORE_EXPORT bool matches(const QJsonObject& data, State* state);
+    Private()
+        : m_id(0)
+        , m_flags(ElementIsEnabled | ElementIsSelectable | ElementIsEditable)
+        , m_visible(true)
+        , m_selected(false)
+        , m_height(0.0)
+        , m_width(0.0)
+    {}
 
-    KDSME_CORE_EXPORT QJsonObject exportLayout(const State* state);
-    KDSME_CORE_EXPORT void importLayout(const QJsonObject& data, State* state);
+    QString m_label;
+    quintptr m_id;
+    Element::Flags m_flags;
+
+    bool m_visible;
+    bool m_selected;
+
+    QPointF m_pos;
+    qreal m_height, m_width;
+};
+
 }
-
-}
-
-#endif // LAYOUTIMPORTEXPORT_H

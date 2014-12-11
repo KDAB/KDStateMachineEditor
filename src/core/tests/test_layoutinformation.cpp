@@ -22,10 +22,10 @@
   clear to you.
 */
 
-#include "element.h"
-
 #include "layoutimportexport.h"
 #include "layoututils.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QDebug>
 #include <QtTest>

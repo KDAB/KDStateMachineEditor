@@ -24,7 +24,8 @@
 
 #include "statemachinescene.h"
 
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 #include "layerwiselayouter.h"
 #include "layouter.h"
 #include "layoutproperties.h"

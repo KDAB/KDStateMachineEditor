@@ -26,8 +26,8 @@
 
 #include "objecthelper.h"
 #include "kdsmeconstants.h"
-//#include "commandcontroller.h"
-//#include "command/modifypropertycommand.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QAbstractTransition>
 #include "debug.h"

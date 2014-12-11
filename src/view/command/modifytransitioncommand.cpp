@@ -23,7 +23,9 @@
 */
 
 #include "modifytransitioncommand.h"
-#include "model/element.h"
+
+#include "state.h"
+#include "transition.h"
 
 using namespace KDSME;
 

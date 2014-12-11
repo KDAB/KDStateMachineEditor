@@ -25,7 +25,8 @@
 #include "semanticzoommanager.h"
 
 #include "configurationcontroller.h"
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 #include "elementwalker.h"
 #include "widgets/statemachineview.h"
 #include "statemachinescene.h"

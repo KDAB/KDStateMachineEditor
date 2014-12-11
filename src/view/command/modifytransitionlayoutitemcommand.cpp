@@ -24,7 +24,7 @@
 
 #include "modifytransitionlayoutitemcommand.h"
 
-#include "element.h"
+#include "transition.h"
 
 using namespace KDSME;
 

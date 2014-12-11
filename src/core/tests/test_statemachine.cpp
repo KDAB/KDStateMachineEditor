@@ -22,7 +22,8 @@
   clear to you.
 */
 
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QDebug>
 #include <QtTest>

@@ -25,6 +25,8 @@
 #include "layoututils.h"
 
 #include "element.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QGuiApplication>
 #include "debug.h"

@@ -73,3 +73,5 @@ void CommandController::clear()
 {
     d->m_undoStack->clear();
 }
+
+#include "moc_commandcontroller.cpp"

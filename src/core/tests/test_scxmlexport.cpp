@@ -25,7 +25,8 @@
 #include <config-test.h>
 
 #include "export/scxmlexporter.h"
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QDebug>
 #include <QtTest>

@@ -24,9 +24,10 @@
 
 #include "changestatemachinecommand.h"
 
-#include "element.h"
 #include "elementmodel.h"
+#include "state.h"
 #include "statemachinescene.h"
+#include "transition.h"
 
 #include "debug.h"
 

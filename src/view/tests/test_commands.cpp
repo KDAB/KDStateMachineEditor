@@ -29,7 +29,8 @@
 #include "command/modifypropertycommand.h"
 #include "command/reparentelementcommand.h"
 #include "commandcontroller.h"
-#include "element.h"
+#include "state.h"
+#include "transition.h"
 #include "elementmodel.h"
 #include "statemachinescene.h"
 

@@ -24,9 +24,10 @@
 
 #include "configurationcontroller.h"
 
-#include "element.h"
+#include "state.h"
 #include "statemachinescene.h"
 #include "ringbuffer.h"
+#include "transition.h"
 
 using namespace KDSME;
 

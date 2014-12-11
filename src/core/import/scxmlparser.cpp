@@ -25,6 +25,8 @@
 #include "scxmlparser.h"
 
 #include "element.h"
+#include "state.h"
+#include "transition.h"
 
 #include "debug.h"
 

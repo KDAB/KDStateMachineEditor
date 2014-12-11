@@ -24,6 +24,9 @@
 
 #include "elementfactory.h"
 
+#include "state.h"
+#include "transition.h"
+
 using namespace KDSME;
 
 ElementFactory::ElementFactory()

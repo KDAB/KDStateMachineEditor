@@ -24,7 +24,7 @@
 
 #include "modifydefaultstatecommand.h"
 
-#include "element.h"
+#include "state.h"
 #include "elementutil.h"
 
 #include "debug.h"

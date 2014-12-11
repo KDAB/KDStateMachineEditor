@@ -26,6 +26,7 @@
 
 #include "elementfactory.h"
 #include "elementmodel.h"
+#include "state.h"
 
 #include "debug.h"
 

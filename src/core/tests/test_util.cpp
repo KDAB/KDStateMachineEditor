@@ -22,8 +22,9 @@
   clear to you.
 */
 
-#include "element.h"
 #include "elementwalker.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QDebug>
 #include <QVector>
