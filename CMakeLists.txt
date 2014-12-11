@@ -86,16 +86,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   if(HAVE_GCC_REORDER)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wreorder")
   endif()
-
   if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++") # required in C++11 mode
-  elseif(MINGW)
-    # mingw will error out on the crazy casts in probe.cpp without this
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
-  else()
-    # visibility attributes not supported on mingw, don't use -fvisibility option
-    # see: http://stackoverflow.com/questions/7994415/mingw-fvisibility-hidden-does-not-seem-to-work
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
   endif()
 endif()
 
