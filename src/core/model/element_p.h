@@ -21,6 +21,9 @@
   clear to you.
 */
 
+#ifndef KDSME_MODEL_ELEMENT_P_H
+#define KDSME_MODEL_ELEMENT_P_H
+
 #include "element.h"
 
 #include <QPointF>
@@ -52,3 +55,5 @@ struct Element::Private
 };
 
 }
+
+#endif
