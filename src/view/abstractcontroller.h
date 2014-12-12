@@ -39,7 +39,7 @@ class KDSME_VIEW_EXPORT AbstractController : public QObject
     Q_PROPERTY(KDSME::StateMachineView* stateMachineView READ stateMachineView CONSTANT)
 
 public:
-    AbstractController(StateMachineView* view);
+    explicit AbstractController(StateMachineView* view);
     virtual ~AbstractController();
 
     StateMachineView* stateMachineView() const;
