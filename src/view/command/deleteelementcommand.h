@@ -43,10 +43,10 @@ public:
     explicit DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent = nullptr);
     virtual ~DeleteElementCommand();
 
-    virtual int id() const Q_DECL_OVERRIDE { return DeleteElement; }
+    virtual int id() const override { return DeleteElement; }
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
     void updateText();

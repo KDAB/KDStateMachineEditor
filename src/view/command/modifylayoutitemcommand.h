@@ -44,14 +44,14 @@ public:
 
     Element* item() const;
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyLayoutItem; }
+    virtual int id() const override { return ModifyLayoutItem; }
 
     Q_INVOKABLE void moveBy(qreal dx, qreal dy);
     Q_INVOKABLE void setGeometry(const QRectF& geometry);
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
-    virtual bool mergeWith(const QUndoCommand* other) Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
+    virtual bool mergeWith(const QUndoCommand* other) override;
 
 protected:
     enum Operation {

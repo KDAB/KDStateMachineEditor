@@ -43,10 +43,10 @@ public:
     ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = 0);
     ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = 0);
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyProperty; }
+    virtual int id() const override { return ModifyProperty; }
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
     void init();

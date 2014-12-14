@@ -41,13 +41,13 @@ class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
 public:
     explicit ModifyTransitionCommand(Transition* transition, QUndoCommand* parent = 0);
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyTransition; }
+    virtual int id() const override { return ModifyTransition; }
 
     Q_INVOKABLE void setSourceState(KDSME::State* sourceState);
     Q_INVOKABLE void setTargetState(KDSME::State* targetState);
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
     void updateText();

@@ -47,8 +47,8 @@ public:
     KDSME::StateMachine* stateMachine() const;
     void setStateMachine(KDSME::StateMachine* statemachine);
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 signals:
     void stateMachineChanged(KDSME::StateMachine* statemachine);

@@ -43,7 +43,7 @@ public:
     int indent() const;
     void setIndent(int indent);
 
-    virtual bool exportMachine(StateMachine* machine) Q_DECL_OVERRIDE;
+    virtual bool exportMachine(StateMachine* machine) override;
 
 private:
     struct Private;

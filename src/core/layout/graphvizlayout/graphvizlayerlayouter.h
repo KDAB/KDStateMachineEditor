@@ -39,7 +39,7 @@ public:
     explicit GraphvizLayerLayouter(QObject* parent = nullptr);
     virtual ~GraphvizLayerLayouter();
 
-    virtual QRectF layout(State* state, const LayoutProperties* properties) Q_DECL_OVERRIDE;
+    virtual QRectF layout(State* state, const LayoutProperties* properties) override;
 
 private:
     GraphvizLayouterBackend* m_backend;

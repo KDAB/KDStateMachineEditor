@@ -124,7 +124,7 @@ Q_SIGNALS:
     void colorChanged(const QColor& color);
 
 protected:
-    virtual QSGNode *updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) Q_DECL_OVERRIDE;
+    virtual QSGNode *updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) override;
 
 private Q_SLOTS:
     void updateGeometry();

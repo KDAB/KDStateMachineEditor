@@ -49,10 +49,10 @@ public:
 
     explicit PaletteModel(QObject* parent = 0);
 
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    virtual QMimeData* mimeData(const QModelIndexList& indexes) const Q_DECL_OVERRIDE;
-    virtual Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    virtual QMimeData* mimeData(const QModelIndexList& indexes) const override;
+    virtual Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
     struct Entry

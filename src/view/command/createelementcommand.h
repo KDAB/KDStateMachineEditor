@@ -49,10 +49,10 @@ public:
 
     Element* createdElement() const;
 
-    virtual int id() const Q_DECL_OVERRIDE { return CreateElement; }
+    virtual int id() const override { return CreateElement; }
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 Q_SIGNALS:
     void parentElementChanged(Element* parentElement);

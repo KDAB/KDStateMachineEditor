@@ -45,8 +45,8 @@ public:
 
     Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
     QPointer<StateMachineScene> m_view;

@@ -40,9 +40,9 @@ public:
     explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = nullptr);
     ~ModifyInitialStateCommand();
 
-    int id() const Q_DECL_OVERRIDE;
-    void undo() Q_DECL_OVERRIDE;
-    void redo() Q_DECL_OVERRIDE;
+    int id() const override;
+    void undo() override;
+    void redo() override;
 
 private:
     QPointer<State> m_state;

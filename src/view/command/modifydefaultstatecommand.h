@@ -41,9 +41,9 @@ public:
     explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
     ~ModifyDefaultStateCommand();
 
-    int id() const Q_DECL_OVERRIDE;
-    void undo() Q_DECL_OVERRIDE;
-    void redo() Q_DECL_OVERRIDE;
+    int id() const override;
+    void undo() override;
+    void redo() override;
 
 private:
     QPointer<HistoryState> m_state;

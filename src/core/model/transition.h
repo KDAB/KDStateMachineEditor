@@ -88,7 +88,7 @@ public:
     explicit SignalTransition(State* sourceState);
     virtual ~SignalTransition();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
     QString signal() const;
     void setSignal(const QString& signal);
@@ -110,7 +110,7 @@ public:
     explicit TimeoutTransition(State* sourceState);
     virtual ~TimeoutTransition();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
     int timeout() const;
     void setTimeout(int timeout);

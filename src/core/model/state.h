@@ -48,7 +48,7 @@ public:
     explicit State(State* parent = 0);
     ~State();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
     State* parentState() const;
 
@@ -87,7 +87,7 @@ public:
     Q_INVOKABLE KDSME::StateMachine* machine() const;
 
 protected:
-    virtual bool event(QEvent* event) Q_DECL_OVERRIDE;
+    virtual bool event(QEvent* event) override;
 
 Q_SIGNALS:
     void onEntryChanged(const QString& onEntry);
@@ -118,8 +118,8 @@ public:
     explicit HistoryState(HistoryType type, State* parent = nullptr);
     virtual ~HistoryState();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
-    virtual QString toDisplayString() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
+    virtual QString toDisplayString() const override;
 
     State* defaultState() const;
     void setDefaultState(State *state);
@@ -146,7 +146,7 @@ public:
     explicit FinalState(State* parent = 0);
     virtual ~FinalState();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
 private:
     struct Private;
@@ -161,7 +161,7 @@ public:
     explicit StateMachine(QObject* parent = 0);
     virtual ~StateMachine();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
 private:
     struct Private;
@@ -182,14 +182,14 @@ public:
     explicit PseudoState(Kind kind = InitialState, State* parent = 0);
     virtual ~PseudoState();
 
-    virtual Type type() const Q_DECL_OVERRIDE;
+    virtual Type type() const override;
 
     Kind kind() const;
     void setKind(Kind kind);
 
     QString kindString() const;
 
-    virtual QString toDisplayString() const Q_DECL_OVERRIDE;
+    virtual QString toDisplayString() const override;
 
 Q_SIGNALS:
     void kindChanged(Kind kind);

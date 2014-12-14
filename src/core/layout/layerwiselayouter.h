@@ -54,7 +54,7 @@ class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
 public:
     explicit LayerwiseLayouter(QObject* parent = nullptr);
 
-    virtual QRectF layout(State* state, const LayoutProperties* properties) Q_DECL_OVERRIDE;
+    virtual QRectF layout(State* state, const LayoutProperties* properties) override;
 
 private:
     ElementWalker::VisitResult layoutState(Element* element);

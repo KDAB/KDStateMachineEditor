@@ -53,7 +53,7 @@ public:
     virtual ~StateMachineScene();
 
     StateModel* stateModel() const;
-    virtual void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
+    virtual void setModel(QAbstractItemModel* model) override;
 
     StateMachine* stateMachine() const;
     /// Ownership is not transferred
@@ -87,11 +87,11 @@ Q_SIGNALS:
     void currentItemChanged(KDSME::Element* currentItem);
 
 protected Q_SLOTS:
-    virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
+    virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
 
-    virtual void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) Q_DECL_OVERRIDE;
-    virtual void rowsInserted(const QModelIndex& parent, int start, int end) Q_DECL_OVERRIDE;
-    virtual void layoutChanged() Q_DECL_OVERRIDE;
+    virtual void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
+    virtual void rowsInserted(const QModelIndex& parent, int start, int end) override;
+    virtual void layoutChanged() override;
 
 private:
     struct Private;

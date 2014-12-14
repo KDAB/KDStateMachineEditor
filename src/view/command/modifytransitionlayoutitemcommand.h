@@ -41,11 +41,11 @@ class KDSME_VIEW_EXPORT ModifyTransitionLayoutItemCommand : public Command
 public:
     explicit ModifyTransitionLayoutItemCommand(Transition* item, QUndoCommand* parent = nullptr);
 
-    virtual int id() const Q_DECL_OVERRIDE { return ModifyTransitionLayoutItem; }
+    virtual int id() const override { return ModifyTransitionLayoutItem; }
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
-    virtual bool mergeWith(const QUndoCommand* other) Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
+    virtual bool mergeWith(const QUndoCommand* other) override;
 
     Q_INVOKABLE void setShape(const QPainterPath& path);
 

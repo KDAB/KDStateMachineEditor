@@ -41,10 +41,10 @@ public:
     explicit LayoutSnapshotCommand(StateMachineScene* scene, QUndoCommand* parent = nullptr);
     LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = 0);
 
-    virtual int id() const Q_DECL_OVERRIDE { return LayoutSnapshot; }
+    virtual int id() const override { return LayoutSnapshot; }
 
-    virtual void redo() Q_DECL_OVERRIDE;
-    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
     QPointer<StateMachineScene> m_scene;

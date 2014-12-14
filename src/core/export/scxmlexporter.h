@@ -46,7 +46,7 @@ public:
      *
      * @note For exporting to work, *all* states must-have unique labels set
      */
-    virtual bool exportMachine(StateMachine* machine) Q_DECL_OVERRIDE;
+    virtual bool exportMachine(StateMachine* machine) override;
 
 private:
     struct Private;
