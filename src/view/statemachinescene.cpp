@@ -23,7 +23,9 @@
 */
 
 #include "statemachinescene.h"
+#include "statemachinescene_p.h"
 
+#include "debug.h"
 #include "state.h"
 #include "transition.h"
 #include "layerwiselayouter.h"
@@ -32,7 +34,6 @@
 #include "layoututils.h"
 #include "elementmodel.h"
 
-#include "debug.h"
 #include <QDir>
 #include <QElapsedTimer>
 #include <QItemSelectionModel>
@@ -57,28 +58,6 @@ QList<Element*> elementsAt(const QModelIndex& parent, int start, int end)
 }
 
 }
-
-struct StateMachineScene::Private
-{
-    Private(StateMachineScene* view);
-
-    State* importState(State* state);
-
-    void updateChildItemVisibility(State* state, bool expand);
-
-    void setRootElement(State* root);
-
-    void importTransitions(State* state);
-    Transition* importTransition(Transition* transition);
-
-    StateMachineScene* q;
-
-    QPointer<StateMachine> m_stateMachine;
-    Layouter* m_layouter;
-    LayoutProperties* m_properties;
-
-    State* m_expandedItem;
-};
 
 StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
@@ -230,7 +209,10 @@ void StateMachineScene::layout()
         return;
     }
 
+    auto oldState = state();
+    setState(RefreshState);
     d->m_layouter->layout(d->m_stateMachine, layoutProperties());
+    setState(oldState);
 }
 
 StateModel* StateMachineScene::stateModel() const

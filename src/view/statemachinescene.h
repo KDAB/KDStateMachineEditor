@@ -32,7 +32,6 @@
 #include <QObject>
 
 namespace KDSME {
-
 class Element;
 class Layouter;
 class LayoutProperties;
