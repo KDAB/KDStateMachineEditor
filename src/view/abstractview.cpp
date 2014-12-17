@@ -35,12 +35,14 @@ struct AbstractView::Private
 
     QAbstractItemModel* m_model;
     QPointer<QItemSelectionModel> m_selectionModel;
+    QQuickItem* m_instantiator;
     AbstractView::EditTriggers m_editTriggers;
     AbstractView::ViewState m_state;
 };
 
 AbstractView::Private::Private()
     : m_model(nullptr)
+    , m_instantiator(nullptr)
     , m_editTriggers(NoEditTriggers)
     , m_state(NoState)
 {
@@ -133,6 +135,26 @@ void AbstractView::setSelectionModel(QItemSelectionModel* selectionModel)
     }
 }
 
+QQuickItem* AbstractView::instantiator() const
+{
+    return d->m_instantiator;
+}
+
+void AbstractView::setInstantiator(QQuickItem* instantiator)
+{
+    if (d->m_instantiator == instantiator)
+        return;
+
+    if (!dynamic_cast<InstantiatorInterface*>(instantiator)) {
+        qCDebug(KDSME_VIEW) << "Instantiator object must implement InstantiatorInterface";
+        return;
+    }
+
+    d->m_instantiator = instantiator;
+    d->m_instantiator->setParentItem(this);
+    emit instantiatorChanged(d->m_instantiator);
+}
+
 AbstractView::EditTriggers AbstractView::editTriggers() const
 {
     return d->m_editTriggers;
@@ -141,6 +163,12 @@ AbstractView::EditTriggers AbstractView::editTriggers() const
 void AbstractView::setEditTriggers(AbstractView::EditTriggers triggers)
 {
     d->m_editTriggers = triggers;
+}
+
+QObject* AbstractView::itemForIndex(const QModelIndex& index) const
+{
+    auto instantiator = dynamic_cast<InstantiatorInterface*>(d->m_instantiator);
+    return instantiator ? instantiator->itemForIndex(index) : nullptr;
 }
 
 AbstractView::ViewState AbstractView::state() const

@@ -25,12 +25,15 @@
 #ifndef KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 #define KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 
+#include "abstractview.h"
+
+#include <QPersistentModelIndex>
 #include <QQuickItem>
 
 class QAbstractItemModel;
 class QQmlContext;
 
-class QuickRecursiveInstantiator : public QQuickItem
+class QuickRecursiveInstantiator : public QQuickItem, public KDSME::InstantiatorInterface
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
@@ -45,6 +48,8 @@ public:
 
     QQmlComponent* delegate() const;
     void setDelegate(QQmlComponent* delegate);
+
+    virtual QObject* itemForIndex(const QModelIndex& index) const override;
 
     QList<QObject*> rootItems() const;
 
@@ -63,6 +68,7 @@ private:
 
     QAbstractItemModel* m_model;
     QQmlComponent* m_delegate;
+    QHash<QPersistentModelIndex, QObject*> m_createdItems;
 
     QList<QObject*> m_rootItems;
 };

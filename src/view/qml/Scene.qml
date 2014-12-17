@@ -43,7 +43,7 @@ StateMachineScene {
 
     transformOrigin: Item.TopLeft
 
-    RecursiveInstantiator {
+    instantiator: RecursiveInstantiator {
         id: instantiator
 
         anchors.fill: parent

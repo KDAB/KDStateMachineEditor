@@ -88,6 +88,11 @@ void QuickRecursiveInstantiator::setDelegate(QQmlComponent* delegate)
     emit delegateChanged(m_delegate);
 }
 
+QObject* QuickRecursiveInstantiator::itemForIndex(const QModelIndex& index) const
+{
+    return m_createdItems.value(index);
+}
+
 void QuickRecursiveInstantiator::modelReset()
 {
     Q_ASSERT(m_model);
@@ -103,6 +108,8 @@ void QuickRecursiveInstantiator::modelReset()
 
 void QuickRecursiveInstantiator::modelDestroyed()
 {
+    //qDeleteAll(m_createdItems.values());
+    m_createdItems.clear();
     qDeleteAll(m_rootItems);
     m_rootItems.clear();
 
@@ -129,6 +136,9 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
             quickItem->setParentItem(this);
         }
     }
+
+    // register
+    m_createdItems[QPersistentModelIndex(index)] = createdObject;
 
     // create items for child indices recursively
     for (int i = 0; i < m_model->rowCount(index); ++i) {

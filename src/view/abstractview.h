@@ -37,10 +37,20 @@ class QModelIndex;
 
 namespace KDSME {
 
+// TODO: Move class decl to own header?
+class InstantiatorInterface
+{
+public:
+    virtual ~InstantiatorInterface() {}
+
+    virtual QObject* itemForIndex(const QModelIndex& index) const = 0;
+};
+
 class KDSME_VIEW_EXPORT AbstractView : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(QQuickItem* instantiator READ instantiator WRITE setInstantiator NOTIFY instantiatorChanged)
     Q_PROPERTY(ViewState state READ state NOTIFY stateChanged FINAL)
 
 public:
@@ -52,7 +62,7 @@ public:
 
     enum ViewState {
         NoState,
-        ItemLayoutState
+        RefreshState,
     };
     Q_ENUMS(ViewState)
 
@@ -65,8 +75,13 @@ public:
     virtual void setSelectionModel(QItemSelectionModel *selectionModel);
     QItemSelectionModel *selectionModel() const;
 
+    QQuickItem* instantiator() const;
+    void setInstantiator(QQuickItem* instantiator);
+
     void setEditTriggers(EditTriggers triggers);
     EditTriggers editTriggers() const;
+
+    QObject* itemForIndex(const QModelIndex& index) const;
 
     ViewState state() const;
 
@@ -93,6 +108,7 @@ protected Q_SLOTS:
 Q_SIGNALS:
     void modelChanged(QAbstractItemModel* model);
     void stateChanged(ViewState state);
+    void instantiatorChanged(QObject* instantiator);
 
 private:
     struct Private;
@@ -101,6 +117,7 @@ private:
 
 }
 
+Q_DECLARE_METATYPE(KDSME::InstantiatorInterface*)
 Q_DECLARE_METATYPE(KDSME::AbstractView*)
 Q_DECLARE_METATYPE(KDSME::AbstractView::ViewState)
 
