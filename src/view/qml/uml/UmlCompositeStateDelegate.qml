@@ -27,6 +27,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtGraphicalEffects 1.0
 
+import com.kdab.kdsme 1.0 as KDSME
+
 import "qrc:///kdsme/qml/util/"
 
 /**
@@ -35,11 +37,13 @@ import "qrc:///kdsme/qml/util/"
 Item {
     id: root
 
+    property var control
+
     // Appearance
     readonly property real regionLabelMargins: view.layoutProperties.regionLabelMargins
     readonly property size regionLabelButtonBoxSize: view.layoutProperties.regionLabelButtonBoxSize
 
-    readonly property bool active: activeness === 1.0
+    readonly property bool active: control.activeness === 1.0
     readonly property bool expanded: control.element.expanded
 
     Behavior on width {
@@ -121,7 +125,7 @@ Item {
                 width: parent.width
 
                 color: Theme.compositeStateLabelFontColor
-                text: (control.name != "" ? control.name : qsTr("<Unnamed State>"))
+                text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>"))
                 font.bold: true
                 elide: Text.ElideRight
                 horizontalAlignment: (leftAlign ? Text.AlignLeft : Text.AlignHCenter)
@@ -143,18 +147,24 @@ Item {
                 SquareButton {
                     width: parent.height
                     height: parent.width
-                    text: (control.expanded ? "-" : "+")
+                    text: (element.expanded ? "-" : "+")
                     onClicked: {
-                        if (control.expanded) {
-                            view.collapseItem(control.element)
+                        if (element.expanded) {
+                            view.collapseItem(element.element)
                         } else {
-                            view.expandItem(control.element)
+                            view.expandItem(element.element)
                         }
                     }
                 }
                 */
             }
         }
+    }
+
+    RectangularSelectionHandler {
+        anchors.fill: parent
+
+        control: parent.control
     }
 
     ChannelizedDropArea {

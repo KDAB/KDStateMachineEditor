@@ -74,11 +74,10 @@ Loader {
         return configurationController.activenessForTransition(transition)
     }
 
-
-
     Component {
         id: umlState
         UmlState {
+            scene: view
             element: object
             activeness: activenessForState(object)
         }
@@ -87,6 +86,7 @@ Loader {
     Component {
         id: umlStateMachine
         UmlStateMachine {
+            scene: view
             element: object
         }
     }
@@ -94,6 +94,7 @@ Loader {
     Component {
         id: umlFinalState
         UmlFinalState {
+            scene: view
             element: object
             activeness: activenessForState(object)
         }
@@ -102,6 +103,7 @@ Loader {
     Component {
         id: umlHistoryState
         UmlHistoryState {
+            scene: view
             element: object
             activeness: activenessForState(object)
         }
@@ -110,6 +112,7 @@ Loader {
     Component {
         id: umlPseudoState
         UmlPseudoState {
+            scene: view
             element: object
             activeness: activenessForState(object)
         }
@@ -118,6 +121,7 @@ Loader {
     Component {
         id: umlTransition
         UmlTransition {
+            scene: view
             element: object
             activeness: activenessForTransition(object)
         }

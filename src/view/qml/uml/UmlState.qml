@@ -25,19 +25,35 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 
+import com.kdab.kdsme 1.0 as KDSME
+
 import "qrc:///kdsme/qml/util/"
 
-UmlElement {
+KDSME.StateItem {
     id: root
 
     Loader {
-        readonly property var control: parent
-
         anchors.fill: parent
 
-        source: root.element.isComposite ?
-            "UmlCompositeStateDelegate.qml" :
-            "UmlSimpleStateDelegate.qml"
+        sourceComponent: root.element.isComposite ?
+            compositeStateDelegate :
+            simpleStateDelegate
+    }
+
+    Component {
+        id: compositeStateDelegate
+
+        UmlCompositeStateDelegate {
+            control: root
+        }
+    }
+
+    Component {
+        id: simpleStateDelegate
+
+        UmlSimpleStateDelegate {
+            control: root
+        }
     }
 
 }

@@ -16,7 +16,7 @@
         <file>qml/util/DragPointGroup.qml</file>
         <file>qml/util/ToolBarSeparator.qml</file>
         <file>qml/util/functions.js</file>
-        <file>qml/util/MoveArea.qml</file>
+        <file>qml/util/RectangularSelectionHandler.qml</file>
         <file>qml/util/SquareButton.qml</file>
         <file>qml/util/Theme.qml</file>
         <file>qml/util/ToolTip.qml</file>

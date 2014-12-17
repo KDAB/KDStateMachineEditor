@@ -26,6 +26,8 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtGraphicalEffects 1.0
 
+import com.kdab.kdsme 1.0 as KDSME
+
 import "qrc:///kdsme/qml/util/"
 
 /**
@@ -33,7 +35,7 @@ import "qrc:///kdsme/qml/util/"
  *
  * This is a node in the form of a double-circle
  */
-UmlElement {
+KDSME.StateItem {
     id: root
 
     readonly property bool active: activeness === 1.0
@@ -69,6 +71,12 @@ UmlElement {
             color: Qt.darker(parent.border.color, 1.5)
             radius: parent.radius*0.5
         }
+    }
+
+    RectangularSelectionHandler {
+        anchors.fill: parent
+
+        control: parent
     }
 
     ChannelizedDropArea {

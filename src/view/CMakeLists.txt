@@ -55,7 +55,6 @@ set(QML_FILES
   qml/util/SquareButton.qml
   qml/util/DragPoint.qml
   qml/util/BirdEyeView.qml
-  qml/util/MoveArea.qml
   qml/util/DragPointDelegate.qml
   qml/util/ToolTip.qml
   qml/util/ArrowHead.qml

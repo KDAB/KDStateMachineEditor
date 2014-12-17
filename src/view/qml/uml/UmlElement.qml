@@ -29,7 +29,7 @@ import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util/"
 
-SceneItem {
+StateItem {
     id: root
 
     property string name: (element.label != "" ? element.label : qsTr("Unnamed"))

@@ -29,7 +29,7 @@ import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util"
 
-UmlElement {
+StateItem {
     id: root
 
     property int kind: element.kind

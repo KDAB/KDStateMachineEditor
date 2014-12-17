@@ -26,11 +26,11 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 
-import com.kdab.kdsme 1.0
+import com.kdab.kdsme 1.0 as KDSME
 
 import "qrc:///kdsme/qml/util/"
 
-UmlElement {
+KDSME.StateItem {
     id: root
 
     Rectangle {
@@ -45,10 +45,17 @@ UmlElement {
         Text {
             anchors.centerIn: parent
 
-            text: root.element.historyType === HistoryState.ShallowHistory ? "H" : "H*"
+            text: root.element.historyType === KDSME.HistoryState.ShallowHistory ? "H" : "H*"
             color: Theme.stateLabelFontColor
             elide: Text.ElideRight
         }
     }
+
+    RectangularSelectionHandler {
+        anchors.fill: parent
+
+        control: parent
+    }
+
 
 }

@@ -140,11 +140,14 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterType<QuickMaskedMouseArea>(KDSME_QML_NAMESPACE, 1, 0, "MaskedMouseArea");
     qmlRegisterType<QuickPainterPath>(KDSME_QML_NAMESPACE, 1, 0, "PainterPath");
     qmlRegisterType<QuickPainterPathGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathGeometry");
+    qmlRegisterType<QuickPainterPathStroker>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathStroker");
     qmlRegisterType<QuickPen>(KDSME_QML_NAMESPACE, 1, 0, "Pen");
     qmlRegisterType<QuickGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "Geometry");
     qmlRegisterType<QuickPrimitiveItem>(KDSME_QML_NAMESPACE, 1, 0, "Primitive");
     qmlRegisterType<QuickRecursiveInstantiator>(KDSME_QML_NAMESPACE, 1, 0, "RecursiveInstantiator");
     qmlRegisterType<QuickSceneItem>(KDSME_QML_NAMESPACE, 1, 0, "SceneItem");
+    qmlRegisterType<QuickStateItem>(KDSME_QML_NAMESPACE, 1, 0, "StateItem");
+    qmlRegisterType<QuickTransitionItem>(KDSME_QML_NAMESPACE, 1, 0, "TransitionItem");
     qmlRegisterType<PainterPathMask>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathMask");
     qmlRegisterType<SemanticZoomManager>(KDSME_QML_NAMESPACE, 1, 0, "SemanticZoomManager");
     qmlRegisterType<StateMachineScene>(KDSME_QML_NAMESPACE, 1, 0, "StateMachineScene");

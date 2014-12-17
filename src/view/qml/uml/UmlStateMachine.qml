@@ -26,12 +26,14 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 
+import com.kdab.kdsme 1.0 as KDSME
+
 import "qrc:///kdsme/qml/util/"
 
 /**
  * State Machine representation
  */
-UmlElement {
+KDSME.StateItem {
     id: root
 
     width: Math.max(element.width, textBox.width)
@@ -70,6 +72,12 @@ UmlElement {
             }
 
         }
+    }
+
+    RectangularSelectionHandler {
+        anchors.fill: parent
+
+        control: parent
     }
 
     ChannelizedDropArea {

@@ -25,10 +25,14 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 
+import com.kdab.kdsme 1.0 as KDSME
+
 import "qrc:///kdsme/qml/util/"
 
 Item {
     id: root
+
+    property var control
 
     readonly property bool active: activeness === 1.0
 
@@ -59,10 +63,16 @@ Item {
         Text {
             anchors.centerIn: parent
 
-            text: control.name
+            text: control.element.label
             color: Theme.stateLabelFontColor
             elide: Text.ElideRight
         }
+    }
+
+    RectangularSelectionHandler {
+        anchors.fill: parent
+
+        control: parent.control
     }
 
     ChannelizedDropArea {

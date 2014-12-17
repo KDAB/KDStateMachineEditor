@@ -29,7 +29,7 @@ import com.kdab.kdsme 1.0
 
 import "qrc:///kdsme/qml/util/"
 
-UmlElement {
+TransitionItem {
     id: root
 
     property rect labelRect: element.labelBoundingRect
@@ -39,58 +39,43 @@ UmlElement {
     height: container.height
 
     visible: !painterPathItem.isEmpty
-    resizable: true
-
-    mouseAreaMask: PainterPathMask {
-        path: root.path
-    }
-
-    selectionComponent: Item {
-    }
-
-    draggingComponent: DragPointGroup {
-        dragKeys: ["TransitionType"]
-        dragData: root
-
-        points: [
-            DragPoint { x: painterPathItem.startPoint.x;    y: painterPathItem.startPoint.y },
-            DragPoint { x: painterPathItem.endPoint.x;      y: painterPathItem.endPoint.y }
-        ]
-
-        onChanged: {
-            var start = pointAt(0);
-            var end = pointAt(1);
-            var path = Global.createPath(start);
-            path.lineTo(end);
-
-            var cmd = CommandFactory.modifyTransitionLayoutItem(root.element);
-            cmd.setShape(path.path);
-            commandController.push(cmd);
-        }
-        onDropped: {
-            var transition = root.element;
-            while (target && target.parent && (target.element == undefined || target.element == undefined)) { // find the state containing the drop area
-                target = target.parent;
-            }
-            // If target == null => reparent to root state (the state machine object)
-            var state = (target ? target.element : root.element.machine());
-            if (index == 0) {
-                if (transition.sourceState != state) {
-                    var cmd = CommandFactory.reparentElement(view, transition);
-                    cmd.setParentElement(state);
-                    commandController.push(cmd)
-                }
-            } else if (transition.targetState != state) {
-                var cmd = CommandFactory.modifyTransition(transition);
-                cmd.setTargetState(state);
-                commandController.push(cmd)
-            }
-        }
-    }
 
     PainterPath {
         id: painterPathItem
         path: root.path
+    }
+
+    MaskedMouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+
+        mask: PainterPathMask {
+            path: root.path
+        }
+        tolerance: 5
+
+        onClicked: {
+            view.setCurrentItem(element)
+        }
+    }
+
+    Primitive {
+        id: selectionComponent
+
+        PainterPathStroker {
+            id: outlinePathStroker
+
+            width: 10
+        }
+
+        visible: element.selected
+
+        geometry: PainterPathGeometry {
+            path: outlinePathStroker.createStroke(root.path)
+        }
+
+        color: Theme.alphaTint(Theme.transitionEdgeColor, 0.5)
     }
 
     Item {
@@ -137,9 +122,49 @@ UmlElement {
             color: Theme.transitionLabelFontColor
             font.italic: true
             visible: element.sourceState.type != Element.PseudoStateType
-                && labelRect.height > 0 && root.name != ""
+                && labelRect.height > 0 && element.label != ""
 
-            text: root.name
+            text: element.label
+        }
+    }
+
+    DragPointGroup {
+        dragKeys: ["TransitionType"]
+        dragData: root
+
+        points: [
+            DragPoint { x: painterPathItem.startPoint.x;    y: painterPathItem.startPoint.y },
+            DragPoint { x: painterPathItem.endPoint.x;      y: painterPathItem.endPoint.y }
+        ]
+
+        onChanged: {
+            var start = pointAt(0);
+            var end = pointAt(1);
+            var path = Global.createPath(start);
+            path.lineTo(end);
+
+            var cmd = CommandFactory.modifyTransitionLayoutItem(root.element);
+            cmd.setShape(path.path);
+            commandController.push(cmd);
+        }
+        onDropped: {
+            var transition = root.element;
+            while (target && target.parent && (target.element == undefined || target.element == undefined)) { // find the state containing the drop area
+                target = target.parent;
+            }
+            // If target == null => reparent to root state (the state machine object)
+            var state = (target ? target.element : root.element.machine());
+            if (index == 0) {
+                if (transition.sourceState != state) {
+                    var cmd = CommandFactory.reparentElement(view, transition);
+                    cmd.setParentElement(state);
+                    commandController.push(cmd)
+                }
+            } else if (transition.targetState != state) {
+                var cmd = CommandFactory.modifyTransition(transition);
+                cmd.setTargetState(state);
+                commandController.push(cmd)
+            }
         }
     }
 

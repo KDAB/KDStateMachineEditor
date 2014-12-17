@@ -29,25 +29,70 @@
 
 namespace KDSME {
 class Element;
+class StateMachineScene;
+class Transition;
 }
 
 class QuickSceneItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged)
+    Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged FINAL)
+    Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged FINAL)
+    Q_PROPERTY(bool activeness READ activeness WRITE setActiveness NOTIFY activenessChanged FINAL)
 
 public:
     explicit QuickSceneItem(QQuickItem* parent = nullptr);
     virtual ~QuickSceneItem();
 
+    KDSME::StateMachineScene* scene() const;
+
     KDSME::Element* element() const;
-    void setElement(KDSME::Element* element);
+
+    qreal activeness() const;
+    void setActiveness(qreal activeness);
 
 Q_SIGNALS:
+    void sceneChanged(KDSME::StateMachineScene* scene);
     void elementChanged(KDSME::Element* element);
+    void activenessChanged(qreal activeness);
+    void clicked();
+
+protected:
+    virtual void setScene(KDSME::StateMachineScene* scene);
+    virtual void setElement(KDSME::Element* element);
+
+    QQuickItem* itemForElement(KDSME::Element* element) const;
+
+    Q_INVOKABLE void sendClickEvent();
 
 private:
+    KDSME::StateMachineScene* m_scene;
     KDSME::Element* m_element;
+    qreal m_activeness;
+};
+
+class QuickStateItem : public QuickSceneItem
+{
+    Q_OBJECT
+
+public:
+    explicit QuickStateItem(QQuickItem* parent = nullptr);
+};
+
+class QuickTransitionItem : public QuickSceneItem
+{
+    Q_OBJECT
+
+public:
+    explicit QuickTransitionItem(QQuickItem* parent = nullptr);
+
+    virtual void setElement(KDSME::Element* element) override;
+
+private Q_SLOTS:
+    void updatePosition();
+
+private:
+    KDSME::Transition* toTransition() const;
 };
 
 #endif // KDSME_QUICK_QUICKSCENEITEM_H
