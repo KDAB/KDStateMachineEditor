@@ -24,6 +24,30 @@
 
 #include "quickpainterpath.h"
 
+QuickPainterPathStroker::QuickPainterPathStroker(QObject* parent)
+    : QObject(parent)
+{
+}
+
+qreal QuickPainterPathStroker::width() const
+{
+    return m_stroker.width();
+}
+
+void QuickPainterPathStroker::setWidth(qreal width)
+{
+    if (qFuzzyCompare(m_stroker.width(), width))
+        return;
+
+    m_stroker.setWidth(width);
+    emit widthChanged(width);
+}
+
+QPainterPath QuickPainterPathStroker::createStroke(const QPainterPath& path) const
+{
+    return m_stroker.createStroke(path);
+}
+
 QuickPainterPath::QuickPainterPath(QObject* parent)
     : QObject(parent)
     , m_isEmpty(true)

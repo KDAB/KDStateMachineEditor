@@ -33,6 +33,26 @@
 
 class QPoint;
 
+class QuickPainterPathStroker : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(qreal width READ width WRITE setWidth NOTIFY widthChanged)
+
+public:
+    explicit QuickPainterPathStroker(QObject* parent = nullptr);
+
+    qreal width() const;
+    void setWidth(qreal width);
+
+    Q_INVOKABLE QPainterPath createStroke(const QPainterPath& path) const;
+
+Q_SIGNALS:
+    void widthChanged(qreal width);
+
+private:
+    QPainterPathStroker m_stroker;
+};
+
 class QuickPainterPath : public QObject
 {
     Q_OBJECT
