@@ -84,7 +84,7 @@ QQuickItem* QuickSceneItem::itemForElement(Element* element) const
 void QuickSceneItem::sendClickEvent()
 {
     // TODO: Send events to scene instead?
-    scene()->setCurrentElement(element());
+    scene()->setCurrentItem(element());
 }
 
 StateMachineScene* QuickSceneItem::scene() const

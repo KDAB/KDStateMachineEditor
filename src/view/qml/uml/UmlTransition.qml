@@ -63,7 +63,7 @@ TransitionItem {
         tolerance: 5
 
         onClicked: {
-            scene.setCurrentElement(element)
+            scene.setCurrentItem(element)
         }
     }
 
