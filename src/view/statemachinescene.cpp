@@ -226,25 +226,21 @@ void StateMachineScene::setZoom(qreal zoom)
 }
 
 
-void StateMachineScene::zoomBy(qreal zoom)
+void StateMachineScene::zoomBy(qreal scale)
 {
     auto machine = stateMachine();
 
     QMatrix matrix;
-    matrix.scale(zoom, zoom);
+    matrix.scale(scale, scale);
 
     auto oldState = state();
     setState(RefreshState);
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkItems(machine, [&](Element* element) -> ElementWalker::VisitResult {
-        const auto pos = element->pos();
-        element->setPos({pos.x() * zoom, pos.y() * zoom});
-
-        if (auto state = qobject_cast<State*>(element)) {
-            element->setWidth(element->width() * zoom);
-            element->setHeight(element->height() * zoom);
-        }
+        element->setPos(matrix.map(element->pos()));
+        element->setWidth(element->width() * scale);
+        element->setHeight(element->height() * scale);
         if (auto transition = qobject_cast<Transition*>(element)) {
             transition->setShape(matrix.map(transition->shape()));
         }

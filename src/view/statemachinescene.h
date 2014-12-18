@@ -66,7 +66,7 @@ public:
     qreal zoom() const;
     void setZoom(qreal zoom);
 
-    void zoomBy(qreal zoom);
+    void zoomBy(qreal scale);
 
     LayoutProperties* layoutProperties() const;
 
