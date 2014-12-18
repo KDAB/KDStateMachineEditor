@@ -5,7 +5,6 @@
         <file>qml/SceneItemFactory.qml</file>
         <file>qml/StateMachineView.qml</file>
         <file>qml/StateMachineViewToolBar.qml</file>
-        <file>qml/uml/UmlElement.qml</file>
         <file>qml/uml/UmlTransition.qml</file>
         <file>qml/util/ArrowHead.qml</file>
         <file>qml/util/constants.js</file>

@@ -62,7 +62,6 @@ set(QML_FILES
   qml/StateMachineView.qml
   qml/StateMachineViewToolBar.qml
   qml/uml/UmlCompositeStateDelegate.qml
-  qml/uml/UmlElement.qml
   qml/uml/UmlTransition.qml
   qml/uml/UmlPseudoState.qml
   qml/uml/UmlFinalState.qml
