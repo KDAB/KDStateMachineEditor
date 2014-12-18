@@ -46,7 +46,7 @@ Rectangle {
     property bool followActiveRegion: false
 
     /// Scale factor of the scene
-    property alias zoom: stateMachineScene.scale
+    property alias zoom: stateMachineScene.zoom
     /// Whether we automatically collapse/expand states in case they're active or not
     property alias semanticZoom: semanticZoomManager.enabled
 
@@ -72,8 +72,8 @@ Rectangle {
     color: Theme.viewBackgroundColor
 
     function setZoom(nominalFactor, centerX, centerY) {
-        var scale = Math.min(Math.max(stateMachineScene.scale * nominalFactor, Constants.minimumZoomLevel), Constants.maximumZoomLevel);
-        var factor = scale / stateMachineScene.scale;
+        var scale = Math.min(Math.max(stateMachineScene.zoom * nominalFactor, Constants.minimumZoomLevel), Constants.maximumZoomLevel);
+        var factor = scale / stateMachineScene.zoom;
 
         // calculate offset, to move the contents when zooming in or out to stay at the mouse position
         var pos = Qt.point(centerX, centerY);
@@ -81,7 +81,7 @@ Rectangle {
         var offsetX = newPos.x - pos.x;
         var offsetY = newPos.y - pos.y;
 
-        stateMachineScene.scale = scale;
+        stateMachineScene.zoom = scale;
 
         // if the horizontal scrollbar isn't visible (because displayed scene-width is smaller
         // then viewport) then not adjust contentX but keep it at zero. Means only start adjusting
@@ -252,7 +252,7 @@ Rectangle {
                 }
                 Label { text: "|" }
                 Label {
-                    text: qsTr("Zoom: ") + Math.round(stateMachineScene.scale * 100) + " %"
+                    text: qsTr("Zoom: ") + Math.round(stateMachineScene.zoom * 100) + " %"
                 }
             }
         }

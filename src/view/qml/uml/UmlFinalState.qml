@@ -40,6 +40,14 @@ KDSME.StateItem {
 
     readonly property bool active: activeness === 1.0
 
+    readonly property real originalWidth: 20
+
+    opacity: 2*width > originalWidth
+
+    Behavior on opacity {
+        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+    }
+
     RectangularGlow {
         id: effect
 

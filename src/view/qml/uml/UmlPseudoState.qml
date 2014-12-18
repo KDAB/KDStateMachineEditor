@@ -34,6 +34,14 @@ StateItem {
 
     property int kind: element.kind
 
+    readonly property real originalWidth: 30
+
+    opacity: 2*width > originalWidth
+
+    Behavior on opacity {
+        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+    }
+
     Loader {
         id: loader
         anchors.fill: parent

@@ -46,6 +46,7 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractView
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
     Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
+    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged FINAL)
 
 public:
     explicit StateMachineScene(QQuickItem* parent = nullptr);
@@ -61,6 +62,11 @@ public:
     Layouter* layouter() const;
     /// Ownership is transferred
     void setLayouter(Layouter* layouter);
+
+    qreal zoom() const;
+    void setZoom(qreal zoom);
+
+    void zoomBy(qreal zoom);
 
     LayoutProperties* layoutProperties() const;
 
@@ -82,8 +88,8 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void stateMachineChanged(KDSME::StateMachine* stateMachine);
-
     void currentItemChanged(KDSME::Element* currentItem);
+    void zoomChanged(qreal zoom);
 
 protected Q_SLOTS:
     virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;

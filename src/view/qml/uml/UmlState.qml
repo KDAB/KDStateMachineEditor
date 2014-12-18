@@ -32,7 +32,11 @@ import "qrc:///kdsme/qml/util/"
 KDSME.StateItem {
     id: root
 
+    opacity: loader.item ? loader.item.opacity : 1
+
     Loader {
+        id: loader
+
         anchors.fill: parent
 
         sourceComponent: root.element.isComposite ?

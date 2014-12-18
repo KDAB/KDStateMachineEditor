@@ -50,6 +50,12 @@ Item {
         cornerRadius: rect.radius
     }
 
+    opacity: (parent.width > 1.5*label.width && parent.height > 1.5*label.height) ? 1 : 0
+
+    Behavior on opacity {
+        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+    }
+
     Rectangle {
         id: rect
 
@@ -61,6 +67,8 @@ Item {
         radius: 5
 
         Text {
+            id: label
+
             anchors.centerIn: parent
 
             text: control.element.label

@@ -96,7 +96,6 @@ struct StateMachineView::Private
     CommandController* m_controller;
     ConfigurationController* m_configurationController;
     EditController* m_editController;
-
     bool m_editModeEnabled;
 
     QRectF adjustedViewRect();
@@ -258,22 +257,6 @@ void StateMachineView::deleteElement(KDSME::Element *element)
 {
     DeleteElementCommand* cmd = new DeleteElementCommand(d->m_scene, element);
     commandController()->push(cmd);
-}
-
-qreal StateMachineView::zoom() const
-{
-    QQuickItem* scene = sceneObject();
-    return scene->scale();
-}
-
-void StateMachineView::setZoom(qreal value)
-{
-    QQuickItem* scene = sceneObject();
-    if (qFuzzyCompare(scene->scale(), value))
-        return;
-
-    scene->setTransformOrigin(QQuickItem::TopLeft);
-    scene->setScale(value);
 }
 
 QRectF StateMachineView::Private::adjustedViewRect()

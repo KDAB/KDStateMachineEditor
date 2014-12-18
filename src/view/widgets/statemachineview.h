@@ -60,8 +60,6 @@ public:
 
     Q_INVOKABLE void sendCommand(KDSME::Command* cmd);
 
-    Q_INVOKABLE qreal zoom() const;
-    Q_INVOKABLE void setZoom(qreal value);
     Q_INVOKABLE void fitInView(const QRectF& rect = QRectF());
 
     Q_INVOKABLE void changeStateMachine(KDSME::StateMachine *stateMachine);

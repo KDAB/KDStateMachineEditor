@@ -33,10 +33,13 @@
 #include "layoutproperties.h"
 #include "layoututils.h"
 #include "elementmodel.h"
+#include "elementwalker.h"
 
 #include <QDir>
 #include <QElapsedTimer>
 #include <QItemSelectionModel>
+#include <QMatrix>
+#include <QPainterPath>
 #include <QQmlEngine>
 
 using namespace KDSME;
@@ -63,6 +66,7 @@ StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
     , m_layouter(new LayerwiseLayouter(q))
     , m_properties(new LayoutProperties(q))
+    , m_zoom(1.0)
     , m_expandedItem(nullptr)
 {
 }
@@ -169,11 +173,14 @@ StateMachine* StateMachineScene::stateMachine() const
 
 void StateMachineScene::setStateMachine(StateMachine* stateMachine)
 {
-    Q_ASSERT(stateModel());
-    stateModel()->setState(stateMachine);
-
     if (d->m_stateMachine == stateMachine)
         return;
+
+    // reset properties
+    setZoom(1.0);
+
+    Q_ASSERT(stateModel());
+    stateModel()->setState(stateMachine);
 
     d->m_stateMachine = stateMachine;
     emit stateMachineChanged(d->m_stateMachine);
@@ -199,6 +206,52 @@ void StateMachineScene::setLayouter(Layouter* layouter)
         d->m_layouter->setParent(this);
     }
     layout();
+}
+
+qreal StateMachineScene::zoom() const
+{
+    return d->m_zoom;
+}
+
+void StateMachineScene::setZoom(qreal zoom)
+{
+    if (qFuzzyCompare(d->m_zoom, zoom))
+        return;
+
+    const auto delta = zoom / d->m_zoom;
+    zoomBy(delta);
+
+    d->m_zoom = zoom;
+    emit zoomChanged(d->m_zoom);
+}
+
+
+void StateMachineScene::zoomBy(qreal zoom)
+{
+    auto machine = stateMachine();
+
+    QMatrix matrix;
+    matrix.scale(zoom, zoom);
+
+    auto oldState = state();
+    setState(RefreshState);
+
+    ElementWalker walker(ElementWalker::PreOrderTraversal);
+    walker.walkItems(machine, [&](Element* element) -> ElementWalker::VisitResult {
+        const auto pos = element->pos();
+        element->setPos({pos.x() * zoom, pos.y() * zoom});
+
+        if (auto state = qobject_cast<State*>(element)) {
+            element->setWidth(element->width() * zoom);
+            element->setHeight(element->height() * zoom);
+        }
+        if (auto transition = qobject_cast<Transition*>(element)) {
+            transition->setShape(matrix.map(transition->shape()));
+        }
+        return ElementWalker::RecursiveWalk;
+    });
+
+    setState(oldState);
 }
 
 void StateMachineScene::layout()
