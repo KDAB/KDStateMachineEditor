@@ -72,7 +72,12 @@ State* Transition::sourceState() const
 
 void Transition::setSourceState(State* sourceState)
 {
+    if (parent() == sourceState) {
+        return;
+    }
+
     setParent(sourceState);
+    emit sourceStateChanged(sourceState);
 }
 
 State* Transition::targetState() const
