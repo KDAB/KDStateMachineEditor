@@ -130,7 +130,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qRegisterMetaType<StateMachine*>();
     qRegisterMetaType<StateModel*>();
     qRegisterMetaType<ObjectTreeModel*>();
-    qRegisterMetaType<AbstractView::ViewState>();
+    qRegisterMetaType<AbstractScene::ViewState>();
     qRegisterMetaType<GLenum>();
     qRegisterMetaType<ObjectTreeModel*>();
 
@@ -152,7 +152,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterType<StateMachineScene>(KDSME_QML_NAMESPACE, 1, 0, "StateMachineScene");
 
     qmlRegisterUncreatableType<AbstractMask>(KDSME_QML_NAMESPACE, 1, 0, "AbstractMask", "Access to object");
-    qmlRegisterUncreatableType<AbstractView>(KDSME_QML_NAMESPACE, 1, 0, "AbstractView", "Access to object");
+    qmlRegisterUncreatableType<AbstractScene>(KDSME_QML_NAMESPACE, 1, 0, "AbstractScene", "Access to object");
     qmlRegisterUncreatableType<EditController>(KDSME_QML_NAMESPACE, 1, 0, "EditController", "Access to object");
     qmlRegisterUncreatableType<CommandController>(KDSME_QML_NAMESPACE, 1, 0, "CommandController", "Access to object");
     qmlRegisterUncreatableType<ConfigurationController>(KDSME_QML_NAMESPACE, 1, 0, "ConfigurationController", "Access to object");

@@ -1,6 +1,4 @@
 /*
-  abstractview.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -46,7 +44,7 @@ public:
     virtual QObject* itemForIndex(const QModelIndex& index) const = 0;
 };
 
-class KDSME_VIEW_EXPORT AbstractView : public QQuickItem
+class KDSME_VIEW_EXPORT AbstractScene : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
@@ -66,8 +64,8 @@ public:
     };
     Q_ENUMS(ViewState)
 
-    explicit AbstractView(QQuickItem* parent = nullptr);
-    virtual ~AbstractView();
+    explicit AbstractScene(QQuickItem* parent = nullptr);
+    virtual ~AbstractScene();
 
     virtual void setModel(QAbstractItemModel *model);
     QAbstractItemModel *model() const;
@@ -118,7 +116,7 @@ private:
 }
 
 Q_DECLARE_METATYPE(KDSME::InstantiatorInterface*)
-Q_DECLARE_METATYPE(KDSME::AbstractView*)
-Q_DECLARE_METATYPE(KDSME::AbstractView::ViewState)
+Q_DECLARE_METATYPE(KDSME::AbstractScene*)
+Q_DECLARE_METATYPE(KDSME::AbstractScene::ViewState)
 
 #endif // ABSTRACTVIEW_H

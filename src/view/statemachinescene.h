@@ -27,7 +27,7 @@
 #define KDSME_VIEW_STATEMACHINESCENE_H
 
 #include "kdsme_view_export.h"
-#include "abstractview.h"
+#include "abstractscene.h"
 
 #include <QObject>
 
@@ -40,7 +40,7 @@ class StateMachine;
 class StateModel;
 class Transition;
 
-class KDSME_VIEW_EXPORT StateMachineScene : public AbstractView
+class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)

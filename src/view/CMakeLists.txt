@@ -28,7 +28,7 @@ set(LIB_SRCS
   widgets/statemachineview.cpp
   widgets/statemachinepalettewidget.cpp
 
-  abstractview.cpp
+  abstractscene.cpp
   statemachinescene.cpp
   abstractcontroller.cpp
   commandcontroller.cpp
@@ -104,7 +104,7 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_view_export.h
 
   abstractcontroller.h
-  abstractview.h
+  abstractscene.h
   commandcontroller.h
   configurationcontroller.h
   editcontroller.h

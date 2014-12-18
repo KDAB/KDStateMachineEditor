@@ -25,7 +25,7 @@
 #ifndef KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 #define KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 
-#include "abstractview.h"
+#include "abstractscene.h"
 
 #include <QPersistentModelIndex>
 #include <QQuickItem>

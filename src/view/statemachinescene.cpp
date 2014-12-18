@@ -54,7 +54,7 @@ StateMachineScene::Private::Private(StateMachineScene* view)
 }
 
 StateMachineScene::StateMachineScene(QQuickItem* parent)
-    : AbstractView(parent)
+    : AbstractScene(parent)
     , d(new Private(this))
 {
     setModel(new StateModel(this));
@@ -258,7 +258,7 @@ void StateMachineScene::setModel(QAbstractItemModel* model)
         qWarning() << "Invalid model class type, expected StateModel instance";
     }
 
-    KDSME::AbstractView::setModel(stateModel);
+    KDSME::AbstractScene::setModel(stateModel);
 }
 
 void StateMachineScene::Private::updateChildItemVisibility(State* state, bool expand)
@@ -287,7 +287,7 @@ void StateMachineScene::Private::updateChildItemVisibility(State* state, bool ex
 
 void StateMachineScene::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-    AbstractView::currentChanged(current, previous);
+    AbstractScene::currentChanged(current, previous);
 
     Element* currentItem = current.data(StateModel::ElementRole).value<Element*>();
     Element* previousItem = previous.data(StateModel::ElementRole).value<Element*>();
@@ -308,15 +308,15 @@ void StateMachineScene::currentChanged(const QModelIndex& current, const QModelI
 
 void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
-    AbstractView::rowsAboutToBeRemoved(parent, start, end);
+    AbstractScene::rowsAboutToBeRemoved(parent, start, end);
 }
 
 void StateMachineScene::rowsInserted(const QModelIndex& parent, int start, int end)
 {
-    AbstractView::rowsInserted(parent, start, end);
+    AbstractScene::rowsInserted(parent, start, end);
 }
 
 void StateMachineScene::layoutChanged()
 {
-    AbstractView::layoutChanged();
+    AbstractScene::layoutChanged();
 }

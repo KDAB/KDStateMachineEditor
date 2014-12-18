@@ -1,6 +1,4 @@
 /*
-  abstractview.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,25 +20,26 @@
   clear to you.
 */
 
-#include "abstractview.h"
+#include "abstractscene.h"
 
 #include "debug.h"
+
 #include <QItemSelectionModel>
 
 using namespace KDSME;
 
-struct AbstractView::Private
+struct AbstractScene::Private
 {
     Private();
 
     QAbstractItemModel* m_model;
     QPointer<QItemSelectionModel> m_selectionModel;
     QQuickItem* m_instantiator;
-    AbstractView::EditTriggers m_editTriggers;
-    AbstractView::ViewState m_state;
+    AbstractScene::EditTriggers m_editTriggers;
+    AbstractScene::ViewState m_state;
 };
 
-AbstractView::Private::Private()
+AbstractScene::Private::Private()
     : m_model(nullptr)
     , m_instantiator(nullptr)
     , m_editTriggers(NoEditTriggers)
@@ -48,52 +47,52 @@ AbstractView::Private::Private()
 {
 }
 
-AbstractView::AbstractView(QQuickItem* parent)
+AbstractScene::AbstractScene(QQuickItem* parent)
     : QQuickItem(parent)
     , d(new Private)
 {
 }
 
-AbstractView::~AbstractView()
+AbstractScene::~AbstractScene()
 {
 }
 
-QAbstractItemModel* AbstractView::model() const
+QAbstractItemModel* AbstractScene::model() const
 {
     return d->m_model;
 }
 
-void AbstractView::setModel(QAbstractItemModel* model)
+void AbstractScene::setModel(QAbstractItemModel* model)
 {
     if (d->m_model == model)
         return;
 
     if (d->m_model) {
         disconnect(d->m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
-                   this, &AbstractView::rowsAboutToBeRemoved);
+                   this, &AbstractScene::rowsAboutToBeRemoved);
         disconnect(d->m_model, &QAbstractItemModel::rowsInserted,
-                   this, &AbstractView::rowsInserted);
+                   this, &AbstractScene::rowsInserted);
         disconnect(d->m_model, &QAbstractItemModel::rowsMoved,
-                   this, &AbstractView::layoutChanged);
+                   this, &AbstractScene::layoutChanged);
         disconnect(d->m_model, &QAbstractItemModel::columnsMoved,
-                   this, &AbstractView::layoutChanged);
+                   this, &AbstractScene::layoutChanged);
         disconnect(d->m_model, &QAbstractItemModel::layoutChanged,
-                   this, &AbstractView::layoutChanged);
+                   this, &AbstractScene::layoutChanged);
     }
 
     d->m_model = model;
 
     if (d->m_model) {
         connect(d->m_model, &QAbstractItemModel::rowsAboutToBeRemoved,
-                this, &AbstractView::rowsAboutToBeRemoved);
+                this, &AbstractScene::rowsAboutToBeRemoved);
         connect(d->m_model, &QAbstractItemModel::rowsInserted,
-                this, &AbstractView::rowsInserted);
+                this, &AbstractScene::rowsInserted);
         connect(d->m_model, &QAbstractItemModel::rowsMoved,
-                this, &AbstractView::layoutChanged);
+                this, &AbstractScene::layoutChanged);
         connect(d->m_model, &QAbstractItemModel::columnsMoved,
-                this, &AbstractView::layoutChanged);
+                this, &AbstractScene::layoutChanged);
         connect(d->m_model, &QAbstractItemModel::layoutChanged,
-                this, &AbstractView::layoutChanged);
+                this, &AbstractScene::layoutChanged);
     }
 
     QItemSelectionModel *selectionModel = new QItemSelectionModel(d->m_model, this);
@@ -103,12 +102,12 @@ void AbstractView::setModel(QAbstractItemModel* model)
     emit modelChanged(d->m_model);
 }
 
-QItemSelectionModel* AbstractView::selectionModel() const
+QItemSelectionModel* AbstractScene::selectionModel() const
 {
     return d->m_selectionModel;
 }
 
-void AbstractView::setSelectionModel(QItemSelectionModel* selectionModel)
+void AbstractScene::setSelectionModel(QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
     if (selectionModel->model() != d->m_model) {
@@ -135,12 +134,12 @@ void AbstractView::setSelectionModel(QItemSelectionModel* selectionModel)
     }
 }
 
-QQuickItem* AbstractView::instantiator() const
+QQuickItem* AbstractScene::instantiator() const
 {
     return d->m_instantiator;
 }
 
-void AbstractView::setInstantiator(QQuickItem* instantiator)
+void AbstractScene::setInstantiator(QQuickItem* instantiator)
 {
     if (d->m_instantiator == instantiator)
         return;
@@ -155,28 +154,28 @@ void AbstractView::setInstantiator(QQuickItem* instantiator)
     emit instantiatorChanged(d->m_instantiator);
 }
 
-AbstractView::EditTriggers AbstractView::editTriggers() const
+AbstractScene::EditTriggers AbstractScene::editTriggers() const
 {
     return d->m_editTriggers;
 }
 
-void AbstractView::setEditTriggers(AbstractView::EditTriggers triggers)
+void AbstractScene::setEditTriggers(AbstractScene::EditTriggers triggers)
 {
     d->m_editTriggers = triggers;
 }
 
-QObject* AbstractView::itemForIndex(const QModelIndex& index) const
+QObject* AbstractScene::itemForIndex(const QModelIndex& index) const
 {
     auto instantiator = dynamic_cast<InstantiatorInterface*>(d->m_instantiator);
     return instantiator ? instantiator->itemForIndex(index) : nullptr;
 }
 
-AbstractView::ViewState AbstractView::state() const
+AbstractScene::ViewState AbstractScene::state() const
 {
     return d->m_state;
 }
 
-void AbstractView::setState(AbstractView::ViewState state)
+void AbstractScene::setState(AbstractScene::ViewState state)
 {
     if (d->m_state == state)
         return;
@@ -185,12 +184,12 @@ void AbstractView::setState(AbstractView::ViewState state)
     emit stateChanged(d->m_state);
 }
 
-QModelIndex AbstractView::currentIndex() const
+QModelIndex AbstractScene::currentIndex() const
 {
     return d->m_selectionModel ? d->m_selectionModel->currentIndex() : QModelIndex();
 }
 
-void AbstractView::setCurrentIndex(const QModelIndex& index)
+void AbstractScene::setCurrentIndex(const QModelIndex& index)
 {
     if (!d->m_selectionModel) {
         return;
@@ -199,32 +198,32 @@ void AbstractView::setCurrentIndex(const QModelIndex& index)
     d->m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
 }
 
-void AbstractView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void AbstractScene::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     Q_UNUSED(selected);
     Q_UNUSED(deselected);
 }
 
-void AbstractView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void AbstractScene::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     Q_UNUSED(current);
     Q_UNUSED(previous);
 }
 
-void AbstractView::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
+void AbstractScene::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
     Q_UNUSED(end);
 }
 
-void AbstractView::rowsInserted(const QModelIndex& parent, int start, int end)
+void AbstractScene::rowsInserted(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
     Q_UNUSED(end);
 }
 
-void AbstractView::layoutChanged()
+void AbstractScene::layoutChanged()
 {
 }
