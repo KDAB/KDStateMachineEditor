@@ -50,7 +50,7 @@ StateMachineScene {
 
         model: root.model
         delegate: SceneItemFactory {
-            view: root
+            scene: root
             configurationController: root.configurationController
         }
     }

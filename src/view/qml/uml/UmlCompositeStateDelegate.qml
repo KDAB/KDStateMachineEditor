@@ -40,8 +40,8 @@ Item {
     property var control
 
     // Appearance
-    readonly property real regionLabelMargins: view.layoutProperties.regionLabelMargins
-    readonly property size regionLabelButtonBoxSize: view.layoutProperties.regionLabelButtonBoxSize
+    readonly property real regionLabelMargins: scene.layoutProperties.regionLabelMargins
+    readonly property size regionLabelButtonBoxSize: scene.layoutProperties.regionLabelButtonBoxSize
 
     readonly property bool active: control.activeness === 1.0
     readonly property bool expanded: control.element.expanded
@@ -150,9 +150,9 @@ Item {
                     text: (element.expanded ? "-" : "+")
                     onClicked: {
                         if (element.expanded) {
-                            view.collapseItem(element.element)
+                            scene.collapseItem(element.element)
                         } else {
-                            view.expandItem(element.element)
+                            scene.expandItem(element.element)
                         }
                     }
                 }

@@ -34,7 +34,7 @@ Loader {
     id: root
 
     property var configurationController
-    property var view
+    property var scene
 
     x: object.pos.x
     y: object.pos.y
@@ -77,7 +77,7 @@ Loader {
     Component {
         id: umlState
         UmlState {
-            scene: view
+            scene: root.scene
             element: object
             activeness: activenessForState(object)
         }
@@ -86,7 +86,7 @@ Loader {
     Component {
         id: umlStateMachine
         UmlStateMachine {
-            scene: view
+            scene: root.scene
             element: object
         }
     }
@@ -94,7 +94,7 @@ Loader {
     Component {
         id: umlFinalState
         UmlFinalState {
-            scene: view
+            scene: root.scene
             element: object
             activeness: activenessForState(object)
         }
@@ -103,7 +103,7 @@ Loader {
     Component {
         id: umlHistoryState
         UmlHistoryState {
-            scene: view
+            scene: root.scene
             element: object
             activeness: activenessForState(object)
         }
@@ -112,7 +112,7 @@ Loader {
     Component {
         id: umlPseudoState
         UmlPseudoState {
-            scene: view
+            scene: root.scene
             element: object
             activeness: activenessForState(object)
         }
@@ -121,7 +121,7 @@ Loader {
     Component {
         id: umlTransition
         UmlTransition {
-            scene: view
+            scene: root.scene
             element: object
             activeness: activenessForTransition(object)
         }
