@@ -275,24 +275,16 @@ void StateMachineView::fitInView(const QRectF& rect)
 {
     const QQuickItem* viewPort = viewPortObject();
 
-    QRectF sceneRect = rect;
-    if (rect.isEmpty()) {
-        const qreal width = viewPort->property("contentWidth").toReal();
-        const qreal height = viewPort->property("contentHeight").toReal();
-        sceneRect = QRectF(0, 0, width, height);
-    }
-
+    QRectF sceneRect = scene()->stateMachine()->boundingRect();
     QRectF viewRect = d->adjustedViewRect();
-
     if (sceneRect.isEmpty() || viewRect.isEmpty())
         return;
 
+
     qreal horizontalScale = viewRect.width() / sceneRect.width();
     qreal verticalScale = viewRect.height() / sceneRect.height();
-
-    QQuickItem* scene = sceneObject();
-    const qreal scale = scene->scale() * qMin(horizontalScale, verticalScale);
-    scene->setScale(scale);
+    const qreal uniformScale = qMin(horizontalScale, verticalScale);
+    scene()->zoomBy(uniformScale);
 }
 
 void StateMachineView::sendCommand(Command* cmd)
