@@ -44,7 +44,7 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractView
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
-    Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
+    Q_PROPERTY(KDSME::Element* currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
     Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged FINAL)
 
@@ -78,8 +78,8 @@ public:
     Q_INVOKABLE bool isItemSelected(KDSME::Element* item);
     Q_INVOKABLE void setItemSelected(KDSME::Element* item, bool selected);
 
-    KDSME::Element* currentItem() const;
-    Q_INVOKABLE void setCurrentItem(KDSME::Element* item);
+    KDSME::Element* currentElement() const;
+    Q_INVOKABLE void setCurrentElement(KDSME::Element* item);
 
     Q_INVOKABLE KDSME::Element* currentState();
 
@@ -88,7 +88,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void stateMachineChanged(KDSME::StateMachine* stateMachine);
-    void currentItemChanged(KDSME::Element* currentItem);
+    void currentElementChanged(KDSME::Element* currentElement);
     void zoomChanged(qreal zoom);
 
 protected Q_SLOTS:

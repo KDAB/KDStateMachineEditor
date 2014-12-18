@@ -121,12 +121,12 @@ void StateMachineScene::setItemSelected(Element* item, bool selected)
     selectionModel()->select(index, (selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect));
 }
 
-Element* StateMachineScene::currentItem() const
+Element* StateMachineScene::currentElement() const
 {
     return currentIndex().data(StateModel::ElementRole).value<Element*>();
 }
 
-void StateMachineScene::setCurrentItem(Element* item)
+void StateMachineScene::setCurrentElement(Element* item)
 {
     if (!stateModel() || !item || !item)
         return;
@@ -289,21 +289,21 @@ void StateMachineScene::currentChanged(const QModelIndex& current, const QModelI
 {
     AbstractView::currentChanged(current, previous);
 
-    Element* currentItem = current.data(StateModel::ElementRole).value<Element*>();
+    Element* currentElement = current.data(StateModel::ElementRole).value<Element*>();
     Element* previousItem = previous.data(StateModel::ElementRole).value<Element*>();
-    if (!currentItem && !previousItem) {
+    if (!currentElement && !previousItem) {
         // something went wrong
         return;
     }
 
-    if (currentItem) {
-        currentItem->setSelected(true);
+    if (currentElement) {
+        currentElement->setSelected(true);
     }
     if (previousItem) {
         previousItem->setSelected(false);
     }
 
-    emit currentItemChanged(currentItem);
+    emit currentElementChanged(currentElement);
 }
 
 void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)

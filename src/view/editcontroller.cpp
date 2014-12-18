@@ -172,7 +172,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
 
             // Mark the new Element as current one what means the item is selected
             // as if a user clicked on it.
-            m_view->setCurrentItem(element);
+            m_view->setCurrentElement(element);
         }
         virtual void undo() {
             m_createcmd->undo();
