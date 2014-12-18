@@ -35,15 +35,6 @@ class QModelIndex;
 
 namespace KDSME {
 
-// TODO: Move class decl to own header?
-class InstantiatorInterface
-{
-public:
-    virtual ~InstantiatorInterface() {}
-
-    virtual QObject* itemForIndex(const QModelIndex& index) const = 0;
-};
-
 class KDSME_VIEW_EXPORT AbstractScene : public QQuickItem
 {
     Q_OBJECT
@@ -115,7 +106,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::InstantiatorInterface*)
 Q_DECLARE_METATYPE(KDSME::AbstractScene*)
 Q_DECLARE_METATYPE(KDSME::AbstractScene::ViewState)
 

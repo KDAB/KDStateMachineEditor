@@ -23,6 +23,7 @@
 #include "abstractscene.h"
 
 #include "debug.h"
+#include "instantiatorinterface.h"
 
 #include <QItemSelectionModel>
 
