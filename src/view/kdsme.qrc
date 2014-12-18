@@ -1,38 +1,38 @@
 <RCC>
     <qresource prefix="/kdsme">
-        <file>qml/Scene.qml</file>
-        <file>qml/uml/UmlState.qml</file>
-        <file>qml/SceneItemFactory.qml</file>
-        <file>qml/StateMachineView.qml</file>
-        <file>qml/StateMachineViewToolBar.qml</file>
-        <file>qml/uml/UmlTransition.qml</file>
-        <file>qml/util/ArrowHead.qml</file>
-        <file>qml/util/constants.js</file>
-        <file>qml/util/BirdEyeView.qml</file>
-        <file>qml/util/ChannelizedDropArea.qml</file>
-        <file>qml/util/DragPoint.qml</file>
-        <file>qml/util/DragPointDelegate.qml</file>
-        <file>qml/util/DragPointGroup.qml</file>
-        <file>qml/util/ToolBarSeparator.qml</file>
-        <file>qml/util/functions.js</file>
-        <file>qml/util/RectangularSelectionHandler.qml</file>
-        <file>qml/util/SquareButton.qml</file>
-        <file>qml/util/Theme.qml</file>
-        <file>qml/util/ToolTip.qml</file>
-        <file>qml/uml/UmlPseudoState.qml</file>
-        <file>qml/uml/UmlStateMachine.qml</file>
-        <file>qml/uml/UmlFinalState.qml</file>
-        <file>qml/uml/UmlHistoryState.qml</file>
-        <file>qml/uml/UmlCompositeStateDelegate.qml</file>
-        <file>qml/uml/UmlSimpleStateDelegate.qml</file>
-        <file>qml/util/qmldir</file>
         <file>icons/deep_history.png</file>
         <file>icons/final_state.png</file>
         <file>icons/init_state.png</file>
         <file>icons/region.png</file>
         <file>icons/shallow_history.png</file>
-        <file>icons/state.png</file>
         <file>icons/state_machine.png</file>
+        <file>icons/state.png</file>
         <file>icons/transition.png</file>
+        <file>qml/SceneItemFactory.qml</file>
+        <file>qml/Scene.qml</file>
+        <file>qml/StateMachineView.qml</file>
+        <file>qml/StateMachineViewToolBar.qml</file>
+        <file>qml/uml/UmlCompositeStateDelegate.qml</file>
+        <file>qml/uml/UmlFinalState.qml</file>
+        <file>qml/uml/UmlHistoryState.qml</file>
+        <file>qml/uml/UmlPseudoState.qml</file>
+        <file>qml/uml/UmlSimpleStateDelegate.qml</file>
+        <file>qml/uml/UmlStateMachine.qml</file>
+        <file>qml/uml/UmlState.qml</file>
+        <file>qml/uml/UmlTransition.qml</file>
+        <file>qml/util/ArrowHead.qml</file>
+        <file>qml/util/BirdEyeView.qml</file>
+        <file>qml/util/ChannelizedDropArea.qml</file>
+        <file>qml/util/constants.js</file>
+        <file>qml/util/DragPointDelegate.qml</file>
+        <file>qml/util/DragPointGroup.qml</file>
+        <file>qml/util/DragPoint.qml</file>
+        <file>qml/util/functions.js</file>
+        <file>qml/util/qmldir</file>
+        <file>qml/util/RectangularSelectionHandler.qml</file>
+        <file>qml/util/SquareButton.qml</file>
+        <file>qml/util/Theme.qml</file>
+        <file>qml/util/ToolBarSeparator.qml</file>
+        <file>qml/util/ToolTip.qml</file>
     </qresource>
 </RCC>
