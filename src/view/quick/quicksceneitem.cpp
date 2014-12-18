@@ -35,6 +35,27 @@
 
 using namespace KDSME;
 
+namespace {
+
+/**
+ * Return the first intersection point of @p line with @p rect
+ */
+QPointF intersected(const QLineF& line, const QRectF& rect)
+{
+    QPointF point;
+    if (line.intersect(QLineF(rect.topLeft(), rect.topRight()), &point) == QLineF::BoundedIntersection)
+        return point;
+    if (line.intersect(QLineF(rect.topRight(), rect.bottomRight()), &point) == QLineF::BoundedIntersection)
+        return point;
+    if (line.intersect(QLineF(rect.bottomRight(), rect.bottomLeft()), &point) == QLineF::BoundedIntersection)
+        return point;
+    if (line.intersect(QLineF(rect.bottomLeft(), rect.topLeft()), &point) == QLineF::BoundedIntersection)
+        return point;
+    return point;
+}
+
+}
+
 QuickSceneItem::QuickSceneItem(QQuickItem* parent)
     : QQuickItem(parent)
     , m_scene(nullptr)
@@ -98,10 +119,13 @@ void QuickSceneItem::setElement(Element* element)
     if (m_element) {
         setWidth(m_element->width());
         setHeight(m_element->height());
-        setVisible(m_element->isVisible());
+        setOpacity(m_element->isVisible());
         connect(m_element, &Element::widthChanged, this, &QQuickItem::setWidth);
         connect(m_element, &Element::heightChanged, this, &QQuickItem::setHeight);
-        connect(m_element, &Element::visibleChanged, this, &QQuickItem::setVisible);
+        connect(m_element, &Element::visibleChanged, this, &QQuickItem::setOpacity);
+        connect(this, &QQuickItem::opacityChanged, m_element, [=]() {
+            m_element->setVisible(opacity() > 0);
+        });
     }
 
     emit elementChanged(m_element);
@@ -121,11 +145,13 @@ void QuickSceneItem::setActiveness(qreal activeness)
     emit activenessChanged(m_activeness);
 }
 
-QuickStateItem::QuickStateItem(QQuickItem* parent): QuickSceneItem(parent)
+QuickStateItem::QuickStateItem(QQuickItem* parent)
+    : QuickSceneItem(parent)
 {
 }
 
-QuickTransitionItem::QuickTransitionItem(QQuickItem* parent): QuickSceneItem(parent)
+QuickTransitionItem::QuickTransitionItem(QQuickItem* parent)
+    : QuickSceneItem(parent)
 {
 }
 
@@ -141,20 +167,23 @@ void QuickTransitionItem::setElement(Element* element)
         return;
     }
 
-    if (transition) {
-        transition->sourceState()->disconnect(this);
-        transition->sourceState()->disconnect(this);
-        transition->disconnect(this);
+    if (auto previousTransition = toTransition()) {
+        previousTransition->sourceState()->disconnect(this);
+        previousTransition->targetState()->disconnect(this);
+        previousTransition->disconnect(this);
     }
 
-    if (transition->sourceState())
-        connect(transition->sourceState(), &Element::posChanged,
-            this, &QuickTransitionItem::updatePosition);
-    if (transition->targetState())
-        connect(transition->targetState(), &Element::posChanged,
-            this, &QuickTransitionItem::updatePosition);
-
     QuickSceneItem::setElement(element);
+
+    if (transition) {
+        connect(transition, &Transition::sourceStateChanged,
+                this, &QuickTransitionItem::updateSource);
+        connect(transition, &Transition::targetStateChanged,
+                this, &QuickTransitionItem::updateTarget);
+    }
+
+    updateSource();
+    updateTarget();
 }
 
 void QuickTransitionItem::updatePosition()
@@ -164,34 +193,35 @@ void QuickTransitionItem::updatePosition()
     }
 
     auto transition = toTransition();
+    Q_ASSERT(transition);
+    const auto sourceState = transition->sourceState();
     const auto targetState = transition->targetState();
+    if (sourceState == targetState)
+        return;
+
+    const auto sourceStateItem = itemForElement(sourceState);
     const auto targetStateItem = itemForElement(targetState);
 
+    const QRectF startRect(mapFromItem(sourceStateItem, {0, 0}),
+                           QSizeF(sourceStateItem->width(), sourceStateItem->height()));
     const QRectF endRect(mapFromItem(targetStateItem, {0, 0}),
                          QSizeF(targetStateItem->width(), targetStateItem->height()));
 
-    if (transition->label() == "e4") {
-        qDebug() << transition->shape();
-    }
-
     const auto shape = transition->shape();
     const auto labelBoundingRect = transition->labelBoundingRect();
-    const auto startPoint = shape.pointAtPercent(0);
 
-    QPainterPath rectPath;
-    rectPath.addRect(endRect);
-    QPainterPath linePath(startPoint);
-    linePath.lineTo(endRect.center());
-    QPainterPathStroker stroker;
-    const auto filledLine = stroker.createStroke(linePath);
-    const auto endPoint = rectPath.intersected(filledLine).pointAtPercent(0);
+    const auto preliminaryEdge = QLineF(startRect.center(), endRect.center());
+    const auto startPoint = intersected(preliminaryEdge, startRect);
+    Q_ASSERT(!startPoint.isNull());
+    const auto endPoint = intersected(preliminaryEdge, endRect);
+    Q_ASSERT(!endPoint.isNull());
 
     QPainterPath newShape(startPoint);
     newShape.lineTo(endPoint);
     transition->setShape(newShape);
 
-    const auto midPoint = linePath.pointAtPercent(0.5);
-    const qreal angle = linePath.angleAtPercent(0.5);
+    const auto midPoint = newShape.pointAtPercent(0.5);
+    const qreal angle = newShape.angleAtPercent(0.5);
     QRectF newLabelBoundingRect(labelBoundingRect);
     if (angle < 90) {
         newLabelBoundingRect.moveTopLeft(midPoint);
@@ -203,6 +233,32 @@ void QuickTransitionItem::updatePosition()
         newLabelBoundingRect.moveTopRight(midPoint);
     }
     transition->setLabelBoundingRect(newLabelBoundingRect);
+}
+
+void QuickTransitionItem::updateSource()
+{
+    auto transition = toTransition();
+    if (!transition)
+        return;
+
+    disconnect(m_sourceStateConnection);
+    if (auto source = toTransition()->sourceState()) {
+        m_sourceStateConnection = connect(source, &Element::posChanged,
+                                          this, &QuickTransitionItem::updatePosition);
+    }
+}
+
+void QuickTransitionItem::updateTarget()
+{
+    auto transition = toTransition();
+    if (!transition)
+        return;
+
+    disconnect(m_targetStateConnection);
+    if (auto targetState = toTransition()->targetState()) {
+        m_targetStateConnection = connect(targetState, &Element::posChanged,
+                                          this, &QuickTransitionItem::updatePosition);
+    }
 }
 
 Transition* QuickTransitionItem::toTransition() const

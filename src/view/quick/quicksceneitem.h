@@ -90,9 +90,14 @@ public:
 
 private Q_SLOTS:
     void updatePosition();
+    void updateSource();
+    void updateTarget();
 
 private:
     KDSME::Transition* toTransition() const;
+
+    QMetaObject::Connection m_sourceStateConnection;
+    QMetaObject::Connection m_targetStateConnection;
 };
 
 #endif // KDSME_QUICK_QUICKSCENEITEM_H
