@@ -44,24 +44,6 @@
 
 using namespace KDSME;
 
-namespace {
-
-QList<Element*> elementsAt(const QModelIndex& parent, int start, int end)
-{
-    const QAbstractItemModel* model = parent.model();
-    Q_ASSERT(model);
-
-    QList<Element*> elements;
-    for (int i = start; i <= end; ++i) {
-        Element* element = model->index(i, 0, parent).data(StateModel::ElementRole).value<Element*>();
-        Q_ASSERT(element);
-        elements << element;
-    }
-    return elements;
-}
-
-}
-
 StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
     , m_layouter(new LayerwiseLayouter(q))
