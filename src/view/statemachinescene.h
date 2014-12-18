@@ -79,9 +79,9 @@ public:
     Q_INVOKABLE void setItemSelected(KDSME::Element* item, bool selected);
 
     KDSME::Element* currentItem() const;
-    Q_INVOKABLE void setCurrentItem(KDSME::Element* item);
+    void setCurrentItem(KDSME::Element* item);
 
-    Q_INVOKABLE KDSME::Element* currentState();
+    KDSME::Element* currentState();
 
 public Q_SLOTS:
     void layout();
