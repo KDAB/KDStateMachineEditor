@@ -165,6 +165,8 @@ Item {
         anchors.fill: parent
 
         control: parent.control
+
+        onDoubleClicked: scene.rootState = control.element
     }
 
     ChannelizedDropArea {

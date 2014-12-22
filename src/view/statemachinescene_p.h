@@ -41,7 +41,7 @@ struct StateMachineScene::Private
 
     StateMachineScene* q;
 
-    QPointer<StateMachine> m_stateMachine;
+    State* m_rootState;
     Layouter* m_layouter;
     LayoutProperties* m_properties;
     qreal m_zoom;

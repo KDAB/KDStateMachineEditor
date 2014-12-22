@@ -9,6 +9,9 @@ Item {
 
     property var control
 
+    signal clicked
+    signal doubleClicked
+
     Rectangle {
         id: rect
 
@@ -43,7 +46,11 @@ Item {
         drag.target: invisibleDragTarget
 
         onClicked: {
-            control.sendClickEvent()
+            scene.currentItem = control.element;
+            root.clicked();
+        }
+        onDoubleClicked: {
+            root.doubleClicked();
         }
 
         function move(dx, dy) {

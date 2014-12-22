@@ -40,6 +40,7 @@
 #include <QItemSelectionModel>
 #include <QMatrix>
 #include <QPainterPath>
+#include <QSortFilterProxyModel>
 #include <QQmlEngine>
 
 using namespace KDSME;
@@ -148,24 +149,35 @@ Element* StateMachineScene::currentState()
     return element;
 }
 
-StateMachine* StateMachineScene::stateMachine() const
+State* StateMachineScene::rootState() const
 {
-    return d->m_stateMachine;
+    return d->m_rootState;
 }
 
-void StateMachineScene::setStateMachine(StateMachine* stateMachine)
+void StateMachineScene::setRootState(State* rootState)
 {
-    if (d->m_stateMachine == stateMachine)
+    if (d->m_rootState == rootState)
         return;
 
     // reset properties
     setZoom(1.0);
 
     Q_ASSERT(stateModel());
-    stateModel()->setState(stateMachine);
+    stateModel()->setState(rootState);
 
-    d->m_stateMachine = stateMachine;
-    emit stateMachineChanged(d->m_stateMachine);
+    d->m_rootState = rootState;
+    emit rootStateChanged(d->m_rootState);
+}
+
+StateMachine* StateMachineScene::stateMachine() const
+{
+    return qobject_cast<StateMachine*>(d->m_rootState);
+}
+
+void StateMachineScene::setStateMachine(StateMachine* stateMachine)
+{
+    setRootState(stateMachine);
+    emit stateMachineChanged(stateMachine);
 }
 
 Layouter* StateMachineScene::layouter() const
@@ -210,7 +222,7 @@ void StateMachineScene::setZoom(qreal zoom)
 
 void StateMachineScene::zoomBy(qreal scale)
 {
-    auto machine = stateMachine();
+    auto root = rootState();
 
     QMatrix matrix;
     matrix.scale(scale, scale);
@@ -219,7 +231,7 @@ void StateMachineScene::zoomBy(qreal scale)
     setState(RefreshState);
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkItems(machine, [&](Element* element) -> ElementWalker::VisitResult {
+    walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
         element->setPos(matrix.map(element->pos()));
         element->setWidth(element->width() * scale);
         element->setHeight(element->height() * scale);
@@ -234,15 +246,15 @@ void StateMachineScene::zoomBy(qreal scale)
 
 void StateMachineScene::layout()
 {
-    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << d->m_layouter << d->m_stateMachine;
+    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << d->m_layouter << d->m_rootState;
 
-    if (!d->m_layouter || !d->m_stateMachine) {
+    if (!d->m_layouter || !d->m_rootState) {
         return;
     }
 
     auto oldState = state();
     setState(RefreshState);
-    d->m_layouter->layout(d->m_stateMachine, layoutProperties());
+    d->m_layouter->layout(d->m_rootState, layoutProperties());
     setState(oldState);
 }
 

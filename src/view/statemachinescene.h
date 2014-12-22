@@ -44,6 +44,7 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
+    Q_PROPERTY(KDSME::State* rootState READ rootState WRITE setRootState NOTIFY rootStateChanged)
     Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
     Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged FINAL)
@@ -55,9 +56,12 @@ public:
     StateModel* stateModel() const;
     virtual void setModel(QAbstractItemModel* model) override;
 
-    StateMachine* stateMachine() const;
+    Q_DECL_DEPRECATED StateMachine* stateMachine() const;
     /// Ownership is not transferred
-    void setStateMachine(StateMachine* stateMachine);
+    Q_DECL_DEPRECATED void setStateMachine(StateMachine* stateMachine);
+
+    State* rootState() const;
+    void setRootState(State* rootState);
 
     Layouter* layouter() const;
     /// Ownership is transferred
@@ -88,6 +92,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void stateMachineChanged(KDSME::StateMachine* stateMachine);
+    void rootStateChanged(KDSME::State* state);
     void currentItemChanged(KDSME::Element* currentItem);
     void zoomChanged(qreal zoom);
 

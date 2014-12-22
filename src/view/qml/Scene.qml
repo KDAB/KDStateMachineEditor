@@ -38,8 +38,8 @@ StateMachineScene {
     /// Debug: Draw filled semi-opaque rectangles around regions
     property bool debug: false
 
-    width: stateMachine ? stateMachine.width : 0
-    height: stateMachine ? stateMachine.height : 0
+    width: rootState ? rootState.width : 0
+    height: rootState ? rootState.height : 0
 
     transformOrigin: Item.TopLeft
 
