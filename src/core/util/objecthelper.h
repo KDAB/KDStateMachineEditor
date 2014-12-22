@@ -56,6 +56,15 @@ namespace ObjectHelper {
     KDSME_CORE_EXPORT QString toString(const QRectF& rect);
 
     /**
+     * Determines if the QObject @p obj is a descendant of the QObject @p ascendant.
+     * @param ascendant is a pointer to a QObject.
+     * @param object is a pointer to a QObject.
+     *
+     * @return true if @p obj is a descendant of @p ascendant; false otherwise.
+     */
+    KDSME_CORE_EXPORT bool descendantOf(const QObject *ascendant, const QObject *object);
+
+    /**
      * Filters the list @p list
      *
      * Returns a list that only contains item of type @p FilterType
