@@ -97,7 +97,7 @@ void QuickRecursiveInstantiator::modelReset()
 {
     Q_ASSERT(m_model);
 
-    qDeleteAll(m_rootItems);
+    std::for_each(m_rootItems.begin(), m_rootItems.end(), [](QObject* obj) { obj->deleteLater(); });
     m_rootItems.clear();
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
