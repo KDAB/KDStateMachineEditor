@@ -111,7 +111,7 @@ QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* propertie
     timer.start();
 
     ElementWalker walker(ElementWalker::PostOrderTraversal);
-    walker.walkItems(state, std::bind(&LayerwiseLayouter::layoutState, this, std::placeholders::_1));
+    walker.walkItems(state, [&](Element* element) { return layoutState(element); });
 
     qCDebug(KDSME_CORE) << Q_FUNC_INFO << "Took" << timer.elapsed() << "ms";
 
