@@ -86,7 +86,7 @@ set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/command
 )
 
-set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View)
+set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
 target_include_directories(kdstatemachineeditor_view
   # FIXME: It is recommended to use a relative path here.

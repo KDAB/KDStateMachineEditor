@@ -44,7 +44,7 @@ target_link_libraries(kdstatemachineeditor_core
     Qt5::Core
     Qt5::Gui
 )
-set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME Core)
+set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME Core INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(Graphviz_FOUND)
@@ -107,5 +107,7 @@ install(FILES
   util/treewalker.h
   DESTINATION ${INCLUDE_INSTALL_DIR}/core
 )
+
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_subdirectory(tests)
