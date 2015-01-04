@@ -202,9 +202,9 @@ void QuickTransitionItem::updatePosition()
     const auto sourceStateItem = itemForElement(sourceState);
     const auto targetStateItem = itemForElement(targetState);
 
-    const QRectF startRect(mapFromItem(sourceStateItem, {0, 0}),
+    const QRectF startRect(mapFromItem(sourceStateItem, QPointF(0, 0)),
                            QSizeF(sourceStateItem->width(), sourceStateItem->height()));
-    const QRectF endRect(mapFromItem(targetStateItem, {0, 0}),
+    const QRectF endRect(mapFromItem(targetStateItem, QPointF(0, 0)),
                          QSizeF(targetStateItem->width(), targetStateItem->height()));
 
     const auto shape = transition->shape();
