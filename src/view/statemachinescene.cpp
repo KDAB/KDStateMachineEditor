@@ -47,6 +47,7 @@ using namespace KDSME;
 
 StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
+    , m_rootState(nullptr)
     , m_layouter(new LayerwiseLayouter(q))
     , m_properties(new LayoutProperties(q))
     , m_zoom(1.0)
