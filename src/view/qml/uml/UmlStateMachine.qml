@@ -78,6 +78,8 @@ KDSME.StateItem {
         anchors.fill: parent
 
         control: parent
+
+        onDoubleClicked: scene.rootState = control.element
     }
 
     ChannelizedDropArea {
