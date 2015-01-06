@@ -47,6 +47,18 @@ ToolBar {
         anchors.fill: parent
 
         ToolButton {
+            action: Action {
+                text: qsTr("Go Up")
+                onTriggered: {
+                    var parentState = stateMachineScene.rootState.parentState()
+                    if (parentState) {
+                        stateMachineScene.rootState = parentState
+                    }
+                }
+            }
+        }
+
+        ToolButton {
             visible: root.debuggingActive
             action: Action {
                 text: qsTr("Follow Active Region")
@@ -75,7 +87,6 @@ ToolBar {
         }
         */
         ToolBarSeparator {
-            visible: root.debuggingActive
         }
 
         ToolButton {

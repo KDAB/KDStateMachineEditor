@@ -50,7 +50,7 @@ public:
 
     virtual Type type() const override;
 
-    State* parentState() const;
+    Q_INVOKABLE KDSME::State* parentState() const;
 
     State* initialState() const;
     void setInitialState(State* initialState);
