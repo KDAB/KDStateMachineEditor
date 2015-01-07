@@ -122,34 +122,6 @@ Item {
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
             }
-
-            RowLayout {
-                id: buttonBox
-
-                width: root.regionLabelButtonBoxSize.width
-                height: root.regionLabelButtonBoxSize.height
-
-                anchors {
-                    top: parent.top
-                    right: parent.right
-                }
-
-                // TODO: Re-evaluate if we need this functionality
-                /*
-                SquareButton {
-                    width: parent.height
-                    height: parent.width
-                    text: (element.expanded ? "-" : "+")
-                    onClicked: {
-                        if (element.expanded) {
-                            scene.collapseItem(element.element)
-                        } else {
-                            scene.expandItem(element.element)
-                        }
-                    }
-                }
-                */
-            }
         }
     }
 
@@ -161,6 +133,32 @@ Item {
         onDoubleClicked: {
             scene.rootState = control.element
             scene.layout()
+        }
+    }
+
+    RowLayout {
+        id: buttonBox
+
+        visible: header.width > 1.1 * width
+
+        width: root.regionLabelButtonBoxSize.width
+        height: root.regionLabelButtonBoxSize.height
+
+        anchors {
+            top: header.top
+            right: header.right
+            margins: (header.height - height)/2
+        }
+
+        SquareButton {
+            width: parent.height
+            height: parent.width
+
+            text: (element.expanded ? "-" : "+")
+            onClicked: {
+                scene.setItemExpanded(control.element, !element.expanded);
+                scene.layout();
+            }
         }
     }
 

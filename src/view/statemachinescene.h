@@ -80,8 +80,8 @@ public:
 
     Q_INVOKABLE void collapseItem(KDSME::State* state);
     Q_INVOKABLE void expandItem(KDSME::State* state);
-    bool isItemExpanded(KDSME::State* state) const;
-    void setItemExpanded(KDSME::State* state, bool expand);
+    Q_INVOKABLE bool isItemExpanded(KDSME::State* state) const;
+    Q_INVOKABLE void setItemExpanded(KDSME::State* state, bool expand);
 
     Q_INVOKABLE bool isItemSelected(KDSME::Element* item);
     Q_INVOKABLE void setItemSelected(KDSME::Element* item, bool selected);
