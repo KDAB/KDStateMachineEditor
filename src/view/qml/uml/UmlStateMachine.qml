@@ -53,22 +53,34 @@ KDSME.StateItem {
                 top: parent.top
                 left: parent.left
             }
-            width: label.width + 2*margins
+            width: Math.min(dummyLabel.width + 2*margins, element.width)
             height: label.height + 2*margins
 
             color: Theme.compositeStateLabelBackgroundColor
             border.color: Theme.stateBorderColor
-            border.width: 2
+            border.width: 1
 
             Text {
                 id: label
 
-                anchors.centerIn: parent
+                anchors {
+                    margins: 2
+                    fill: parent
+                }
 
-                text: qsTr("State Machine: ") + (element.label != "" ? element.label : qsTr("<Unnamed>"))
+                text: element.label !== "" ? element.label : qsTr("<Unnamed>")
                 color: Theme.compositeStateLabelFontColor
                 font.bold: true
                 elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Text {
+                id: dummyLabel
+                text: label.text
+                font.bold: true
+                visible: false
             }
         }
     }
