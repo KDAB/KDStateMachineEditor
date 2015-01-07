@@ -12,6 +12,7 @@
         <file>qml/Scene.qml</file>
         <file>qml/StateMachineView.qml</file>
         <file>qml/StateMachineViewToolBar.qml</file>
+        <file>qml/uml/UmlCompositeStateContent.qml</file>
         <file>qml/uml/UmlCompositeStateDelegate.qml</file>
         <file>qml/uml/UmlFinalState.qml</file>
         <file>qml/uml/UmlHistoryState.qml</file>

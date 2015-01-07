@@ -65,27 +65,10 @@ Item {
         cornerRadius: rect.radius
     }
 
-    Rectangle {
+    UmlCompositeStateContent {
         id: rect
 
         anchors.fill: parent
-
-        // TODO: Tint background color based on level in hierarchy
-        color: Theme.compositeStateBackgroundColor_Lightest
-        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
-        border.width: (activeness > 0 ? 2 : 1)
-        radius: 5
-
-        Text {
-            visible: !element.expanded
-
-            anchors.centerIn: parent
-            width: parent.width
-
-            color: Theme.compositeStateLabelFontColor
-            text: "..."
-            horizontalAlignment: Text.AlignHCenter
-        }
     }
 
     Item {

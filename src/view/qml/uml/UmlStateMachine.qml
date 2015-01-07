@@ -38,13 +38,12 @@ KDSME.StateItem {
 
     width: Math.max(element.width, textBox.width)
 
-    Rectangle {
-        id: regionRect
+    UmlCompositeStateContent {
+        id: rect
+
         anchors.fill: parent
 
-        color: Theme.compositeStateBackgroundColor_Lightest
-        border.color: Theme.stateBorderColor
-        border.width: 2
+        roundedCorners: false
 
         Rectangle {
             id: textBox
@@ -71,7 +70,6 @@ KDSME.StateItem {
                 font.bold: true
                 elide: Text.ElideRight
             }
-
         }
     }
 
