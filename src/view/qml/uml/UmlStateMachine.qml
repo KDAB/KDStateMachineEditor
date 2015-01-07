@@ -90,7 +90,10 @@ KDSME.StateItem {
 
         control: parent
 
-        onDoubleClicked: scene.rootState = control.element
+        onDoubleClicked: {
+            scene.rootState = control.element
+            scene.layout()
+        }
     }
 
     ChannelizedDropArea {

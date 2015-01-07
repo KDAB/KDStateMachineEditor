@@ -53,6 +53,7 @@ ToolBar {
                     var parentState = stateMachineScene.rootState.parentState()
                     if (parentState) {
                         stateMachineScene.rootState = parentState
+                        stateMachineScene.layout()
                     }
                 }
             }

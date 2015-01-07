@@ -158,7 +158,10 @@ Item {
 
         control: parent.control
 
-        onDoubleClicked: scene.rootState = control.element
+        onDoubleClicked: {
+            scene.rootState = control.element
+            scene.layout()
+        }
     }
 
     ChannelizedDropArea {
