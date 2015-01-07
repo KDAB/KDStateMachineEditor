@@ -73,7 +73,7 @@ Rectangle {
     color: Theme.viewBackgroundColor
 
     function setZoom(nominalFactor, centerX, centerY) {
-        var scale = Math.min(Math.max(stateMachineScene.zoom * nominalFactor, Constants.minimumZoomLevel), Constants.maximumZoomLevel);
+        var scale = Math.min(Math.max(stateMachineScene.zoom * nominalFactor, Constants.zoomMin), Constants.zoomMax);
         var factor = scale / stateMachineScene.zoom;
 
         // calculate offset, to move the contents when zooming in or out to stay at the mouse position

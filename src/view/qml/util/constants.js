@@ -25,7 +25,10 @@
 .pragma library
 
 // BEGIN: StateMachineView related
-var minimumZoomLevel = 0.2;
-var maximumZoomLevel = 5.0;
+var zoomMin = 0.2;
+var zoomMax = 2.0;
 var zoomStepSize = 0.2;
+
+var maximumDepthMin = 1;
+var maximumDepthMax = 10;
 // END

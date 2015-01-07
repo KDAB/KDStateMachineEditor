@@ -112,8 +112,8 @@ ToolBar {
 
             Layout.maximumWidth: 100
 
-            minimumValue: Constants.minimumZoomLevel
-            maximumValue: Constants.maximumZoomLevel
+            minimumValue: Constants.zoomMin
+            maximumValue: Constants.zoomMax
             value: root.stateMachineView.zoom
             tickmarksEnabled: true
             stepSize: Constants.zoomStepSize
@@ -135,8 +135,8 @@ ToolBar {
 
             Layout.maximumWidth: 40
 
-            minimumValue: 1
-            maximumValue: 5
+            minimumValue: Constants.maximumDepthMin
+            maximumValue: Constants.maximumDepthMax
             value: root.stateMachineView.maximumDepth
             stepSize: 1
             onValueChanged: {
