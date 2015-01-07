@@ -65,6 +65,13 @@ namespace ObjectHelper {
     KDSME_CORE_EXPORT bool descendantOf(const QObject *ascendant, const QObject *object);
 
     /**
+     * Determines the depth of object @p obj relative to object @p root
+     *
+     * @return Depth, -1 in case @p obj is null
+     */
+    KDSME_CORE_EXPORT int depth(const QObject* root, const QObject* object);
+
+    /**
      * Filters the list @p list
      *
      * Returns a list that only contains item of type @p FilterType

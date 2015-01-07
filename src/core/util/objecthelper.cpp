@@ -108,3 +108,17 @@ bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *obj)
     }
     return descendantOf(ascendant, parent);
 }
+
+int ObjectHelper::depth(const QObject* root, const QObject* object)
+{
+    if (!object)
+        return -1;
+
+    int depth = 0;
+    const QObject* current = object;
+    while (current && current != root) {
+        ++depth;
+        current = current->parent();
+    }
+    return depth;
+}
