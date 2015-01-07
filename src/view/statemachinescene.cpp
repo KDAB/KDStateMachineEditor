@@ -168,6 +168,8 @@ void StateMachineScene::setRootState(State* rootState)
 
     d->m_rootState = rootState;
     emit rootStateChanged(d->m_rootState);
+
+    d->updateItemVisibilities();
 }
 
 StateMachine* StateMachineScene::stateMachine() const
@@ -230,33 +232,21 @@ int StateMachineScene::maximumDepth() const
     return d->m_maximumDepth;
 }
 
-void StateMachineScene::setMaximumDepth(int depth)
+void StateMachineScene::setMaximumDepth(int maximumDepth)
 {
-    if (depth <= 0 || d->m_maximumDepth == depth)
+    if (maximumDepth <= 0 || d->m_maximumDepth == maximumDepth)
         return;
 
-    auto root = rootState();
+    d->m_maximumDepth = maximumDepth;
+    emit maximumDepthChanged(d->m_maximumDepth);
 
     auto oldState = state();
     setState(RefreshState);
 
-    ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
-        if (auto state = qobject_cast<State*>(element)) {
-            const bool expand = (depth > 0 ? ObjectHelper::depth(root, state) < depth : true);
-
-            setItemExpanded(state, expand);
-        }
-
-        return ElementWalker::RecursiveWalk;
-    });
-
+    d->updateItemVisibilities();
     layout();
 
     setState(oldState);
-
-    d->m_maximumDepth = depth;
-    emit maximumDepthChanged(d->m_maximumDepth);
 }
 
 void StateMachineScene::Private::zoomByInternal(qreal scale)
@@ -315,6 +305,20 @@ void StateMachineScene::setModel(QAbstractItemModel* model)
     }
 
     KDSME::AbstractScene::setModel(stateModel);
+}
+
+void StateMachineScene::Private::updateItemVisibilities()
+{
+    ElementWalker walker(ElementWalker::PreOrderTraversal);
+    walker.walkItems(m_rootState, [&](Element* element) -> ElementWalker::VisitResult {
+        if (auto state = qobject_cast<State*>(element)) {
+            const bool expand = (m_maximumDepth > 0 ? ObjectHelper::depth(m_rootState, state) < m_maximumDepth : true);
+
+            q->setItemExpanded(state, expand);
+        }
+
+        return ElementWalker::RecursiveWalk;
+    });
 }
 
 void StateMachineScene::Private::updateChildItemVisibility(State* state, bool expand)
