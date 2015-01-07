@@ -54,7 +54,7 @@ KDSME.StateItem {
                 left: parent.left
             }
             width: Math.min(dummyLabel.width + 2*margins, element.width)
-            height: label.height + 2*margins
+            height: dummyLabel.height + 2*margins
 
             color: Theme.compositeStateLabelBackgroundColor
             border.color: Theme.stateBorderColor
@@ -106,7 +106,7 @@ KDSME.StateItem {
         State {
             when: dropArea.containsDrag
             PropertyChanges {
-                target: regionRect
+                target: rect
                 color: "#DDDDDD"
             }
         }
