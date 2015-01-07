@@ -24,6 +24,8 @@
 
 import QtQuick 2.0
 
+import "qrc:///kdsme/qml/util/"
+
 MouseArea {
     id: button
 
@@ -36,16 +38,18 @@ MouseArea {
 
         anchors.fill: parent
 
-        border.color: "#888"
+        border.color: Theme.stateBorderColor
         radius: 5
-        gradient: Gradient {
-            GradientStop { position: 0; color: button.containsMouse && button.pressed ? "#ccc" : "#eee" }
-            GradientStop { position: 1; color: button.containsMouse && button.pressed ? "#aaa" : "#ccc" }
-        }
+        color: !button.pressed ?
+            Theme.compositeStateBackgroundColor_Lightest :
+            Theme.compositeStateBackgroundColor_Darkest
 
         Text {
             id: textItem
+
             anchors.centerIn: parent
+
+            color: Theme.compositeStateLabelFontColor
         }
     }
 
