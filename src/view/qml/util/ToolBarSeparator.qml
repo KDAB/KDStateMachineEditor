@@ -41,8 +41,6 @@ Item {
      */
     property int layoutDirection: Qt.Horizontal
 
-    visible: root.debuggingActive
-
     Layout.minimumHeight: 0
     Layout.minimumWidth: 0
     Layout.fillHeight: layoutDirection == Qt.Horizontal
