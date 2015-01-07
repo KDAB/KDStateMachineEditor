@@ -74,7 +74,7 @@ LayoutProperties* StateMachineScene::layoutProperties() const
 
 void StateMachineScene::collapseItem(State* state)
 {
-    if (!state || !state->isExpanded())
+    if (!state)
         return;
 
     state->setExpanded(false);
@@ -83,7 +83,7 @@ void StateMachineScene::collapseItem(State* state)
 
 void StateMachineScene::expandItem(State* state)
 {
-    if (!state || state->isExpanded())
+    if (!state)
         return;
 
     state->setExpanded(true);
@@ -243,7 +243,8 @@ void StateMachineScene::setMaximumDepth(int depth)
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
         if (auto state = qobject_cast<State*>(element)) {
-            const bool expand = (depth > 0 ? ObjectHelper::depth(root, state) <= depth : true);
+            const bool expand = (depth > 0 ? ObjectHelper::depth(root, state) < depth : true);
+
             setItemExpanded(state, expand);
         }
 
