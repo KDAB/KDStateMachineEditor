@@ -66,7 +66,7 @@ KDSME.StateItem {
 
                 anchors.centerIn: parent
 
-                text: qsTr("State Machine: ") + (root.name != "" ? root.name : qsTr("<Unnamed>"))
+                text: qsTr("State Machine: ") + (element.label != "" ? element.label : qsTr("<Unnamed>"))
                 color: Theme.compositeStateLabelFontColor
                 font.bold: true
                 elide: Text.ElideRight
