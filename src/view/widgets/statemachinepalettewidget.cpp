@@ -79,14 +79,12 @@ private:
 PaletteModel::PaletteModel(QObject* parent)
     : QAbstractListModel(parent)
 {
+    m_entries << Entry(Element::StateMachineType, ":/kdsme/icons/state_machine.png", tr("State Machine"));
     m_entries << Entry(Element::StateType, ":/kdsme/icons/state.png", tr("State"));
-    // we only can edit one state machine at a time, so don't add this one here
     m_entries << Entry(Element::FinalStateType, ":/kdsme/icons/final_state.png", tr("Final State"));
-
     m_entries << Entry(Element::HistoryStateType, ":/kdsme/icons/shallow_history.png", tr("History State"));
 
     m_entries << Entry(Element::TransitionType, ":/kdsme/icons/transition.png", tr("Transition"));
-
 }
 
 int PaletteModel::rowCount(const QModelIndex& parent) const

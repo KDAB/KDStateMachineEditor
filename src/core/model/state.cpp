@@ -209,6 +209,9 @@ StateMachine::StateMachine(QObject* parent)
     // Can't pass the parent to the State constructor, as it expects a State
     // But this works as expected regardless of whether parent is a State or not
     setParent(parent);
+
+    setWidth(128);
+    setHeight(128);
 }
 
 struct HistoryState::Private
