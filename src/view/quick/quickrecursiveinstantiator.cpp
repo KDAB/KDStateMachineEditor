@@ -60,14 +60,14 @@ void QuickRecursiveInstantiator::setModel(QAbstractItemModel* model)
     if (m_model) {
         disconnect(m_model, &QAbstractItemModel::modelReset, this, &QuickRecursiveInstantiator::modelReset);
         disconnect(m_model, &QAbstractItemModel::rowsInserted, this, &QuickRecursiveInstantiator::rowsInserted);
-        disconnect(m_model, &QAbstractItemModel::rowsRemoved, this, &QuickRecursiveInstantiator::rowsRemoved);
+        disconnect(m_model, &QAbstractItemModel::rowsRemoved, this, &QuickRecursiveInstantiator::rowsAboutToBeRemoved);
         disconnect(m_model, &QAbstractItemModel::destroyed, this, &QuickRecursiveInstantiator::modelDestroyed);
     }
     m_model = model;
     if (m_model) {
         connect(m_model, &QAbstractItemModel::modelReset, this, &QuickRecursiveInstantiator::modelReset);
         connect(m_model, &QAbstractItemModel::rowsInserted, this, &QuickRecursiveInstantiator::rowsInserted);
-        connect(m_model, &QAbstractItemModel::rowsRemoved, this, &QuickRecursiveInstantiator::rowsRemoved);
+        connect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved, this, &QuickRecursiveInstantiator::rowsAboutToBeRemoved);
         connect(m_model, &QAbstractItemModel::destroyed, this, &QuickRecursiveInstantiator::modelDestroyed);
     }
     emit modelChanged(m_model);
@@ -150,27 +150,32 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
     return createdObject;
 }
 
-void QuickRecursiveInstantiator::createItems(const QModelIndex& parent, int first, int last)
+void QuickRecursiveInstantiator::removeItems(const QModelIndex& index, QObject* parent)
 {
-    auto parentItem = itemForIndex(parent);
-    Q_ASSERT(parentItem);
+    Q_ASSERT(m_createdItems.contains(index));
+    auto createdObject =  m_createdItems.take(index);
+    Q_ASSERT(createdObject);
+    qDebug() << createdObject << index;
 
-    for (int i = first; i <= last; ++i) {
-        const auto currentIndex = m_model->index(i, 0, parent);
-        auto item = createItems(currentIndex, parentItem);
-    }
+    createdObject->deleteLater();
 }
 
 void QuickRecursiveInstantiator::rowsInserted(const QModelIndex& parent, int first, int last)
 {
-    const QObject* parentItem = itemForIndex(parent);
-    createItems(parent, first, last);
+    auto parentItem = itemForIndex(parent);
+    Q_ASSERT(parentItem);
+    for (int i = first; i <= last; ++i) {
+        const auto currentIndex = m_model->index(i, 0, parent);
+        createItems(currentIndex, parentItem);
+    }
 }
 
-void QuickRecursiveInstantiator::rowsRemoved(const QModelIndex& parent, int first, int last)
+void QuickRecursiveInstantiator::rowsAboutToBeRemoved(const QModelIndex& parent, int first, int last)
 {
-    Q_UNUSED(parent)
-    Q_UNUSED(first)
-    Q_UNUSED(last)
-    // TODO: Handle
+    auto parentItem = itemForIndex(parent);
+    Q_ASSERT(parentItem);
+    for (int i = first; i <= last; ++i) {
+        const auto currentIndex = m_model->index(i, 0, parent);
+        removeItems(currentIndex, parentItem);
+    }
 }
