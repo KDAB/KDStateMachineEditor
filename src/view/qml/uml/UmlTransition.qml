@@ -43,10 +43,6 @@ TransitionItem {
     opacity: (element.sourceState ? element.sourceState.visible : 1) &&
         (element.targetState ? element.targetState.visible : 1)
 
-    Behavior on opacity {
-        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
-    }
-
     PainterPath {
         id: painterPathItem
         path: root.path
