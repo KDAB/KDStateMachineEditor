@@ -67,6 +67,9 @@ Rectangle {
             setZoom(1.1, 0, 0)
         } else if ((event.key === Qt.Key_Minus) && (event.modifiers & Qt.ControlModifier)) {
             setZoom(0.9, 0, 0)
+        } else if ((event.key === Qt.Key_Delete) && (event.modifiers === Qt.NoModifier)) {
+            var cmd = CommandFactory.deleteElement(stateMachineScene, stateMachineScene.currentItem);
+            commandController.push(cmd);
         }
     }
 

@@ -46,6 +46,7 @@ CommandFactory::CommandFactory(QObject* parent)
     , m_model(nullptr)
 {
     qRegisterMetaType<CreateElementCommand*>();
+    qRegisterMetaType<DeleteElementCommand*>();
     qRegisterMetaType<ModifyLayoutItemCommand*>();
     qRegisterMetaType<ModifyPropertyCommand*>();
     qRegisterMetaType<ModifyTransitionCommand*>();
