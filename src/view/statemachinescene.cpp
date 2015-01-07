@@ -311,6 +311,7 @@ void StateMachineScene::setModel(QAbstractItemModel* model)
     StateModel* stateModel = qobject_cast<StateModel*>(model);
     if (!stateModel) {
         qWarning() << "Invalid model class type, expected StateModel instance";
+        return;
     }
 
     KDSME::AbstractScene::setModel(stateModel);
