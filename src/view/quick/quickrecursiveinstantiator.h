@@ -56,8 +56,8 @@ public:
 private Q_SLOTS:
     void modelReset();
     void modelDestroyed();
-    void rowsInserted(const QModelIndex& parent, int row, int column);
-    void rowsRemoved(const QModelIndex& parent, int row, int column);
+    void rowsInserted(const QModelIndex& parent, int first, int last);
+    void rowsRemoved(const QModelIndex& parent, int first, int last);
 
 Q_SIGNALS:
     void modelChanged(QAbstractItemModel* model);
@@ -65,6 +65,7 @@ Q_SIGNALS:
 
 private:
     QObject* createItems(const QModelIndex& index, QObject* parent);
+    void createItems(const QModelIndex& parent, int first, int last);
 
     QAbstractItemModel* m_model;
     QQmlComponent* m_delegate;

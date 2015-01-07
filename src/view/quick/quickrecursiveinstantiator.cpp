@@ -123,6 +123,7 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
     Q_ASSERT(index.isValid());
 
     auto object = index.data(ObjectTreeModel::ObjectRole).value<QObject*>();
+    Q_ASSERT(object);
     auto creationContext = m_delegate->creationContext();
     auto context = new QQmlContext(creationContext ? creationContext : qmlContext(this));
     context->setContextProperty("object", object);
@@ -149,18 +150,27 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
     return createdObject;
 }
 
-void QuickRecursiveInstantiator::rowsInserted(const QModelIndex& parent, int row, int column)
+void QuickRecursiveInstantiator::createItems(const QModelIndex& parent, int first, int last)
 {
-    Q_UNUSED(parent)
-    Q_UNUSED(row)
-    Q_UNUSED(column)
-    // TODO: Handle
+    auto parentItem = itemForIndex(parent);
+    Q_ASSERT(parentItem);
+
+    for (int i = first; i <= last; ++i) {
+        const auto currentIndex = m_model->index(i, 0, parent);
+        auto item = createItems(currentIndex, parentItem);
+    }
 }
 
-void QuickRecursiveInstantiator::rowsRemoved(const QModelIndex& parent, int row, int column)
+void QuickRecursiveInstantiator::rowsInserted(const QModelIndex& parent, int first, int last)
+{
+    const QObject* parentItem = itemForIndex(parent);
+    createItems(parent, first, last);
+}
+
+void QuickRecursiveInstantiator::rowsRemoved(const QModelIndex& parent, int first, int last)
 {
     Q_UNUSED(parent)
-    Q_UNUSED(row)
-    Q_UNUSED(column)
+    Q_UNUSED(first)
+    Q_UNUSED(last)
     // TODO: Handle
 }
