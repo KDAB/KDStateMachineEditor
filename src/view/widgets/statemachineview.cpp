@@ -280,7 +280,6 @@ void StateMachineView::fitInView(const QRectF& rect)
     if (sceneRect.isEmpty() || viewRect.isEmpty())
         return;
 
-
     qreal horizontalScale = viewRect.width() / sceneRect.width();
     qreal verticalScale = viewRect.height() / sceneRect.height();
     const qreal uniformScale = qMin(horizontalScale, verticalScale);

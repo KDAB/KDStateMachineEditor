@@ -214,22 +214,26 @@ void StateMachineScene::setZoom(qreal zoom)
         return;
 
     const auto delta = zoom / d->m_zoom;
-    zoomBy(delta);
+    d->zoomByInternal(delta);
 
     d->m_zoom = zoom;
     emit zoomChanged(d->m_zoom);
 }
 
-
 void StateMachineScene::zoomBy(qreal scale)
 {
-    auto root = rootState();
+    setZoom(d->m_zoom * scale);
+}
+
+void StateMachineScene::Private::zoomByInternal(qreal scale)
+{
+    auto root = q->rootState();
 
     QMatrix matrix;
     matrix.scale(scale, scale);
 
-    auto oldState = state();
-    setState(RefreshState);
+    auto oldState = q->state();
+    q->setState(RefreshState);
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
@@ -242,7 +246,7 @@ void StateMachineScene::zoomBy(qreal scale)
         return ElementWalker::RecursiveWalk;
     });
 
-    setState(oldState);
+    q->setState(oldState);
 }
 
 void StateMachineScene::layout()

@@ -32,6 +32,8 @@ struct StateMachineScene::Private
 
     State* importState(State* state);
 
+    void zoomByInternal(qreal scale);
+
     void updateChildItemVisibility(State* state, bool expand);
 
     void setRootElement(State* root);
