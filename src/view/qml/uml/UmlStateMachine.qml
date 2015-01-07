@@ -54,15 +54,16 @@ KDSME.StateItem {
                 top: parent.top
                 left: parent.left
             }
-            width: text.width + 2*margins
-            height: text.height + 2*margins
+            width: label.width + 2*margins
+            height: label.height + 2*margins
 
             color: Theme.compositeStateLabelBackgroundColor
             border.color: Theme.stateBorderColor
             border.width: 2
 
             Text {
-                id: text
+                id: label
+
                 anchors.centerIn: parent
 
                 text: qsTr("State Machine: ") + (root.name != "" ? root.name : qsTr("<Unnamed>"))

@@ -119,8 +119,6 @@ Item {
             Text {
                 id: text
 
-                property bool leftAlign: (paintedWidth + 10 > width - 2*buttonBox.width)
-
                 anchors.centerIn: parent
                 width: parent.width
 
@@ -128,7 +126,7 @@ Item {
                 text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>"))
                 font.bold: true
                 elide: Text.ElideRight
-                horizontalAlignment: (leftAlign ? Text.AlignLeft : Text.AlignHCenter)
+                horizontalAlignment: Text.AlignHCenter
             }
 
             RowLayout {
