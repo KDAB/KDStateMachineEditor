@@ -48,6 +48,7 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
     Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
     Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged FINAL)
+    Q_PROPERTY(int maximumDepth READ maximumDepth WRITE setMaximumDepth NOTIFY maximumDepthChanged FINAL)
 
 public:
     explicit StateMachineScene(QQuickItem* parent = nullptr);
@@ -72,6 +73,9 @@ public:
 
     void zoomBy(qreal scale);
 
+    int maximumDepth() const;
+    void setMaximumDepth(int depth);
+
     LayoutProperties* layoutProperties() const;
 
     Q_INVOKABLE void collapseItem(KDSME::State* state);
@@ -95,6 +99,7 @@ Q_SIGNALS:
     void rootStateChanged(KDSME::State* state);
     void currentItemChanged(KDSME::Element* currentItem);
     void zoomChanged(qreal zoom);
+    void maximumDepthChanged(int depth);
 
 protected Q_SLOTS:
     virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;

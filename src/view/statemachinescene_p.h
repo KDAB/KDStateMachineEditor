@@ -47,8 +47,7 @@ struct StateMachineScene::Private
     Layouter* m_layouter;
     LayoutProperties* m_properties;
     qreal m_zoom;
-
-    State* m_expandedItem;
+    int m_maximumDepth;
 };
 
 }

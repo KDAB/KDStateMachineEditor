@@ -34,6 +34,7 @@
 #include "layoututils.h"
 #include "elementmodel.h"
 #include "elementwalker.h"
+#include "objecthelper.h"
 
 #include <QDir>
 #include <QElapsedTimer>
@@ -51,7 +52,7 @@ StateMachineScene::Private::Private(StateMachineScene* view)
     , m_layouter(new LayerwiseLayouter(q))
     , m_properties(new LayoutProperties(q))
     , m_zoom(1.0)
-    , m_expandedItem(nullptr)
+    , m_maximumDepth(3)
 {
 }
 
@@ -86,9 +87,7 @@ void StateMachineScene::expandItem(State* state)
         return;
 
     state->setExpanded(true);
-
-    // we delay showing the child items until the layout has been done
-    d->m_expandedItem = state;
+    d->updateChildItemVisibility(state, true);
 }
 
 bool StateMachineScene::isItemExpanded(State* state) const
@@ -162,6 +161,7 @@ void StateMachineScene::setRootState(State* rootState)
 
     // reset properties
     setZoom(1.0);
+    setMaximumDepth(3);
 
     Q_ASSERT(stateModel());
     stateModel()->setState(rootState);
@@ -225,6 +225,39 @@ void StateMachineScene::zoomBy(qreal scale)
     setZoom(d->m_zoom * scale);
 }
 
+int StateMachineScene::maximumDepth() const
+{
+    return d->m_maximumDepth;
+}
+
+void StateMachineScene::setMaximumDepth(int depth)
+{
+    if (depth <= 0 || d->m_maximumDepth == depth)
+        return;
+
+    auto root = rootState();
+
+    auto oldState = state();
+    setState(RefreshState);
+
+    ElementWalker walker(ElementWalker::PreOrderTraversal);
+    walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
+        if (auto state = qobject_cast<State*>(element)) {
+            const bool expand = (depth > 0 ? ObjectHelper::depth(root, state) <= depth : true);
+            setItemExpanded(state, expand);
+        }
+
+        return ElementWalker::RecursiveWalk;
+    });
+
+    layout();
+
+    setState(oldState);
+
+    d->m_maximumDepth = depth;
+    emit maximumDepthChanged(d->m_maximumDepth);
+}
+
 void StateMachineScene::Private::zoomByInternal(qreal scale)
 {
     auto root = q->rootState();
@@ -259,6 +292,10 @@ void StateMachineScene::layout()
 
     auto oldState = state();
     setState(RefreshState);
+
+    // reset
+    setZoom(1.0);
+
     d->m_layouter->layout(d->m_rootState, layoutProperties());
     setState(oldState);
 }

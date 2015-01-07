@@ -45,8 +45,9 @@ Rectangle {
     /// Whether we automatically move the content of the view-port in case the active region changes
     property bool followActiveRegion: false
 
-    /// Scale factor of the scene
+    property alias maximumDepth: stateMachineScene.maximumDepth
     property alias zoom: stateMachineScene.zoom
+
     /// Whether we automatically collapse/expand states in case they're active or not
     property alias semanticZoom: semanticZoomManager.enabled
 

@@ -86,8 +86,7 @@ ToolBar {
             }
         }
         */
-        ToolBarSeparator {
-        }
+        ToolBarSeparator {}
 
         ToolButton {
             action: Action {
@@ -123,6 +122,25 @@ ToolBar {
                     return;
 
                 root.stateMachineView.zoom = value;
+            }
+        }
+
+        ToolBarSeparator {}
+
+        Label {
+            text: "Max. Depth:"
+        }
+        SpinBox {
+            id: depthSlider
+
+            Layout.maximumWidth: 40
+
+            minimumValue: 1
+            maximumValue: 5
+            value: root.stateMachineView.maximumDepth
+            stepSize: 1
+            onValueChanged: {
+                root.stateMachineView.maximumDepth = value;
             }
         }
 
