@@ -86,7 +86,7 @@ KDSME.StateItem {
         id: dropArea
         anchors.fill: parent
 
-        keys: ["StateType", "StateMachineType"]
+        keys: ["StateType", "StateMachineType", "TransitionType"]
 
         element: root.element
     }
