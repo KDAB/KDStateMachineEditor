@@ -50,8 +50,6 @@ Item {
         cornerRadius: rect.radius
     }
 
-    opacity: (parent.width > 1.5*label.width && parent.height > 1.5*label.height) ? 1 : 0
-
     Behavior on opacity {
         NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
@@ -70,10 +68,12 @@ Item {
             id: label
 
             anchors.centerIn: parent
+            width: parent.width
 
             text: control.element.label
             color: Theme.stateLabelFontColor
             elide: Text.ElideRight
+            horizontalAlignment: Text.AlignHCenter
         }
     }
 
