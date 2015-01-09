@@ -71,7 +71,7 @@ QString presetsLocation()
     if (!presetsLocation.isEmpty()) {
         return presetsLocation;
     }
-    return QCoreApplication::applicationDirPath() + "/../share/" + PACKAGE_NAME + "/data";
+    return QCoreApplication::applicationDirPath() + "/../data";
 }
 
 QString scxmlPresetsLocation()
