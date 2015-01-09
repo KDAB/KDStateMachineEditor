@@ -82,12 +82,7 @@ target_include_directories(kdstatemachineeditor_core
     ${LIB_EXTRA_INCLUDES}
 )
 
-add_custom_command(TARGET kdstatemachineeditor_core POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/${XDG_DATA_INSTALL_DIR}/data"
-)
-
 install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(DIRECTORY data/ DESTINATION ${XDG_DATA_INSTALL_DIR}/data)
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_core_export.h
 

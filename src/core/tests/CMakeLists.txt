@@ -1,6 +1,4 @@
 
-set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../data)
-set(QML_IMPORTS_DIR ${PROJECT_BINARY_DIR}/src/imports)
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config-test.h.cmake
