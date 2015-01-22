@@ -29,7 +29,7 @@ else()
     set(_Graphviz_ROOT $ENV{Graphviz_ROOT})
 endif()
 
-find_program(DOT_TOOL dot)
+find_program(DOT_TOOL dot HINTS ${_Graphviz_ROOT}/bin)
 
 if (WIN32 AND NOT _Graphviz_ROOT AND NOT DOT_TOOL)
   message(STATUS "No way to find Graphviz. Set the path to the DOT_TOOL in the cache.")
