@@ -247,7 +247,7 @@ bool QmlExporter::Private::writeStateInner(State* state)
     }
 
     if (state->childMode() == State::ParallelStates) {
-        writeAttribute(state, "childMode", "QState.ParallelStates");
+        writeAttribute(state, "childMode", "State.ParallelStates");
     }
 
     if (State* initial = ElementUtil::findInitialState(state)) {
