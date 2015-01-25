@@ -152,6 +152,7 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
 
 void QuickRecursiveInstantiator::removeItems(const QModelIndex& index, QObject* parent)
 {
+    Q_UNUSED(parent);
     Q_ASSERT(m_createdItems.contains(index));
     auto createdObject =  m_createdItems.take(index);
     Q_ASSERT(createdObject);
