@@ -271,10 +271,8 @@ QRectF StateMachineView::Private::adjustedViewRect()
     return viewRect.adjusted(margin, margin, -margin, -margin);
 }
 
-void StateMachineView::fitInView(const QRectF& rect)
+void StateMachineView::fitInView()
 {
-    const QQuickItem* viewPort = viewPortObject();
-
     QRectF sceneRect = scene()->stateMachine()->boundingRect();
     QRectF viewRect = d->adjustedViewRect();
     if (sceneRect.isEmpty() || viewRect.isEmpty())

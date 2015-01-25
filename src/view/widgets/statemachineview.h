@@ -60,7 +60,7 @@ public:
 
     Q_INVOKABLE void sendCommand(KDSME::Command* cmd);
 
-    Q_INVOKABLE void fitInView(const QRectF& rect = QRectF());
+    Q_INVOKABLE void fitInView();
 
     Q_INVOKABLE void changeStateMachine(KDSME::StateMachine *stateMachine);
     Q_INVOKABLE void deleteElement(KDSME::Element *element);
