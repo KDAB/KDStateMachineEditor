@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_VIEW_ABSTRACTVIEW_H
-#define KDSME_VIEW_ABSTRACTVIEW_H
+#ifndef KDSME_VIEW_ABSTRACTSCENE_H
+#define KDSME_VIEW_ABSTRACTSCENE_H
 
 #include "kdsme_view_export.h"
 

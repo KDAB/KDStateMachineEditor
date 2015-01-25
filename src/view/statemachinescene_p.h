@@ -20,6 +20,9 @@
   clear to you.
 */
 
+#ifndef KDSME_VIEW_STATEMACHINESCENE_P_H
+#define KDSME_VIEW_STATEMACHINESCENE_P_H
+
 #include "statemachinescene.h"
 
 class QuickSceneItem;
@@ -52,3 +55,5 @@ struct StateMachineScene::Private
 };
 
 }
+
+#endif
