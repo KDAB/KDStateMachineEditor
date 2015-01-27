@@ -79,11 +79,16 @@ Agsym_t *GVUtils::_agedgeattr(Agraph_t *object, const QString &attr, const QStri
                 const_cast<char *>(qPrintable(alt)));
 }
 
+void* GVUtils::_agbindrec(void* obj, const char* name, unsigned int size, int move_to_front)
+{
+    return agbindrec(obj, const_cast<char*>(name), size, move_to_front);
+}
+
 Agnode_t *GVUtils::_agnode(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
   Agnode_t *n = agnode(graph, const_cast<char*>(qPrintable(attr)), create);
-  agbindrec(n, "Agnodeinfo_t", sizeof(Agnodeinfo_t), TRUE);
+  _agbindrec(n, "Agnodeinfo_t", sizeof(Agnodeinfo_t), TRUE);
   return n;
 #else
   Q_UNUSED(create);
@@ -96,7 +101,7 @@ Agedge_t *GVUtils::_agedge(Agraph_t *graph, Agnode_t *tail, Agnode_t *head,
 {
 #ifdef WITH_CGRAPH
   Agedge_t *e = agedge(graph, tail, head, const_cast<char*>(qPrintable(name)), create);
-  agbindrec(e, "Agedgeinfo_t", sizeof(Agedgeinfo_t), TRUE);
+  _agbindrec(e, "Agedgeinfo_t", sizeof(Agedgeinfo_t), TRUE);
   return e;
 #else
   Q_UNUSED(name);
@@ -109,7 +114,7 @@ Agraph_t *GVUtils::_agsubg(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
   Agraph_t *g = agsubg(graph, const_cast<char*>(qPrintable(attr)), create);
-  agbindrec(g, "Agraphinfo_t", sizeof(Agraphinfo_t), TRUE);
+  _agbindrec(g, "Agraphinfo_t", sizeof(Agraphinfo_t), TRUE);
   return g;
 #else
   Q_UNUSED(create);
