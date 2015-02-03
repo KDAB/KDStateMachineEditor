@@ -79,10 +79,12 @@ Agsym_t *GVUtils::_agedgeattr(Agraph_t *object, const QString &attr, const QStri
                 const_cast<char *>(qPrintable(alt)));
 }
 
+#ifdef WITH_CGRAPH
 void* GVUtils::_agbindrec(void* obj, const char* name, unsigned int size, int move_to_front)
 {
     return agbindrec(obj, const_cast<char*>(name), size, move_to_front);
 }
+#endif
 
 Agnode_t *GVUtils::_agnode(Agraph_t *graph, const QString &attr, bool create)
 {
