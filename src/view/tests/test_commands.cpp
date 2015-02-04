@@ -54,7 +54,7 @@ public:
 TestHarness::TestHarness()
 {
     model.setState(&machine);
-    view.setStateMachine(&machine);
+    view.setRootState(&machine);
 }
 
 class CommandsTest : public QObject
@@ -119,7 +119,7 @@ void CommandsTest::testLayoutSnapshot()
     Transition transition(&machine);
 
     StateMachineScene view;
-    view.setStateMachine(&machine);
+    view.setRootState(&machine);
 
     machine.setPos(QPointF(10, 10));
     machine.setWidth(100);

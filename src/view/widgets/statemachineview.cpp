@@ -245,7 +245,7 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
     Q_ASSERT(d->m_scene);
     ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(d->m_scene);
     cmd->setStateMachine(stateMachine);
-    if (d->m_scene->stateMachine()) {
+    if (d->m_scene->rootState()) {
         commandController()->push(cmd);
     } else {
         cmd->redo();
@@ -273,7 +273,7 @@ QRectF StateMachineView::Private::adjustedViewRect()
 
 void StateMachineView::fitInView()
 {
-    QRectF sceneRect = scene()->stateMachine()->boundingRect();
+    QRectF sceneRect = scene()->rootState()->boundingRect();
     QRectF viewRect = d->adjustedViewRect();
     if (sceneRect.isEmpty() || viewRect.isEmpty())
         return;

@@ -33,29 +33,30 @@ namespace KDSME {
 
 class StateMachineScene;
 class StateMachine;
+class State;
 
 class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
+    Q_PROPERTY(KDSME::State* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
     explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = 0);
 
     virtual int id() const { return ChangeStateMachine; }
 
-    KDSME::StateMachine* stateMachine() const;
-    void setStateMachine(KDSME::StateMachine* statemachine);
+    KDSME::State* stateMachine() const;
+    void setStateMachine(KDSME::State* statemachine);
 
     virtual void redo() override;
     virtual void undo() override;
 
 signals:
-    void stateMachineChanged(KDSME::StateMachine* statemachine);
+    void stateMachineChanged(KDSME::State* statemachine);
 
 private:
     QPointer<StateMachineScene> m_view;
-    QPointer<StateMachine> m_oldStateMachine, m_newStateMachine;
+    QPointer<State> m_oldStateMachine, m_newStateMachine;
 };
 
 }

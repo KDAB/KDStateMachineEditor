@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
-    m_stateMachineView->scene()->setStateMachine(nullptr);
+    m_stateMachineView->scene()->setRootState(nullptr);
 
     delete ui;
 }
@@ -162,10 +162,7 @@ void MainWindow::setupActions()
 
 void MainWindow::setStateMachine(StateMachine* stateMachine)
 {
-    if (stateMachine && m_stateMachineView->scene()->stateMachine() == stateMachine)
-        return;
-
-    m_stateMachineView->scene()->setStateMachine(nullptr);
+    m_stateMachineView->scene()->setRootState(nullptr);
 
     if (!stateMachine) {
         stateMachine = new StateMachine;
@@ -174,7 +171,7 @@ void MainWindow::setStateMachine(StateMachine* stateMachine)
     }
 
     // update state chart
-    m_stateMachineView->scene()->setStateMachine(stateMachine);
+    m_stateMachineView->scene()->setRootState(stateMachine);
     m_stateMachineView->scene()->layout();
 
     m_transitionsModel->setState(stateMachine);

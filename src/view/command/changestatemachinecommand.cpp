@@ -42,17 +42,17 @@ ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* v
     Q_ASSERT(view);
 }
 
-KDSME::StateMachine* ChangeStateMachineCommand::stateMachine() const
+KDSME::State* ChangeStateMachineCommand::stateMachine() const
 {
     return m_newStateMachine;
 }
 
-void ChangeStateMachineCommand::setStateMachine(KDSME::StateMachine* statemachine)
+void ChangeStateMachineCommand::setStateMachine(KDSME::State* stateMachine)
 {
-    if (m_newStateMachine == statemachine)
+    if (m_newStateMachine == stateMachine)
         return;
-    m_newStateMachine = statemachine;
-    emit stateMachineChanged(statemachine);
+    m_newStateMachine = stateMachine;
+    emit stateMachineChanged(stateMachine);
 }
 
 void ChangeStateMachineCommand::redo()
@@ -62,10 +62,10 @@ void ChangeStateMachineCommand::redo()
     Q_ASSERT(m_view);
     Q_ASSERT(m_view->stateModel());
 
-    m_oldStateMachine = m_view->stateMachine();
+    m_oldStateMachine = m_view->rootState();
 
     m_view->stateModel()->setState(m_newStateMachine);
-    m_view->setStateMachine(m_newStateMachine);
+    m_view->setRootState(m_newStateMachine);
 
     m_view->layout();
 }
@@ -78,7 +78,7 @@ void ChangeStateMachineCommand::undo()
     Q_ASSERT(m_view->stateModel());
 
     m_view->stateModel()->setState(m_oldStateMachine);
-    m_view->setStateMachine(m_oldStateMachine);
+    m_view->setRootState(m_oldStateMachine);
     m_oldStateMachine = 0;
 
     m_view->layout();

@@ -43,7 +43,6 @@ class Transition;
 class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::StateMachine* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
     Q_PROPERTY(KDSME::State* rootState READ rootState WRITE setRootState NOTIFY rootStateChanged)
     Q_PROPERTY(KDSME::Element* currentItem READ currentItem WRITE setCurrentItem NOTIFY currentItemChanged)
     Q_PROPERTY(KDSME::LayoutProperties* layoutProperties READ layoutProperties CONSTANT)
@@ -56,10 +55,6 @@ public:
 
     StateModel* stateModel() const;
     virtual void setModel(QAbstractItemModel* model) override;
-
-    Q_DECL_DEPRECATED StateMachine* stateMachine() const;
-    /// Ownership is not transferred
-    Q_DECL_DEPRECATED void setStateMachine(StateMachine* stateMachine);
 
     State* rootState() const;
     void setRootState(State* rootState);

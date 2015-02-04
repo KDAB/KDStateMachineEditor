@@ -83,7 +83,7 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
 
     auto stateMachineView = m_configurationController->stateMachineView();
     auto view = stateMachineView->scene();
-    auto root = stateMachineView->scene()->stateMachine();
+    auto root = stateMachineView->scene()->rootState();
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkChildren(root, [&](Element* i) -> ElementWalker::VisitResult {
         auto state = qobject_cast<State*>(i);

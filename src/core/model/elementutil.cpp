@@ -98,12 +98,8 @@ State* ElementUtil::findState(State* root, const QString &label)
 
 StateMachine* ElementUtil::findStateMachine(const Element* element)
 {
-    if (!element) {
-        return nullptr;
-    }
-
-    QObject *current = element->parent();
-    while (current != 0) {
+    QObject* current = const_cast<Element*>(element);
+    while (current != nullptr) {
         if (StateMachine *machine = qobject_cast<StateMachine*>(current))
             return machine;
         current = current->parent();

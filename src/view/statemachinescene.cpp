@@ -172,17 +172,6 @@ void StateMachineScene::setRootState(State* rootState)
     d->updateItemVisibilities();
 }
 
-StateMachine* StateMachineScene::stateMachine() const
-{
-    return qobject_cast<StateMachine*>(d->m_rootState);
-}
-
-void StateMachineScene::setStateMachine(StateMachine* stateMachine)
-{
-    setRootState(stateMachine);
-    emit stateMachineChanged(stateMachine);
-}
-
 Layouter* StateMachineScene::layouter() const
 {
     return d->m_layouter;

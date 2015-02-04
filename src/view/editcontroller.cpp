@@ -148,8 +148,8 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
         virtual void redo()
         {
             // save the current layout
-            Q_ASSERT(m_view->stateMachine());
-            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->stateMachine()));
+            Q_ASSERT(m_view->rootState());
+            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootState()));
 
             m_createcmd->redo();
 
@@ -157,7 +157,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             if (!element) // creating the element failed, abort here
                 return;
 
-            LayoutImportExport::importLayout(doc.object(), m_view->stateMachine());
+            LayoutImportExport::importLayout(doc.object(), m_view->rootState());
 
             // move the new element to its position and set a sane initial size
             ModifyLayoutItemCommand poscmd(element);
