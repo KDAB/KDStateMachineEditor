@@ -76,6 +76,7 @@ static QObject* kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, 
     return new CommandFactory;
 }
 
+#if !defined(NDEBUG)
 static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
 {
     QString s;
@@ -84,6 +85,7 @@ static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
     }
     return s;
 }
+#endif
 
 struct StateMachineView::Private
 {

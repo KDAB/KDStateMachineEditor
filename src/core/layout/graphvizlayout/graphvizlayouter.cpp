@@ -45,13 +45,10 @@ GraphvizLayouter::~GraphvizLayouter()
 
 QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties)
 {
+    Q_UNUSED(properties);
+
     if (!state) {
         qWarning() << "Null state passed to layout function";
-        return QRectF();
-    }
-
-    if (!properties) {
-        qWarning() << "Null view passed to layout function";
         return QRectF();
     }
 

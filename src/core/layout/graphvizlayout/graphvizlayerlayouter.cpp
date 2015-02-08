@@ -49,8 +49,8 @@ GraphvizLayerLayouter::~GraphvizLayerLayouter()
 
 QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* properties)
 {
+    Q_UNUSED(properties);
     Q_ASSERT(state);
-    Q_ASSERT(properties);
 
     // open context
     //const QString id = state->label();
