@@ -58,7 +58,6 @@ void StateMachineTest::testParentChildRelationship()
     State s11(&s1);
     Transition t11(&s11);
 
-    QVERIFY(!machine.machine());
     QCOMPARE(machine.childStates(), QList<State*>() << &s1);
     QVERIFY(machine.transitions().isEmpty());
 
