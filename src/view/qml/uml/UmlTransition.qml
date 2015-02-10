@@ -126,6 +126,7 @@ TransitionItem {
             font.italic: true
             visible: element.sourceState.type != Element.PseudoStateType
                 && labelRect.height > 0 && element.label != ""
+                && scene.zoom >= 1.0
 
             text: element.label
         }
