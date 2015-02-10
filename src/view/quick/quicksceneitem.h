@@ -38,7 +38,7 @@ class QuickSceneItem : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged FINAL)
     Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged FINAL)
-    Q_PROPERTY(bool activeness READ activeness WRITE setActiveness NOTIFY activenessChanged FINAL)
+    Q_PROPERTY(qreal activeness READ activeness WRITE setActiveness NOTIFY activenessChanged FINAL)
 
 public:
     explicit QuickSceneItem(QQuickItem* parent = nullptr);
