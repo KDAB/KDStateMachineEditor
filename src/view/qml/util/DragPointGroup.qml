@@ -27,6 +27,9 @@ import QtQuick 2.0
 Item {
     id: root
 
+    /// Whether this accepts mouse events
+    property bool enabled: true
+
     /// The model of this group
     property list<DragPoint> points
 
@@ -68,6 +71,7 @@ Item {
 
         model: points
         delegate: DragPointDelegate {
+            enabled: root.enabled
             dragData: root.dragData
             dragIndex: index
 

@@ -36,7 +36,7 @@ struct Element::Private
 {
     Private()
         : m_id(0)
-        , m_flags(ElementIsEnabled | ElementIsSelectable | ElementIsEditable)
+        , m_flags(ElementIsDragEnabled | ElementIsSelectable | ElementIsEditable)
         , m_visible(true)
         , m_selected(false)
         , m_height(0.0)

@@ -74,7 +74,7 @@ public:
 
     enum Flag {
         NoFlags = 0x0,
-        ElementIsEnabled = 0x1,
+        ElementIsDragEnabled = 0x1,
         ElementIsSelectable = 0x2,
         ElementIsEditable = 0x4,
     };

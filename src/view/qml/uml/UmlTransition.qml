@@ -135,7 +135,7 @@ TransitionItem {
     DragPointGroup {
         id: handles
 
-        visible: element.selected
+        visible: element.flags & Element.ElementIsDragEnabled && element.selected
 
         dragKeys: ["TransitionType"]
         dragData: root

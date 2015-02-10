@@ -41,8 +41,8 @@ namespace {
 Qt::ItemFlags toItemFlags(Element::Flags flags)
 {
     Qt::ItemFlags result;
-    if (flags.testFlag(Element::ElementIsEnabled))
-        result |= Qt::ItemIsEnabled;
+    if (flags.testFlag(Element::ElementIsDragEnabled))
+        result |= Qt::ItemIsDragEnabled;
     if (flags.testFlag(Element::ElementIsSelectable))
         result |= Qt::ItemIsSelectable;
     if (flags.testFlag(Element::ElementIsEditable))

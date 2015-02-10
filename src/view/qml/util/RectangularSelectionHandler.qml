@@ -65,7 +65,9 @@ Item {
 
         anchors.fill: invisibleDragTarget
 
-        drag.target: invisibleDragTarget
+        drag.target: control.element.flags & KDSME.Element.ElementIsDragEnabled ?
+            invisibleDragTarget :
+            null
 
         onClicked: {
             scene.currentItem = control.element;

@@ -322,7 +322,6 @@ PseudoState::PseudoState(Kind kind, State* parent)
     , d(new Private)
 {
     d->m_kind = kind;
-    setFlags(flags() & ~ElementIsEnabled);
 }
 
 PseudoState::~PseudoState()
