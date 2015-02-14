@@ -49,6 +49,7 @@
 #include "layoutproperties.h"
 #include "semanticzoommanager.h"
 #include "kdsmeconstants.h"
+#include "depthchecker.h"
 #include "statemachinescene.h"
 
 #include <QDir>
@@ -137,6 +138,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qRegisterMetaType<ObjectTreeModel*>();
 
     // creatable types
+    qmlRegisterType<DepthChecker>(KDSME_QML_NAMESPACE, 1, 0, "DepthChecker");
     qmlRegisterType<QAbstractItemModel>();
     qmlRegisterType<QuickMaskedMouseArea>(KDSME_QML_NAMESPACE, 1, 0, "MaskedMouseArea");
     qmlRegisterType<QuickPainterPath>(KDSME_QML_NAMESPACE, 1, 0, "PainterPath");

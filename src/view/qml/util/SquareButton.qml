@@ -41,7 +41,7 @@ MouseArea {
         border.color: Theme.stateBorderColor
         radius: 5
         color: !button.pressed ?
-            Theme.compositeStateBackgroundColor_Lightest :
+            Theme.compositeStateLabelBackgroundColor :
             Theme.compositeStateBackgroundColor_Darkest
 
         Text {

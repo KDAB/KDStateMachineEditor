@@ -41,8 +41,8 @@ QtObject {
 
     readonly property color compositeStateLabelBackgroundColor: "#363636";
     readonly property color compositeStateLabelFontColor: "white";
-    readonly property color compositeStateBackgroundColor_Lightest: "#525252";
-    readonly property color compositeStateBackgroundColor_Darkest: "#444444";
+    readonly property color compositeStateBackgroundColor_Lightest: "#666666";
+    readonly property color compositeStateBackgroundColor_Darkest: "#202020";
     readonly property color stateBackgroundColor: "#262626";
     readonly property color stateBorderColor: "#BABABA";
     readonly property color stateBorderColor_Active: "#DADADA";

@@ -26,6 +26,7 @@ import QtQuick.Layouts 1.0
 
 import com.kdab.kdsme 1.0 as KDSME
 
+import "qrc:///kdsme/qml/util/functions.js" as Functions
 import "qrc:///kdsme/qml/util/"
 
 Rectangle {
@@ -33,8 +34,15 @@ Rectangle {
 
     property bool roundedCorners: true
 
-    // TODO: Tint background color based on level in hierarchy
-    color: Theme.compositeStateBackgroundColor_Lightest
+    KDSME.DepthChecker {
+        id: depthChecker
+
+        target: element.parent
+    }
+
+    // Tint background color based on level in hierarchy, currently limited to 5
+    color: Qt.tint(Theme.compositeStateBackgroundColor_Lightest,
+                   Theme.alphaTint(Theme.compositeStateBackgroundColor_Darkest, depthChecker.depth.clamp(0, 5)/5.0))
     border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
     border.width: (activeness > 0 ? 2 : 1)
     radius: roundedCorners ? 5 : 0
