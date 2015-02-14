@@ -218,6 +218,11 @@ Element* Element::parentElement() const
     return qobject_cast<Element*>(parent());
 }
 
+void Element::setParentElement(Element* parent)
+{
+    setParent(static_cast<QObject*>(parent));
+}
+
 QList<Element*> Element::childElements() const
 {
     return ObjectHelper::copy_if_type<Element*>(children());
@@ -241,4 +246,15 @@ Element::Type Element::stringToType(const char* type)
 {
     const int value = ObjectHelper::stringToEnum(&staticMetaObject, "Type", type);
     return static_cast<Element::Type>(value);
+}
+
+void Element::setParent(QObject* object)
+{
+    const auto oldElementParent = parentElement();
+    const auto newElementParent = qobject_cast<Element*>(object);
+    if (oldElementParent != newElementParent) {
+        emit parentChanged(newElementParent);
+    }
+
+    QObject::setParent(object);
 }

@@ -42,6 +42,7 @@ class KDSME_CORE_EXPORT Element : public QObject
 {
     Q_OBJECT
     Q_ENUMS(Flags)
+    Q_PROPERTY(KDSME::Element* parent READ parentElement WRITE setParentElement NOTIFY parentChanged FINAL)
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
     Q_PROPERTY(Flags flags READ flags WRITE setFlags NOTIFY flagsChanged FINAL)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged FINAL)
@@ -126,6 +127,8 @@ public:
     virtual QRectF boundingRect() const;
 
     Element* parentElement() const;
+    void setParentElement(Element* parent);
+    void setParent(QObject* object); // hide parent function
     QList<Element*> childElements() const;
 
     virtual QString toDisplayString() const;
@@ -134,6 +137,7 @@ public:
     Q_INVOKABLE static Type stringToType(const char* type);
 
 Q_SIGNALS:
+    void parentChanged(Element* parent);
     void flagsChanged(Flags flags);
     void labelChanged(const QString& label);
     void posChanged(const QPointF& pos);
