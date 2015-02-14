@@ -18,6 +18,7 @@ set(LIB_SRCS
 
   import/scxmlparser.cpp
 
+  util/depthchecker.cpp
   util/objecthelper.cpp
   util/objecttreemodel.cpp
   util/settings.cpp
