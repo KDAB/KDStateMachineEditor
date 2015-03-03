@@ -54,7 +54,7 @@ private:
     struct Private;
     QScopedPointer<Private> d;
 
-    Q_PRIVATE_SLOT(d, void updateDepth());
+    Q_PRIVATE_SLOT(d, void updateDepth())
 };
 
 }
