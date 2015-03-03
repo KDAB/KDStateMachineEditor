@@ -11,12 +11,14 @@ set(KDSME_VERSION_PATCH "95")
 set(KDSME_VERSION "${KDSME_VERSION_MAJOR}.${KDSME_VERSION_MINOR}.${KDSME_VERSION_PATCH}")
 set(KDSME_VERSION_STRING "${KDSME_VERSION}")
 set(KDSME_SOVERSION "1.0.0")
+set(PROJECT_VERSION_STRING "${KDSME_VERSION_STRING}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH})
 
 include(CheckCXXCompilerFlag)
 include(CMakePackageConfigHelpers)
 include(MacroLogFeature)
+include(ECMGeneratePriFile)
 
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
 find_package(Qt5 5.3 REQUIRED QuickWidgets)
