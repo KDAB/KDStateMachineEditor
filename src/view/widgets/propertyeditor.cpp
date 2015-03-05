@@ -258,12 +258,12 @@ void PropertyEditor::Private::loadFromCurrentElement()
         m_transitionWidget->sourceStateComboBox->clear();
         State* sourceState = transition->sourceState();
         Q_ASSERT(sourceState);
-        m_transitionWidget->sourceStateComboBox->addItems(allStates(sourceState->machine()));
-        if (sourceState)
+        if (sourceState) {
+            m_transitionWidget->sourceStateComboBox->addItems(allStates(sourceState->machine()));
             m_transitionWidget->sourceStateComboBox->setCurrentText(sourceState->label());
-        else
+        } else {
             m_transitionWidget->sourceStateComboBox->setCurrentText(QString());
-
+        }
         m_transitionWidget->targetStateComboBox->clear();
         State* targetState = transition->targetState();
         m_transitionWidget->targetStateComboBox->addItems(allStates(sourceState->machine()));
@@ -382,4 +382,3 @@ void PropertyEditor::Private::childModeChanged()
 }
 
 #include "moc_propertyeditor.cpp"
-
