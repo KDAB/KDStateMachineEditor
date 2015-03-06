@@ -17,7 +17,7 @@ SKIP /3rdparty/
 SKIP /codeeditor.cpp|/codeeditor.h
 SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/MacroLogFeature.cmake|/cmake/DeployQt5.cmake
+SKIP /cmake/MacroLogFeature.cmake|/cmake/DeployQt5.cmake|/cmake/ECMGeneratePriFile.cmake
 
 #if you have a build subdir, skip it
 SKIP /build-
