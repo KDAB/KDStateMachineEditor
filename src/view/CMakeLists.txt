@@ -84,6 +84,7 @@ target_link_libraries(kdstatemachineeditor_view
 
 set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/command
+  ${CMAKE_CURRENT_SOURCE_DIR}/widgets
 )
 
 set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")

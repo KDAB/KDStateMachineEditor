@@ -31,7 +31,8 @@ set_package_properties(Qt5XmlPatterns PROPERTIES
   PURPOSE "Required for unit tests dealing with XML input/output"
 )
 
-option(DEPLOY_DEPENDENCIES "install Qt5 and graphviz" ON)
+option(DEPLOY_DEPENDENCIES "Install Qt5 and graphviz" ON)
+option(BUILD_EXAMPLES "Build examples directory" ON)
 
 # Don't require lots of include_directories(${CMAKE_CURRENT_SOURCE_DIR}) etc.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -112,6 +113,9 @@ add_custom_command(TARGET copy_data
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/data"
 )
 
+if(BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 add_subdirectory(src)
 
 set(CONFIG_DIR "KDSME")
