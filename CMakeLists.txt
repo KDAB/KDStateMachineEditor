@@ -54,8 +54,6 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
   BUNDLE DESTINATION "/Applications/Qt5"
 )
 
-enable_testing()
-
 set(GRAPHVIZ_MIN_VERSION "2.20")
 find_package(Graphviz)
 set_package_properties(Graphviz PROPERTIES
@@ -103,6 +101,14 @@ if(CMAKE_SYSTEM_NAME MATCHES Linux OR CMAKE_SYSTEM_NAME STREQUAL GNU)
     set(CMAKE_MODULE_LINKER_FLAGS "-Wl,--fatal-warnings -Wl,--no-undefined -lc ${CMAKE_MODULE_LINKER_FLAGS}")
   endif()
 endif()
+
+enable_testing()
+
+set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
+add_custom_target(copy_data ALL)
+add_custom_command(TARGET copy_data
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/data"
+)
 
 add_subdirectory(src)
 

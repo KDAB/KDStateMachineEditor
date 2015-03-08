@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" name="GameWorkflow" initial="RunningState">
+    <state id="RunningState" initial="MainMenuState">
+        <transition event="FreezeAction::triggered(bool)" target="FrozenState"/>
+        <state id="GameOverState">
+            <transition event="demoRequested()" target="DemoState"/>
+            <transition event="newGameRequested()" target="PlayState"/>
+        </state>
+        <state id="DemoState" initial="FallingState">
+            <transition event="mainMenuRequested()" target="MainMenuState"/>
+            <state id="FallingState">
+                <transition event="JumpAction::triggered(bool)" target="JumpingState"/>
+            </state>
+            <state id="JumpingState">
+                <transition event="FallAction::triggered(bool)" target="FallingState"/>
+            </state>
+        </state>
+        <state id="MainMenuState">
+            <transition event="demoRequested()" target="DemoState"/>
+            <transition event="newGameRequested()" target="PlayState"/>
+        </state>
+        <state id="QHistoryState[this=0x12bc860]"/>
+        <state id="PlayState">
+            <transition event="endGameRequested()" target="GameOverState"/>
+        </state>
+    </state>
+    <state id="FrozenState">
+        <transition event="ResumeAction::triggered(bool)" target="QHistoryState[this=0x12bc860]"/>
+    </state>
+</scxml>
