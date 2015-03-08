@@ -16,7 +16,7 @@ add_library(kdsme_testhelper STATIC
   util.cpp
 )
 target_link_libraries(kdsme_testhelper
-  ${Qt5Test_LIBRARIES}
+  Qt5::Test
   kdstatemachineeditor_core
 )
 
@@ -38,7 +38,7 @@ add_test(NAME test_layoutitem COMMAND test_layoutitem)
 add_executable(test_models test_models.cpp)
 target_link_libraries(test_models
   Qt5::Gui
-  ${Qt5Test_LIBRARIES}
+  Qt5::Test
   kdstatemachineeditor_core
 )
 add_test(NAME test_models COMMAND test_models)
@@ -57,7 +57,7 @@ add_test(NAME test_parser COMMAND test_parser)
 
 add_executable(test_scxmlexport test_scxmlexport.cpp)
 target_link_libraries(test_scxmlexport
-  ${Qt5Test_LIBRARIES}
+  Qt5::Test
   ${KDSME_TESTHELPER_EXTRA_LIBS}
   kdstatemachineeditor_core
 )
@@ -79,7 +79,7 @@ add_test(NAME test_util COMMAND test_util)
 add_executable(test_layoutinformation test_layoutinformation.cpp)
 target_link_libraries(test_layoutinformation
   Qt5::Gui
-  ${Qt5Test_LIBRARIES}
+  Qt5::Test
   kdstatemachineeditor_core
 )
 add_test(NAME test_layoutinformation COMMAND test_layoutinformation)
