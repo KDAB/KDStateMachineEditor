@@ -1,5 +1,5 @@
 /*
-  scxmlparser.cpp
+  scxmlimporter.cpp
 
   This file is part of the KDAB State Machine Editor Library.
 
@@ -22,66 +22,111 @@
   clear to you.
 */
 
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 
+#include "debug.h"
 #include "element.h"
 #include "state.h"
 #include "transition.h"
 
-#include "debug.h"
+#include <QHash>
+#include <QXmlStreamReader>
 
 #define IF_DEBUG(x)
 
 using namespace KDSME;
 
-ScxmlParser::ScxmlParser(QObject* parent)
-    : QObject(parent)
+struct ScxmlImporter::Private
+{
+    Private(ScxmlImporter* q) : q(q) {}
+
+    /**
+     * Start point for XML parsing
+     *
+     * See http://www.w3.org/2011/04/SCXML/scxml-module-core.xsd for the allowed XML input
+     */
+    StateMachine* visitScxml();
+    void visitTransiton(State* parent);
+    void visitState(State* parent);
+    void visitInitial(State* parent);
+    void visitParallel(State* parent);
+    void visitFinal(State* parent);
+    void visitHistory(State* parent);
+
+    /// Reset the parser to the initial state (clear cache, etc.)
+    void reset();
+
+    /// Create initial state based on current stream reader context
+    State* tryCreateInitialState(State* parent);
+    /// Create state based on current stream reader context
+    template<typename T>
+    T* createState(State* parent);
+    /// Create Transition
+    Transition* createTransition(State* parent, const QString& targetStateId);
+
+    void raiseUnexpectedElementError(const QString& context);
+
+    /// Resolves any unresolved targets in transitions
+    void resolveTargetStates();
+
+    ScxmlImporter* q;
+
+    QXmlStreamReader m_reader;
+
+    /// Map: Transition -> Transition target state id
+    QHash<Transition*, QString> m_unresolvedTargetStateIds;
+    QHash<QString, State*> m_nameToStateMap;
+
+    QByteArray m_data;
+};
+
+ScxmlImporter::ScxmlImporter(const QByteArray& data)
+    : d(new Private(this))
+{
+    d->m_data = data;
+}
+
+ScxmlImporter::~ScxmlImporter()
 {
 }
 
-StateMachine* ScxmlParser::parse(const QByteArray& data)
+StateMachine* ScxmlImporter::import()
 {
-    reset();
+    setErrorString(QString());
+    d->reset();
 
-    if (data.isEmpty()) {
-        m_reader.raiseError(tr("No data supplied"));
+    if (d->m_data.isEmpty()) {
+        setErrorString(tr("No data supplied"));
         return nullptr;
     }
 
-    m_reader.addData(data);
+    d->m_reader.addData(d->m_data);
 
     StateMachine* stateMachine = 0;
 
-    if (m_reader.readNextStartElement() && m_reader.name() == "scxml") {
-        stateMachine = visitScxml();
+    if (d->m_reader.readNextStartElement() && d->m_reader.name() == "scxml") {
+        stateMachine = d->visitScxml();
     } else {
-        m_reader.raiseError(tr("This document does not start with an <scxml> element"));
+        d->m_reader.raiseError(tr("This document does not start with an <scxml> element"));
     }
 
-    if (!m_reader.hasError()) {
+    if (!d->m_reader.hasError()) {
         // All states have been created by now, we can now link the transitions to their
         // resp. target states
-        resolveTargetStates();
+        d->resolveTargetStates();
     }
 
-    if (m_reader.hasError()) {
+    if (d->m_reader.hasError()) {
+        // pass error string to *this
+        setErrorString(d->m_reader.errorString());
+
         delete stateMachine;
         stateMachine = 0;
     }
     return stateMachine;
 }
 
-bool ScxmlParser::hasError() const
-{
-    return m_reader.hasError();
-}
-
-QString ScxmlParser::errorString() const
-{
-    return m_reader.errorString();
-}
-
-StateMachine* ScxmlParser::visitScxml()
+StateMachine* ScxmlImporter::Private::visitScxml()
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "scxml");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -111,7 +156,7 @@ StateMachine* ScxmlParser::visitScxml()
     return state;
 }
 
-void ScxmlParser::visitParallel(State* parent)
+void ScxmlImporter::Private::visitParallel(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "parallel");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -140,7 +185,7 @@ void ScxmlParser::visitParallel(State* parent)
     }
 }
 
-void ScxmlParser::visitState(State* parent)
+void ScxmlImporter::Private::visitState(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "state");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -175,7 +220,7 @@ void ScxmlParser::visitState(State* parent)
     }
 }
 
-void ScxmlParser::visitInitial(State* parent)
+void ScxmlImporter::Private::visitInitial(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "initial");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -200,7 +245,7 @@ void ScxmlParser::visitInitial(State* parent)
 
 }
 
-void ScxmlParser::visitFinal(State* parent)
+void ScxmlImporter::Private::visitFinal(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "final");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -210,7 +255,7 @@ void ScxmlParser::visitFinal(State* parent)
     m_reader.skipCurrentElement();
 }
 
-void ScxmlParser::visitTransiton(State* parent)
+void ScxmlImporter::Private::visitTransiton(State* parent)
 {
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
@@ -226,7 +271,7 @@ void ScxmlParser::visitTransiton(State* parent)
     m_reader.skipCurrentElement();
 }
 
-void ScxmlParser::visitHistory(State* parent)
+void ScxmlImporter::Private::visitHistory(State* parent)
 {
     Q_UNUSED(parent);
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
@@ -237,7 +282,7 @@ void ScxmlParser::visitHistory(State* parent)
     m_reader.skipCurrentElement();
 }
 
-void ScxmlParser::resolveTargetStates()
+void ScxmlImporter::Private::resolveTargetStates()
 {
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << m_nameToStateMap;)
 
@@ -246,7 +291,7 @@ void ScxmlParser::resolveTargetStates()
         const QString targetStateId = it.value();
         State* targetState = m_nameToStateMap.value(targetStateId);
         if (!targetState) {
-            raiseError(QString("Unknown state id: %1").arg(targetStateId));
+            m_reader.raiseError(QString("Unknown state id: %1").arg(targetStateId));
             return;
         }
 
@@ -256,7 +301,7 @@ void ScxmlParser::resolveTargetStates()
     }
 }
 
-State* ScxmlParser::tryCreateInitialState(State* parent)
+State* ScxmlImporter::Private::tryCreateInitialState(State* parent)
 {
     const QXmlStreamAttributes attributes = m_reader.attributes();
     if (attributes.hasAttribute("initial")) {
@@ -269,7 +314,7 @@ State* ScxmlParser::tryCreateInitialState(State* parent)
 
 // TODO: Error handling
 template<typename T>
-T* ScxmlParser::createState(State* parent)
+T* ScxmlImporter::Private::createState(State* parent)
 {
     const QXmlStreamAttributes attributes = m_reader.attributes();
     const QString id = attributes.value("id").toString();
@@ -283,7 +328,7 @@ T* ScxmlParser::createState(State* parent)
     return state;
 }
 
-Transition* ScxmlParser::createTransition(State* parent, const QString& targetStateId)
+Transition* ScxmlImporter::Private::createTransition(State* parent, const QString& targetStateId)
 {
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << parent->label() << targetStateId);
     if (targetStateId.isEmpty()) {
@@ -295,22 +340,15 @@ Transition* ScxmlParser::createTransition(State* parent, const QString& targetSt
     return transition;
 }
 
-void ScxmlParser::reset()
+void ScxmlImporter::Private::reset()
 {
     m_nameToStateMap.clear();
     m_unresolvedTargetStateIds.clear();
     m_reader.clear();
 }
 
-void ScxmlParser::raiseError(const QString& message)
-{
-    m_reader.raiseError(message);
-}
-
-void ScxmlParser::raiseUnexpectedElementError(const QString& context)
+void ScxmlImporter::Private::raiseUnexpectedElementError(const QString& context)
 {
     m_reader.raiseError(QString("Unexpected element found while parsing '%1': %2")
         .arg(context, m_reader.name().toString()));
 }
-
-#include "moc_scxmlparser.cpp"

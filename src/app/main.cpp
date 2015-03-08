@@ -23,7 +23,7 @@
 */
 
 #include "mainwindow.h"
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 
 #include <QApplication>
 #include <QCommandLineParser>
@@ -69,8 +69,8 @@ int main(int argc, char** argv)
 
     StateMachine* stateMachine = 0;
     if (!source.isEmpty()) {
-        ScxmlParser parser;
-        stateMachine = parser.parse(readFile(source));
+        ScxmlImporter parser(readFile(source));
+        stateMachine = parser.import();
 
         if (!stateMachine) {
             qWarning() << "Failed loading" << source << "-" << parser.errorString();

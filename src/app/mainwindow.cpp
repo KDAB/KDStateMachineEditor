@@ -31,7 +31,7 @@
 #include "util/settings.h"
 #include "layouter.h"
 #include "elementmodel.h"
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 #include "state.h"
 #include "transition.h"
 #include "commandcontroller.h"
@@ -207,8 +207,8 @@ QString MainWindow::selectedFile() const
 void MainWindow::importFromScxmlFile(const QString& filePath)
 {
     if (!filePath.isEmpty()) {
-        ScxmlParser parser;
-        StateMachine* stateMachine = parser.parse(readFile(filePath));
+        ScxmlImporter parser(readFile(filePath));
+        StateMachine* stateMachine = parser.import();
         setStateMachine(stateMachine);
         if (stateMachine) {
             m_owningStateMachine.reset(stateMachine);

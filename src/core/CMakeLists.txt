@@ -16,7 +16,8 @@ set(LIB_SRCS
   model/state.cpp
   model/transition.cpp
 
-  import/scxmlparser.cpp
+  import/abstractimporter.cpp
+  import/scxmlimporter.cpp
 
   util/depthchecker.cpp
   util/objecthelper.cpp
@@ -90,6 +91,8 @@ install(FILES
   export/abstractexporter.h
   export/qmlexporter.h
   export/scxmlexporter.h
+  import/abstractimporter.h
+  import/scxmlimporter.h
   model/element.h
   model/elementmodel.h
   model/elementutil.h

@@ -25,7 +25,7 @@
 #include <config-test.h>
 
 #include "parsehelper.h"
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 #include "element.h"
 
 #include <QDebug>
@@ -36,8 +36,8 @@ using namespace KDSME;
 StateMachine* ParseHelper::parse(const QByteArray& data)
 {
     // parse
-    ScxmlParser parser;
-    StateMachine* stateMachine = parser.parse(data);
+    ScxmlImporter parser(data);
+    StateMachine* stateMachine = parser.import();
     if (!stateMachine) {
         qDebug() << parser.errorString();
     }

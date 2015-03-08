@@ -31,7 +31,7 @@
 #include "layoutproperties.h"
 #include "objecthelper.h"
 #include "parsehelper.h"
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 #include "state.h"
 #include "transition.h"
 

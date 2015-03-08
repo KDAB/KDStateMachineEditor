@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "scxmlparser.h"
+#include "scxmlimporter.h"
 #include "parsehelper.h"
 #include "state.h"
 #include "transition.h"
@@ -74,8 +74,8 @@ void ParserTest::testEmptyInput()
 {
     const QByteArray data = "";
 
-    ScxmlParser parser;
-    QScopedPointer<StateMachine> stateMachine(parser.parse(data));
+    ScxmlImporter parser(data);
+    QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     const QString errorString = parser.errorString();
     QVERIFY(!parser.errorString().isEmpty());
@@ -85,8 +85,8 @@ void ParserTest::testInvalidInput()
 {
     const QByteArray data = "some garbage";
 
-    ScxmlParser parser;
-    QScopedPointer<StateMachine> stateMachine(parser.parse(data));
+    ScxmlImporter parser(data);
+    QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     QVERIFY(!parser.errorString().isEmpty());
 }
@@ -96,8 +96,8 @@ void ParserTest::testInvalidTargetState()
     const QByteArray data = wrapScxml(
         "<state id=\"s\"><transition target=\"foo\"/></state>");
 
-    ScxmlParser parser;
-    QScopedPointer<StateMachine> stateMachine(parser.parse(data));
+    ScxmlImporter parser(data);
+    QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     QVERIFY(!parser.errorString().isEmpty());
 }
@@ -110,8 +110,8 @@ void ParserTest::testParseState()
         "<transition event=\"e1\" target=\"s\"/>"
         "</state>");
 
-    ScxmlParser parser;
-    QScopedPointer<StateMachine> machine(parser.parse(data));
+    ScxmlImporter parser(data);
+    QScopedPointer<StateMachine> machine(parser.import());
     QVERIFY(machine);
 
     // check contents of <scxml>
@@ -140,8 +140,8 @@ void ParserTest::testParseTransition()
         "</state>"
         "<final id=\"fin\"/>");
 
-    ScxmlParser parser;
-    QScopedPointer<StateMachine> machine(parser.parse(data));
+    ScxmlImporter parser(data);
+    QScopedPointer<StateMachine> machine(parser.import());
     QVERIFY(machine);
 
     QCOMPARE(machine->transitions().size(), 0);
