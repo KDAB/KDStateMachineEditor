@@ -17,7 +17,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH})
 
 include(CheckCXXCompilerFlag)
 include(CMakePackageConfigHelpers)
+include(CTest)
 include(MacroLogFeature)
+include(ECMAddTests)
 include(ECMGeneratePriFile)
 
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
