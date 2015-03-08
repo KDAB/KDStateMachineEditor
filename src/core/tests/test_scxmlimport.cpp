@@ -49,7 +49,7 @@ QByteArray wrapScxml(const QByteArray& content, const QByteArray& initialState =
 
 using namespace KDSME;
 
-class ParserTest : public QObject
+class ScxmlImportTest : public QObject
 {
     Q_OBJECT
 
@@ -70,7 +70,7 @@ private Q_SLOTS:
     void testExampleTrafficReport();
 };
 
-void ParserTest::testEmptyInput()
+void ScxmlImportTest::testEmptyInput()
 {
     const QByteArray data = "";
 
@@ -81,7 +81,7 @@ void ParserTest::testEmptyInput()
     QVERIFY(!parser.errorString().isEmpty());
 }
 
-void ParserTest::testInvalidInput()
+void ScxmlImportTest::testInvalidInput()
 {
     const QByteArray data = "some garbage";
 
@@ -91,7 +91,7 @@ void ParserTest::testInvalidInput()
     QVERIFY(!parser.errorString().isEmpty());
 }
 
-void ParserTest::testInvalidTargetState()
+void ScxmlImportTest::testInvalidTargetState()
 {
     const QByteArray data = wrapScxml(
         "<state id=\"s\"><transition target=\"foo\"/></state>");
@@ -102,7 +102,7 @@ void ParserTest::testInvalidTargetState()
     QVERIFY(!parser.errorString().isEmpty());
 }
 
-void ParserTest::testParseState()
+void ScxmlImportTest::testParseState()
 {
     const QByteArray data = wrapScxml(
         "<state id=\"s\" initial=\"s1\">"
@@ -132,7 +132,7 @@ void ParserTest::testParseState()
     QCOMPARE(s1->label(), QLatin1String("s1"));
 }
 
-void ParserTest::testParseTransition()
+void ScxmlImportTest::testParseTransition()
 {
     const QByteArray data = wrapScxml(
         "<state id=\"s\">"
@@ -158,7 +158,7 @@ void ParserTest::testParseTransition()
     QCOMPARE(t1->targetState(), fin);
 }
 
-void ParserTest::testBasicState()
+void ScxmlImportTest::testBasicState()
 {
     /*
         State chart:
@@ -181,7 +181,7 @@ void ParserTest::testBasicState()
     QCOMPARE(s->label(), QLatin1String("Final"));
 }
 
-void ParserTest::testParallelState()
+void ScxmlImportTest::testParallelState()
 {
     /*
         State chart:
@@ -227,7 +227,7 @@ void ParserTest::testParallelState()
     QCOMPARE(s->label(), QLatin1String("S2Final"));
 }
 
-void ParserTest::testExampleCalculator()
+void ScxmlImportTest::testExampleCalculator()
 {
     /*
         State chart (transitions omitted):
@@ -267,7 +267,7 @@ void ParserTest::testExampleCalculator()
     //  Further tests omitted
 }
 
-void ParserTest::testExampleMicrowave()
+void ScxmlImportTest::testExampleMicrowave()
 {
     /*
         State chart (transitions omitted):
@@ -299,7 +299,7 @@ void ParserTest::testExampleMicrowave()
     QCOMPARE(on->childStates()[2]->label(), QLatin1String("cooking"));
 }
 
-void ParserTest::testExampleTrafficLight()
+void ScxmlImportTest::testExampleTrafficLight()
 {
     /*
         State chart:
@@ -327,7 +327,7 @@ void ParserTest::testExampleTrafficLight()
     QCOMPARE(s4->transitions()[0]->sourceState(), s4);
 }
 
-void ParserTest::testExampleTrafficReport()
+void ScxmlImportTest::testExampleTrafficReport()
 {
     /*
         State chart:
@@ -353,6 +353,6 @@ void ParserTest::testExampleTrafficReport()
     // Further tests omitted
 }
 
-QTEST_MAIN(ParserTest)
+QTEST_MAIN(ScxmlImportTest)
 
-#include "test_parser.moc"
+#include "test_scxmlimport.moc"

@@ -49,11 +49,11 @@ target_link_libraries(test_qmlexport
 )
 add_test(NAME test_qmlexport COMMAND test_qmlexport)
 
-add_executable(test_parser test_parser.cpp)
-target_link_libraries(test_parser
+add_executable(test_scxmlimport test_scxmlimport.cpp)
+target_link_libraries(test_scxmlimport
   kdsme_testhelper
 )
-add_test(NAME test_parser COMMAND test_parser)
+add_test(NAME test_scxmlimport COMMAND test_scxmlimport)
 
 add_executable(test_scxmlexport test_scxmlexport.cpp)
 target_link_libraries(test_scxmlexport
