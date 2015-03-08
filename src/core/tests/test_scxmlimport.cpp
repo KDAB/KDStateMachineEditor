@@ -34,6 +34,8 @@
 #define QVERIFY_RETURN(statement, retval) \
     do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
 
+using namespace KDSME;
+
 namespace {
 
 QByteArray wrapScxml(const QByteArray& content, const QByteArray& initialState = QByteArray("s"))
@@ -45,9 +47,24 @@ QByteArray wrapScxml(const QByteArray& content, const QByteArray& initialState =
     return result;
 }
 
+StateMachine* parse(const QByteArray& data)
+{
+    // parse
+    ScxmlImporter parser(data);
+    StateMachine* stateMachine = parser.import();
+    if (!stateMachine) {
+        qWarning() << parser.errorString();
+    }
+    return stateMachine;
 }
 
-using namespace KDSME;
+StateMachine* parseFile(const QString& fileName)
+{
+    const QByteArray data = ParseHelper::readFile(fileName);
+    return parse(data);
+}
+
+}
 
 class ScxmlImportTest : public QObject
 {
@@ -164,7 +181,7 @@ void ScxmlImportTest::testBasicState()
         State chart:
             (I) -> (S1) -> (S2) -> (Final)
     */
-    State* root = ParseHelper::parseFile("scxml/basicstate.scxml");
+    State* root = parseFile("scxml/basicstate.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String("basicstate"));
     QCOMPARE(root->childStates().size(), 4);
@@ -191,7 +208,7 @@ void ScxmlImportTest::testParallelState()
 
         Special case: Contains <parallel>
     */
-    State* root = ParseHelper::parse(ParseHelper::readFile("scxml/parallelstate.scxml"));
+    State* root = parseFile("scxml/parallelstate.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String("parallelstate"));
     QCOMPARE(root->childStates().size(), 2);
@@ -249,7 +266,7 @@ void ScxmlImportTest::testExampleCalculator()
 
         Special case: Contains <datamodel>, <onentry>, <onexit>
      */
-    State* root = ParseHelper::parse(ParseHelper::readFile("scxml/example_calculator.scxml"));
+    State* root = parseFile("scxml/example_calculator.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String("calc"));
     QCOMPARE(root->childStates().size(), 2);
@@ -280,7 +297,7 @@ void ScxmlImportTest::testExampleMicrowave()
 
         Special case: Contains <initial> element
      */
-    State* root = ParseHelper::parse(ParseHelper::readFile("scxml/example_microwave.scxml"));
+    State* root = parseFile("scxml/example_microwave.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String(""));
     QCOMPARE(root->childStates().size(), 3);
@@ -306,7 +323,7 @@ void ScxmlImportTest::testExampleTrafficLight()
             (I) -> (redGoingYellow) -> (yellowGoingGreen) -> (greenGoingYellow) -> (yellowGoingRed) --.
                            ^--------------------------------------------------------------------------'
     */
-    State* root = ParseHelper::parse(ParseHelper::readFile("scxml/example_trafficlight.scxml"));
+    State* root = parseFile("scxml/example_trafficlight.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String("example_trafficlight"));
     QCOMPARE(root->childStates().size(), 5);
@@ -337,7 +354,7 @@ void ScxmlImportTest::testExampleTrafficReport()
 
         Special case: Contains <invoke>
     */
-    State* root = ParseHelper::parse(ParseHelper::readFile("scxml/example_trafficreport.scxml"));
+    State* root = parseFile("scxml/example_trafficreport.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String(""));
     QCOMPARE(root->childStates().size(), 8);

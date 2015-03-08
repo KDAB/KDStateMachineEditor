@@ -33,23 +33,6 @@
 
 using namespace KDSME;
 
-StateMachine* ParseHelper::parse(const QByteArray& data)
-{
-    // parse
-    ScxmlImporter parser(data);
-    StateMachine* stateMachine = parser.import();
-    if (!stateMachine) {
-        qDebug() << parser.errorString();
-    }
-    return stateMachine;
-}
-
-StateMachine* ParseHelper::parseFile(const QString& fileName)
-{
-    const QByteArray data = readFile(fileName);
-    return parse(data);
-}
-
 QByteArray ParseHelper::readFile(const QString& fileName)
 {
     QFile file(QString("%1/%2").arg(TEST_DATA_DIR, fileName));

@@ -36,16 +36,6 @@ class QString;
 
 namespace ParseHelper
 {
-    KDSME::StateMachine* parse(const QByteArray& data);
-
-    /**
-     * Convenience method, internally calls readFile and then parse
-     *
-     * @sa readFile
-     * @sa parse
-     */
-    KDSME::StateMachine* parseFile(const QString& fileName);
-
     QByteArray readFile(const QString& fileName);
 }
 
