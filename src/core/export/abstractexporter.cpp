@@ -40,7 +40,7 @@ AbstractExporter::~AbstractExporter()
 {
 }
 
-QString AbstractExporter::errorString()
+QString AbstractExporter::errorString() const
 {
     return d->m_errorString;
 }

@@ -40,11 +40,23 @@ public:
     AbstractExporter();
     virtual ~AbstractExporter();
 
+    /**
+     * Exports the state machine @p machine into the desired format
+     *
+     * @return True on success, otherwise false
+     * @sa errorString()
+     */
     virtual bool exportMachine(StateMachine* machine) = 0;
 
-    QString errorString();
+    /**
+     * Returns a human readable description of the last error that occurred.
+     */
+    QString errorString() const;
 
 protected:
+    /**
+     * Sets the human readable description of the last device error that occurred to @p errorString
+     */
     void setErrorString(const QString& errorString);
 
 private:
