@@ -34,7 +34,6 @@ namespace KDSME {
 class Command;
 class EditController;
 class CommandController;
-class ConfigurationController;
 class LayoutItem;
 class StateMachineScene;
 class StateMachine;
@@ -45,7 +44,6 @@ class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged)
     Q_PROPERTY(KDSME::CommandController* commandController READ commandController CONSTANT)
-    Q_PROPERTY(KDSME::ConfigurationController* configurationController READ configurationController CONSTANT)
     Q_PROPERTY(KDSME::EditController* editController READ editController CONSTANT)
 
 public:
@@ -55,7 +53,6 @@ public:
     StateMachineScene* scene() const;
 
     CommandController* commandController() const;
-    ConfigurationController* configurationController() const;
     EditController* editController() const;
 
     Q_INVOKABLE void sendCommand(KDSME::Command* cmd);

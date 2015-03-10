@@ -31,33 +31,39 @@
 
 namespace KDSME {
 
-class ConfigurationController;
+class RuntimeController;
 class State;
+class StateMachineScene;
 
 class KDSME_VIEW_EXPORT SemanticZoomManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::ConfigurationController* configurationController READ configurationController WRITE setConfigurationController NOTIFY configurationControllerChanged)
+    Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
     explicit SemanticZoomManager(QObject* parent = nullptr);
 
-    ConfigurationController* configurationController() const;
-    void setConfigurationController(ConfigurationController* controller);
+    StateMachineScene* scene() const;
+    void setScene(StateMachineScene* scene);
+
+    RuntimeController* runtimeController() const;
+    void setRuntimeController(RuntimeController* controller);
 
     bool isEnabled() const;
     void setEnabled(bool enabled);
 
 private Q_SLOTS:
     void handleActiveConfigurationChanged(const QSet<State*>& configuration);
+    void updateRuntimeController();
 
 Q_SIGNALS:
-    void configurationControllerChanged(ConfigurationController* controller);
+    void sceneChanged(StateMachineScene* controller);
     void enabledChanged(bool enabled);
 
 private:
-    ConfigurationController* m_configurationController;
+    StateMachineScene* m_scene;
+    RuntimeController* m_runtimeController;
     bool m_enabled;
 };
 

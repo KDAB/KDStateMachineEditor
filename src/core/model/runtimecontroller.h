@@ -1,6 +1,4 @@
 /*
-  configurationcontroller.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,13 +20,12 @@
   clear to you.
 */
 
-#ifndef KDSME_CONFIGURATIONCONTROLLER_H
-#define KDSME_CONFIGURATIONCONTROLLER_H
+#ifndef KDSME_RUNTIMECONTROLLER_H
+#define KDSME_RUNTIMECONTROLLER_H
 
-#include "kdsme_view_export.h"
+#include "kdsme_core_export.h"
 
-#include "abstractcontroller.h"
-
+#include <QObject>
 #include <QRectF>
 #include <QSet>
 
@@ -36,21 +33,20 @@ namespace KDSME {
 
 class State;
 class Transition;
-class StateMachineScene;
 
-class KDSME_VIEW_EXPORT ConfigurationController : public AbstractController
+class KDSME_CORE_EXPORT RuntimeController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QSet<KDSME::State*> activeConfiguration READ activeConfiguration WRITE setActiveConfiguration NOTIFY activeConfigurationChanged)
-    Q_PROPERTY(KDSME::Transition* lastTransition READ lastTransition WRITE setLastTransition NOTIFY lastTransitionChanged)
-    Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged)
+    Q_PROPERTY(QSet<KDSME::State*> activeConfiguration READ activeConfiguration NOTIFY activeConfigurationChanged)
+    Q_PROPERTY(KDSME::Transition* lastTransition READ lastTransition NOTIFY lastTransitionChanged)
+    Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
     Q_PROPERTY(QRectF activeRegion READ activeRegion NOTIFY activeRegionChanged)
 
 public:
     typedef QSet<State*> Configuration;
 
-    explicit ConfigurationController(StateMachineView* parent);
-    virtual ~ConfigurationController();
+    explicit RuntimeController(QObject* parent = nullptr);
+    virtual ~RuntimeController();
 
     Configuration activeConfiguration() const;
     QList<Configuration> lastConfigurations() const;

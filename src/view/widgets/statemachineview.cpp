@@ -25,7 +25,6 @@
 
 #include "statemachineview.h"
 
-#include "configurationcontroller.h"
 #include "commandcontroller.h"
 #include "command/command.h"
 #include "command/commandfactory.h"
@@ -50,6 +49,7 @@
 #include "semanticzoommanager.h"
 #include "kdsmeconstants.h"
 #include "depthchecker.h"
+#include "runtimecontroller.h"
 #include "statemachinescene.h"
 
 #include <QDir>
@@ -97,7 +97,6 @@ struct StateMachineView::Private
     StateMachineScene* m_scene;
 
     CommandController* m_controller;
-    ConfigurationController* m_configurationController;
     EditController* m_editController;
     bool m_editModeEnabled;
 
@@ -110,7 +109,6 @@ StateMachineView::Private::Private(StateMachineView* q)
     : q(q)
     , m_scene(nullptr)
     , m_controller(nullptr)
-    , m_configurationController(nullptr)
     , m_editController(nullptr)
     , m_editModeEnabled(false)
 {
@@ -159,7 +157,7 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterUncreatableType<AbstractScene>(KDSME_QML_NAMESPACE, 1, 0, "AbstractScene", "Access to object");
     qmlRegisterUncreatableType<EditController>(KDSME_QML_NAMESPACE, 1, 0, "EditController", "Access to object");
     qmlRegisterUncreatableType<CommandController>(KDSME_QML_NAMESPACE, 1, 0, "CommandController", "Access to object");
-    qmlRegisterUncreatableType<ConfigurationController>(KDSME_QML_NAMESPACE, 1, 0, "ConfigurationController", "Access to object");
+    qmlRegisterUncreatableType<RuntimeController>(KDSME_QML_NAMESPACE, 1, 0, "RuntimeController", "Access to object");
     qmlRegisterUncreatableType<Element>(KDSME_QML_NAMESPACE, 1, 0, "Element", "Access to object");
     qmlRegisterUncreatableType<HistoryState>(KDSME_QML_NAMESPACE, 1, 0, "HistoryState", "Access to object");
     qmlRegisterUncreatableType<PseudoState>(KDSME_QML_NAMESPACE, 1, 0, "PseudoState", "Access to object");
@@ -171,7 +169,6 @@ StateMachineView::StateMachineView(QWidget* parent)
     qmlRegisterSingletonType<CommandFactory>(KDSME_QML_NAMESPACE, 1, 0, "CommandFactory", kdsme_commandFactory_singletontype_provider);
 
     d->m_controller = new CommandController(new QUndoStack(this), this);
-    d->m_configurationController = new ConfigurationController(this);
     d->m_editController = new EditController(this);
 
     engine()->rootContext()->setContextProperty("_quickView", this);
@@ -213,11 +210,6 @@ void StateMachineView::setScene(StateMachineScene* scene)
 CommandController* StateMachineView::commandController() const
 {
     return d->m_controller;
-}
-
-ConfigurationController* StateMachineView::configurationController() const
-{
-    return d->m_configurationController;
 }
 
 EditController* StateMachineView::editController() const

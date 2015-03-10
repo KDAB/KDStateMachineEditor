@@ -24,42 +24,64 @@
 
 #include "semanticzoommanager.h"
 
-#include "configurationcontroller.h"
+#include "runtimecontroller.h"
 #include "state.h"
 #include "transition.h"
 #include "elementwalker.h"
-#include "widgets/statemachineview.h"
 #include "statemachinescene.h"
 
 using namespace KDSME;
 
 SemanticZoomManager::SemanticZoomManager(QObject* parent)
     : QObject(parent)
-    , m_configurationController(nullptr)
+    , m_scene(nullptr)
+    , m_runtimeController(nullptr)
     , m_enabled(false)
 {
 }
 
-ConfigurationController* SemanticZoomManager::configurationController() const
+StateMachineScene* SemanticZoomManager::scene() const
 {
-    return m_configurationController;
+    return m_scene;
 }
 
-void SemanticZoomManager::setConfigurationController(ConfigurationController* controller)
+void SemanticZoomManager::setScene(StateMachineScene* scene)
 {
-    if (m_configurationController == controller)
+    if (m_scene == scene)
         return;
 
-    if (m_configurationController) {
-        disconnect(m_configurationController, &ConfigurationController::activeConfigurationChanged,
+    if (m_scene) {
+        disconnect(m_scene, &StateMachineScene::rootStateChanged,
+                   this, &SemanticZoomManager::updateRuntimeController);
+    }
+    m_scene = scene;
+    if (m_scene) {
+        connect(m_scene, &StateMachineScene::rootStateChanged,
+                this, &SemanticZoomManager::updateRuntimeController);
+    }
+    updateRuntimeController();
+    emit sceneChanged(m_scene);
+}
+
+RuntimeController* SemanticZoomManager::runtimeController() const
+{
+    return m_runtimeController;
+}
+
+void SemanticZoomManager::setRuntimeController(RuntimeController* controller)
+{
+    if (m_runtimeController == controller)
+        return;
+
+    if (m_runtimeController) {
+        disconnect(m_runtimeController, &RuntimeController::activeConfigurationChanged,
                    this, &SemanticZoomManager::handleActiveConfigurationChanged);
     }
-    m_configurationController = controller;
-    if (m_configurationController) {
-        connect(m_configurationController, &ConfigurationController::activeConfigurationChanged,
+    m_runtimeController = controller;
+    if (m_runtimeController) {
+        connect(m_runtimeController, &RuntimeController::activeConfigurationChanged,
                 this, &SemanticZoomManager::handleActiveConfigurationChanged);
     }
-    emit configurationControllerChanged(m_configurationController);
 }
 
 bool SemanticZoomManager::isEnabled() const
@@ -81,9 +103,7 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
     if (!m_enabled)
         return;
 
-    auto stateMachineView = m_configurationController->stateMachineView();
-    auto view = stateMachineView->scene();
-    auto root = stateMachineView->scene()->rootState();
+    auto root = m_scene->rootState();
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkChildren(root, [&](Element* i) -> ElementWalker::VisitResult {
         auto state = qobject_cast<State*>(i);
@@ -96,5 +116,11 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
         return ElementWalker::RecursiveWalk;
     });
 
-    view->layout();
+    m_scene->layout();
+}
+
+void SemanticZoomManager::updateRuntimeController()
+{
+    const auto machine = m_scene->rootState() ? m_scene->rootState()->machine() : nullptr;
+    setRuntimeController(machine ? machine->runtimeController() : nullptr);
 }

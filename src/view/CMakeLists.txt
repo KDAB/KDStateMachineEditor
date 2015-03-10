@@ -32,7 +32,6 @@ set(LIB_SRCS
   statemachinescene.cpp
   abstractcontroller.cpp
   commandcontroller.cpp
-  configurationcontroller.cpp
   debug.cpp
   editcontroller.cpp
   semanticzoommanager.cpp
@@ -107,7 +106,6 @@ install(FILES
   abstractcontroller.h
   abstractscene.h
   commandcontroller.h
-  configurationcontroller.h
   editcontroller.h
   statemachinescene.h
 

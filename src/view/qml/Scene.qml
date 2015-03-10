@@ -33,8 +33,6 @@ import "uml/"
 StateMachineScene {
     id: root
 
-    property var configurationController: null
-
     /// Debug: Draw filled semi-opaque rectangles around regions
     property bool debug: false
 
@@ -51,7 +49,6 @@ StateMachineScene {
         model: root.model
         delegate: SceneItemFactory {
             scene: root
-            configurationController: root.configurationController
         }
     }
 }

@@ -39,7 +39,6 @@ Rectangle {
 
     property var stateMachine: stateMachineScene.stateMachine
     property var commandController: _quickView.commandController
-    property var configurationController: _quickView.configurationController
     property var editController: _quickView.editController
 
     /// Whether we automatically move the content of the view-port in case the active region changes
@@ -121,7 +120,7 @@ Rectangle {
     SemanticZoomManager {
         id: semanticZoomManager
 
-        configurationController: root.configurationController
+        scene: stateMachineScene
     }
 
     Item {
@@ -166,8 +165,6 @@ Rectangle {
             Scene {
                 id: stateMachineScene
                 objectName: "stateMachineScene"
-
-                configurationController: root.configurationController
 
                 Component.onCompleted: {
                     _quickView.scene = stateMachineScene

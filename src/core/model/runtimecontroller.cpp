@@ -1,6 +1,4 @@
 /*
-  configurationcontroller.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,10 +20,9 @@
   clear to you.
 */
 
-#include "configurationcontroller.h"
+#include "runtimecontroller.h"
 
 #include "state.h"
-#include "statemachinescene.h"
 #include "ringbuffer.h"
 #include "transition.h"
 
@@ -42,11 +39,10 @@ inline qreal relativePosition(const ContainerType& list, const ItemType& t)
 
 }
 
-struct ConfigurationController::Private
+struct RuntimeController::Private
 {
-    Private(ConfigurationController* qq)
+    Private(RuntimeController* qq)
         : q(qq)
-        , m_view(nullptr)
         , m_lastConfigurations(5)
         , m_lastTransitions(5)
         , m_isRunning(false)
@@ -54,8 +50,7 @@ struct ConfigurationController::Private
 
     void updateActiveRegion();
 
-    ConfigurationController* q;
-    StateMachineScene* m_view;
+    RuntimeController* q;
 
     RingBuffer<Configuration> m_lastConfigurations;
     RingBuffer<Transition*> m_lastTransitions;
@@ -63,7 +58,7 @@ struct ConfigurationController::Private
     QRectF m_activeRegion;
 };
 
-void ConfigurationController::Private::updateActiveRegion()
+void RuntimeController::Private::updateActiveRegion()
 {
     Configuration configuration = q->activeConfiguration();
 
@@ -76,50 +71,50 @@ void ConfigurationController::Private::updateActiveRegion()
     emit q->activeRegionChanged(m_activeRegion);
 }
 
-ConfigurationController::ConfigurationController(StateMachineView* parent)
-    : AbstractController(parent)
+RuntimeController::RuntimeController(QObject* parent)
+    : QObject(parent)
     , d(new Private(this))
 {
     qRegisterMetaType<QSet<State*>>();
 }
 
-ConfigurationController::~ConfigurationController()
+RuntimeController::~RuntimeController()
 {
 }
 
-int ConfigurationController::historySize() const
+int RuntimeController::historySize() const
 {
     return d->m_lastConfigurations.size();
 }
 
-void ConfigurationController::setHistorySize(int size)
+void RuntimeController::setHistorySize(int size)
 {
     d->m_lastConfigurations.setCapacity(size);
     d->m_lastTransitions.setCapacity(size);
 }
 
-QRectF ConfigurationController::activeRegion() const
+QRectF RuntimeController::activeRegion() const
 {
     return d->m_activeRegion;
 }
 
-void ConfigurationController::clear()
+void RuntimeController::clear()
 {
     d->m_lastConfigurations.clear();
     d->m_lastTransitions.clear();
 }
 
-ConfigurationController::Configuration ConfigurationController::activeConfiguration() const
+RuntimeController::Configuration RuntimeController::activeConfiguration() const
 {
     return (d->m_lastConfigurations.size() > 0 ? d->m_lastConfigurations.last() : Configuration());
 }
 
-QList<ConfigurationController::Configuration> ConfigurationController::lastConfigurations() const
+QList<RuntimeController::Configuration> RuntimeController::lastConfigurations() const
 {
     return d->m_lastConfigurations.entries();
 }
 
-void ConfigurationController::setActiveConfiguration(const ConfigurationController::Configuration& configuration)
+void RuntimeController::setActiveConfiguration(const RuntimeController::Configuration& configuration)
 {
     if (d->m_lastConfigurations.size() > 0 && d->m_lastConfigurations.last() == configuration)
         return;
@@ -129,17 +124,17 @@ void ConfigurationController::setActiveConfiguration(const ConfigurationControll
     d->updateActiveRegion();
 }
 
-QList<Transition*> ConfigurationController::lastTransitions() const
+QList<Transition*> RuntimeController::lastTransitions() const
 {
     return d->m_lastTransitions.entries();
 }
 
-Transition* ConfigurationController::lastTransition() const
+Transition* RuntimeController::lastTransition() const
 {
     return (d->m_lastTransitions.size() > 0 ? d->m_lastTransitions.last() : nullptr);
 }
 
-void ConfigurationController::setLastTransition(Transition* transition)
+void RuntimeController::setLastTransition(Transition* transition)
 {
     if (!transition)
         return;
@@ -147,12 +142,12 @@ void ConfigurationController::setLastTransition(Transition* transition)
     d->m_lastTransitions.enqueue(transition);
 }
 
-bool ConfigurationController::isRunning() const
+bool RuntimeController::isRunning() const
 {
     return d->m_isRunning;
 }
 
-void ConfigurationController::setIsRunning(bool isRunning)
+void RuntimeController::setIsRunning(bool isRunning)
 {
     if (d->m_isRunning == isRunning)
         return;
@@ -161,7 +156,7 @@ void ConfigurationController::setIsRunning(bool isRunning)
     emit isRunningChanged(d->m_isRunning);
 }
 
-float ConfigurationController::activenessForState(State* state) const
+float RuntimeController::activenessForState(State* state) const
 {
     const int count = d->m_lastConfigurations.size();
     for (int i = d->m_lastConfigurations.size()-1; i >= 0; --i) {
@@ -172,7 +167,7 @@ float ConfigurationController::activenessForState(State* state) const
     return 0.;
 }
 
-float ConfigurationController::activenessForTransition(Transition* transition)
+float RuntimeController::activenessForTransition(Transition* transition)
 {
     return relativePosition<QList<Transition*>>(d->m_lastTransitions.entries(), transition);
 }

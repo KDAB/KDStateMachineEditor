@@ -33,12 +33,16 @@ import "uml/"
 Loader {
     id: root
 
-    property var configurationController
     property var scene
+
+    readonly property var runtimeController: scene.rootState ?
+        scene.rootState.machine().runtimeController :
+        null
 
     x: object.pos.x
     y: object.pos.y
 
+    active: object
     asynchronous: true
 
     sourceComponent: {
@@ -65,13 +69,19 @@ Loader {
     }
 
     function activenessForState(state) {
-        configurationController.activeConfiguration; // bind to active configuration
-        return configurationController.activenessForState(state);
+        if (!runtimeController)
+            return 0;
+
+        runtimeController.activeConfiguration; // bind to active configuration
+        return runtimeController.activenessForState(state);
     }
 
     function activenessForTransition(transition) {
-        configurationController.activeConfiguration; // bind to active configuration
-        return configurationController.activenessForTransition(transition)
+        if (!runtimeController)
+            return 0;
+
+        runtimeController.activeConfiguration; // bind to active configuration
+        return runtimeController.activenessForTransition(transition)
     }
 
     Component {

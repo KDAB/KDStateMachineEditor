@@ -24,6 +24,7 @@
 
 #include "elementutil.h"
 #include "objecthelper.h"
+#include "runtimecontroller.h"
 #include "transition.h"
 
 #include <QDebug>
@@ -33,6 +34,11 @@
 using namespace KDSME;
 
 namespace {
+
+struct StandardRuntimeController : public RuntimeController
+{
+    Q_OBJECT
+};
 
 QString kindToString(PseudoState::Kind kind)
 {
@@ -200,11 +206,27 @@ bool State::event(QEvent* event)
 
 struct StateMachine::Private
 {
+    Private(StateMachine *q)
+        : q(q)
+        , m_runtimeController(new StandardRuntimeController)
+    {
+    }
+
+    ~Private()
+    {
+        if (qobject_cast<StandardRuntimeController*>(m_runtimeController)) {
+            delete m_runtimeController;
+        }
+    }
+
+    StateMachine* q;
+
+    RuntimeController* m_runtimeController;
 };
 
 StateMachine::StateMachine(QObject* parent)
     : State(nullptr)
-    , d(new Private)
+    , d(new Private(this))
 {
     // Can't pass the parent to the State constructor, as it expects a State
     // But this works as expected regardless of whether parent is a State or not
@@ -212,6 +234,27 @@ StateMachine::StateMachine(QObject* parent)
 
     setWidth(128);
     setHeight(128);
+}
+
+RuntimeController* StateMachine::runtimeController() const
+{
+    return d->m_runtimeController;
+}
+
+void StateMachine::setRuntimeController(RuntimeController* runtimeController)
+{
+    if (d->m_runtimeController == runtimeController)
+        return;
+
+    if (qobject_cast<StandardRuntimeController*>(d->m_runtimeController)) {
+        d->m_runtimeController->deleteLater();
+    }
+    d->m_runtimeController = runtimeController;
+    if (!d->m_runtimeController) {
+        d->m_runtimeController = new StandardRuntimeController;
+    }
+
+    emit runtimeControllerChanged(d->m_runtimeController);
 }
 
 struct HistoryState::Private
@@ -381,3 +424,5 @@ QDebug KDSME::operator<<(QDebug dbg, const PseudoState* state)
         << "]";
     return dbg.space();
 }
+
+#include "state.moc"

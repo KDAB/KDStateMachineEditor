@@ -27,6 +27,7 @@
 
 namespace KDSME {
 
+class RuntimeController;
 class Transition;
 
 class KDSME_CORE_EXPORT State : public Element
@@ -156,12 +157,19 @@ private:
 class KDSME_CORE_EXPORT StateMachine : public State
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::RuntimeController* runtimeController READ runtimeController WRITE setRuntimeController NOTIFY runtimeControllerChanged)
 
 public:
     explicit StateMachine(QObject* parent = 0);
     virtual ~StateMachine();
 
     virtual Type type() const override;
+
+    RuntimeController* runtimeController() const;
+    void setRuntimeController(RuntimeController* runtimeController);
+
+Q_SIGNALS:
+    void runtimeControllerChanged(RuntimeController* runtimeController);
 
 private:
     struct Private;
