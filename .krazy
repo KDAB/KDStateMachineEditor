@@ -6,13 +6,10 @@ EXTRA kdabcopyright
 #additional checks
 EXTRA defines,null,camelcase,crud
 
-#coding style settings
-STYLE_CPPSTYLE kde
-STYLE_OFFSET 2
-STYLE_LINEMAX 100
-
 #no need to check 3rdparty stuff
 SKIP /3rdparty/
+#nor examples
+SKIP /examples/
 #nor Digia'stuff
 SKIP /codeeditor.cpp|/codeeditor.h
 SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
