@@ -25,6 +25,18 @@ include(ECMGeneratePriFile)
 
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
 find_package(Qt5 5.3 REQUIRED QuickWidgets)
+
+find_package(Qt5 5.4 OPTIONAL_COMPONENTS RemoteObjects)
+set_package_properties(Qt5RemoteObjects PROPERTIES
+  TYPE OPTIONAL
+  DESCRIPTION "Qt Remote Objects module"
+  PURPOSE "Needed for the QStateMachine adapter and remote debugging capabilities"
+)
+if(Qt5RemoteObjects_FOUND)
+    # TODO: Upstream cmake file
+    include(Qt5RemoteObjectsMacros)
+endif()
+
 find_package(Qt5 5.3 OPTIONAL_COMPONENTS XmlPatterns)
 set_package_properties(Qt5XmlPatterns PROPERTIES
   TYPE OPTIONAL

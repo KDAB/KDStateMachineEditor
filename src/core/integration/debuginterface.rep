@@ -1,0 +1,20 @@
+#include "debuginterface_types.h"
+
+#include <QString>
+
+class DebugInterface
+{
+    SLOT(void repopulateGraph());
+
+    SIGNAL(statusChanged(bool haveStateMachine, bool running));
+    SIGNAL(message(const QString &message));
+    SIGNAL(stateAdded(KDSME::DebugInterface::StateId state, KDSME::DebugInterface::StateId parent, bool hasChildren, const QString &label, KDSME::DebugInterface::StateType type, bool connectToInitial));
+    SIGNAL(stateEntered(KDSME::DebugInterface::StateId state));
+    SIGNAL(stateExited(KDSME::DebugInterface::StateId state));
+    SIGNAL(transitionAdded(KDSME::DebugInterface::TransitionId state, KDSME::DebugInterface::StateId source, KDSME::DebugInterface::StateId target, const QString &label));
+    SIGNAL(stateConfigurationChanged(const KDSME::DebugInterface::StateMachineConfiguration& config));
+    SIGNAL(maximumDepthChanged(int depth));
+    SIGNAL(transitionTriggered(KDSME::DebugInterface::TransitionId transition, const QString &label));
+    SIGNAL(aboutToRepopulateGraph());
+    SIGNAL(graphRepopulated());
+};

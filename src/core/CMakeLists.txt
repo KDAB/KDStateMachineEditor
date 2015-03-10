@@ -28,6 +28,31 @@ set(LIB_SRCS
   debug.cpp
 )
 
+if(Qt5RemoteObjects_FOUND)
+  list(APPEND LIB_SRCS
+    integration/qsmadapter.cpp
+    integration/qsmdebuginterfacesource.cpp
+    integration/qsmwatcher.cpp
+    integration/debuginterfaceclient.cpp
+  )
+  # qt5_generate_moc is stupid, too...
+  include_directories(
+    ${Qt5RemoteObjects_INCLUDE_DIRS}
+  )
+  qt5_generate_repc(LIB_SRCS integration/debuginterface.rep SOURCE)
+  qt5_generate_repc(LIB_SRCS integration/debuginterface.rep REPLICA)
+
+  install(FILES
+    integration/qsmadapter.h
+    integration/qsmdebuginterfacesource.h
+    integration/qsmwatcher.h
+    integration/debuginterfaceclient.h
+    integration/debuginterface_types.h
+
+    DESTINATION ${INCLUDE_INSTALL_DIR}/core
+  )
+endif()
+
 if(Graphviz_FOUND)
   list(APPEND LIB_SRCS
     layout/graphvizlayout/gvutils.cpp
@@ -67,9 +92,14 @@ if(Graphviz_FOUND)
   target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${Graphviz_VERSION_MAJOR} -DGRAPHVIZ_MINOR_VERSION=${Graphviz_VERSION_MINOR})
 endif()
 
+if(Qt5RemoteObjects_FOUND)
+  target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Qt5::RemoteObjects)
+endif()
+
 set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/common
   ${CMAKE_CURRENT_SOURCE_DIR}/import
+  ${CMAKE_CURRENT_SOURCE_DIR}/integration
   ${CMAKE_CURRENT_SOURCE_DIR}/layout
   ${CMAKE_CURRENT_SOURCE_DIR}/model
   ${CMAKE_CURRENT_SOURCE_DIR}/util

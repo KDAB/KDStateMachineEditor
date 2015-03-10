@@ -7,5 +7,8 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/config-examples.h
 )
 
+if(Qt5RemoteObjects_FOUND)
+    add_subdirectory(qsmdebugger)
+endif()
 add_subdirectory(scxmlimport)
 add_subdirectory(simplestatemachine)

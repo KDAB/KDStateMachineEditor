@@ -43,6 +43,13 @@ ecm_add_test(test_qmlexport.cpp
     kdsme_testhelper
 )
 
+ecm_add_test(test_qsmintegration.cpp
+  LINK_LIBRARIES
+    Qt5::Test
+    kdstatemachineeditor_core
+    kdsme_testhelper
+)
+
 ecm_add_test(test_scxmlimport.cpp
   LINK_LIBRARIES
     kdsme_testhelper
