@@ -34,9 +34,9 @@ if(Graphviz_FOUND)
     layout/graphvizlayout/graphvizlayouter.cpp
     layout/graphvizlayout/graphvizlayouterbackend.cpp
   )
+  add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 endif()
 
-add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(kdstatemachineeditor_core

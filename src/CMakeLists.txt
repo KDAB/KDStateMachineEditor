@@ -1,7 +1,3 @@
-set(CMAKE_AUTOMOC TRUE)
-
-include(GenerateExportHeader)
-
 set(HAVE_GRAPHVIZ ${Graphviz_FOUND})
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config-kdsme.h.cmake
