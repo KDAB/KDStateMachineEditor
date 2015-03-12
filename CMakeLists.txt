@@ -32,10 +32,6 @@ set_package_properties(Qt5RemoteObjects PROPERTIES
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine adapter and remote debugging capabilities"
 )
-if(Qt5RemoteObjects_FOUND)
-    # TODO: Upstream cmake file
-    include(Qt5RemoteObjectsMacros)
-endif()
 
 find_package(Qt5 5.3 OPTIONAL_COMPONENTS XmlPatterns)
 set_package_properties(Qt5XmlPatterns PROPERTIES
