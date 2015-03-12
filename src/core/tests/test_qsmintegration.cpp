@@ -90,7 +90,7 @@ void QsmIntegrationTest::testRunningQSM()
     QTimer timer;
     timer.setInterval(10);
     timer.setSingleShot(true);
-    auto qsmSignalTransition = qsmInitial.addTransition(&timer, SIGNAL(timeout()), &qsmFinal);
+    qsmInitial.addTransition(&timer, SIGNAL(timeout()), &qsmFinal);
 
     qsm.start();
 
