@@ -39,14 +39,13 @@
 get_target_property(_moc_executable Qt5::moc LOCATION)
 set(_search_dirs "${_moc_executable}/..")
 
-find_program(Qt5_REPC_EXECUTABLE repc PATHS ${_search_dirs})
-if(NOT Qt5_REPC_EXECUTABLE)
+find_program(Qt5RemoteObjects_REPC_EXECUTABLE repc PATHS ${_search_dirs})
+if(NOT Qt5RemoteObjects_REPC_EXECUTABLE)
     message(FATAL_ERROR "repc executable not found in dirs: ${_search_dirs} -- Check installation.")
 endif()
 
 macro(qt5_generate_repc outfiles infile outputtype)
     # get include dirs and flags
-    qt5_get_moc_flags(moc_flags)
     get_filename_component(abs_infile ${infile} ABSOLUTE)
     get_filename_component(infile_name "${infile}" NAME)
     string(REPLACE ".rep" "" _infile_base ${infile_name})
@@ -60,9 +59,17 @@ macro(qt5_generate_repc outfiles infile outputtype)
     set(_outfile_header "${CMAKE_CURRENT_BINARY_DIR}/${_outfile_base}.h")
     add_custom_command(OUTPUT ${_outfile_header}
         DEPENDS ${abs_infile}
-        COMMAND ${Qt5_REPC_EXECUTABLE} ${abs_infile} ${_repc_args} ${_outfile_header}
+        COMMAND ${Qt5RemoteObjects_REPC_EXECUTABLE} ${abs_infile} ${_repc_args} ${_outfile_header}
         VERBATIM)
     set_source_files_properties(${_outfile_header} PROPERTIES GENERATED TRUE)
-    qt5_generate_moc(${_outfile_header} "moc_${_outfile_base}.cpp")
-    list(APPEND ${outfiles} "${_outfile_header}" "moc_${_outfile_base}.cpp")
+
+    qt5_get_moc_flags(_moc_flags)
+    # Make sure we get the compiler flags from the Qt5::RemoteObjects target (for includes)
+    string(REPLACE ";" ";-I" _includes "${Qt5RemoteObjects_INCLUDE_DIRS}")
+    set(_includes "-I${_includes}")
+    list(APPEND _moc_flags ${_includes})
+
+    set(_moc_outfile "${CMAKE_CURRENT_BINARY_DIR}/moc_${_outfile_base}.cpp")
+    qt5_create_moc_command(${_outfile_header} ${_moc_outfile} "${_moc_flags}" "" "")
+    list(APPEND ${outfiles} "${_outfile_header}" ${_moc_outfile})
 endmacro()

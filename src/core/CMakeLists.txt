@@ -35,10 +35,7 @@ if(Qt5RemoteObjects_FOUND)
     integration/qsmwatcher.cpp
     integration/debuginterfaceclient.cpp
   )
-  # qt5_generate_moc is stupid, too...
-  include_directories(
-    ${Qt5RemoteObjects_INCLUDE_DIRS}
-  )
+
   qt5_generate_repc(LIB_SRCS integration/debuginterface.rep SOURCE)
   qt5_generate_repc(LIB_SRCS integration/debuginterface.rep REPLICA)
 
