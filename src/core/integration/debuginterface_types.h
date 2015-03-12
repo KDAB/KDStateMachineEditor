@@ -114,7 +114,7 @@ inline QDataStream &operator>>(QDataStream &in, StateType &value)
 
 typedef QList<StateId> StateMachineConfiguration;
 
-inline void registerTypes()
+inline void registerTypes() //krazy:exclude=inline
 {
     qRegisterMetaTypeStreamOperators<StateId>();
     qRegisterMetaTypeStreamOperators<StateMachineConfiguration>();

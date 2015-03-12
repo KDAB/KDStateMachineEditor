@@ -23,7 +23,7 @@
 #include "state.h"
 #include "transition.h"
 #include "qsmadapter.h"
-#include <runtimecontroller.h>
+#include "runtimecontroller.h"
 #include "util.h"
 
 #include <QtTest>
