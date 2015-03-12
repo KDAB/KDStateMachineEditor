@@ -158,6 +158,7 @@ StateMachine* DebugInterfaceClient::machine() const
 
 void DebugInterfaceClient::Private::showMessage(const QString& message)
 {
+    Q_UNUSED(message);
     // FIXME: Port
 }
 
