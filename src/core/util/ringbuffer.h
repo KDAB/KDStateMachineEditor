@@ -1,6 +1,4 @@
 /*
-  ringbuffer.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -21,12 +19,15 @@
   Contact info@kdab.com if any conditions of this licensing are not
   clear to you.
 */
+
 //krazy:excludeall=inline as this is a template
 #ifndef KDSME_UTIL_RINGBUFFER_H
 #define KDSME_UTIL_RINGBUFFER_H
 
 #include <QQueue>
 #include <QList>
+
+namespace KDSME {
 
 template<class T>
 class RingBuffer
@@ -69,5 +70,7 @@ class RingBuffer
     QQueue<T> m_entries;
     int m_capacity;
 };
+
+}
 
 #endif
