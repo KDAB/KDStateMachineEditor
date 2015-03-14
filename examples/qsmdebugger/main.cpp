@@ -30,15 +30,6 @@
 #include <qsmadapter.h>
 
 #include <QApplication>
-#include <QDebug>
-#include <QFile>
-#include <QFinalState>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QScopedPointer>
-#include <QState>
-#include <QStateMachine>
-#include <QRemoteObjectNode>
 
 using namespace KDSME;
 
