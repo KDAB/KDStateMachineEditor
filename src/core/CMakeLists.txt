@@ -23,7 +23,6 @@ set(LIB_SRCS
   util/depthchecker.cpp
   util/objecthelper.cpp
   util/objecttreemodel.cpp
-  util/settings.cpp
 
   debug.cpp
 )

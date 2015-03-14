@@ -28,7 +28,6 @@
 #include "ui_mainwindow.h"
 
 #include "editcontroller.h"
-#include "util/settings.h"
 #include "layouter.h"
 #include "elementmodel.h"
 #include "scxmlimporter.h"
@@ -41,6 +40,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <QLayout>
 #include <QSettings>
 #include <QStandardItemModel>
