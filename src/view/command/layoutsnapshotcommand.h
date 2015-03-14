@@ -39,7 +39,7 @@ class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
 
 public:
     explicit LayoutSnapshotCommand(StateMachineScene* scene, QUndoCommand* parent = nullptr);
-    LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = 0);
+    LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = nullptr);
 
     virtual int id() const override { return LayoutSnapshot; }
 

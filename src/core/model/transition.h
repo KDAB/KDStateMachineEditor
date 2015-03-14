@@ -38,7 +38,7 @@ class KDSME_CORE_EXPORT Transition : public Element
     Q_PROPERTY(QRectF labelBoundingRect READ labelBoundingRect WRITE setLabelBoundingRect NOTIFY labelBoundingRectChanged FINAL)
 
 public:
-    explicit Transition(State* sourceState = 0);
+    explicit Transition(State* sourceState = nullptr);
     virtual ~Transition();
 
     virtual Type type() const;

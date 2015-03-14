@@ -188,7 +188,7 @@ static QStringList childStates(const State * state)
 void PropertyEditor::Private::currentChanged(const QModelIndex &currentIndex, const QModelIndex &/*previous*/)
 {
     if (m_currentElement) {
-        q->disconnect(m_currentElement, 0, q, SLOT(loadFromCurrentElement()));
+        q->disconnect(m_currentElement, nullptr, q, SLOT(loadFromCurrentElement()));
     }
 
     m_currentElement = currentIndex.data(StateModel::ElementRole).value<Element*>();

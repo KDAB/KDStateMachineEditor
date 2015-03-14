@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     const QStringList args = parser.positionalArguments();
     const QString source = args.value(0);
 
-    StateMachine* stateMachine = 0;
+    StateMachine* stateMachine = nullptr;
     if (!source.isEmpty()) {
         ScxmlImporter parser(readFile(source));
         stateMachine = parser.import();

@@ -41,7 +41,7 @@ class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
     Q_PROPERTY(KDSME::State* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
-    explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = 0);
+    explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = nullptr);
 
     virtual int id() const { return ChangeStateMachine; }
 

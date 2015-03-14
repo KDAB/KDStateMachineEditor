@@ -47,7 +47,7 @@ class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
     Q_PROPERTY(KDSME::EditController* editController READ editController CONSTANT)
 
 public:
-    explicit StateMachineView(QWidget* parent = 0);
+    explicit StateMachineView(QWidget* parent = nullptr);
     virtual ~StateMachineView();
 
     StateMachineScene* scene() const;

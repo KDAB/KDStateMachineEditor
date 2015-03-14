@@ -42,7 +42,7 @@ class KDSME_CORE_EXPORT Layouter : public QObject
     Q_OBJECT
 
 public:
-    explicit Layouter(QObject* parent = 0);
+    explicit Layouter(QObject* parent = nullptr);
 
     virtual QRectF layout(State* state, const LayoutProperties* properties) = 0;
 };

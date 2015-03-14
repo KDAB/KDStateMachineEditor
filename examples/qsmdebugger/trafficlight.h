@@ -15,7 +15,7 @@ class TrafficLight : public QWidget
     Q_OBJECT
 
 public:
-    TrafficLight(QWidget *parent = 0);
+    TrafficLight(QWidget *parent = nullptr);
 
     QStateMachine *machine() const;
 

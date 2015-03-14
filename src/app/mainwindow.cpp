@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     , ui(new Ui::MainWindow)
     , m_presetsModel(new QStandardItemModel(this))
     , m_transitionsModel(new TransitionListModel(this))
-    , m_stateMachineView(0)
+    , m_stateMachineView(nullptr)
 {
     ui->setupUi(this);
 

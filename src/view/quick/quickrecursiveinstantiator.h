@@ -41,7 +41,7 @@ class QuickRecursiveInstantiator : public QQuickItem, public InstantiatorInterfa
     Q_CLASSINFO("DefaultProperty", "delegate")
 
 public:
-    explicit QuickRecursiveInstantiator(QQuickItem* parent = 0);
+    explicit QuickRecursiveInstantiator(QQuickItem* parent = nullptr);
 
     QAbstractItemModel* model() const;
     virtual void setModel(QAbstractItemModel* model);

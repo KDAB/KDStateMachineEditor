@@ -81,7 +81,7 @@ public:
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    explicit Element(QObject* parent = 0);
+    explicit Element(QObject* parent = nullptr);
     virtual ~Element();
 
     virtual Type type() const;

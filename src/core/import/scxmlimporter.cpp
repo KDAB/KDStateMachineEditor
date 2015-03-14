@@ -102,7 +102,7 @@ StateMachine* ScxmlImporter::import()
 
     d->m_reader.addData(d->m_data);
 
-    StateMachine* stateMachine = 0;
+    StateMachine* stateMachine = nullptr;
 
     if (d->m_reader.readNextStartElement() && d->m_reader.name() == "scxml") {
         stateMachine = d->visitScxml();
@@ -121,7 +121,7 @@ StateMachine* ScxmlImporter::import()
         setErrorString(d->m_reader.errorString());
 
         delete stateMachine;
-        stateMachine = 0;
+        stateMachine = nullptr;
     }
     return stateMachine;
 }
@@ -226,7 +226,7 @@ void ScxmlImporter::Private::visitInitial(State* parent)
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     // Must have exactly one <transition> child
-    Transition* transition = 0;
+    Transition* transition = nullptr;
     while (m_reader.readNextStartElement()) {
         if (m_reader.name() == "transition") {
             State* initialState = new PseudoState(PseudoState::InitialState, parent);

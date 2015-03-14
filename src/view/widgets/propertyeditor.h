@@ -43,7 +43,7 @@ class KDSME_VIEW_EXPORT PropertyEditor : public QStackedWidget
     Q_OBJECT
 
 public:
-    explicit PropertyEditor(QWidget *parent = 0);
+    explicit PropertyEditor(QWidget *parent = nullptr);
     ~PropertyEditor();
 
     void setSelectionModel(QItemSelectionModel* selectionModel);

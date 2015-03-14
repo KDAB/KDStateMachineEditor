@@ -41,7 +41,7 @@ class KDSME_VIEW_EXPORT StateMachineToolBar : public QToolBar
     Q_OBJECT
 
 public:
-    explicit StateMachineToolBar(StateMachineView* view, QWidget* parent = 0);
+    explicit StateMachineToolBar(StateMachineView* view, QWidget* parent = nullptr);
     virtual ~StateMachineToolBar();
 
 private:

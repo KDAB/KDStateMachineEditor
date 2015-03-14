@@ -211,7 +211,7 @@ void TimeoutTransition::setTimeout(int timeout)
 QDebug KDSME::operator<<(QDebug dbg, const Transition* transition)
 {
     if (!transition) {
-        return dbg << static_cast<QObject*>(0);
+        return dbg << static_cast<QObject*>(nullptr);
     }
     dbg.nospace() << "Transition["
         << "this=" << (const void*)transition

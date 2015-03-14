@@ -179,7 +179,7 @@ void DebugInterfaceClient::Private::stateAdded(const StateId stateId, const Stat
     }
 
     State* parentState = m_idToStateMap.value(parentId);
-    State* state = 0;
+    State* state = nullptr;
     if (type == StateMachineState) {
         state = m_machine = new StateMachine;
         m_machine->setRuntimeController(q);

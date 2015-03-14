@@ -41,7 +41,7 @@ struct TransitionId
     TransitionId(const TransitionId &id)
         : id(id.id)
     {}
-    explicit TransitionId(QAbstractTransition *transition = 0)
+    explicit TransitionId(QAbstractTransition *transition = nullptr)
         : id(reinterpret_cast<quint64>(transition))
     {}
     operator quint64() const
@@ -68,7 +68,7 @@ struct StateId
     StateId(const StateId &id)
         : id(id.id)
     {}
-    explicit StateId(QAbstractState *state= 0)
+    explicit StateId(QAbstractState *state= nullptr)
         : id(reinterpret_cast<quint64>(state))
     {}
     operator quint64() const

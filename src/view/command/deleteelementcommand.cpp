@@ -37,7 +37,7 @@ DeleteElementCommand::DeleteElementCommand(StateMachineScene* scene, Element* de
     : Command(scene->stateModel(), parent)
     , m_scene(scene)
     , m_index(-1)
-    , m_parentElement(0)
+    , m_parentElement(nullptr)
     , m_deletedElement(deletedElement)
 {
     updateText();

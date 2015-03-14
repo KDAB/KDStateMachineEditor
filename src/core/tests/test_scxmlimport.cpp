@@ -186,7 +186,7 @@ void ScxmlImportTest::testBasicState()
     QCOMPARE(root->label(),  QLatin1String("basicstate"));
     QCOMPARE(root->childStates().size(), 4);
 
-    State* s = 0;
+    State* s = nullptr;
     s = root->childStates()[0];
     auto pseudoState = qobject_cast<PseudoState*>(s);
     QCOMPARE(pseudoState->kind(), PseudoState::InitialState);
@@ -214,7 +214,7 @@ void ScxmlImportTest::testParallelState()
     QCOMPARE(root->childStates().size(), 2);
 
     // check <parallel> element
-    State* s = 0;
+    State* s = nullptr;
     State* p1 = root->childStates()[1];
     QCOMPARE(p1->label(), QLatin1String("P1"));
     QCOMPARE(p1->childStates().size(), 2);
@@ -359,7 +359,7 @@ void ScxmlImportTest::testExampleTrafficReport()
     QCOMPARE(root->label(),  QLatin1String(""));
     QCOMPARE(root->childStates().size(), 8);
 
-    State* s = 0;
+    State* s = nullptr;
     s = root->childStates()[1];
     QCOMPARE(s->label(), QLatin1String("Intro"));
     QCOMPARE(s->transitions().size(), 3);

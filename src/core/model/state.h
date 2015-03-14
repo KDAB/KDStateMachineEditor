@@ -46,7 +46,7 @@ public:
         ParallelStates,
     };
 
-    explicit State(State* parent = 0);
+    explicit State(State* parent = nullptr);
     ~State();
 
     virtual Type type() const override;
@@ -115,7 +115,7 @@ public:
         DeepHistory
     };
 
-    explicit HistoryState(State* parent = 0);
+    explicit HistoryState(State* parent = nullptr);
     explicit HistoryState(HistoryType type, State* parent = nullptr);
     virtual ~HistoryState();
 
@@ -144,7 +144,7 @@ class KDSME_CORE_EXPORT FinalState : public State
     Q_OBJECT
 
 public:
-    explicit FinalState(State* parent = 0);
+    explicit FinalState(State* parent = nullptr);
     virtual ~FinalState();
 
     virtual Type type() const override;
@@ -160,7 +160,7 @@ class KDSME_CORE_EXPORT StateMachine : public State
     Q_PROPERTY(KDSME::RuntimeController* runtimeController READ runtimeController WRITE setRuntimeController NOTIFY runtimeControllerChanged)
 
 public:
-    explicit StateMachine(QObject* parent = 0);
+    explicit StateMachine(QObject* parent = nullptr);
     virtual ~StateMachine();
 
     virtual Type type() const override;
@@ -187,7 +187,7 @@ public:
     };
     Q_ENUMS(Kind)
 
-    explicit PseudoState(Kind kind = InitialState, State* parent = 0);
+    explicit PseudoState(Kind kind = InitialState, State* parent = nullptr);
     virtual ~PseudoState();
 
     virtual Type type() const override;

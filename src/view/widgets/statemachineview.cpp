@@ -197,7 +197,7 @@ void StateMachineView::setScene(StateMachineScene* scene)
         return;
 
     if (d->m_scene) {
-        disconnect(d->m_scene, 0, this, 0);
+        disconnect(d->m_scene, nullptr, this, nullptr);
     }
     d->m_scene = scene;
     if (d->m_scene) {

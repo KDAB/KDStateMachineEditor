@@ -39,7 +39,7 @@ class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
     Q_OBJECT
 
 public:
-    ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = 0);
+    ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = nullptr);
 
     virtual int id() const { return ReparentElement; }
 

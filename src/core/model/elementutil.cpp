@@ -39,7 +39,7 @@ State* ElementUtil::findInitialState(const KDSME::State* state)
         if (PseudoState* pseudoState = qobject_cast<PseudoState*>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
                 Transition* transition = pseudoState->transitions().value(0);
-                return transition ? transition->targetState() : 0;
+                return transition ? transition->targetState() : nullptr;
             }
         }
     }

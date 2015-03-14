@@ -404,7 +404,7 @@ QString PseudoState::toDisplayString() const
 QDebug KDSME::operator<<(QDebug dbg, const State* state)
 {
     if (!state) {
-        return operator<<(dbg, static_cast<QObject*>(0));
+        return operator<<(dbg, static_cast<QObject*>(nullptr));
     }
     dbg.nospace() << "State["
         << "this=" << (const void*)state
@@ -416,7 +416,7 @@ QDebug KDSME::operator<<(QDebug dbg, const State* state)
 QDebug KDSME::operator<<(QDebug dbg, const PseudoState* state)
 {
     if (!state) {
-        return operator<<(dbg, static_cast<QObject*>(0));
+        return operator<<(dbg, static_cast<QObject*>(nullptr));
     }
     dbg.nospace() << "PseudoState["
         << "this=" << (const void*)state

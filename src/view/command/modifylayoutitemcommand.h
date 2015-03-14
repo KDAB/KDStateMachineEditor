@@ -40,7 +40,7 @@ class KDSME_VIEW_EXPORT ModifyLayoutItemCommand : public Command
     Q_OBJECT
 
 public:
-    explicit ModifyLayoutItemCommand(Element* item, QUndoCommand* parent = 0);
+    explicit ModifyLayoutItemCommand(Element* item, QUndoCommand* parent = nullptr);
 
     Element* item() const;
 

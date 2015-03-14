@@ -29,7 +29,7 @@
 using namespace KDSME;
 
 LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene* scene,  QUndoCommand* parent)
-    : Command(0, parent)
+    : Command(nullptr, parent)
     , m_scene(scene)
 {
 }

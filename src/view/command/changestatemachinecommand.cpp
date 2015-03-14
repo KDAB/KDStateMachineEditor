@@ -36,8 +36,8 @@ using namespace KDSME;
 ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent)
     : Command(tr("Change Statemachine"), parent)
     , m_view(view)
-    , m_oldStateMachine(0)
-    , m_newStateMachine(0)
+    , m_oldStateMachine(nullptr)
+    , m_newStateMachine(nullptr)
 {
     Q_ASSERT(view);
 }
@@ -79,7 +79,7 @@ void ChangeStateMachineCommand::undo()
 
     m_view->stateModel()->setState(m_oldStateMachine);
     m_view->setRootState(m_oldStateMachine);
-    m_oldStateMachine = 0;
+    m_oldStateMachine = nullptr;
 
     m_view->layout();
 }

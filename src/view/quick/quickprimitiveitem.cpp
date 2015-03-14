@@ -160,7 +160,7 @@ void QuickGeometryItem::setLineWidth(float lineWidth)
 
 QSGGeometry* QuickGeometryItem::createGeometry() const
 {
-    QSGGeometry* geometry = 0;
+    QSGGeometry* geometry = nullptr;
     const QList<qreal>& data = m_vertexData;
     switch (m_vertexDataType) {
     case Point2DType: {
@@ -191,7 +191,7 @@ QSGGeometry* QuickGeometryItem::createGeometry() const
 
 QuickPrimitiveItem::QuickPrimitiveItem(QQuickItem* parent)
     : QQuickItem(parent)
-    , m_geometryItem(0)
+    , m_geometryItem(nullptr)
     , m_geometryDirty(false)
     , m_color(Qt::black)
 {
@@ -250,7 +250,7 @@ void QuickPrimitiveItem::updateGeometry()
 QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
 {
     if (!geometryItem())
-        return 0;
+        return nullptr;
 
     QSGGeometryNode *node = static_cast<QSGGeometryNode *>(oldNode);
     if (!node) {

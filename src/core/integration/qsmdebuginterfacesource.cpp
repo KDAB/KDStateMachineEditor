@@ -64,7 +64,7 @@ class QsmDebugInterfaceSource::Private : public DebugInterfaceSource
     Q_OBJECT
 
 public:
-    explicit Private(QObject *parent = 0);
+    explicit Private(QObject *parent = nullptr);
 
     void addState(QAbstractState *state);
     void addTransition(QAbstractTransition *transition);
@@ -283,7 +283,7 @@ void QsmDebugInterfaceSource::Private::addTransition(QAbstractTransition *transi
 
 void QsmDebugInterfaceSource::Private::updateStartStop()
 {
-    emit statusChanged(qStateMachine() != 0, qStateMachine() && qStateMachine()->isRunning());
+    emit statusChanged(qStateMachine() != nullptr, qStateMachine() && qStateMachine()->isRunning());
 }
 
 void QsmDebugInterfaceSource::Private::toggleRunning()

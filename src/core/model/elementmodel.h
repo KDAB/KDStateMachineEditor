@@ -50,7 +50,7 @@ class KDSME_CORE_EXPORT TransitionModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    explicit TransitionModel(QObject* parent = 0);
+    explicit TransitionModel(QObject* parent = nullptr);
     virtual ~TransitionModel();
 
     virtual void setSourceModel(QAbstractItemModel* sourceModel);
@@ -79,7 +79,7 @@ public:
         _LastColumn
     };
 
-    explicit TransitionListModel(QObject* parent = 0);
+    explicit TransitionListModel(QObject* parent = nullptr);
     virtual ~TransitionListModel();
 
     State* state() const;
@@ -106,7 +106,7 @@ public:
         ElementRole = ObjectTreeModel::UserRole + 1
     };
 
-    explicit StateModel(QObject* parent = 0);
+    explicit StateModel(QObject* parent = nullptr);
     virtual ~StateModel();
 
     State* state() const;

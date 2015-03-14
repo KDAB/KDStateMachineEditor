@@ -34,7 +34,7 @@ class LightWidget : public QWidget
     Q_OBJECT
     Q_PROPERTY(bool on READ isOn WRITE setOn)
 public:
-    LightWidget(const QColor &color, QWidget *parent = 0)
+    LightWidget(const QColor &color, QWidget *parent = nullptr)
         : QWidget(parent), m_color(color), m_on(false) {}
 
     bool isOn() const
@@ -74,7 +74,7 @@ class TrafficLightWidget : public QWidget
     Q_OBJECT
 
 public:
-    TrafficLightWidget(QWidget *parent = 0)
+    TrafficLightWidget(QWidget *parent = nullptr)
         : QWidget(parent)
     {
         QVBoxLayout *vbox = new QVBoxLayout(this);
@@ -103,7 +103,7 @@ private:
     LightWidget *m_green;
 };
 
-QState *createLightState(LightWidget *light, int duration, QState *parent = 0)
+QState *createLightState(LightWidget *light, int duration, QState *parent = nullptr)
 {
     QState *lightState = new QState(parent);
     QTimer *timer = new QTimer(lightState);

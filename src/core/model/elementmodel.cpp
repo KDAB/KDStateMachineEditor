@@ -60,7 +60,7 @@ struct StateModel::Private
 };
 
 StateModel::Private::Private()
-    : m_commandController(0)
+    : m_commandController(nullptr)
 {
 }
 
@@ -170,7 +170,7 @@ TransitionModel::~TransitionModel()
 void TransitionModel::setSourceModel(QAbstractItemModel* sourceModel)
 {
     if (!sourceModel) {
-        QSortFilterProxyModel::setSourceModel(0);
+        QSortFilterProxyModel::setSourceModel(nullptr);
         return;
     }
 

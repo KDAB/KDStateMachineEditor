@@ -187,8 +187,8 @@ struct GraphvizLayouterBackend::Private
 };
 
 GraphvizLayouterBackend::Private::Private()
-    : m_graph(0)
-    , m_context(0)
+    : m_graph(nullptr)
+    , m_context(nullptr)
     , m_layoutMode(RecursiveMode)
 {
     // hide non-critical warnings, such as
@@ -403,9 +403,9 @@ void GraphvizLayouterBackend::Private::closeContext()
         return;
 
     gvFreeLayout(m_context, m_graph);
-    m_context = 0;
+    m_context = nullptr;
     agclose(m_graph);
-    m_graph = 0;
+    m_graph = nullptr;
 }
 
 QRectF GraphvizLayouterBackend::Private::boundingRectForGraph(Agraph_t *graph) const
@@ -445,7 +445,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t* edge) const
     //Calculate the path from the spline (only one spline, as the graph is strict.
     //If it wasn't, we would have to iterate over the first list too)
     //Calculate the path from the spline (only one as the graph is strict)
-    if (ED_spl(edge) && (ED_spl(edge)->list != 0) && (ED_spl(edge)->list->size%3 == 1)) {
+    if (ED_spl(edge) && (ED_spl(edge)->list != nullptr) && (ED_spl(edge)->list->size%3 == 1)) {
         //If there is a starting point, draw a line from it to the first curve point
         if (ED_spl(edge)->list->sflag) {
             path.moveTo(ED_spl(edge)->list->sp.x * TO_DOT_DPI_RATIO,
