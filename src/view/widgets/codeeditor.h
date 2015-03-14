@@ -51,7 +51,6 @@ class QWidget;
 
 class LineNumberArea;
 
-
 class CodeEditor : public QPlainTextEdit
 {
     Q_OBJECT
@@ -77,9 +76,12 @@ private:
     QWidget *lineNumberArea;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 class LineNumberArea : public QWidget
 {
+    Q_OBJECT
+
 public:
     LineNumberArea(CodeEditor *editor) : QWidget(editor) {
         codeEditor = editor;
@@ -98,5 +100,6 @@ private:
     CodeEditor *codeEditor;
 };
 
+#endif
 
 #endif

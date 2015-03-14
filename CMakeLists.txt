@@ -123,6 +123,22 @@ add_custom_command(TARGET copy_data
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/data"
 )
 
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen)
+set_package_properties(Doxygen PROPERTIES
+  TYPE OPTIONAL
+  DESCRIPTION "Doxygen documentation generator"
+  PURPOSE "Needed for generating API documentation (make doc)"
+)
+if(DOXYGEN_FOUND)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Generating API documentation with Doxygen" VERBATIM
+  )
+endif()
+
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
