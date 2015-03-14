@@ -49,4 +49,10 @@ private:
 
 }
 
+/**
+ * @example qsmdebugger/main.cpp
+ *
+ * This is an example of how to use the @ref KDSME::QsmAdapter class.
+ */
+
 #endif // KDSME_QSMADAPTER_H

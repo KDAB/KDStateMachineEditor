@@ -39,6 +39,13 @@ class StateMachineScene;
 class StateMachine;
 class Element;
 
+/**
+ * @brief Widget for displaying a @ref KDSME::StateMachine in a Qt Quick based view
+ *
+ * Simple example building up and display a state machine in a view:
+ *
+ * @snippet simplestatemachine/main.cpp Display the state machine
+ */
 class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 {
     Q_OBJECT
@@ -79,5 +86,11 @@ private:
 };
 
 }
+
+/**
+ * @example simplestatemachine/main.cpp
+ *
+ * This examples shows how to construct a simple @ref KDSME::StateMachine and show it in a @ref KDSME::StateMachineView
+ */
 
 #endif // STARTCHARTVIEW_H

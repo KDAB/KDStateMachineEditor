@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
+    //! [Display the state machine]
     StateMachine machine;
     State s1(&machine);
     s1.setLabel("s1");
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
     view.scene()->layout();
     view.resize(800, 600);
     view.show();
+    //! [Display the state machine]
 
     app.exec();
 }

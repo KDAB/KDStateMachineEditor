@@ -53,4 +53,10 @@ private:
 
 }
 
+/**
+ * @example scxmlimport/main.cpp
+ *
+ * This examples shows how to import a @ref KDSME::StateMachine by importing a SCXML document
+ */
+
 #endif // KDSME_SCXMLIMPORTER_H
