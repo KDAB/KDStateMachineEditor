@@ -88,7 +88,7 @@ private:
 
     bool mayAddState(QAbstractState *state);
 
-    StateMachineWatcher *m_stateMachineWatcher;
+    QSMWatcher *m_stateMachineWatcher;
     QSet<QAbstractState*> m_recursionGuard;
     QSet<QAbstractState*> m_lastStateConfig;
 };
@@ -119,7 +119,7 @@ QObject* QsmDebugInterfaceSource::remoteObjectSource() const
 
 QsmDebugInterfaceSource::Private::Private(QObject *parent)
     : DebugInterfaceSource(parent)
-    , m_stateMachineWatcher(new StateMachineWatcher(this))
+    , m_stateMachineWatcher(new QSMWatcher(this))
 {
     DebugInterface::registerTypes();
 

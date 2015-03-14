@@ -27,7 +27,7 @@
 #include <QState>
 #include <QStateMachine>
 
-StateMachineWatcher::StateMachineWatcher(QObject *parent)
+QSMWatcher::QSMWatcher(QObject *parent)
     : QObject(parent)
     , m_watchedStateMachine(nullptr)
     , m_lastEnteredState(nullptr)
@@ -35,11 +35,11 @@ StateMachineWatcher::StateMachineWatcher(QObject *parent)
 {
 }
 
-StateMachineWatcher::~StateMachineWatcher()
+QSMWatcher::~QSMWatcher()
 {
 }
 
-void StateMachineWatcher::setWatchedStateMachine(QStateMachine *machine)
+void QSMWatcher::setWatchedStateMachine(QStateMachine *machine)
 {
     if (m_watchedStateMachine == machine) {
         return;
@@ -55,12 +55,12 @@ void StateMachineWatcher::setWatchedStateMachine(QStateMachine *machine)
     emit watchedStateMachineChanged(machine);
 }
 
-QStateMachine *StateMachineWatcher::watchedStateMachine() const
+QStateMachine *QSMWatcher::watchedStateMachine() const
 {
     return m_watchedStateMachine;
 }
 
-void StateMachineWatcher::watchState(QAbstractState *state)
+void QSMWatcher::watchState(QAbstractState *state)
 {
     if (state->machine() != m_watchedStateMachine) {
         return;
@@ -80,7 +80,7 @@ void StateMachineWatcher::watchState(QAbstractState *state)
     m_watchedStates << state;
 }
 
-void StateMachineWatcher::clearWatchedStates()
+void QSMWatcher::clearWatchedStates()
 {
     Q_FOREACH (QAbstractState *state, m_watchedStates) {
         disconnect(state, SIGNAL(entered()), this, SLOT(handleStateEntered()));
@@ -94,7 +94,7 @@ void StateMachineWatcher::clearWatchedStates()
     m_watchedStates.clear();
 }
 
-void StateMachineWatcher::handleTransitionTriggered()
+void QSMWatcher::handleTransitionTriggered()
 {
     QAbstractTransition *transition = qobject_cast<QAbstractTransition*>(QObject::sender());
     Q_ASSERT(transition);
@@ -102,7 +102,7 @@ void StateMachineWatcher::handleTransitionTriggered()
     emit transitionTriggered(transition);
 }
 
-void StateMachineWatcher::handleStateEntered()
+void QSMWatcher::handleStateEntered()
 {
     QAbstractState* state = qobject_cast<QAbstractState*>(QObject::sender());
     Q_ASSERT(state);
@@ -118,7 +118,7 @@ void StateMachineWatcher::handleStateEntered()
     emit stateEntered(state);
 }
 
-void StateMachineWatcher::handleStateExited()
+void QSMWatcher::handleStateExited()
 {
     QAbstractState* state = qobject_cast<QAbstractState*>(QObject::sender());
     Q_ASSERT(state);
@@ -135,7 +135,7 @@ void StateMachineWatcher::handleStateExited()
     emit stateExited(state);
 }
 
-void StateMachineWatcher::handleStateDestroyed()
+void QSMWatcher::handleStateDestroyed()
 {
     QAbstractState* state = static_cast<QAbstractState*>(QObject::sender());
     Q_ASSERT(state);

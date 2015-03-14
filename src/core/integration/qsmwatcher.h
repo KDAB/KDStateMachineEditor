@@ -32,17 +32,18 @@ class QAbstractTransition;
 class QState;
 class QStateMachine;
 
-class StateMachineWatcher : public QObject
+class QSMWatcher : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit StateMachineWatcher(QObject *parent = nullptr);
-    virtual ~StateMachineWatcher();
+Q_OBJECT
+
+public:
+    explicit QSMWatcher(QObject *parent = nullptr);
+    virtual ~QSMWatcher();
 
     void setWatchedStateMachine(QStateMachine *machine);
     QStateMachine *watchedStateMachine() const;
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void stateEntered(QAbstractState *state);
     void stateExited(QAbstractState *state);
 
@@ -50,7 +51,7 @@ class StateMachineWatcher : public QObject
 
     void watchedStateMachineChanged(QStateMachine *);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void watchState(QAbstractState *state);
     void clearWatchedStates();
 
@@ -59,7 +60,7 @@ class StateMachineWatcher : public QObject
     void handleStateDestroyed();
     void handleTransitionTriggered();
 
-  private:
+private:
     QStateMachine *m_watchedStateMachine;
     QVector<QAbstractState *> m_watchedStates;
 
