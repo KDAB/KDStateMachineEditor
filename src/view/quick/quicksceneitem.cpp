@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "quicksceneitem.h"
+#include "quicksceneitem_p.h"
 
 #include "debug.h"
 #include "objecttreemodel.h"

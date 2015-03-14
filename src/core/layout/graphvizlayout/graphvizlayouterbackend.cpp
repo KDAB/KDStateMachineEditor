@@ -24,7 +24,7 @@
   clear to you.
 */
 
-#include "graphvizlayouterbackend.h"
+#include "graphvizlayouterbackend_p.h"
 
 #include "gvutils.h"
 
@@ -112,33 +112,6 @@ QVector<QPair<const char*, const char*>> attributesForState(const State* state)
         << EntryType("style", "rounded");
   }
 }
-
-/**
- * RAII-based guard for setting the locale to "C" during this object's lifetime
- *
- * Graphviz internally uses atof() and friends to convert strings to numbers, and these are locale-specific.
- * We need to make sure the current locale is "C" so these conversions are done correctly.
- *
- * Also see: http://lists.research.att.com/pipermail/graphviz-interest/2011q1/006316.html
- */
-class LocaleLocker
-{
-public:
-    inline LocaleLocker()
-        : m_oldlocale(qstrdup(setlocale(LC_NUMERIC, nullptr)))
-    {
-        setlocale(LC_NUMERIC, "C");
-    }
-
-    inline ~LocaleLocker()
-    {
-        setlocale(LC_NUMERIC, m_oldlocale);
-        delete[] m_oldlocale;
-    }
-
-private:
-    char* m_oldlocale;
-};
 
 struct GraphvizLayouterBackend::Private
 {

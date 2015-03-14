@@ -1,6 +1,4 @@
 /*
-  quickpainterpath.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -26,7 +24,7 @@
 #define KDSME_QUICK_QUICKPAINTERPATH_H
 
 #include "qopengl2pexvertexarray_p.h"
-#include "quickprimitiveitem.h"
+#include "quickprimitiveitem_p.h"
 
 #include <QObject>
 #include <QPainterPath>

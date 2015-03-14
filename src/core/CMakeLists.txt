@@ -41,7 +41,6 @@ if(Qt5RemoteObjects_FOUND)
   install(FILES
     integration/qsmadapter.h
     integration/qsmdebuginterfacesource.h
-    integration/qsmwatcher.h
     integration/debuginterfaceclient.h
     integration/debuginterface_types.h
 

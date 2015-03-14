@@ -20,7 +20,7 @@
   clear to you.
 */
 
-#include "qsmwatcher.h"
+#include "qsmwatcher_p.h"
 
 #include <QAbstractTransition>
 #include <QFinalState>

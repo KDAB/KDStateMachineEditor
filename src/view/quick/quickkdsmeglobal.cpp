@@ -22,9 +22,9 @@
   clear to you.
 */
 
-#include "quickkdsmeglobal.h"
+#include "quickkdsmeglobal_p.h"
 
-#include "quickpainterpath.h"
+#include "quickpainterpath_p.h"
 
 QuickPainterPath* QuickKDSMEGlobal::createPath() const
 {

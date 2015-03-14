@@ -24,7 +24,7 @@
 
 #include "graphvizlayerlayouter.h"
 
-#include "graphvizlayouterbackend.h"
+#include "graphvizlayouterbackend_p.h"
 #include "element.h"
 #include "state.h"
 #include "transition.h"

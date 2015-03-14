@@ -40,7 +40,7 @@
 
 #include <QtGui>
 
-#include "codeeditor.h"
+#include "codeeditor_p.h"
 
 
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)

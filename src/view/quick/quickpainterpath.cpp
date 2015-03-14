@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "quickpainterpath.h"
+#include "quickpainterpath_p.h"
 
 QuickPainterPathStroker::QuickPainterPathStroker(QObject* parent)
     : QObject(parent)

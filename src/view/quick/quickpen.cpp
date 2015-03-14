@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "quickpen.h"
+#include "quickpen_p.h"
 
 #include <QPen>
 
@@ -81,5 +81,3 @@ void QuickPen::setStyle(Qt::PenStyle style)
     m_style = style;
     emit penChanged();
 }
-
-#include "moc_quickpen.cpp"

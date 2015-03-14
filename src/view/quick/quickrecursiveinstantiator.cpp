@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "quickrecursiveinstantiator.h"
+#include "quickrecursiveinstantiator_p.h"
 
 #include "objecttreemodel.h"
 

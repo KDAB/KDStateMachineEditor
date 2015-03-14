@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "quickmaskedmousearea.h"
+#include "quickmaskedmousearea_p.h"
 
 #include "debug.h"
 #include <QGuiApplication>

@@ -23,7 +23,7 @@
 #include "qsmdebuginterfacesource.h"
 
 #include "debuginterface_source.h"
-#include "qsmwatcher.h"
+#include "qsmwatcher_p.h"
 
 #include "objecthelper.h"
 

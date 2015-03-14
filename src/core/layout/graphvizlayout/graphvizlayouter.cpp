@@ -24,7 +24,7 @@
 
 #include "graphvizlayouter.h"
 
-#include "graphvizlayouterbackend.h"
+#include "graphvizlayouterbackend_p.h"
 #include "element.h"
 
 #include "debug.h"
