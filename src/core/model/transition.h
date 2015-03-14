@@ -41,7 +41,7 @@ public:
     explicit Transition(State* sourceState = nullptr);
     virtual ~Transition();
 
-    virtual Type type() const;
+    virtual Type type() const override;
 
     Q_INVOKABLE KDSME::StateMachine* machine() const;
 

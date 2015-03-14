@@ -43,7 +43,7 @@ class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
 public:
     explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = nullptr);
 
-    virtual int id() const { return ChangeStateMachine; }
+    virtual int id() const override { return ChangeStateMachine; }
 
     KDSME::State* stateMachine() const;
     void setStateMachine(KDSME::State* statemachine);

@@ -145,7 +145,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             m_createcmd->setParentElement(targetElement);
             setText(m_createcmd->text());
         }
-        virtual void redo()
+        virtual void redo() override
         {
             // save the current layout
             Q_ASSERT(m_view->rootState());
@@ -174,7 +174,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             // as if a user clicked on it.
             m_view->setCurrentItem(element);
         }
-        virtual void undo() {
+        virtual void undo() override {
             m_createcmd->undo();
         }
     private:

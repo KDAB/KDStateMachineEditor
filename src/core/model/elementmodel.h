@@ -53,9 +53,9 @@ public:
     explicit TransitionModel(QObject* parent = nullptr);
     virtual ~TransitionModel();
 
-    virtual void setSourceModel(QAbstractItemModel* sourceModel);
+    virtual void setSourceModel(QAbstractItemModel* sourceModel) override;
 
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 private:
     struct Private;
@@ -86,9 +86,9 @@ public:
     void setState(State* list);
 
     virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    virtual int columnCount(const QModelIndex& parent) const;
+    virtual int columnCount(const QModelIndex& parent) const override;
     virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     virtual QHash< int, QByteArray > roleNames() const override;
 
 private:
