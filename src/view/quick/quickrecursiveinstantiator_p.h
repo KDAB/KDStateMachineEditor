@@ -23,7 +23,7 @@
 #ifndef KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 #define KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_H
 
-#include "instantiatorinterface.h"
+#include "instantiatorinterface_p.h"
 
 #include <QPersistentModelIndex>
 #include <QQuickItem>
