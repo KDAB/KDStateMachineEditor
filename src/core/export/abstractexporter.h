@@ -66,4 +66,11 @@ private:
 
 }
 
+
+/**
+ * @example export/main.cpp
+ *
+ * This is an example of how to use the inheriters of the @ref KDSME::AbstractExporter class.
+ */
+
 #endif

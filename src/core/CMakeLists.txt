@@ -93,6 +93,7 @@ endif()
 
 set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/common
+  ${CMAKE_CURRENT_SOURCE_DIR}/export
   ${CMAKE_CURRENT_SOURCE_DIR}/import
   ${CMAKE_CURRENT_SOURCE_DIR}/integration
   ${CMAKE_CURRENT_SOURCE_DIR}/layout
