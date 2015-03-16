@@ -15,6 +15,12 @@ set(PROJECT_VERSION_STRING "${KDSME_VERSION_STRING}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH})
 
+if(WIN32)
+  # Needed for qmake-integration because qmake's QT modules import mechanism does assume
+  # debug libraries at windows always have a d suffix.
+  set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "debug library postfix, usually d on windows")
+endif()
+
 include(CheckCXXCompilerFlag)
 include(CMakePackageConfigHelpers)
 include(CTest)
