@@ -152,7 +152,7 @@ write_basic_package_version_file(
 )
 configure_file(cmake/KDSMEConfig.cmake
   "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfig.cmake"
-  COPY_ONLY
+  COPYONLY
 )
 
 set(CMAKECONFIG_INSTALL_DIR lib/cmake/${CONFIG_DIR})
