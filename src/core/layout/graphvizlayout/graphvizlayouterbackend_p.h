@@ -24,6 +24,7 @@
 #define KDSME_LAYOUT_GRAPHVIZLAYOUTERBACKEND_H
 
 #include <QString>
+#include <clocale>
 
 class QRectF;
 
