@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKSCENEITEM_H
-#define KDSME_QUICK_QUICKSCENEITEM_H
+#ifndef KDSME_QUICK_QUICKSCENEITEM_P_H
+#define KDSME_QUICK_QUICKSCENEITEM_P_H
 
 #include <QQuickItem>
 
@@ -98,4 +98,4 @@ private:
     QMetaObject::Connection m_targetStateConnection;
 };
 
-#endif // KDSME_QUICK_QUICKSCENEITEM_H
+#endif // KDSME_QUICK_QUICKSCENEITEM_P_H

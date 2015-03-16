@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKKDSMEGLOBAL_H
-#define KDSME_QUICK_QUICKKDSMEGLOBAL_H
+#ifndef KDSME_QUICK_QUICKKDSMEGLOBAL_P_H
+#define KDSME_QUICK_QUICKKDSMEGLOBAL_P_H
 
 #include <QObject>
 
@@ -36,4 +36,4 @@ public:
     Q_INVOKABLE QuickPainterPath* createPath(const QPointF& startPoint) const;
 };
 
-#endif // QUICKKDSMEGLOBAL_H
+#endif // QUICKKDSMEGLOBAL_P_H

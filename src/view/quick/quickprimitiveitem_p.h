@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKPRIMITIVEITEM_H
-#define KDSME_QUICK_QUICKPRIMITIVEITEM_H
+#ifndef KDSME_QUICK_QUICKPRIMITIVEITEM_P_H
+#define KDSME_QUICK_QUICKPRIMITIVEITEM_P_H
 
 #include <QScopedPointer>
 #include <QtQuick/QSGGeometry>
@@ -135,4 +135,4 @@ private:
     QColor m_color;
 };
 
-#endif // QUICKPRIMITIVEITEM_H
+#endif // QUICKPRIMITIVEITEM_P_H

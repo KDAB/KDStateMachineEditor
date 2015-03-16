@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKPEN_H
-#define KDSME_QUICK_QUICKPEN_H
+#ifndef KDSME_QUICK_QUICKPEN_P_H
+#define KDSME_QUICK_QUICKPEN_P_H
 
 #include <QColor>
 #include <QObject>
@@ -65,4 +65,4 @@ private:
     Qt::PenStyle m_style;
 };
 
-#endif // QUICKPEN_H
+#endif // QUICKPEN_P_H

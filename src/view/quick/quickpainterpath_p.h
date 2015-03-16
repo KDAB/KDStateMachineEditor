@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKPAINTERPATH_H
-#define KDSME_QUICK_QUICKPAINTERPATH_H
+#ifndef KDSME_QUICK_QUICKPAINTERPATH_P_H
+#define KDSME_QUICK_QUICKPAINTERPATH_P_H
 
 #include "qopengl2pexvertexarray_p.h"
 #include "quickprimitiveitem_p.h"
@@ -116,4 +116,4 @@ private:
     QPainterPath m_path;
 };
 
-#endif // QUICKPAINTERPATH_H
+#endif // QUICKPAINTERPATH_P_H

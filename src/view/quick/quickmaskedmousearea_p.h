@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_QUICK_QUICKMASKEDMOUSEAREA_H
-#define KDSME_QUICK_QUICKMASKEDMOUSEAREA_H
+#ifndef KDSME_QUICK_QUICKMASKEDMOUSEAREA_P_H
+#define KDSME_QUICK_QUICKMASKEDMOUSEAREA_P_H
 
 #include <QObject>
 #include <QPainterPath>
@@ -110,4 +110,4 @@ private:
     qreal m_tolerance;
 };
 
-#endif // QUICKMASKEDMOUSEAREA_H
+#endif // QUICKMASKEDMOUSEAREA_P_H

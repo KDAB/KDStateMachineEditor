@@ -11,7 +11,7 @@ SKIP /3rdparty/
 #nor examples
 SKIP /examples/
 #nor Digia'stuff
-SKIP /codeeditor.cpp|/codeeditor.h
+SKIP /codeeditor.cpp|/codeeditor_p.h
 SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
 #skip the borrowed code in the cmake subdir
 SKIP /cmake/MacroLogFeature.cmake|/cmake/DeployQt5.cmake|/cmake/ECMGeneratePriFile.cmake
