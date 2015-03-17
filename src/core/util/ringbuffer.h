@@ -29,12 +29,35 @@
 
 namespace KDSME {
 
+/**
+ * This class is similar to a QQueue but provides circular semantics.
+ * For example, appending to an already "full" queue will overwrite the
+ * oldest item, i.e. it forms a kind of LRU cache.
+ *
+ * Or, in other words, RingBuffer is a QQueue with limited capacity.
+ *
+ * The API is essentially simplified version of QVector, which additional methods
+ * such as @ref enqueue(), @ref
+ *
+ * @sa QVector
+ */
 template<class T>
 class RingBuffer
 {
-  public:
-    RingBuffer(int capacity = 10) : m_capacity(capacity) {}
+public:
+    /**
+     * Construct a ring buffer with initial capacity @p capacity
+     */
+    RingBuffer(int capacity = 10)
+        : m_capacity(capacity)
+    {}
 
+    /**
+     * (Re-)set the capacity of this ring buffer to @p capacity
+     *
+     * @note Will run cleanup() afterwards and remove items if capacity decreased
+     * @sa cleanup()
+     */
     void setCapacity(int capacity)
     {
         Q_ASSERT(capacity > 0);
@@ -42,12 +65,18 @@ class RingBuffer
         cleanup();
     }
 
+    /**
+     * Adds value @p t to the tail of the queue.
+     */
     void enqueue(T t)
     {
         m_entries.enqueue(t);
         cleanup();
     }
 
+    /**
+     * Clear the buffer
+     */
     void clear()
     {
         m_entries.clear();
@@ -55,7 +84,15 @@ class RingBuffer
 
     inline const T& at(int i) const { return m_entries.at(i); }
     inline int size() const { return m_entries.size(); }
+    /**
+     * Returns a reference to the queue's head item.
+     * This function assumes that the queue isn't empty.
+     */
     inline T head() const { return m_entries.head(); }
+    /**
+     * Returns a reference to the last item in the list.
+     * The list must not be empty.
+     */
     inline T last() const { return m_entries.last(); }
     inline QList<T> entries() const { return m_entries; }
 
