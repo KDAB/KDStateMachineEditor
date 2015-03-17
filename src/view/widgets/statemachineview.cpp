@@ -27,7 +27,7 @@
 
 #include "commandcontroller.h"
 #include "command/command.h"
-#include "command/commandfactory.h"
+#include "command/commandfactory_p.h"
 #include "command/createelementcommand.h"
 #include "command/deleteelementcommand.h"
 #include "command/changestatemachinecommand.h"

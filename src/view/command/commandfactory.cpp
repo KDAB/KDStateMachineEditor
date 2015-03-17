@@ -1,6 +1,4 @@
 /*
-  commandfactory.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "commandfactory.h"
+#include "commandfactory_p.h"
 
 #include "command.h"
 #include "createelementcommand.h"
@@ -122,5 +120,3 @@ ChangeStateMachineCommand* CommandFactory::changeStateMachineElement(KDSME::Stat
     cmd->setStateMachine(statemachine);
     return cmd;
 }
-
-#include "moc_commandfactory.cpp"

@@ -1,6 +1,4 @@
 /*
-  commandfactory.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_COMMANDFACTORY_H
-#define KDSME_COMMAND_COMMANDFACTORY_H
+#ifndef COMMAND_COMMANDFACTORY_H
+#define COMMAND_COMMANDFACTORY_H
 
 #include "kdsme_view_export.h"
 
@@ -32,7 +30,6 @@
 #include <QObject>
 
 namespace KDSME {
-
 class CreateElementCommand;
 class DeleteElementCommand;
 class LayoutItem;
@@ -46,8 +43,9 @@ class ChangeStateMachineCommand;
 class StateModel;
 class Transition;
 class StateMachineScene;
+}
 
-class KDSME_VIEW_EXPORT CommandFactory : public QObject
+class CommandFactory : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(KDSME::StateModel* model READ model WRITE setModel NOTIFY modelChanged)
@@ -55,8 +53,8 @@ class KDSME_VIEW_EXPORT CommandFactory : public QObject
 public:
     explicit CommandFactory(QObject* parent = nullptr);
 
-    StateModel* model() const;
-    void setModel(StateModel* model);
+    KDSME::StateModel* model() const;
+    void setModel(KDSME::StateModel* model);
 
     Q_INVOKABLE KDSME::CreateElementCommand* createElement(KDSME::StateModel* model, KDSME::Element::Type type, KDSME::Element* parentElement = nullptr) const;
     Q_INVOKABLE KDSME::DeleteElementCommand* deleteElement(KDSME::StateMachineScene* view, KDSME::Element* element) const;
@@ -70,14 +68,12 @@ public:
     Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine);
 
 Q_SIGNALS:
-    void modelChanged(StateModel* model);
+    void modelChanged(KDSME::StateModel* model);
 
 private:
-    StateModel* m_model;
+    KDSME::StateModel* m_model;
 };
 
-}
-
-Q_DECLARE_METATYPE(KDSME::CommandFactory*)
+Q_DECLARE_METATYPE(CommandFactory*)
 
 #endif
