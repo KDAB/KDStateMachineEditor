@@ -31,7 +31,7 @@
 #include "command/createelementcommand.h"
 #include "command/deleteelementcommand.h"
 #include "command/changestatemachinecommand.h"
-#include "command/modifylayoutitemcommand.h"
+#include "command/modifyelementcommand.h"
 #include "common/metatypedeclarations.h"
 #include "editcontroller.h"
 #include "layoutimportexport.h"

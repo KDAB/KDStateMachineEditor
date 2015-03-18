@@ -78,7 +78,7 @@ Item {
         }
 
         function move(dx, dy) {
-            var cmd = KDSME.CommandFactory.modifyLayoutItem(control.element);
+            var cmd = KDSME.CommandFactory.modifyElement(control.element);
             cmd.moveBy(dx, dy);
             commandController.push(cmd);
         }

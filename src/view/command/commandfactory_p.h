@@ -35,7 +35,7 @@ class DeleteElementCommand;
 class LayoutItem;
 class LayoutSnapshotCommand;
 class ModifyPropertyCommand;
-class ModifyLayoutItemCommand;
+class ModifyElementCommand;
 class ModifyTransitionCommand;
 class ModifyTransitionLayoutItemCommand;
 class ReparentElementCommand;
@@ -61,7 +61,7 @@ public:
     Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::StateMachineScene* view, const QString& text = QString()) const;
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());
-    Q_INVOKABLE KDSME::ModifyLayoutItemCommand* modifyLayoutItem(KDSME::Element* item);
+    Q_INVOKABLE KDSME::ModifyElementCommand* modifyElement(KDSME::Element* item);
     Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition);
     Q_INVOKABLE KDSME::ModifyTransitionLayoutItemCommand* modifyTransitionLayoutItem(KDSME::Transition* transition);
     Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::StateMachineScene* view, KDSME::Element* element);

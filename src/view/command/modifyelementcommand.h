@@ -1,6 +1,4 @@
 /*
-  modifylayoutitemcommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYLAYOUTITEMCOMMAND_H
-#define KDSME_COMMAND_MODIFYLAYOUTITEMCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYELEMENTCOMMAND_H
+#define KDSME_COMMAND_MODIFYELEMENTCOMMAND_H
 
 #include "command.h"
 
@@ -35,12 +33,12 @@ namespace KDSME {
 
 class Element;
 
-class KDSME_VIEW_EXPORT ModifyLayoutItemCommand : public Command
+class KDSME_VIEW_EXPORT ModifyElementCommand : public Command
 {
     Q_OBJECT
 
 public:
-    explicit ModifyLayoutItemCommand(Element* item, QUndoCommand* parent = nullptr);
+    explicit ModifyElementCommand(Element* item, QUndoCommand* parent = nullptr);
 
     Element* item() const;
 

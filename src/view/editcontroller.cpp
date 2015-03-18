@@ -31,7 +31,7 @@
 #include "transition.h"
 #include "layoutimportexport.h"
 #include "kdsmeconstants.h"
-#include "modifylayoutitemcommand.h"
+#include "modifyelementcommand.h"
 #include "statemachinescene.h"
 
 #include <QUrl>
@@ -160,7 +160,7 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             LayoutImportExport::importLayout(doc.object(), m_view->rootState());
 
             // move the new element to its position and set a sane initial size
-            ModifyLayoutItemCommand poscmd(element);
+            ModifyElementCommand poscmd(element);
             QPointF pos = m_pos;
             QSizeF size = element->preferredSize();
             if (size.width() > 0)

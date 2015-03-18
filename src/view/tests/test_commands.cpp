@@ -23,7 +23,7 @@
 */
 
 #include "command/createelementcommand.h"
-#include "command/modifylayoutitemcommand.h"
+#include "command/modifyelementcommand.h"
 #include "command/modifytransitioncommand.h"
 #include "command/modifytransitionlayoutitemcommand.h"
 #include "command/modifypropertycommand.h"
@@ -67,8 +67,8 @@ private Q_SLOTS:
     void testLayoutSnapshot();
     void testModifyProperty();
     void testModifyTransition();
-    void testModifyLayoutItem_moveBy();
-    void testModifyLayoutItem_setGeometry();
+    void testModifyElement_moveBy();
+    void testModifyElement_setGeometry();
     void testModifyTransitionLayoutItem();
     void testReparentElement();
 };
@@ -220,13 +220,13 @@ void CommandsTest::testModifyTransition()
     }
 }
 
-void CommandsTest::testModifyLayoutItem_moveBy()
+void CommandsTest::testModifyElement_moveBy()
 {
     TestHarness harness;
     Element item;
 
     QCOMPARE(item.pos(), QPointF(0, 0));
-    auto cmd = new ModifyLayoutItemCommand(&item);
+    auto cmd = new ModifyElementCommand(&item);
     QCOMPARE(item.pos(), QPointF(0, 0));
     cmd->moveBy(5, 5);
     harness.undoStack.push(cmd);
@@ -235,7 +235,7 @@ void CommandsTest::testModifyLayoutItem_moveBy()
     QCOMPARE(item.pos(), QPointF(0, 0));
 }
 
-void CommandsTest::testModifyLayoutItem_setGeometry()
+void CommandsTest::testModifyElement_setGeometry()
 {
     TestHarness harness;
     Element item;
@@ -245,7 +245,7 @@ void CommandsTest::testModifyLayoutItem_setGeometry()
     QCOMPARE(item.pos(), QPointF(0, 0));
     QCOMPARE(item.width(), 0.);
     QCOMPARE(item.height(), 0.);
-    auto cmd = new ModifyLayoutItemCommand(&item);
+    auto cmd = new ModifyElementCommand(&item);
     QCOMPARE(item.pos(), QPointF(0, 0));
     QCOMPARE(item.width(), 0.);
     QCOMPARE(item.height(), 0.);

@@ -6,7 +6,7 @@ set(LIB_SRCS
   command/layoutsnapshotcommand.cpp
   command/modifyinitialstatecommand.cpp
   command/modifydefaultstatecommand.cpp
-  command/modifylayoutitemcommand.cpp
+  command/modifyelementcommand.cpp
   command/modifypropertycommand.cpp
   command/modifytransitionlayoutitemcommand.cpp
   command/modifytransitioncommand.cpp

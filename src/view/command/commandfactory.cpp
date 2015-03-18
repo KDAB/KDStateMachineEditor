@@ -26,7 +26,7 @@
 #include "createelementcommand.h"
 #include "deleteelementcommand.h"
 #include "layoutsnapshotcommand.h"
-#include "modifylayoutitemcommand.h"
+#include "modifyelementcommand.h"
 #include "modifypropertycommand.h"
 #include "modifytransitioncommand.h"
 #include "modifytransitionlayoutitemcommand.h"
@@ -45,7 +45,7 @@ CommandFactory::CommandFactory(QObject* parent)
 {
     qRegisterMetaType<CreateElementCommand*>();
     qRegisterMetaType<DeleteElementCommand*>();
-    qRegisterMetaType<ModifyLayoutItemCommand*>();
+    qRegisterMetaType<ModifyElementCommand*>();
     qRegisterMetaType<ModifyPropertyCommand*>();
     qRegisterMetaType<ModifyTransitionCommand*>();
     qRegisterMetaType<ModifyTransitionLayoutItemCommand*>();
@@ -94,9 +94,9 @@ ModifyPropertyCommand* CommandFactory::modifyProperty(QObject* object, const QJs
     return new ModifyPropertyCommand(object, propertyMap, text);
 }
 
-ModifyLayoutItemCommand* CommandFactory::modifyLayoutItem(Element* item)
+ModifyElementCommand* CommandFactory::modifyElement(Element* item)
 {
-    return new ModifyLayoutItemCommand(item);
+    return new ModifyElementCommand(item);
 }
 
 ModifyTransitionLayoutItemCommand* CommandFactory::modifyTransitionLayoutItem(Transition* transition)

@@ -1,6 +1,4 @@
 /*
-  modifylayoutitemcommand.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "modifylayoutitemcommand.h"
+#include "modifyelementcommand.h"
 
 #include "element.h"
 
@@ -41,7 +39,7 @@ void setElementGeometry(Element* item, const QRectF& geometry)
 
 }
 
-KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(Element* item, QUndoCommand* parent)
+KDSME::ModifyElementCommand::ModifyElementCommand(Element* item, QUndoCommand* parent)
     : Command(QString(), parent)
     , m_operation(NoOperation)
     , m_item(item)
@@ -49,26 +47,26 @@ KDSME::ModifyLayoutItemCommand::ModifyLayoutItemCommand(Element* item, QUndoComm
     Q_ASSERT(item);
 }
 
-Element* KDSME::ModifyLayoutItemCommand::item() const
+Element* KDSME::ModifyElementCommand::item() const
 {
     return m_item;
 }
 
-void KDSME::ModifyLayoutItemCommand::moveBy(qreal dx, qreal dy)
+void KDSME::ModifyElementCommand::moveBy(qreal dx, qreal dy)
 {
     m_moveByData = QPointF(dx, dy);
     m_operation = MoveOperation;
     updateText();
 }
 
-void ModifyLayoutItemCommand::setGeometry(const QRectF& geometry)
+void ModifyElementCommand::setGeometry(const QRectF& geometry)
 {
     m_newGeometry = geometry;
     m_operation = SetGeometryOperation;
     updateText();
 }
 
-void KDSME::ModifyLayoutItemCommand::redo()
+void KDSME::ModifyElementCommand::redo()
 {
     if (!m_item || m_operation == NoOperation) {
         qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
@@ -86,7 +84,7 @@ void KDSME::ModifyLayoutItemCommand::redo()
     }
 }
 
-void KDSME::ModifyLayoutItemCommand::undo()
+void KDSME::ModifyElementCommand::undo()
 {
     if (!m_item || m_operation == NoOperation) {
         qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
@@ -103,13 +101,13 @@ void KDSME::ModifyLayoutItemCommand::undo()
     }
 }
 
-bool ModifyLayoutItemCommand::mergeWith(const QUndoCommand* other)
+bool ModifyElementCommand::mergeWith(const QUndoCommand* other)
 {
     if (other->id() != id()) {
         return false;
     }
 
-    auto cmd = static_cast<const ModifyLayoutItemCommand*>(other);
+    auto cmd = static_cast<const ModifyElementCommand*>(other);
     if (cmd->m_item != m_item || cmd->m_operation != m_operation) {
         return false;
     }
@@ -119,7 +117,7 @@ bool ModifyLayoutItemCommand::mergeWith(const QUndoCommand* other)
     return true;
 }
 
-void KDSME::ModifyLayoutItemCommand::updateText()
+void KDSME::ModifyElementCommand::updateText()
 {
     const QString itemLabel = m_item && m_item ? m_item->label() : tr("<Unknown>");
 
@@ -135,5 +133,3 @@ void KDSME::ModifyLayoutItemCommand::updateText()
         break;
     }
 }
-
-#include "moc_modifylayoutitemcommand.cpp"
