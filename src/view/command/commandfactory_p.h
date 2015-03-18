@@ -20,8 +20,8 @@
   clear to you.
 */
 
-#ifndef COMMAND_COMMANDFACTORY_H
-#define COMMAND_COMMANDFACTORY_H
+#ifndef COMMAND_COMMANDFACTORY_P_H
+#define COMMAND_COMMANDFACTORY_P_H
 
 #include "kdsme_view_export.h"
 
