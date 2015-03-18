@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "createelementcommand.h"
+#include "createelementcommand_p.h"
 
 #include "elementfactory.h"
 #include "elementmodel.h"

@@ -25,13 +25,13 @@
 #include "editcontroller.h"
 #include "widgets/statemachineview.h"
 
-#include "createelementcommand.h"
-#include "command.h"
+#include "createelementcommand_p.h"
+#include "command_p.h"
 #include "state.h"
 #include "transition.h"
 #include "layoutimportexport.h"
 #include "kdsmeconstants.h"
-#include "modifyelementcommand.h"
+#include "modifyelementcommand_p.h"
 #include "statemachinescene.h"
 
 #include <QUrl>

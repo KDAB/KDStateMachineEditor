@@ -20,7 +20,7 @@
   clear to you.
 */
 
-#include "modifyelementcommand.h"
+#include "modifyelementcommand_p.h"
 
 #include "element.h"
 

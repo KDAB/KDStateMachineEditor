@@ -1,11 +1,9 @@
 /*
-  ModifyDefaultStateCommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Volker Krause <volker.krause@kdab.com>
+  Author: Kevin Funk <kevin.funk@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,35 +20,40 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
-#define KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYPROPERTYCOMMAND_P_H
+#define KDSME_COMMAND_MODIFYPROPERTYCOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
+#include <QHash>
 #include <QPointer>
+
+class QJsonObject;
+class QVariant;
 
 namespace KDSME {
 
-class State;
-class HistoryState;
-
-class KDSME_VIEW_EXPORT ModifyDefaultStateCommand : public Command
+class KDSME_VIEW_EXPORT ModifyPropertyCommand : public KDSME::Command
 {
     Q_OBJECT
-public:
-    explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
-    ~ModifyDefaultStateCommand();
 
-    int id() const override;
-    void undo() override;
-    void redo() override;
+public:
+    ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = nullptr);
+    ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = nullptr);
+
+    virtual int id() const override { return ModifyProperty; }
+
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
-    QPointer<HistoryState> m_state;
-    QPointer<State> m_defaultState;
-    QPointer<State> m_oldDefaultState;
+    void init();
+
+    QPointer<QObject> m_object;
+    QHash<QByteArray, QVariant> m_propertyMap;
+    QHash<QByteArray, QVariant> m_oldPropertyMap;
 };
 
 }
 
-#endif // KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_H
+#endif // MODIFYPROPERTYCOMMAND_P_H

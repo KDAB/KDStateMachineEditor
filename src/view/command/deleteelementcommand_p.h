@@ -1,11 +1,9 @@
 /*
-  changestatemachinecommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Sebastian Sauer <sebastian.sauer@kdab.com>
+  Author: Kevin Funk <kevin.funk@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,43 +20,42 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
-#define KDSME_COMMAND_CHANGESTATEMACHINECOMMAND_H
+#ifndef KDSME_COMMAND_DELETEELEMENTCOMMAND_P_H
+#define KDSME_COMMAND_DELETEELEMENTCOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
+#include "element.h"
 
 #include <QPointer>
+#include <QJsonObject>
 
 namespace KDSME {
 
 class StateMachineScene;
-class StateMachine;
-class State;
 
-class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
+class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
-    explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = nullptr);
+    explicit DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent = nullptr);
+    virtual ~DeleteElementCommand();
 
-    virtual int id() const override { return ChangeStateMachine; }
-
-    KDSME::State* stateMachine() const;
-    void setStateMachine(KDSME::State* statemachine);
+    virtual int id() const override { return DeleteElement; }
 
     virtual void redo() override;
     virtual void undo() override;
 
-signals:
-    void stateMachineChanged(KDSME::State* statemachine);
-
 private:
-    QPointer<StateMachineScene> m_view;
-    QPointer<State> m_oldStateMachine, m_newStateMachine;
+    void updateText();
+
+    QPointer<StateMachineScene> m_scene;
+    int m_index;
+    QJsonObject m_layout;
+    QPointer<Element> m_parentElement;
+    QPointer<Element> m_deletedElement;
 };
 
 }
 
-#endif // REPARENTELEMENTCOMMAND_H
+#endif

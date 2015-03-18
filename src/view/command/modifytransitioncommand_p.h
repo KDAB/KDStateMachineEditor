@@ -1,6 +1,4 @@
 /*
-  modifytransitioncommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,10 +20,10 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYTRANSITIONCOMMAND_H
-#define KDSME_COMMAND_MODIFYTRANSITIONCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYTRANSITIONCOMMAND_P_H
+#define KDSME_COMMAND_MODIFYTRANSITIONCOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
 #include <QPainterPath>
 #include <QPointer>
@@ -71,4 +69,4 @@ private:
 
 }
 
-#endif // MODIFYTRANSITIONCOMMAND_H
+#endif // MODIFYTRANSITIONCOMMAND_P_H

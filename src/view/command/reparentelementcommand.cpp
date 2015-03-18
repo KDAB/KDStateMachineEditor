@@ -1,6 +1,4 @@
 /*
-  reparentelementcommand.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "reparentelementcommand.h"
+#include "reparentelementcommand_p.h"
 
 #include "element.h"
 #include "elementmodel.h"
@@ -75,5 +73,3 @@ void ReparentElementCommand::undo()
     ObjectTreeModel::ReparentOperation reparentOperation(m_view->stateModel(), m_element, m_oldParentElement);
     m_element->setParent(m_oldParentElement);
 }
-
-#include "moc_reparentelementcommand.cpp"

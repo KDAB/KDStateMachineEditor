@@ -1,6 +1,4 @@
 /*
-  command.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "command.h"
+#include "command_p.h"
 
 #include "elementmodel.h"
 

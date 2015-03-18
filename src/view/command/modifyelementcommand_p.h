@@ -1,6 +1,4 @@
 /*
-  modifypropertycommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,40 +20,58 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
-#define KDSME_COMMAND_MODIFYPROPERTYCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYELEMENTCOMMAND_P_H
+#define KDSME_COMMAND_MODIFYELEMENTCOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
-#include <QHash>
 #include <QPointer>
-
-class QJsonObject;
-class QVariant;
+#include <QPointF>
+#include <QRectF>
 
 namespace KDSME {
 
-class KDSME_VIEW_EXPORT ModifyPropertyCommand : public KDSME::Command
+class Element;
+
+class KDSME_VIEW_EXPORT ModifyElementCommand : public Command
 {
     Q_OBJECT
 
 public:
-    ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = nullptr);
-    ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = nullptr);
+    explicit ModifyElementCommand(Element* item, QUndoCommand* parent = nullptr);
 
-    virtual int id() const override { return ModifyProperty; }
+    Element* item() const;
+
+    virtual int id() const override { return ModifyLayoutItem; }
+
+    Q_INVOKABLE void moveBy(qreal dx, qreal dy);
+    Q_INVOKABLE void setGeometry(const QRectF& geometry);
 
     virtual void redo() override;
     virtual void undo() override;
+    virtual bool mergeWith(const QUndoCommand* other) override;
+
+protected:
+    enum Operation {
+        NoOperation,
+        MoveOperation,
+        SetGeometryOperation,
+
+        /// Subclass takes care of executing this operation
+        UserOperation = 100
+    };
+    int m_operation;
 
 private:
-    void init();
+    void updateText();
 
-    QPointer<QObject> m_object;
-    QHash<QByteArray, QVariant> m_propertyMap;
-    QHash<QByteArray, QVariant> m_oldPropertyMap;
+    QPointer<Element> m_item;
+
+    // data
+    QPointF m_moveByData;
+    QRectF m_newGeometry, m_oldGeometry;
 };
 
 }
 
-#endif // MODIFYPROPERTYCOMMAND_H
+#endif // MODIFYLAYOUTITEMCOMMAND_P_H

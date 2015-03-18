@@ -1,11 +1,9 @@
 /*
-  modifyinitialstatecommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Volker Krause <volker.krause@kdab.com>
+  Author: Kevin Funk <kevin.funk@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,34 +20,43 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_H
-#define KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_H
+#ifndef KDSME_COMMAND_REPARENTELEMENTCOMMAND_P_H
+#define KDSME_COMMAND_REPARENTELEMENTCOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
 #include <QPointer>
 
 namespace KDSME {
 
-class State;
+class Element;
+class StateMachineScene;
 
-class KDSME_VIEW_EXPORT ModifyInitialStateCommand : public Command
+class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
 {
     Q_OBJECT
-public:
-    explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = nullptr);
-    ~ModifyInitialStateCommand();
 
-    int id() const override;
-    void undo() override;
-    void redo() override;
+public:
+    ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = nullptr);
+
+    virtual int id() const override { return ReparentElement; }
+
+    Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
+
+    virtual void redo() override;
+    virtual void undo() override;
 
 private:
-    QPointer<State> m_state;
-    QPointer<State> m_initialState;
-    QPointer<State> m_oldInitialState;
+    QPointer<StateMachineScene> m_view;
+    QPointer<Element> m_element;
+
+    /// Whether this command is valid (ie. if redo/undo is doing something)
+    bool m_valid;
+
+    QPointer<Element> m_newParentElement;
+    QPointer<Element> m_oldParentElement;
 };
 
 }
 
-#endif // KDSME_MODIFYINITIALSTATECOMMAND_H
+#endif // REPARENTELEMENTCOMMAND_P_H

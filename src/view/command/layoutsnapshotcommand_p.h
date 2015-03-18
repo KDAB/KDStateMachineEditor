@@ -1,6 +1,4 @@
 /*
-  deleteelementcommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,42 +20,34 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_DELETEELEMENTCOMMAND_H
-#define KDSME_COMMAND_DELETEELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_P_H
+#define KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_P_H
 
-#include "command.h"
-#include "element.h"
+#include "command_p.h"
 
 #include <QPointer>
-#include <QJsonObject>
 
 namespace KDSME {
 
 class StateMachineScene;
 
-class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
+class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
 {
     Q_OBJECT
 
 public:
-    explicit DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent = nullptr);
-    virtual ~DeleteElementCommand();
+    explicit LayoutSnapshotCommand(StateMachineScene* scene, QUndoCommand* parent = nullptr);
+    LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = nullptr);
 
-    virtual int id() const override { return DeleteElement; }
+    virtual int id() const override { return LayoutSnapshot; }
 
     virtual void redo() override;
     virtual void undo() override;
 
 private:
-    void updateText();
-
     QPointer<StateMachineScene> m_scene;
-    int m_index;
-    QJsonObject m_layout;
-    QPointer<Element> m_parentElement;
-    QPointer<Element> m_deletedElement;
 };
 
 }
 
-#endif
+#endif // LAYOUTCHANGECOMMAND_P_H

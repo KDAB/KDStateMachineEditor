@@ -1,11 +1,9 @@
 /*
-  reparentelementcommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Volker Krause <volker.krause@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,43 +20,34 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
-#define KDSME_COMMAND_REPARENTELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_P_H
+#define KDSME_COMMAND_MODIFYINITIALSTATECOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
 #include <QPointer>
 
 namespace KDSME {
 
-class Element;
-class StateMachineScene;
+class State;
 
-class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
+class KDSME_VIEW_EXPORT ModifyInitialStateCommand : public Command
 {
     Q_OBJECT
-
 public:
-    ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = nullptr);
+    explicit ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent = nullptr);
+    ~ModifyInitialStateCommand();
 
-    virtual int id() const override { return ReparentElement; }
-
-    Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
-
-    virtual void redo() override;
-    virtual void undo() override;
+    int id() const override;
+    void undo() override;
+    void redo() override;
 
 private:
-    QPointer<StateMachineScene> m_view;
-    QPointer<Element> m_element;
-
-    /// Whether this command is valid (ie. if redo/undo is doing something)
-    bool m_valid;
-
-    QPointer<Element> m_newParentElement;
-    QPointer<Element> m_oldParentElement;
+    QPointer<State> m_state;
+    QPointer<State> m_initialState;
+    QPointer<State> m_oldInitialState;
 };
 
 }
 
-#endif // REPARENTELEMENTCOMMAND_H
+#endif // KDSME_MODIFYINITIALSTATECOMMAND_P_H

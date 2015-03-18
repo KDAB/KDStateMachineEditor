@@ -1,6 +1,4 @@
 /*
-  changestatemachinecommand.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "changestatemachinecommand.h"
+#include "changestatemachinecommand_p.h"
 
 #include "elementmodel.h"
 #include "state.h"
@@ -83,5 +81,3 @@ void ChangeStateMachineCommand::undo()
 
     m_view->layout();
 }
-
-#include "moc_changestatemachinecommand.cpp"

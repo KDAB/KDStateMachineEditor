@@ -1,6 +1,4 @@
 /*
-  modifypropertycommand.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "modifypropertycommand.h"
+#include "modifypropertycommand_p.h"
 
 #include "debug.h"
 #include <QJsonObject>
@@ -98,5 +96,3 @@ void ModifyPropertyCommand::undo()
     }
     m_oldPropertyMap.clear();
 }
-
-#include "moc_modifypropertycommand.cpp"

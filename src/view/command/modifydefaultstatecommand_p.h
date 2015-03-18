@@ -1,11 +1,9 @@
 /*
-  layoutsnapshotcommand.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
-  Author: Kevin Funk <kevin.funk@kdab.com>
+  Author: Volker Krause <volker.krause@kdab.com>
 
   Licensees holding valid commercial KDAB State Machine Editor Library
   licenses may use this file in accordance with the KDAB State Machine Editor
@@ -22,34 +20,35 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
-#define KDSME_COMMAND_LAYOUTSNAPSHOTCOMMAND_H
+#ifndef KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_P_H
+#define KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_P_H
 
-#include "command.h"
+#include "command_p.h"
 
 #include <QPointer>
 
 namespace KDSME {
 
-class StateMachineScene;
+class State;
+class HistoryState;
 
-class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
+class KDSME_VIEW_EXPORT ModifyDefaultStateCommand : public Command
 {
     Q_OBJECT
-
 public:
-    explicit LayoutSnapshotCommand(StateMachineScene* scene, QUndoCommand* parent = nullptr);
-    LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent = nullptr);
+    explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
+    ~ModifyDefaultStateCommand();
 
-    virtual int id() const override { return LayoutSnapshot; }
-
-    virtual void redo() override;
-    virtual void undo() override;
+    int id() const override;
+    void undo() override;
+    void redo() override;
 
 private:
-    QPointer<StateMachineScene> m_scene;
+    QPointer<HistoryState> m_state;
+    QPointer<State> m_defaultState;
+    QPointer<State> m_oldDefaultState;
 };
 
 }
 
-#endif // LAYOUTCHANGECOMMAND_H
+#endif // KDSME_COMMAND_MODIFYDEFAULTSTATECOMMAND_P_H

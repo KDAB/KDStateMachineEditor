@@ -22,11 +22,11 @@
   clear to you.
 */
 
-#include "command/createelementcommand.h"
-#include "command/modifyelementcommand.h"
-#include "command/modifytransitioncommand.h"
-#include "command/modifypropertycommand.h"
-#include "command/reparentelementcommand.h"
+#include "command/createelementcommand_p.h"
+#include "command/modifyelementcommand_p.h"
+#include "command/modifytransitioncommand_p.h"
+#include "command/modifypropertycommand_p.h"
+#include "command/reparentelementcommand_p.h"
 #include "commandcontroller.h"
 #include "state.h"
 #include "transition.h"

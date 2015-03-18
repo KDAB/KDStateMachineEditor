@@ -20,58 +20,51 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_MODIFYELEMENTCOMMAND_H
-#define KDSME_COMMAND_MODIFYELEMENTCOMMAND_H
+#ifndef KDSME_COMMAND_CREATEELEMENTCOMMAND_P_H
+#define KDSME_COMMAND_CREATEELEMENTCOMMAND_P_H
 
-#include "command.h"
-
-#include <QPointer>
-#include <QPointF>
-#include <QRectF>
+#include "command_p.h"
+#include "element.h"
 
 namespace KDSME {
 
-class Element;
-
-class KDSME_VIEW_EXPORT ModifyElementCommand : public Command
+class KDSME_VIEW_EXPORT CreateElementCommand : public Command
 {
     Q_OBJECT
+    Q_PROPERTY(KDSME::Element* parentElement READ parentElement WRITE setParentElement NOTIFY parentElementChanged)
+    Q_PROPERTY(KDSME::Element::Type type READ type WRITE setType NOTIFY typeChanged)
 
 public:
-    explicit ModifyElementCommand(Element* item, QUndoCommand* parent = nullptr);
+    explicit CreateElementCommand(StateModel* model = nullptr,
+				  Element::Type type = Element::ElementType,
+				  QUndoCommand* parent = nullptr);
 
-    Element* item() const;
+    Element* parentElement() const;
+    void setParentElement(Element* parentElement);
 
-    virtual int id() const override { return ModifyLayoutItem; }
+    Element::Type type() const;
+    void setType(Element::Type type);
 
-    Q_INVOKABLE void moveBy(qreal dx, qreal dy);
-    Q_INVOKABLE void setGeometry(const QRectF& geometry);
+    Element* createdElement() const;
+
+    virtual int id() const override { return CreateElement; }
 
     virtual void redo() override;
     virtual void undo() override;
-    virtual bool mergeWith(const QUndoCommand* other) override;
 
-protected:
-    enum Operation {
-        NoOperation,
-        MoveOperation,
-        SetGeometryOperation,
-
-        /// Subclass takes care of executing this operation
-        UserOperation = 100
-    };
-    int m_operation;
+Q_SIGNALS:
+    void parentElementChanged(Element* parentElement);
+    void typeChanged(Element::Type type);
 
 private:
     void updateText();
 
-    QPointer<Element> m_item;
+    Element* m_parentElement;
+    Element::Type m_type;
 
-    // data
-    QPointF m_moveByData;
-    QRectF m_newGeometry, m_oldGeometry;
+    Element* m_createdElement;
 };
 
 }
 
-#endif // MODIFYLAYOUTITEMCOMMAND_H
+#endif

@@ -1,6 +1,4 @@
 /*
-  modifytransitioncommand.cpp
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,7 +20,7 @@
   clear to you.
 */
 
-#include "modifytransitioncommand.h"
+#include "modifytransitioncommand_p.h"
 
 #include "state.h"
 #include "transition.h"
@@ -135,5 +133,3 @@ void ModifyTransitionCommand::updateText()
         break;
     }
 }
-
-#include "moc_modifytransitioncommand.cpp"

@@ -24,7 +24,7 @@
 
 #include "commandcontroller.h"
 
-#include "command.h"
+#include "command_p.h"
 #include "element.h"
 
 #include <QQmlEngine>

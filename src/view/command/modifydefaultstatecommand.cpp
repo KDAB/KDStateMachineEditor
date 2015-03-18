@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "modifydefaultstatecommand.h"
+#include "modifydefaultstatecommand_p.h"
 
 #include "state.h"
 #include "elementutil.h"

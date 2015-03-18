@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "deleteelementcommand.h"
+#include "deleteelementcommand_p.h"
 
 #include "elementfactory.h"
 #include "layoutimportexport.h"

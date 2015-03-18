@@ -1,6 +1,4 @@
 /*
-  command.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -22,8 +20,8 @@
   clear to you.
 */
 
-#ifndef KDSME_COMMAND_COMMAND_H
-#define KDSME_COMMAND_COMMAND_H
+#ifndef KDSME_COMMAND_COMMAND_P_H
+#define KDSME_COMMAND_COMMAND_P_H
 
 #include "kdsme_view_export.h"
 
@@ -68,4 +66,4 @@ private:
 
 Q_DECLARE_METATYPE(KDSME::Command*)
 
-#endif // COMMAND_H
+#endif // COMMAND_P_H

@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "layoutsnapshotcommand.h"
+#include "layoutsnapshotcommand_p.h"
 
 #include "statemachinescene.h"
 
@@ -49,5 +49,3 @@ void LayoutSnapshotCommand::undo()
 {
     // TODO: Implement me
 }
-
-#include "moc_layoutsnapshotcommand.cpp"
