@@ -29,7 +29,6 @@
 #include "modifyelementcommand.h"
 #include "modifypropertycommand.h"
 #include "modifytransitioncommand.h"
-#include "modifytransitionlayoutitemcommand.h"
 #include "reparentelementcommand.h"
 #include "changestatemachinecommand.h"
 #include "state.h"
@@ -48,7 +47,6 @@ CommandFactory::CommandFactory(QObject* parent)
     qRegisterMetaType<ModifyElementCommand*>();
     qRegisterMetaType<ModifyPropertyCommand*>();
     qRegisterMetaType<ModifyTransitionCommand*>();
-    qRegisterMetaType<ModifyTransitionLayoutItemCommand*>();
     qRegisterMetaType<ReparentElementCommand*>();
     qRegisterMetaType<ChangeStateMachineCommand*>();
 }
@@ -97,11 +95,6 @@ ModifyPropertyCommand* CommandFactory::modifyProperty(QObject* object, const QJs
 ModifyElementCommand* CommandFactory::modifyElement(Element* item)
 {
     return new ModifyElementCommand(item);
-}
-
-ModifyTransitionLayoutItemCommand* CommandFactory::modifyTransitionLayoutItem(Transition* transition)
-{
-    return new ModifyTransitionLayoutItemCommand(transition);
 }
 
 KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition)

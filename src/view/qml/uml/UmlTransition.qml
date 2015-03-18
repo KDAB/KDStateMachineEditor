@@ -151,7 +151,7 @@ TransitionItem {
             var path = Global.createPath(start);
             path.lineTo(end);
 
-            var cmd = CommandFactory.modifyTransitionLayoutItem(root.element);
+            var cmd = CommandFactory.modifyTransition(root.element);
             cmd.setShape(path.path);
             commandController.push(cmd);
         }

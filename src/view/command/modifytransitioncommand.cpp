@@ -50,6 +50,10 @@ void ModifyTransitionCommand::redo()
         m_oldTargetState = m_transition->targetState();
         m_transition->setTargetState(m_targetState);
         break;
+    case SetShapeOperation:
+        m_oldShape = m_transition->shape();
+        m_transition->setShape(m_shape);
+        break;
     case NoOperation:
         break;
     }
@@ -67,9 +71,29 @@ void ModifyTransitionCommand::undo()
     case SetTargetStateOperation:
         m_transition->setTargetState(m_oldTargetState);
         break;
+    case SetShapeOperation:
+        m_transition->setShape(m_oldShape);
+        break;
     case NoOperation:
         break;
     }
+}
+
+bool ModifyTransitionCommand::mergeWith(const QUndoCommand* other)
+{
+    if (other->id() != id()) {
+        return false;
+    }
+
+    auto cmd = static_cast<const ModifyTransitionCommand*>(other);
+    if (cmd->m_transition != m_transition || cmd->m_operation != m_operation) {
+        return false;
+    }
+
+    m_sourceState = cmd->m_sourceState;
+    m_targetState = cmd->m_targetState;
+    m_shape = cmd->m_shape;
+    return true;
 }
 
 void ModifyTransitionCommand::setSourceState(State* sourceState)
@@ -86,6 +110,13 @@ void ModifyTransitionCommand::setTargetState(State* targetState)
     updateText();
 }
 
+void ModifyTransitionCommand::setShape(const QPainterPath& shape)
+{
+    m_shape = shape;
+    m_operation = SetShapeOperation;
+    updateText();
+}
+
 void ModifyTransitionCommand::updateText()
 {
     const QString label = m_transition ? m_transition->label() : tr("<Unknown>");
@@ -96,6 +127,9 @@ void ModifyTransitionCommand::updateText()
         break;
     case SetTargetStateOperation:
         setText(tr("Set target state of '%1'").arg(label));
+        break;
+    case SetShapeOperation:
+        setText(tr("Modify path of '%1'").arg(label));
         break;
     case NoOperation:
         break;

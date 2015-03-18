@@ -8,7 +8,6 @@ set(LIB_SRCS
   command/modifydefaultstatecommand.cpp
   command/modifyelementcommand.cpp
   command/modifypropertycommand.cpp
-  command/modifytransitionlayoutitemcommand.cpp
   command/modifytransitioncommand.cpp
   command/reparentelementcommand.cpp
   command/changestatemachinecommand.cpp

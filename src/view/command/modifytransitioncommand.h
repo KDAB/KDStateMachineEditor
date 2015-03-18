@@ -27,6 +27,7 @@
 
 #include "command.h"
 
+#include <QPainterPath>
 #include <QPointer>
 
 namespace KDSME {
@@ -45,9 +46,11 @@ public:
 
     Q_INVOKABLE void setSourceState(KDSME::State* sourceState);
     Q_INVOKABLE void setTargetState(KDSME::State* targetState);
+    Q_INVOKABLE void setShape(const QPainterPath& path);
 
     virtual void redo() override;
     virtual void undo() override;
+    virtual bool mergeWith(const QUndoCommand* other) override;
 
 private:
     void updateText();
@@ -57,11 +60,13 @@ private:
     enum Operation {
         NoOperation,
         SetSourceStateOperation,
-        SetTargetStateOperation
+        SetTargetStateOperation,
+        SetShapeOperation
     } m_operation;
 
     QPointer<State> m_sourceState, m_oldSourceState;
     QPointer<State> m_targetState, m_oldTargetState;
+    QPainterPath m_shape, m_oldShape;
 };
 
 }

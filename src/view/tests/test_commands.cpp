@@ -25,7 +25,6 @@
 #include "command/createelementcommand.h"
 #include "command/modifyelementcommand.h"
 #include "command/modifytransitioncommand.h"
-#include "command/modifytransitionlayoutitemcommand.h"
 #include "command/modifypropertycommand.h"
 #include "command/reparentelementcommand.h"
 #include "commandcontroller.h"
@@ -69,7 +68,6 @@ private Q_SLOTS:
     void testModifyTransition();
     void testModifyElement_moveBy();
     void testModifyElement_setGeometry();
-    void testModifyTransitionLayoutItem();
     void testReparentElement();
 };
 
@@ -218,6 +216,20 @@ void CommandsTest::testModifyTransition()
         harness.undoStack.undo();
         QVERIFY(!transition.targetState());
     }
+
+    {
+        Transition transition;
+        const QPainterPath originalPath;
+        const QPainterPath newPath(QPointF(5, 5));
+        QCOMPARE(transition.shape(), originalPath);
+        auto cmd = new ModifyTransitionCommand(&transition);
+        QCOMPARE(transition.shape(), originalPath);
+        cmd->setShape(newPath);
+        harness.undoStack.push(cmd);
+        QCOMPARE(transition.shape(), newPath);
+        harness.undoStack.undo();
+        QCOMPARE(transition.shape(), originalPath);
+    }
 }
 
 void CommandsTest::testModifyElement_moveBy()
@@ -258,23 +270,6 @@ void CommandsTest::testModifyElement_setGeometry()
     QCOMPARE(item.pos(), QPointF(0, 0));
     QCOMPARE(item.width(), 0.);
     QCOMPARE(item.height(), 0.);
-}
-
-void CommandsTest::testModifyTransitionLayoutItem()
-{
-    TestHarness harness;
-    Transition transition;
-
-    const QPainterPath originalPath;
-    const QPainterPath newPath(QPointF(5, 5));
-    QCOMPARE(transition.shape(), originalPath);
-    auto cmd = new ModifyTransitionLayoutItemCommand(&transition);
-    QCOMPARE(transition.shape(), originalPath);
-    cmd->setShape(newPath);
-    harness.undoStack.push(cmd);
-    QCOMPARE(transition.shape(), newPath);
-    harness.undoStack.undo();
-    QCOMPARE(transition.shape(), originalPath);
 }
 
 void CommandsTest::testReparentElement()
