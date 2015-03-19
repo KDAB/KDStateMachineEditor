@@ -48,7 +48,7 @@ public:
 
     Element* item() const;
 
-    virtual int id() const override { return ModifyLayoutItem; }
+    virtual int id() const override { return ModifyElement; }
 
     Q_INVOKABLE void moveBy(qreal dx, qreal dy);
     Q_INVOKABLE void setGeometry(const QRectF& geometry);

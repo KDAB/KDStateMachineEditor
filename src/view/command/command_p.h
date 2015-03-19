@@ -38,18 +38,13 @@ public:
     enum Id {
         CreateElement = 0,
         DeleteElement,
+        ReparentElement,
         LayoutSnapshot,
         ModifyProperty,
         ModifyInitialState,
         ModifyDefaultState,
-
-        ReparentElement,
-
+        ModifyElement,
         ModifyTransition,
-
-        ModifyLayoutItem,
-        ModifyTransitionLayoutItem,
-
         ChangeStateMachine
     };
 

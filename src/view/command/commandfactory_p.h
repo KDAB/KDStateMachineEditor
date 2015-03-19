@@ -32,12 +32,10 @@
 namespace KDSME {
 class CreateElementCommand;
 class DeleteElementCommand;
-class LayoutItem;
 class LayoutSnapshotCommand;
 class ModifyPropertyCommand;
 class ModifyElementCommand;
 class ModifyTransitionCommand;
-class ModifyTransitionLayoutItemCommand;
 class ReparentElementCommand;
 class ChangeStateMachineCommand;
 class StateModel;

@@ -34,7 +34,6 @@ namespace KDSME {
 class Command;
 class EditController;
 class CommandController;
-class LayoutItem;
 class StateMachineScene;
 class StateMachine;
 class Element;

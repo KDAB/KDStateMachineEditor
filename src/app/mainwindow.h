@@ -28,7 +28,6 @@
 #include <QMainWindow>
 
 namespace KDSME {
-class LayoutItemModel;
 class StateMachine;
 class StateMachineView;
 class StateModel;
@@ -82,7 +81,6 @@ private:
 
     QStandardItemModel* m_presetsModel;
     KDSME::TransitionListModel* m_transitionsModel;
-    KDSME::LayoutItemModel* m_layoutInformationModel;
 
     KDSME::StateMachineView* m_stateMachineView;
     QScopedPointer<KDSME::StateMachine> m_owningStateMachine;
