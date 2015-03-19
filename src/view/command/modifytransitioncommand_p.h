@@ -33,6 +33,12 @@ namespace KDSME {
 class State;
 class Transition;
 
+/**
+ * @brief Command for modifying properties of a @ref KDSME::Transition
+ *
+ * A command can only set one property at the time.
+ * On undo, the previous value of the particular property is restored.
+ */
 class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
 {
     Q_OBJECT

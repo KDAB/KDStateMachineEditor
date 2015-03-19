@@ -31,6 +31,11 @@ namespace KDSME {
 
 class State;
 
+/**
+ * @brief Modifies the initial state of a @ref KDSME::State
+ *
+ * On undo the previous initial state is restored.
+ */
 class KDSME_VIEW_EXPORT ModifyInitialStateCommand : public Command
 {
     Q_OBJECT

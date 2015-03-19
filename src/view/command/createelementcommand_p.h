@@ -36,8 +36,8 @@ class KDSME_VIEW_EXPORT CreateElementCommand : public Command
 
 public:
     explicit CreateElementCommand(StateModel* model = nullptr,
-				  Element::Type type = Element::ElementType,
-				  QUndoCommand* parent = nullptr);
+                                  Element::Type type = Element::ElementType,
+                                  QUndoCommand* parent = nullptr);
 
     Element* parentElement() const;
     void setParentElement(Element* parentElement);

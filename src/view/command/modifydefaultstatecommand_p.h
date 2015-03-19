@@ -32,6 +32,11 @@ namespace KDSME {
 class State;
 class HistoryState;
 
+/**
+ * @brief Modifies the default state of a @ref KDSME::HistoryState1.
+ *
+ * On undo, the previous default state is restored.
+ */
 class KDSME_VIEW_EXPORT ModifyDefaultStateCommand : public Command
 {
     Q_OBJECT

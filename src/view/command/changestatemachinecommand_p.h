@@ -35,6 +35,11 @@ class StateMachineScene;
 class StateMachine;
 class State;
 
+/**
+ * @brief Changes the state machine of a @ref KDSME::StateMachineScene and records the old state machine the scene was showing.
+ *
+ * On undo, the old state machine is restored.
+ */
 class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
 {
     Q_OBJECT

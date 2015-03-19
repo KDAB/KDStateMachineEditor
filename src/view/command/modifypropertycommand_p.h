@@ -33,6 +33,15 @@ class QVariant;
 
 namespace KDSME {
 
+/**
+ * @brief Modifies any specific property of a @ref QObject
+ *
+ * Properties can also be referenced by their name (read: a simple string),
+ * so we can have a generic command that is capable of setting
+ * individual properties of an object.
+ * This is sometimes useful in order to not have to create commands
+ * for each and every property modification.
+ */
 class KDSME_VIEW_EXPORT ModifyPropertyCommand : public KDSME::Command
 {
     Q_OBJECT

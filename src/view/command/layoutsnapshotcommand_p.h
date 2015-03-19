@@ -31,6 +31,13 @@ namespace KDSME {
 
 class StateMachineScene;
 
+/**
+ * @brief Creates a snapshot of the current layout of the state chart
+ *
+ * This is useful when a user requested an automatic layout manually.
+ * This command should be used before the automatic layout happens,
+ * so the user can restore the initial layout when undoing the command.
+ */
 class KDSME_VIEW_EXPORT LayoutSnapshotCommand : public KDSME::Command
 {
     Q_OBJECT

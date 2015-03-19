@@ -33,6 +33,12 @@ namespace KDSME {
 
 class Element;
 
+/**
+ * @brief Command for modifying properties of a @brief KDSME::Element
+ *
+ * A command can only set one property at the time.
+ * On undo, the previous value of the property is restored.
+ */
 class KDSME_VIEW_EXPORT ModifyElementCommand : public Command
 {
     Q_OBJECT

@@ -33,6 +33,12 @@ namespace KDSME {
 
 class StateMachineScene;
 
+/**
+ * @brief This is the inverse operation to the @ref KDSME::CreateElementCommand command
+ *
+ * On redo it removes an element from the model, but still keeping a reference on it.
+ * On undo this element is registered in the model again.
+ */
 class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
 {
     Q_OBJECT

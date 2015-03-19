@@ -32,6 +32,13 @@ namespace KDSME {
 class Element;
 class StateMachineScene;
 
+/**
+ * @brief Modifies the parent element of a @ref KDSME::Element
+ *
+ * This command is useful when dragging & dropping elements
+ * into a different level in the state chart hierarchy.
+ * On undo, the previous parent is restored.
+ */
 class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
 {
     Q_OBJECT
