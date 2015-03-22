@@ -7,6 +7,7 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/config-examples.h
 )
 
+add_subdirectory(layoutexport)
 add_subdirectory(export)
 if(Qt5RemoteObjects_FOUND)
     add_subdirectory(qsmdebugger)
