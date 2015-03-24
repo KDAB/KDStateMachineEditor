@@ -8,6 +8,24 @@ then be used in larger Qt or QtQuick projects.
 For a full description of the KDAB State Machine Editor Library, read our
 wiki on GitHub, https://github.com/KDAB/KDStateMachineEditor/wiki.
 
+Building and running
+================================
+
+Install the dependencies (here: Ubuntu):
+
+    $ sudo apt-get install cmake qt5-default graphviz-dev
+
+Build:
+
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+
+Start the test app:
+
+    $ ./bin/kdstatemachineeditor
+
 Contributing
 ============
 KDAB will happily accept external contributions, but substantial
