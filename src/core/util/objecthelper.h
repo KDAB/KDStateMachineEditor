@@ -1,6 +1,4 @@
 /*
-  objecthelper.h
-
   This file is part of the KDAB State Machine Editor Library.
 
   Copyright (C) 2014-2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
@@ -27,11 +25,11 @@
 
 #include "kdsme_core_export.h"
 
-#include <algorithm>
-
 #include <QObject>
 #include <QMetaEnum>
 #include <QList>
+
+#include <algorithm>
 
 class QPointF;
 

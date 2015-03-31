@@ -129,6 +129,7 @@ install(FILES
   layout/layouter.h
   layout/layoutimportexport.h
   layout/layoutproperties.h
+  util/objecthelper.h
   util/objecttreemodel.h
   util/ringbuffer.h
   util/treewalker.h
