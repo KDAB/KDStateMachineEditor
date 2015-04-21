@@ -37,7 +37,7 @@ Rectangle {
     id: root
     objectName: "stateMachineView"
 
-    property var stateMachine: stateMachineScene.stateMachine
+    property var rootState: stateMachineScene.rootState
     property var commandController: _quickView.commandController
     property var editController: _quickView.editController
 
@@ -248,8 +248,8 @@ Rectangle {
 
             RowLayout {
                 Label {
-                    property string label: (stateMachine ? stateMachine.label : "")
-                    text: qsTr("State Machine: ") + (label !== "" ? label : qsTr("<Unnamed>"))
+                    property string label: (rootState ? rootState.label : "")
+                    text: qsTr("Current: ") + (label !== "" ? label : qsTr("<Unnamed>"))
                 }
                 Label { text: "|" }
                 Label {
