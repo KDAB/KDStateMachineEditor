@@ -37,6 +37,7 @@
 #include "ui_statepropertyeditor.h"
 #include "ui_transitionpropertyeditor.h"
 
+#include <QDebug>
 #include <QHash>
 #include <QItemSelectionModel>
 #include <QMetaProperty>
@@ -52,7 +53,7 @@ struct PropertyEditor::Private
         return qobject_cast<T*>(m_currentElement);
     }
 
-    void monitorElement(KDSME::Element* element);
+    void setCurrentElement(KDSME::Element* element);
 
     // slots
     void updateSimpleProperty();
@@ -62,6 +63,7 @@ struct PropertyEditor::Private
     void setTargetState(const QString& label);
     void childModeChanged();
     void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void modelAboutToBeReset();
     void loadFromCurrentElement();
 
     PropertyEditor* q;
@@ -141,12 +143,17 @@ void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     if (d->m_selectionModel) {
         disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged(QModelIndex,QModelIndex)));
+        disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
+                   this, SLOT(modelAboutToBeReset()));
+
     }
 
     d->m_selectionModel = selectionModel;
 
     if (d->m_selectionModel) {
         connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+        connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
+                this, SLOT(modelAboutToBeReset()));
     }
 }
 
@@ -187,26 +194,36 @@ static QStringList childStates(const State * state)
 
 void PropertyEditor::Private::currentChanged(const QModelIndex &currentIndex, const QModelIndex &/*previous*/)
 {
+    KDSME::Element* currentElement = currentIndex.data(StateModel::ElementRole).value<Element*>();
+    setCurrentElement(currentElement);
+}
+
+void PropertyEditor::Private::modelAboutToBeReset()
+{
+    setCurrentElement(nullptr);
+}
+
+void PropertyEditor::Private::setCurrentElement(KDSME::Element* element)
+{
+    if (m_currentElement == element) {
+        return;
+    }
+
     if (m_currentElement) {
         q->disconnect(m_currentElement, nullptr, q, SLOT(loadFromCurrentElement()));
     }
 
-    m_currentElement = currentIndex.data(StateModel::ElementRole).value<Element*>();
-    loadFromCurrentElement();
-    monitorElement(m_currentElement);
-}
+    m_currentElement = element;
 
-void PropertyEditor::Private::monitorElement(KDSME::Element* element)
-{
-    if (!element)
-        return;
-
-    for (int i = 0; i < element->metaObject()->propertyCount(); ++i) {
-        const QMetaProperty prop = element->metaObject()->property(i);
-        if (!prop.hasNotifySignal())
-            continue;
-        q->connect(element, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); //krazy:exclude=doublequote_chars
+    if (m_currentElement) {
+        for (int i = 0; i < m_currentElement->metaObject()->propertyCount(); ++i) {
+            const QMetaProperty prop = m_currentElement->metaObject()->property(i);
+            if (!prop.hasNotifySignal())
+                continue;
+            q->connect(m_currentElement, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); //krazy:exclude=doublequote_chars
+        }
     }
+    loadFromCurrentElement();
 }
 
 void PropertyEditor::Private::loadFromCurrentElement()

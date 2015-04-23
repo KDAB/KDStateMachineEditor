@@ -60,6 +60,7 @@ private:
     Q_PRIVATE_SLOT(d, void setTargetState(const QString& label))
     Q_PRIVATE_SLOT(d, void childModeChanged())
     Q_PRIVATE_SLOT(d, void currentChanged(const QModelIndex &current, const QModelIndex &previous))
+    Q_PRIVATE_SLOT(d, void modelAboutToBeReset())
     Q_PRIVATE_SLOT(d, void loadFromCurrentElement())
 };
 
