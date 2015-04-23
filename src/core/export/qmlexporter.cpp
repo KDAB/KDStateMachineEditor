@@ -31,24 +31,25 @@
 #include "elementutil.h"
 #include "state.h"
 #include "transition.h"
-
 #include "debug.h"
+
 #include <QTextStream>
 
 #include <algorithm>
 
 using namespace KDSME;
 
-static const char KDSME_QML_MODULE[] = "QtQml.StateMachine";
-static const char KDSME_QML_MODULE_VERSION[] = "1.0";
-
 namespace {
+
+const char KDSME_QML_MODULE[] = "QtQml.StateMachine";
+const char KDSME_QML_MODULE_VERSION[] = "1.0";
 
 class LevelIncrementer
 {
 public:
     LevelIncrementer(int *level) : m_level(level) { ++(*m_level); }
     ~LevelIncrementer() { --(*m_level); }
+
 private:
     int *m_level;
 };
