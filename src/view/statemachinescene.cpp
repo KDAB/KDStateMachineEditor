@@ -229,13 +229,13 @@ void StateMachineScene::setMaximumDepth(int maximumDepth)
     d->m_maximumDepth = maximumDepth;
     emit maximumDepthChanged(d->m_maximumDepth);
 
-    auto oldState = state();
-    setState(RefreshState);
+    auto oldViewState = viewState();
+    setViewState(RefreshState);
 
     d->updateItemVisibilities();
     layout();
 
-    setState(oldState);
+    setViewState(oldViewState);
 }
 
 void StateMachineScene::Private::zoomByInternal(qreal scale)
@@ -245,8 +245,8 @@ void StateMachineScene::Private::zoomByInternal(qreal scale)
     QMatrix matrix;
     matrix.scale(scale, scale);
 
-    auto oldState = q->state();
-    q->setState(RefreshState);
+    auto oldViewState = q->viewState();
+    q->setViewState(RefreshState);
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
@@ -259,7 +259,7 @@ void StateMachineScene::Private::zoomByInternal(qreal scale)
         return ElementWalker::RecursiveWalk;
     });
 
-    q->setState(oldState);
+    q->setViewState(oldViewState);
 }
 
 void StateMachineScene::layout()
@@ -270,14 +270,14 @@ void StateMachineScene::layout()
         return;
     }
 
-    auto oldState = state();
-    setState(RefreshState);
+    auto oldViewState = viewState();
+    setViewState(RefreshState);
 
     // reset
     setZoom(1.0);
 
     d->m_layouter->layout(d->m_rootState, layoutProperties());
-    setState(oldState);
+    setViewState(oldViewState);
 }
 
 StateModel* StateMachineScene::stateModel() const

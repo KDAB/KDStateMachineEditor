@@ -188,7 +188,7 @@ void QuickTransitionItem::setElement(Element* element)
 
 void QuickTransitionItem::updatePosition()
 {
-    if (scene()->state() == StateMachineScene::RefreshState) {
+    if (scene()->viewState() == StateMachineScene::RefreshState) {
         return;
     }
 

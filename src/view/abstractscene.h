@@ -40,7 +40,7 @@ class KDSME_VIEW_EXPORT AbstractScene : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(QQuickItem* instantiator READ instantiator WRITE setInstantiator NOTIFY instantiatorChanged)
-    Q_PROPERTY(ViewState state READ state NOTIFY stateChanged FINAL)
+    Q_PROPERTY(ViewState viewState READ viewState NOTIFY stateChanged FINAL)
 
 public:
     enum EditTrigger {
@@ -72,7 +72,7 @@ public:
 
     QObject* itemForIndex(const QModelIndex& index) const;
 
-    ViewState state() const;
+    ViewState viewState() const;
 
     QModelIndex currentIndex() const;
 
@@ -92,7 +92,7 @@ protected Q_SLOTS:
      */
     virtual void layoutChanged();
 
-    void setState(ViewState state);
+    void setViewState(ViewState state);
 
 Q_SIGNALS:
     void modelChanged(QAbstractItemModel* model);

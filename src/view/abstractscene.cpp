@@ -171,12 +171,12 @@ QObject* AbstractScene::itemForIndex(const QModelIndex& index) const
     return instantiator ? instantiator->itemForIndex(index) : nullptr;
 }
 
-AbstractScene::ViewState AbstractScene::state() const
+AbstractScene::ViewState AbstractScene::viewState() const
 {
     return d->m_state;
 }
 
-void AbstractScene::setState(AbstractScene::ViewState state)
+void AbstractScene::setViewState(AbstractScene::ViewState state)
 {
     if (d->m_state == state)
         return;
