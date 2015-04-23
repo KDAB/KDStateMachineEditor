@@ -35,13 +35,11 @@
 #include <QSortFilterProxyModel>
 
 class QAbstractState;
-class QDebug;
 class QState;
 class QStateMachine;
 
 namespace KDSME {
 
-class CommandController;
 class StateModel;
 class State;
 
@@ -112,10 +110,7 @@ public:
     State* state() const;
     void setState(State* state);
 
-    void setCommandController(CommandController *cmdController);
-
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 

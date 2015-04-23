@@ -55,12 +55,9 @@ Qt::ItemFlags toItemFlags(Element::Flags flags)
 struct StateModel::Private
 {
     Private();
-
-    CommandController* m_commandController;
 };
 
 StateModel::Private::Private()
-    : m_commandController(nullptr)
 {
 }
 
@@ -84,11 +81,6 @@ void StateModel::setState(State* state)
     setRootObject(state);
 }
 
-void StateModel::setCommandController(CommandController* cmdController)
-{
-    d->m_commandController = cmdController;
-}
-
 QVariant StateModel::data(const QModelIndex& index, int role) const
 {
     Element* element = qobject_cast<Element*>(ObjectTreeModel::data(index, ObjectRole).value<QObject*>());
@@ -108,25 +100,6 @@ QVariant StateModel::data(const QModelIndex& index, int role) const
     }
 
     return ObjectTreeModel::data(index, role);
-}
-
-bool StateModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    Q_ASSERT(d->m_commandController);
-
-    Element* element = data(index, ElementRole).value<Element*>();
-    if (!element || !value.isValid())
-        return false;
-
-    if (role ==  Qt::EditRole) {
-        //ModifyPropertyCommand *cmd = new ModifyPropertyCommand(element, "label", value);
-        //d->m_commandController->undoStack()->push(cmd);
-        //FIXME: Move logic to view module
-        emit dataChanged(index, index);
-        return true;
-    }
-
-    return false;
 }
 
 QVariant StateModel::headerData(int section, Qt::Orientation orientation, int role) const
