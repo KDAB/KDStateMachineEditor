@@ -50,7 +50,9 @@ Rectangle {
     /// Whether we automatically collapse/expand states in case they're active or not
     property alias semanticZoom: semanticZoomManager.enabled
 
+    enabled: editController.editModeEnabled || root.rootState
     focus: true
+
     Keys.onPressed: {
         if ((event.key === Qt.Key_Up) && (event.modifiers === Qt.NoModifier)) {
             stateMachineViewport.contentY = Math.max(0, stateMachineViewport.contentY - 10)

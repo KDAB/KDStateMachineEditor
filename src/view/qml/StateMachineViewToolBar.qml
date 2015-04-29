@@ -35,6 +35,8 @@ import "util/constants.js" as Constants
 ToolBar {
     id: root
 
+    enabled: stateMachineScene.rootState
+
     /// Provide an instance of StateMachineView.qml here
     property var stateMachineView
 
@@ -49,6 +51,7 @@ ToolBar {
         ToolButton {
             action: Action {
                 text: qsTr("Go Up")
+                enabled: stateMachineScene.rootState && stateMachineScene.rootState.parentState()
                 onTriggered: {
                     var parentState = stateMachineScene.rootState.parentState()
                     if (parentState) {
