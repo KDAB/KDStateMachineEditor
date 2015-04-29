@@ -77,6 +77,8 @@ public Q_SLOTS:
     void repopulateView();
     void clearGraph();
 
+    void validChanged();
+
 public:
     DebugInterfaceClient* q;
     DebugInterfaceReplica *m_debugInterface;
@@ -123,6 +125,8 @@ void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterfa
                    d.data(), &Private::clearGraph);
         disconnect(d->m_debugInterface, &DebugInterfaceReplica::graphRepopulated,
                    d.data(), &Private::repopulateView);
+        disconnect(d->m_debugInterface, &DebugInterfaceReplica::isReplicaValidChanged,
+                   d.data(), &Private::validChanged);
 
         d->clearGraph();
     }
@@ -146,6 +150,8 @@ void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterfa
                 d.data(), &Private::clearGraph);
         connect(d->m_debugInterface, &DebugInterfaceReplica::graphRepopulated,
                 d.data(), &Private::repopulateView);
+        connect(d->m_debugInterface, &DebugInterfaceReplica::isReplicaValidChanged,
+                d.data(), &Private::validChanged);
 
         d->m_debugInterface->repopulateGraph();
     }
@@ -253,6 +259,15 @@ void DebugInterfaceClient::Private::clearGraph()
     m_idToTransitionMap.clear();
 
     emit q->clearGraph();
+}
+
+void DebugInterfaceClient::Private::validChanged()
+{
+    if (m_debugInterface->isReplicaValid()) {
+        m_debugInterface->repopulateGraph();
+    } else {
+        clearGraph();
+    }
 }
 
 void DebugInterfaceClient::Private::repopulateView()
