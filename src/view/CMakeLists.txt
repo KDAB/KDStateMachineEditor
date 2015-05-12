@@ -124,4 +124,6 @@ ecm_generate_pri_file(BASE_NAME KDSMEView
 
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
-add_subdirectory(tests)
+if (NOT CMAKE_CROSSCOMPILING)
+    add_subdirectory(tests)
+endif()

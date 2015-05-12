@@ -147,4 +147,6 @@ install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-add_subdirectory(tests)
+if (NOT CMAKE_CROSSCOMPILING)
+    add_subdirectory(tests)
+endif()
