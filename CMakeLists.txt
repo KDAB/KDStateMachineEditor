@@ -59,7 +59,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 set(CMAKE_AUTOMOC TRUE)
 
 set(BIN_INSTALL_DIR bin)
-set(LIB_INSTALL_DIR lib)
+set(LIB_INSTALL_DIR lib CACHE STRING "Library install destination.")
 if(WIN32)
   set(LIB_INSTALL_DIR ${BIN_INSTALL_DIR})
 endif()
@@ -166,7 +166,7 @@ configure_file(cmake/KDSMEConfig.cmake
   COPYONLY
 )
 
-set(CMAKECONFIG_INSTALL_DIR lib/cmake/${CONFIG_DIR})
+set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/${CONFIG_DIR})
 install(EXPORT KDSME_TARGETS
   NAMESPACE
     KDSME::
