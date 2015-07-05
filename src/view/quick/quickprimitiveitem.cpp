@@ -30,8 +30,6 @@
 
 #include <QRectF>
 
-#include <QtOpenGL/QtOpenGL>
-
 namespace {
 
 QuickGeometryItem::VertexDataType typeOfGeometry(const QSGGeometry* geometry)
