@@ -67,7 +67,12 @@ target_link_libraries(kdstatemachineeditor_core
     Qt5::Core
     Qt5::Gui
 )
-set_target_properties(kdstatemachineeditor_core PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME Core INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set_target_properties(kdstatemachineeditor_core PROPERTIES
+  SOVERSION ${KDSME_SOVERSION}
+  VERSION ${KDSME_SOVERSION}
+  EXPORT_NAME Core
+  INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+)
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(Graphviz_FOUND)
@@ -147,6 +152,6 @@ install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-if (NOT CMAKE_CROSSCOMPILING)
-    add_subdirectory(tests)
+if(NOT CMAKE_CROSSCOMPILING)
+  add_subdirectory(tests)
 endif()

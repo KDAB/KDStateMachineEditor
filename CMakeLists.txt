@@ -48,8 +48,8 @@ set_package_properties(Qt5XmlPatterns PROPERTIES
 
 option(DEPLOY_DEPENDENCIES "Install Qt5 and graphviz" ON)
 
-if (NOT CMAKE_CROSSCOMPILING)
-    option(BUILD_EXAMPLES "Build examples directory" ON)
+if(NOT CMAKE_CROSSCOMPILING)
+  option(BUILD_EXAMPLES "Build examples directory" ON)
 endif()
 
 # Don't require lots of include_directories(${CMAKE_CURRENT_SOURCE_DIR}) etc.
@@ -124,8 +124,8 @@ if(CMAKE_SYSTEM_NAME MATCHES Linux OR CMAKE_SYSTEM_NAME STREQUAL GNU)
   endif()
 endif()
 
-if (NOT CMAKE_CROSSCOMPILING)
-    enable_testing()
+if(NOT CMAKE_CROSSCOMPILING)
+  enable_testing()
 endif()
 
 set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)

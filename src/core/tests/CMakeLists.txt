@@ -43,7 +43,7 @@ ecm_add_test(test_qmlexport.cpp
     kdsme_testhelper
 )
 
-if (Qt5RemoteObjects_FOUND)
+if(Qt5RemoteObjects_FOUND)
   ecm_add_test(test_qsmintegration.cpp
   LINK_LIBRARIES
     Qt5::Test
