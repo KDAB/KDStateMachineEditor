@@ -129,7 +129,7 @@ Element* StateMachineScene::currentItem() const
 
 void StateMachineScene::setCurrentItem(Element* item)
 {
-    if (!stateModel() || !item || !item)
+    if (!stateModel() || !item)
         return;
 
     const QModelIndex index = stateModel()->indexForObject(item);
@@ -142,7 +142,7 @@ Element* StateMachineScene::currentState()
     if (!element || element->type() == Element::ElementType)
         return nullptr;
 
-    if (element->type() == Element::TransitionType)
+    if (element->type() == Element::SignalTransitionType || element->type() == Element::TimeoutTransitionType)
         element = static_cast<Transition*>(element)->sourceState();
 
     QQmlEngine::setObjectOwnership(element, QQmlEngine::CppOwnership);

@@ -44,7 +44,7 @@ class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
     Q_OBJECT
 
 public:
-    explicit ModifyTransitionCommand(Transition* transition, QUndoCommand* parent = nullptr);
+    explicit ModifyTransitionCommand(Transition* transition, StateModel* model, QUndoCommand* parent = nullptr);
 
     virtual int id() const override { return ModifyTransition; }
 

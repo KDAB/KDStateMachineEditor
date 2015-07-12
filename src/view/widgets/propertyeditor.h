@@ -37,6 +37,7 @@ namespace KDSME {
 
 class CommandController;
 class Element;
+class StateModel;
 
 class KDSME_VIEW_EXPORT PropertyEditor : public QStackedWidget
 {
@@ -48,6 +49,7 @@ public:
 
     void setSelectionModel(QItemSelectionModel* selectionModel);
     void setCommandController(CommandController *cmdController);
+    void setStateModel(StateModel* selectionModel);
 
 private:
     struct Private;

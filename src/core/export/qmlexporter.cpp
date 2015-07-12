@@ -71,8 +71,6 @@ QString elementToComponent(Element* element)
         return "HistoryState";
     case Element::StateType:
         return "State";
-    case Element::TransitionType:
-        return "Transition";
     case Element::SignalTransitionType:
         return "SignalTransition";
     case Element::TimeoutTransitionType:

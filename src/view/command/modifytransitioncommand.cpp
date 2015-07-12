@@ -25,10 +25,12 @@
 #include "state.h"
 #include "transition.h"
 
+#include <elementmodel.h>
+
 using namespace KDSME;
 
-ModifyTransitionCommand::ModifyTransitionCommand(Transition* transition, QUndoCommand* parent)
-    : Command(QString(), parent)
+ModifyTransitionCommand::ModifyTransitionCommand(Transition* transition, StateModel* model, QUndoCommand* parent)
+    : Command(model, parent)
     , m_transition(transition)
     , m_operation(NoOperation)
 {
@@ -41,8 +43,11 @@ void ModifyTransitionCommand::redo()
 
     switch (m_operation) {
     case SetSourceStateOperation:
+    {
         m_oldSourceState = m_transition->sourceState();
+        ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_sourceState);
         m_transition->setSourceState(m_sourceState);
+    }
         break;
     case SetTargetStateOperation:
         m_oldTargetState = m_transition->targetState();
@@ -64,7 +69,10 @@ void ModifyTransitionCommand::undo()
 
     switch (m_operation) {
     case SetSourceStateOperation:
+    {
+        ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_oldSourceState);
         m_transition->setSourceState(m_oldSourceState);
+    }
         break;
     case SetTargetStateOperation:
         m_transition->setTargetState(m_oldTargetState);

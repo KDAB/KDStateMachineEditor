@@ -95,13 +95,18 @@ void QmlExportTest::testSimpleStateMachine()
         "initialState: s1\n"
         "State {\n"
         "id: s1\n"
-        "Transition {\n"
+        "SignalTransition {\n"
         "id: e1\n"
         "targetState: s2\n"
         "}\n"
         "}\n"
         "State {\n"
         "id: s2\n"
+        "TimeoutTransition {\n"
+        "id: e2\n"
+        "targetState: s1\n"
+        "timeout: 1000\n"
+        "}\n"
         "}\n"
         "}\n";
 
@@ -111,10 +116,12 @@ void QmlExportTest::testSimpleStateMachine()
     s1.setLabel("s1");
     State s2(&root);
     s2.setLabel("s2");
-    Transition* t1 = s1.addTransition(&s2);
+    Transition* t1 = s1.addSignalTransition(&s2);
     t1->setLabel("e1");
+    Transition* t2 = s2.addTimeoutTransition(&s1, 1000);
+    t2->setLabel("e2");
     PseudoState initialState(PseudoState::InitialState, &root);
-    initialState.addTransition(&s1);
+    initialState.addSignalTransition(&s1);
 
     QByteArray output;
     QmlExporter exporter(&output);

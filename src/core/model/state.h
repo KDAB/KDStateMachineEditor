@@ -29,6 +29,8 @@ namespace KDSME {
 
 class RuntimeController;
 class Transition;
+class SignalTransition;
+class TimeoutTransition;
 
 class KDSME_CORE_EXPORT State : public Element
 {
@@ -60,7 +62,8 @@ public:
 
     QList<Transition*> transitions() const;
     void addTransition(Transition* transition);
-    Transition* addTransition(State* target);
+    SignalTransition *addSignalTransition(State* target, const QString &silgnal = QString());
+    TimeoutTransition *addTimeoutTransition(State* target, int timeout);
 
     /**
      * Executable content to be executed when the state is entered

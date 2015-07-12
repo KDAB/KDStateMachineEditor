@@ -60,7 +60,6 @@ public:
         ElementType,
 
         // Transition types
-        TransitionType,
         SignalTransitionType,
         TimeoutTransitionType,
 

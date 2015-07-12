@@ -60,7 +60,7 @@ public:
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());
     Q_INVOKABLE KDSME::ModifyElementCommand* modifyElement(KDSME::Element* item);
-    Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition);
+    Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition, KDSME::StateModel *model);
     Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::StateMachineScene* view, KDSME::Element* element);
     Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine);
 

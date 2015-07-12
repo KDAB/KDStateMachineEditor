@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     s1.setLabel("s1");
     State s2(&machine);
     s2.setLabel("s2");
-    s1.addTransition(&s2);
+    s1.addSignalTransition(&s2);
 
     StateMachineView view;
     view.scene()->setRootState(&machine);

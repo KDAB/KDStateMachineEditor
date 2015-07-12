@@ -111,14 +111,28 @@ void State::addTransition(Transition* transition)
     transition->setParent(this);
 }
 
-Transition* State::addTransition(State* target)
+SignalTransition* State::addSignalTransition(State* target, const QString &silgnal)
 {
     if (!target) {
         return nullptr;
     }
 
-    Transition* transition = new Transition(this);
+    SignalTransition* transition = new SignalTransition(this);
     transition->setTargetState(target);
+    transition->setSignal(silgnal);
+    addTransition(transition);
+    return transition;
+}
+
+TimeoutTransition *State::addTimeoutTransition(State *target, int timeout)
+{
+    if (!target) {
+        return nullptr;
+    }
+
+    TimeoutTransition* transition = new TimeoutTransition(this);
+    transition->setTargetState(target);
+    transition->setTimeout(timeout);
     addTransition(transition);
     return transition;
 }

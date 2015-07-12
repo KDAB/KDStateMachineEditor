@@ -97,9 +97,9 @@ ModifyElementCommand* CommandFactory::modifyElement(Element* item)
     return new ModifyElementCommand(item);
 }
 
-KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition)
+KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition, KDSME::StateModel *model)
 {
-    return new ModifyTransitionCommand(transition);
+    return new ModifyTransitionCommand(transition, model);
 }
 
 ReparentElementCommand* CommandFactory::reparentElement(StateMachineScene* view, Element* element)

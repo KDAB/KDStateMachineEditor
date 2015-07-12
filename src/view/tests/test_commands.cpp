@@ -98,7 +98,7 @@ void CommandsTest::testAddTransition()
 
     // add transition to state
     State* state = harness.machine.childStates()[0];
-    cmd = new CreateElementCommand(&harness.model, Element::TransitionType);
+    cmd = new CreateElementCommand(&harness.model, Element::SignalTransitionType);
     cmd->setParentElement(state);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
@@ -195,7 +195,7 @@ void CommandsTest::testModifyTransition()
         Transition transition;
         State newSourceState;
         QVERIFY(!transition.sourceState());
-        auto cmd = new ModifyTransitionCommand(&transition);
+        auto cmd = new ModifyTransitionCommand(&transition, nullptr);
         cmd->setSourceState(&newSourceState);
         QVERIFY(!transition.sourceState());
         harness.undoStack.push(cmd);
@@ -208,7 +208,7 @@ void CommandsTest::testModifyTransition()
         Transition transition;
         State newTargetState;
         QVERIFY(!transition.targetState());
-        auto cmd = new ModifyTransitionCommand(&transition);
+        auto cmd = new ModifyTransitionCommand(&transition, nullptr);
         cmd->setTargetState(&newTargetState);
         QVERIFY(!transition.targetState());
         harness.undoStack.push(cmd);
@@ -222,7 +222,7 @@ void CommandsTest::testModifyTransition()
         const QPainterPath originalPath;
         const QPainterPath newPath(QPointF(5, 5));
         QCOMPARE(transition.shape(), originalPath);
-        auto cmd = new ModifyTransitionCommand(&transition);
+        auto cmd = new ModifyTransitionCommand(&transition, nullptr);
         QCOMPARE(transition.shape(), originalPath);
         cmd->setShape(newPath);
         harness.undoStack.push(cmd);

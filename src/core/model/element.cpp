@@ -198,7 +198,6 @@ QSizeF Element::preferredSize() const
         size = QSizeF(32, 32);
         break;
     case Element::ElementType:
-    case Element::TransitionType:
     case Element::SignalTransitionType:
     case Element::TimeoutTransitionType:
     case Element::PseudoStateType:

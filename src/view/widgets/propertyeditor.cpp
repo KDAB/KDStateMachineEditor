@@ -69,6 +69,7 @@ struct PropertyEditor::Private
     PropertyEditor* q;
     QItemSelectionModel* m_selectionModel;
     CommandController *m_commandController;
+    KDSME::StateModel *m_stateModel;
     QPointer<KDSME::Element> m_currentElement;
     Ui::StatePropertyEditor* m_stateWidget;
     Ui::TransitionPropertyEditor* m_transitionWidget;
@@ -81,6 +82,7 @@ PropertyEditor::Private::Private(PropertyEditor* q)
     : q(q)
     , m_selectionModel(nullptr)
     , m_commandController(nullptr)
+    , m_stateModel(nullptr)
     , m_stateWidget(nullptr)
     , m_transitionWidget(nullptr)
     , m_noWidgetIndex(-1)
@@ -160,6 +162,11 @@ void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 void PropertyEditor::setCommandController(CommandController* cmdController)
 {
     d->m_commandController = cmdController;
+}
+
+void PropertyEditor::setStateModel(StateModel *selectionModel)
+{
+    d->m_stateModel = selectionModel;
 }
 
 static QStringList allStates(const State * state)
@@ -365,11 +372,10 @@ void PropertyEditor::Private::setDefaultState(const QString& label)
 void PropertyEditor::Private::setSourceState(const QString &label)
 {
     Transition* transition = current<Transition>();
-    Q_ASSERT(transition);
     if (transition) {
         State *sourceState = ElementUtil::findState(transition->sourceState()->machine(), label);
         if (transition->sourceState() != sourceState) {
-            ModifyTransitionCommand *command = new ModifyTransitionCommand(transition);
+            ModifyTransitionCommand *command = new ModifyTransitionCommand(transition, m_stateModel);
             command->setSourceState(sourceState);
             m_commandController->undoStack()->push(command);
         }
@@ -379,11 +385,10 @@ void PropertyEditor::Private::setSourceState(const QString &label)
 void PropertyEditor::Private::setTargetState(const QString &label)
 {
     Transition* transition = current<Transition>();
-    Q_ASSERT(transition);
     if (transition) {
         State *targetState = ElementUtil::findState(transition->sourceState()->machine(), label);
         if (transition->targetState() != targetState) {
-            ModifyTransitionCommand *command = new ModifyTransitionCommand(transition);
+            ModifyTransitionCommand *command = new ModifyTransitionCommand(transition, m_stateModel);
             command->setTargetState(targetState);
             m_commandController->undoStack()->push(command);
         }

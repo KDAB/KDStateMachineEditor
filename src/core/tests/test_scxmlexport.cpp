@@ -102,10 +102,10 @@ void ScxmlExportTest::testSimpleStateMachine()
     s1.setLabel("s1");
     State s2(&root);
     s2.setLabel("s2");
-    Transition* t1 = s1.addTransition(&s2);
+    Transition* t1 = s1.addSignalTransition(&s2);
     t1->setLabel("e1");
     PseudoState initialState(PseudoState::InitialState, &root);
-    initialState.addTransition(&s1);
+    initialState.addSignalTransition(&s1);
 
     QByteArray output;
     ScxmlExporter exporter(&output);

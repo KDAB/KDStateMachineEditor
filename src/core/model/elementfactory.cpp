@@ -36,8 +36,10 @@ ElementFactory::ElementFactory()
 Element* ElementFactory::create(Element::Type type) const
 {
     switch (type) {
-    case Element::TransitionType:
-        return new Transition;
+    case Element::SignalTransitionType:
+        return new SignalTransition(nullptr);
+    case Element::TimeoutTransitionType:
+        return new TimeoutTransition(nullptr);
     case Element::StateType:
         return new State;
     case Element::HistoryStateType:

@@ -53,11 +53,6 @@ Transition::~Transition()
 {
 }
 
-Element::Type Transition::type() const
-{
-    return TransitionType;
-}
-
 StateMachine* Transition::machine() const
 {
     StateMachine *m = ElementUtil::findStateMachine(this);
