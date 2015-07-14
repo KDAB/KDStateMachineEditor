@@ -41,6 +41,12 @@ CreateElementCommand::CreateElementCommand(StateModel* model, const Element::Typ
     updateText();
 }
 
+CreateElementCommand::~CreateElementCommand()
+{
+    if (m_createdElement && !m_createdElement->parent())
+        delete m_createdElement;
+}
+
 Element* CreateElementCommand::parentElement() const
 {
     return m_parentElement;
@@ -85,15 +91,19 @@ void CreateElementCommand::redo()
 
     Element* parentElement = m_parentElement ? m_parentElement : model()->state();
     StateModel::AppendOperation append(model(), parentElement);
-    Element* element = factory.create(m_type);
-    if (!element) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Element could not be instantiated, type:" << m_type;
-        return;
-    }
+    if (m_createdElement) {
+        m_createdElement->setParent(parentElement);
+    } else {
+        Element* element = factory.create(m_type);
+        if (!element) {
+            qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Element could not be instantiated, type:" << m_type;
+            return;
+        }
 
-    element->setLabel(tr("Unnamed"));
-    element->setParent(parentElement);
-    m_createdElement = element;
+        element->setLabel(tr("Unnamed"));
+        element->setParent(parentElement);
+        m_createdElement = element;
+    }
     updateText();
 }
 
@@ -108,8 +118,6 @@ void CreateElementCommand::undo()
         StateModel::RemoveOperation remove(model(), m_createdElement);
         m_createdElement->setParent(nullptr);
     }
-    delete m_createdElement;
-    m_createdElement = nullptr;
 }
 
 void CreateElementCommand::updateText()
