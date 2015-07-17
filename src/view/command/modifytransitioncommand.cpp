@@ -22,10 +22,9 @@
 
 #include "modifytransitioncommand_p.h"
 
+#include "elementmodel.h"
 #include "state.h"
 #include "transition.h"
-
-#include <elementmodel.h>
 
 using namespace KDSME;
 
