@@ -89,6 +89,11 @@ void Transition::setTargetState(State* targetState)
     emit targetStateChanged(targetState);
 }
 
+Element::Type Transition::type() const
+{
+    return TransitionType;
+}
+
 QString Transition::guard() const
 {
     return d->m_guard;

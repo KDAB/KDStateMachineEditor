@@ -49,6 +49,8 @@ public:
     State* targetState() const;
     void setTargetState(State* targetState);
 
+    virtual Type type() const override;
+
     /**
      * The guard condition for this transition (executable content)
      *
