@@ -48,7 +48,7 @@ if(Qt5RemoteObjects_FOUND)
   )
 endif()
 
-if(Graphviz_FOUND)
+if(GRAPHVIZ_FOUND)
   list(APPEND LIB_SRCS
     layout/graphvizlayout/gvutils.cpp
     layout/graphvizlayout/graphvizlayerlayouter.cpp
@@ -75,21 +75,22 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES
 )
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
-if(Graphviz_FOUND)
-  target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::gvc)
+if(GRAPHVIZ_FOUND)
+  target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_GVC_LIBRARY})
 
-  if(TARGET Graphviz::cgraph AND Graphviz_VERSION VERSION_GREATER 2.30.0)
+  if(GRAPHVIZ_CGRAPH_LIBRARY AND GRAPHVIZ_VERSION VERSION_GREATER 2.30.0)
     message(STATUS "Enabling use of experimental 'cgraph' library of GraphViz")
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::cgraph)
+    target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_CGRAPH_LIBRARY})
   else()
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Graphviz::graph)
+    target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_GRAPH_LIBRARY})
   endif()
   list(APPEND LIB_EXTRA_INCLUDES
+    ${GRAPHVIZ_INCLUDE_DIR}
     # TODO: Work-around issue in graphviz/types.h header
     # <cgraph.h> is included there, but it should rather be "cgraph.h"
-    ${Graphviz_INCLUDE_DIR}/graphviz
+    ${GRAPHVIZ_INCLUDE_DIR}/graphviz
   )
-  target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${Graphviz_VERSION_MAJOR} -DGRAPHVIZ_MINOR_VERSION=${Graphviz_VERSION_MINOR})
+  target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${GRAPHVIZ_MAJOR_VERSION} -DGRAPHVIZ_MINOR_VERSION=${GRAPHVIZ_MINOR_VERSION})
 endif()
 
 if(Qt5RemoteObjects_FOUND)
