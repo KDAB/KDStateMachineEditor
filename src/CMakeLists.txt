@@ -1,4 +1,4 @@
-set(HAVE_GRAPHVIZ ${Graphviz_FOUND})
+set(HAVE_GRAPHVIZ ${GRAPHVIZ_FOUND})
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config-kdsme.h.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/config-kdsme.h

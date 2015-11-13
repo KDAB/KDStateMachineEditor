@@ -18,7 +18,7 @@ target_link_libraries(kdsme_testhelper
   kdstatemachineeditor_core
 )
 
-if(Graphviz_FOUND)
+if(GRAPHVIZ_FOUND)
   ecm_add_test(test_layouter.cpp
     LINK_LIBRARIES
       Qt5::Gui
