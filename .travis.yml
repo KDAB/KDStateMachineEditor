@@ -1,0 +1,43 @@
+env:
+  global:
+    - secure: "NlWO/NTPlOU6cowOMuPOvjAprXVwIjmpHHf9CoMR71E2c/eBFFKIHj10kXuyFwz2KihHAIExmo9OlGtGniNWobvIrVrabO3dsOSb6UGbPAQkzQiyQLKsDNQAZx3nMuWEKBtMsVRee6rd7/2uGTY4WB5Ot3VhrUYcN1FoRgQQ9gk="
+
+branches:
+  only:
+    - master
+os:
+  - osx
+
+language: cpp
+compiler:
+  - gcc
+  - clang
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      sudo add-apt-repository --yes ppa:smspillaz/cmake-2.8.12 &&
+      sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa &&
+      sudo apt-get update -qq &&
+      sudo apt-get install cmake cmake-data &&
+      sudo apt-get install qt5-default qtbase5-dev qtbase5-dev-tools &&
+      sudo apt-get install qttools5-dev qttools5-dev-tools &&
+      sudo apt-get install qtdeclarative5-dev qtdeclarative5-dev-tools &&
+      sudo apt-get install qtxmlpatterns5-dev-tools &&
+      sudo apt-get install graphviz-dev &&
+      export QT_SELECT=qt5;
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      brew install qt5 graphviz &&
+      export PATH=/usr/local/opt/qt5/bin:$PATH;
+    fi
+
+script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test
+
+addons:
+  coverity_scan:
+    project:
+      name: KDAB/KDStateMachineEditor
+    notification_email: allen.winter@kdab.com
+    build_command_prepend: cd build && cmake ..
+    build_command: make
+    branch_pattern: coverity_scan
