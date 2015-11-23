@@ -13,7 +13,8 @@ Building and running
 
 Install the dependencies (here: Ubuntu):
 
-    $ sudo apt-get install cmake qt5-default graphviz-dev
+    $ sudo apt-get install cmake qt5-default graphviz-dev \
+                           qtbase5-private-dev libqt5qml-graphicaleffects
 
 Build:
 
