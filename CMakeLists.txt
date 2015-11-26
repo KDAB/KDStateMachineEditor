@@ -60,9 +60,6 @@ set(CMAKE_AUTOMOC TRUE)
 
 set(BIN_INSTALL_DIR bin)
 set(LIB_INSTALL_DIR lib CACHE STRING "Library install destination.")
-if(WIN32)
-  set(LIB_INSTALL_DIR ${BIN_INSTALL_DIR})
-endif()
 set(INCLUDE_INSTALL_DIR include/${CMAKE_PROJECT_NAME})
 set(XDG_DATA_INSTALL_DIR share/${CMAKE_PROJECT_NAME})
 
