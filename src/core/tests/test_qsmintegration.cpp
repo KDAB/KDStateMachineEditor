@@ -22,19 +22,48 @@
 
 #include "state.h"
 #include "transition.h"
-#include "qsmadapter.h"
 #include "runtimecontroller.h"
 #include "util.h"
+
+#include "debuginterface_replica.h"
+
+#include <debuginterfaceclient.h>
+#include <qsmdebuginterfacesource.h>
 
 #include <QtTest>
 #include <QFile>
 #include <QFileInfo>
+#include <QRemoteObjectNode>
 #include <QString>
 
 #define QVERIFY_RETURN(statement, retval) \
     do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
 
 using namespace KDSME;
+
+struct QsmAdapter : public DebugInterfaceClient
+{
+    QRemoteObjectNode registryHostNode;
+    QRemoteObjectNode hostNode;
+    QRemoteObjectNode clientNode;
+    QsmDebugInterfaceSource interface;
+
+    QsmAdapter(QObject* parent = nullptr)
+        : DebugInterfaceClient(parent)
+    {
+        // set up the debug interface on the local registry and connect to it
+        // this is simpler than writing another class that handles in-process debuggging
+        // just pay the cost for the in-process communication, it's not that much anyway
+        registryHostNode = QRemoteObjectNode::createRegistryHostNode();
+        hostNode = QRemoteObjectNode::createHostNodeConnectedToRegistry();
+        hostNode.enableRemoting(interface.remoteObjectSource());
+
+        clientNode = QRemoteObjectNode::createNodeConnectedToRegistry();
+        auto interfaceReplica = clientNode.acquire<DebugInterfaceReplica>();
+        interfaceReplica->waitForSource();
+        setDebugInterface(interfaceReplica);
+    }
+};
 
 class QsmIntegrationTest : public QObject
 {
@@ -65,7 +94,7 @@ void QsmIntegrationTest::testSimpleQSM()
     QVERIFY(!adapter.machine());
 
     // set the debuggee state machine, another repopulation will happen
-    adapter.setQStateMachine(&qsm);
+    adapter.interface.setQStateMachine(&qsm);
     QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 2);
 
@@ -97,7 +126,7 @@ void QsmIntegrationTest::testRunningQSM()
     QsmAdapter adapter;
     QSignalSpy spy(&adapter, &QsmAdapter::repopulateView);
     QVERIFY(spy.wait(20));
-    adapter.setQStateMachine(&qsm);
+    adapter.interface.setQStateMachine(&qsm);
     QVERIFY(spy.wait(20));
 
     const StateMachine* machine = adapter.machine();

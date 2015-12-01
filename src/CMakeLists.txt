@@ -8,6 +8,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_subdirectory(core)
 add_subdirectory(view)
+
+if(Qt5RemoteObjects_FOUND)
+  add_subdirectory(debuginterface)
+endif()
+
 if(NOT CMAKE_CROSSCOMPILING)
   add_subdirectory(app)
 endif()

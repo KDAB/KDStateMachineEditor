@@ -20,27 +20,37 @@
   clear to you.
 */
 
-#ifndef KDSME_QSMADAPTER_H
-#define KDSME_QSMADAPTER_H
+#ifndef KDSME_DEBUGINTERFACECLIENT_H
+#define KDSME_DEBUGINTERFACECLIENT_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_debuginterfaceclient_export.h"
 
-#include "debuginterfaceclient.h"
+#include "runtimecontroller.h"
 
-class QStateMachine;
+class DebugInterfaceReplica;
 
 namespace KDSME {
+class State;
+class StateMachine;
+class Transition;
 
-class KDSME_CORE_EXPORT QsmAdapter : public DebugInterfaceClient
+class KDSME_DEBUGINTERFACECLIENT_EXPORT DebugInterfaceClient : public RuntimeController
 {
     Q_OBJECT
 
 public:
-    explicit QsmAdapter(QObject* parent = nullptr);
-    virtual ~QsmAdapter();
+    explicit DebugInterfaceClient(QObject* parent = nullptr);
+    virtual ~DebugInterfaceClient();
 
-    QStateMachine* qStateMachine() const;
-    void setQStateMachine(QStateMachine* machine);
+public:
+    DebugInterfaceReplica* debugInterface() const;
+    void setDebugInterface(DebugInterfaceReplica* debugInterface);
+
+    KDSME::StateMachine* machine() const;
+
+Q_SIGNALS:
+    void repopulateView();
+    void clearGraph();
 
 private:
     struct Private;
@@ -49,10 +59,4 @@ private:
 
 }
 
-/**
- * @example qsmdebugger/main.cpp
- *
- * This is an example of how to use the @ref KDSME::QsmAdapter class.
- */
-
-#endif // KDSME_QSMADAPTER_H
+#endif // KDSME_DEBUGINTERFACECLIENT_H

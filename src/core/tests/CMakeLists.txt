@@ -44,10 +44,14 @@ ecm_add_test(test_qmlexport.cpp
 )
 
 if(Qt5RemoteObjects_FOUND)
-  ecm_add_test(test_qsmintegration.cpp
+  set(SRCS test_qsmintegration.cpp)
+  qt5_generate_repc(SRCS ../../debuginterface/debuginterface.rep REPLICA)
+  ecm_add_test(${SRCS} TEST_NAME test_qsmintegration
   LINK_LIBRARIES
+    Qt5::RemoteObjects
     Qt5::Test
-    kdstatemachineeditor_core
+    kdstatemachineeditor_debuginterfaceclient
+    kdstatemachineeditor_debuginterfacesource
     kdsme_testhelper
   )
 endif()

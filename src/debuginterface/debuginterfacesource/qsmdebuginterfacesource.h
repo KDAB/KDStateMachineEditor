@@ -23,7 +23,7 @@
 #ifndef KDSME_QSMDEBUGINTERFACESOURCE_H
 #define KDSME_QSMDEBUGINTERFACESOURCE_H
 
-#include "kdsme_core_export.h"
+#include "kdsme_debuginterfacesource_export.h"
 
 #include <QScopedPointer>
 
@@ -31,7 +31,7 @@ class QStateMachine;
 
 namespace KDSME {
 
-class KDSME_CORE_EXPORT QsmDebugInterfaceSource
+class KDSME_DEBUGINTERFACESOURCE_EXPORT QsmDebugInterfaceSource
 {
 public:
     QsmDebugInterfaceSource();

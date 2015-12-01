@@ -22,14 +22,17 @@
 
 #include "config-examples.h"
 
+#include "debuginterface_replica.h"
 #include "trafficlight.h"
 
+#include <debuginterfaceclient.h>
+#include <qsmdebuginterfacesource.h>
 #include <state.h>
 #include <statemachinescene.h>
 #include <statemachineview.h>
-#include <qsmadapter.h>
 
 #include <QApplication>
+#include <QRemoteObjectNode>
 
 using namespace KDSME;
 
@@ -40,24 +43,40 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
-    // setup debuggee
+    //! [Target setup]
     TrafficLight trafficLight;
     trafficLight.resize(110, 300);
     trafficLight.show();
 
+    // set up the debug interface on the local registry and connect to it
+    // this is simpler than writing another class that handles in-process debuggging
+    // just pay the cost for the in-process communication, it's not that much anyway
+    auto registryHostNode = QRemoteObjectNode::createRegistryHostNode();
+    auto hostNode = QRemoteObjectNode::createHostNodeConnectedToRegistry();
+    QsmDebugInterfaceSource interfaceSource;
+    interfaceSource.setQStateMachine(trafficLight.machine());
+    hostNode.enableRemoting(interfaceSource.remoteObjectSource());
+    //! [Target setup]
+
+    //! [Client setup for viewing the state machine]
     StateMachineView view;
     view.resize(800, 600);
     view.show();
 
-    QsmAdapter adapter;
-    QObject::connect(&adapter, &QsmAdapter::repopulateView,
+    auto clientNode = QRemoteObjectNode::createNodeConnectedToRegistry();
+    auto interfaceReplica = clientNode.acquire<DebugInterfaceReplica>();
+    interfaceReplica->waitForSource();
+
+    DebugInterfaceClient client;
+    client.setDebugInterface(interfaceReplica);
+    QObject::connect(&client, &DebugInterfaceClient::repopulateView,
                      [&]() {
             qDebug() << "Updating state machine in view";
-            view.scene()->setRootState(adapter.machine());
+            view.scene()->setRootState(client.machine());
             view.scene()->layout();
         }
     );
-    adapter.setQStateMachine(trafficLight.machine());
+    //! [Client setup for viewing the state machine]
 
     app.exec();
 }
