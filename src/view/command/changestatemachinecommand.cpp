@@ -32,7 +32,7 @@
 using namespace KDSME;
 
 ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent)
-    : Command(tr("Change Statemachine"), parent)
+    : Command(tr("Change state machine"), parent)
     , m_view(view)
     , m_oldStateMachine(nullptr)
     , m_newStateMachine(nullptr)

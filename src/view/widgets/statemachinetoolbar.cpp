@@ -68,8 +68,8 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent
     d->m_view = view;
 
     setWindowTitle(tr("State Machine Tool Bar"));
-    d->m_exportAction = new QAction(tr("Export to file"), this);
-    d->m_exportAction->setStatusTip("Export current State Machine to file");
+    d->m_exportAction = new QAction(tr("Export to file..."), this);
+    d->m_exportAction->setStatusTip("Export current state machine to a file.");
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
 
     addAction(d->m_exportAction);
@@ -87,7 +87,7 @@ void StateMachineToolBar::Private::handleExport()
         return;
     }
 
-    const QString fileName = QFileDialog::getSaveFileName(q, tr("Save to File"), QString(), "SCXML/QML files (*.scxml, *.qml)");
+    const QString fileName = QFileDialog::getSaveFileName(q, tr("Save to File"), QString(), tr("SCXML/QML files (*.scxml, *.qml)"));
     exportToFile(stateMachine, fileName);
 }
 

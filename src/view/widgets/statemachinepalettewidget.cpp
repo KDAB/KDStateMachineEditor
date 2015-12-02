@@ -84,8 +84,8 @@ PaletteModel::PaletteModel(QObject* parent)
     m_entries << Entry(Element::FinalStateType, ":/kdsme/icons/final_state.png", tr("Final State"));
     m_entries << Entry(Element::HistoryStateType, ":/kdsme/icons/shallow_history.png", tr("History State"));
 
-    m_entries << Entry(Element::SignalTransitionType, ":/kdsme/icons/transition.png", tr("Signal transition"));
-    m_entries << Entry(Element::TimeoutTransitionType, ":/kdsme/icons/transition.png", tr("Timeout transition"));
+    m_entries << Entry(Element::SignalTransitionType, ":/kdsme/icons/transition.png", tr("Signal Transition"));
+    m_entries << Entry(Element::TimeoutTransitionType, ":/kdsme/icons/transition.png", tr("Timeout Transition"));
 }
 
 int PaletteModel::rowCount(const QModelIndex& parent) const
