@@ -26,9 +26,8 @@
 #include "util.h"
 
 #include "debuginterface_replica.h"
-
-#include <debuginterfaceclient.h>
-#include <qsmdebuginterfacesource.h>
+#include "debuginterfaceclient.h"
+#include "qsmdebuginterfacesource.h"
 
 #include <QtTest>
 #include <QFile>
