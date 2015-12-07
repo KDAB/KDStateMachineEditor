@@ -2,6 +2,7 @@ set(LIB_SRCS
   export/abstractexporter.cpp
   export/qmlexporter.cpp
   export/scxmlexporter.cpp
+  export/svgexporter.cpp
 
   layout/layerwiselayouter.cpp
   layout/layouter.cpp

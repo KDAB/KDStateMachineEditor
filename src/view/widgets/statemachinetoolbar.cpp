@@ -26,6 +26,7 @@
 
 #include "export/scxmlexporter.h"
 #include "export/qmlexporter.h"
+#include "export/svgexporter.h"
 #include "state.h"
 #include "statemachineview.h"
 #include "statemachinescene.h"
@@ -87,7 +88,7 @@ void StateMachineToolBar::Private::handleExport()
         return;
     }
 
-    const QString fileName = QFileDialog::getSaveFileName(q, tr("Save to File"), QString(), tr("SCXML/QML files (*.scxml, *.qml)"));
+    const QString fileName = QFileDialog::getSaveFileName(q, tr("Save to File"), QString(), tr("SCXML/QML/SVG files (*.scxml, *.qml, *.svg)"));
     exportToFile(stateMachine, fileName);
 }
 
@@ -107,6 +108,8 @@ void StateMachineToolBar::Private::exportToFile(StateMachine* machine, const QSt
     AbstractExporter* exporter;
     if (suffix == "qml") {
         exporter = new QmlExporter(&file);
+    } else if (suffix == "svg") {
+        exporter = new SvgExporter(&file);
     } else {
         // fallback
         exporter = new ScxmlExporter(&file);
