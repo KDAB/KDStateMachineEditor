@@ -41,7 +41,7 @@ using the KDAB State Machine Editor library.
 %setup -q
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=%{_lib} -DCMAKE_BUILD_TYPE=Release
+cmake . -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=%{_lib} -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
 make %{?_smp_mflags}
 
 %install
