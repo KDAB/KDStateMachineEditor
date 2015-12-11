@@ -14,6 +14,11 @@ set(KDSME_SOVERSION "1.0.0")
 set(PROJECT_VERSION_STRING "${KDSME_VERSION_STRING}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH})
+set(CMAKE_AUTOMOC ON)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+endif()
 
 if(WIN32)
   # Needed for qmake-integration because qmake's QT modules import mechanism does assume
@@ -73,14 +78,22 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
   BUNDLE DESTINATION "/Applications/Qt5"
 )
 
-set(GRAPHVIZ_MIN_VERSION "2.20")
-find_package(Graphviz)
-set_package_properties(Graphviz PROPERTIES
-  TYPE OPTIONAL
-  DESCRIPTION "Graph visualization software"
-  PURPOSE "RECOMMENDED: Needed for automatic layout of state charts"
-  URL "http://www.graphviz.org/"
-)
+# There is no 64-bit Graphviz available for Windows.
+include(CheckTypeSize)
+check_type_size("void*" SIZEOF_VOID_P BUILTIN_TYPES_ONLY)
+if(WIN32 AND SIZEOF_VOID_P EQUAL 8)
+  set(GRAPHVIZ_FOUND FALSE)
+  add_feature_info("Graph visualization software" FALSE "A 64-bit Graphviz library does not exist for Windows at this time.")
+else()
+  set(GRAPHVIZ_MIN_VERSION "2.20")
+  find_package(Graphviz)
+  set_package_properties(Graphviz PROPERTIES
+    TYPE OPTIONAL
+    DESCRIPTION "Graph visualization software"
+    PURPOSE "RECOMMENDED: Needed for automatic layout of state charts"
+    URL "http://www.graphviz.org/"
+  )
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
