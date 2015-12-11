@@ -2,7 +2,7 @@ Name:           kdstatemachineeditor
 Version:        0.0.99
 Release:        1
 Summary:        State Machine Editor Library
-Source:         %{name}-%{version}.tar.bz2
+Source:         %{name}-%{version}.tar.gz
 Url:            https://github.com/KDAB/KDStateMachineEditor
 Group:          System/Libraries
 License:        LGPLv2+
@@ -10,8 +10,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Vendor:         Klaralvdalens Datakonsult AB (KDAB)
 Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
 
-BuildRequires: cmake
-BuildRequires: libqt5-qtdeclarative-devel libqt5-qtdeclarative-private-headers-devel libQt5Test-devel libqt5-qtxmlpatterns-devel graphviz-devel
+BuildRequires: cmake graphviz-devel
+%if %{defined suse_version}
+BuildRequires: libqt5-qtdeclarative-devel libqt5-qtdeclarative-private-headers-devel libQt5Test-devel libqt5-qtxmlpatterns-devel
+%endif
+
+%if %{defined fedora}
+BuildRequires: qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtxmlpatterns-devel
+%endif
 
 %description
 The KDAB State Machine Editor Library is a framework that can be used to help develop
