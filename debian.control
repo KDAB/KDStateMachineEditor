@@ -2,7 +2,7 @@ Source: kdstatemachineeditor
 Section: Miscellaneous
 Priority: optional
 Maintainer: Allen Winter <allen.winter@kdab.com>
-Build-Depends: debhelper (>= 4.1.16), cdbs, cmake, qt5-default, qtbase5-dev, qtbase5-dev-tools, qtbase5-private-dev, qttools5-dev, qttools5-dev-tools, qtdeclarative5-dev, qtdeclarative5-dev-tools, qtxmlpatterns5-dev-tools, graphviz-dev
+Build-Depends: debhelper (>= 4.1.16), cdbs, cmake, qt5-default, qtbase5-dev, qtbase5-dev-tools, qtbase5-private-dev, qttools5-dev, qttools5-dev-tools, qtdeclarative5-dev, qtdeclarative5-dev-tools, graphviz-dev
 
 Package: kdstatemachineeditor
 Architecture: any
