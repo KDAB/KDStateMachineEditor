@@ -180,8 +180,12 @@ bool SvgExporterPrivate::writeStateMachine(StateMachine* machine)
 
 bool SvgExporterPrivate::writeState(State* state)
 {
+#if !defined(NDEBUG)
     if (auto pseudo = qobject_cast<PseudoState*>(state)) {
         Q_ASSERT(pseudo->kind() == PseudoState::InitialState);
+#else
+    if (qobject_cast<PseudoState*>(state)) {
+#endif
         writeSvgEllipse(state->boundingRect(), true);
     } else if (qobject_cast<FinalState*>(state)) {
         writeSvgEllipse(state->boundingRect(), false);
