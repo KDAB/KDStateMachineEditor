@@ -22,10 +22,10 @@
 
 #include "svgexporter.h"
 
-#include <elementutil.h>
-#include <state.h>
-#include <transition.h>
-#include <objecthelper.h>
+#include "elementutil.h"
+#include "objecthelper.h"
+#include "state.h"
+#include "transition.h"
 
 #include <QDebug>
 #include <QFontMetricsF>

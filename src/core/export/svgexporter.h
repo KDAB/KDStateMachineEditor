@@ -34,7 +34,7 @@ class SvgExporterPrivate;
 class KDSME_CORE_EXPORT SvgExporter : public AbstractExporter
 {
 public:
-    SvgExporter(QIODevice *ioDevice);
+    explicit SvgExporter(QIODevice *ioDevice);
     ~SvgExporter();
 
     bool exportMachine(StateMachine* machine) override;
