@@ -149,11 +149,11 @@ find_package(Doxygen)
 set_package_properties(Doxygen PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Doxygen documentation generator"
-  PURPOSE "Needed for generating API documentation (make doc)"
+  PURPOSE "Needed for generating API documentation (make docs)"
 )
 if(DOXYGEN_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-  add_custom_target(doc
+  add_custom_target(docs
     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating API documentation with Doxygen" VERBATIM
