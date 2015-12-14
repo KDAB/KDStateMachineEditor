@@ -37,7 +37,7 @@ include(ECMGeneratePriFile)
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
 find_package(Qt5 5.3 REQUIRED QuickWidgets)
 
-find_package(Qt5RemoteObjects 5.4)
+find_package(Qt5RemoteObjects 5.4 QUIET)
 set_package_properties(Qt5RemoteObjects PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt Remote Objects module"
