@@ -5,9 +5,9 @@ cmake_minimum_required(VERSION 2.8.12) # because of ALIAS targets
 project(kdstatemachineeditor)
 
 # Version setup
-set(KDSME_VERSION_MAJOR "0")
+set(KDSME_VERSION_MAJOR "1")
 set(KDSME_VERSION_MINOR "0")
-set(KDSME_VERSION_PATCH "99")
+set(KDSME_VERSION_PATCH "0")
 set(KDSME_VERSION "${KDSME_VERSION_MAJOR}.${KDSME_VERSION_MINOR}.${KDSME_VERSION_PATCH}")
 set(KDSME_VERSION_STRING "${KDSME_VERSION}")
 set(KDSME_SOVERSION "1.0.0")
