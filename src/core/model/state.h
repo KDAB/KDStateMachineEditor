@@ -49,7 +49,7 @@ public:
     };
 
     explicit State(State* parent = nullptr);
-    ~State() override;
+    ~State();
 
     Type type() const override;
 
@@ -120,7 +120,7 @@ public:
 
     explicit HistoryState(State* parent = nullptr);
     explicit HistoryState(HistoryType type, State* parent = nullptr);
-    ~HistoryState() override;
+    ~HistoryState();
 
     Type type() const override;
     QString toDisplayString() const override;
@@ -148,7 +148,7 @@ class KDSME_CORE_EXPORT FinalState : public State
 
 public:
     explicit FinalState(State* parent = nullptr);
-    ~FinalState() override;
+    ~FinalState();
 
     Type type() const override;
 
@@ -164,7 +164,7 @@ class KDSME_CORE_EXPORT StateMachine : public State
 
 public:
     explicit StateMachine(QObject* parent = nullptr);
-    ~StateMachine() override;
+    ~StateMachine();
 
     Type type() const override;
 
@@ -191,7 +191,7 @@ public:
     Q_ENUMS(Kind)
 
     explicit PseudoState(Kind kind = InitialState, State* parent = nullptr);
-    ~PseudoState() override;
+    ~PseudoState();
 
     Type type() const override;
 

@@ -40,7 +40,7 @@ class KDSME_VIEW_EXPORT EditController : public AbstractController
 
 public:
     explicit EditController(StateMachineView* parent = nullptr);
-    ~EditController() override;
+    ~EditController();
 
     bool editModeEnabled() const;
     void setEditModeEnabled(bool editModeEnabled);

@@ -49,7 +49,7 @@ class KDSME_CORE_EXPORT TransitionModel : public QSortFilterProxyModel
 
 public:
     explicit TransitionModel(QObject* parent = nullptr);
-    ~TransitionModel() override;
+    ~TransitionModel();
 
     void setSourceModel(QAbstractItemModel* sourceModel) override;
 
@@ -78,7 +78,7 @@ public:
     };
 
     explicit TransitionListModel(QObject* parent = nullptr);
-    ~TransitionListModel() override;
+    ~TransitionListModel();
 
     State* state() const;
     void setState(State* list);
@@ -105,7 +105,7 @@ public:
     };
 
     explicit StateModel(QObject* parent = nullptr);
-    ~StateModel() override;
+    ~StateModel();
 
     State* state() const;
     void setState(State* state);

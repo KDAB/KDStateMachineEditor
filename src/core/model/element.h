@@ -82,7 +82,7 @@ public:
     Q_DECLARE_FLAGS(Flags, Flag)
 
     explicit Element(QObject* parent = nullptr);
-    ~Element() override;
+    ~Element();
 
     virtual Type type() const;
 

@@ -51,7 +51,7 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
 
 public:
     explicit StateMachineScene(QQuickItem* parent = nullptr);
-    ~StateMachineScene() override;
+    ~StateMachineScene();
 
     StateModel* stateModel() const;
     void setModel(QAbstractItemModel* model) override;

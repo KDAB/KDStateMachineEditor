@@ -44,7 +44,7 @@ class KDSME_VIEW_EXPORT CommandController : public AbstractController
 
 public:
     explicit CommandController(QUndoStack* undoStack, StateMachineView* parent);
-    ~CommandController() override;
+    ~CommandController();
 
     Q_INVOKABLE void push(KDSME::Command* command);
 

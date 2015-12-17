@@ -84,7 +84,7 @@ public:
     };
 
     explicit ObjectTreeModel(QObject *parent = nullptr);
-    ~ObjectTreeModel() override;
+    ~ObjectTreeModel();
 
     void appendRootObject(QObject* object);
     QList<QObject*> rootObjects() const;

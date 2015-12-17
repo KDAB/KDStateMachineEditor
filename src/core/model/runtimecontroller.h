@@ -46,7 +46,7 @@ public:
     typedef QSet<State*> Configuration;
 
     explicit RuntimeController(QObject* parent = nullptr);
-    ~RuntimeController() override;
+    ~RuntimeController();
 
     Configuration activeConfiguration() const;
     QList<Configuration> lastConfigurations() const;

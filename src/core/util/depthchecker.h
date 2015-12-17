@@ -39,7 +39,7 @@ class KDSME_CORE_EXPORT DepthChecker : public QObject
 
 public:
     explicit DepthChecker(QObject* parent = nullptr);
-    ~DepthChecker() override;
+    ~DepthChecker();
 
     Element* target() const;
     void setTarget(Element* target);

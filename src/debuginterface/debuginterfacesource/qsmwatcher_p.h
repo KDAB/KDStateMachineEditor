@@ -38,7 +38,7 @@ Q_OBJECT
 
 public:
     explicit QSMWatcher(QObject *parent = nullptr);
-    ~QSMWatcher() override;
+    ~QSMWatcher();
 
     void setWatchedStateMachine(QStateMachine *machine);
     QStateMachine *watchedStateMachine() const;

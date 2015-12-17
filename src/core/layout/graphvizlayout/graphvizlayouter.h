@@ -39,7 +39,7 @@ class GraphvizLayouter : public Layouter
 
 public:
     explicit GraphvizLayouter(QObject* parent = nullptr);
-    ~GraphvizLayouter() override;
+    ~GraphvizLayouter();
 
     QRectF layout(State* state, const LayoutProperties* properties) override;
 

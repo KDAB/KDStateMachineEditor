@@ -55,7 +55,7 @@ public:
     };
 
     explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
-    ~MainWindow() override;
+    ~MainWindow();
 
     /// When in PresetsInputMode, return the currently selected file name
     QString selectedFile() const;

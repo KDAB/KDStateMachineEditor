@@ -40,7 +40,7 @@ class QuickSceneItem : public QQuickItem
 
 public:
     explicit QuickSceneItem(QQuickItem* parent = nullptr);
-    ~QuickSceneItem() override;
+    ~QuickSceneItem();
 
     KDSME::StateMachineScene* scene() const;
 

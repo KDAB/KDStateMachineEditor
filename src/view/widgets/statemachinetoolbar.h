@@ -42,7 +42,7 @@ class KDSME_VIEW_EXPORT StateMachineToolBar : public QToolBar
 
 public:
     explicit StateMachineToolBar(StateMachineView* view, QWidget* parent = nullptr);
-    ~StateMachineToolBar() override;
+    ~StateMachineToolBar();
 
 private:
     struct Private;

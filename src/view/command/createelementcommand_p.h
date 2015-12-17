@@ -38,7 +38,7 @@ public:
     explicit CreateElementCommand(StateModel* model = nullptr,
                                   Element::Type type = Element::ElementType,
                                   QUndoCommand* parent = nullptr);
-    ~CreateElementCommand() override;
+    ~CreateElementCommand();
 
     Element* parentElement() const;
     void setParentElement(Element* parentElement);

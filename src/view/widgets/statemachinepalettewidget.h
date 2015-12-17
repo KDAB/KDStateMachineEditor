@@ -37,7 +37,7 @@ class KDSME_VIEW_EXPORT StateMachinePaletteWidget : public QWidget
 
 public:
     explicit StateMachinePaletteWidget(QWidget* parent = nullptr);
-    ~StateMachinePaletteWidget() override;
+    ~StateMachinePaletteWidget();
 
 private:
     struct Private;

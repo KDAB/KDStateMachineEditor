@@ -54,7 +54,7 @@ class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 
 public:
     explicit StateMachineView(QWidget* parent = nullptr);
-    ~StateMachineView() override;
+    ~StateMachineView();
 
     StateMachineScene* scene() const;
 

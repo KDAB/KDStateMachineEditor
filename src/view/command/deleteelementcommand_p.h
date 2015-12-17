@@ -45,7 +45,7 @@ class KDSME_VIEW_EXPORT DeleteElementCommand : public Command
 
 public:
     explicit DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent = nullptr);
-    ~DeleteElementCommand() override;
+    ~DeleteElementCommand();
 
     int id() const override { return DeleteElement; }
 

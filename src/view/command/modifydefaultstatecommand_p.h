@@ -42,7 +42,7 @@ class KDSME_VIEW_EXPORT ModifyDefaultStateCommand : public Command
     Q_OBJECT
 public:
     explicit ModifyDefaultStateCommand(HistoryState* state, State* defaultState, QUndoCommand* parent = nullptr);
-    ~ModifyDefaultStateCommand() override;
+    ~ModifyDefaultStateCommand();
 
     int id() const override;
     void undo() override;
