@@ -38,7 +38,7 @@ public:
     explicit CreateElementCommand(StateModel* model = nullptr,
                                   Element::Type type = Element::ElementType,
                                   QUndoCommand* parent = nullptr);
-    ~CreateElementCommand();
+    ~CreateElementCommand() override;
 
     Element* parentElement() const;
     void setParentElement(Element* parentElement);
@@ -48,10 +48,10 @@ public:
 
     Element* createdElement() const;
 
-    virtual int id() const override { return CreateElement; }
+    int id() const override { return CreateElement; }
 
-    virtual void redo() override;
-    virtual void undo() override;
+    void redo() override;
+    void undo() override;
 
 Q_SIGNALS:
     void parentElementChanged(Element* parentElement);

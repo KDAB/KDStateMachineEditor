@@ -46,12 +46,12 @@ class KDSME_VIEW_EXPORT ReparentElementCommand : public Command
 public:
     ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent = nullptr);
 
-    virtual int id() const override { return ReparentElement; }
+    int id() const override { return ReparentElement; }
 
     Q_INVOKABLE void setParentElement(KDSME::Element* parentElement);
 
-    virtual void redo() override;
-    virtual void undo() override;
+    void redo() override;
+    void undo() override;
 
 private:
     QPointer<StateMachineScene> m_view;

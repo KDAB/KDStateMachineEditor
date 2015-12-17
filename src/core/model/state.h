@@ -49,9 +49,9 @@ public:
     };
 
     explicit State(State* parent = nullptr);
-    ~State();
+    ~State() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
     Q_INVOKABLE KDSME::State* parentState() const;
 
@@ -91,7 +91,7 @@ public:
     Q_INVOKABLE KDSME::StateMachine* machine() const;
 
 protected:
-    virtual bool event(QEvent* event) override;
+    bool event(QEvent* event) override;
 
 Q_SIGNALS:
     void onEntryChanged(const QString& onEntry);
@@ -120,10 +120,10 @@ public:
 
     explicit HistoryState(State* parent = nullptr);
     explicit HistoryState(HistoryType type, State* parent = nullptr);
-    virtual ~HistoryState();
+    ~HistoryState() override;
 
-    virtual Type type() const override;
-    virtual QString toDisplayString() const override;
+    Type type() const override;
+    QString toDisplayString() const override;
 
     State* defaultState() const;
     void setDefaultState(State *state);
@@ -148,9 +148,9 @@ class KDSME_CORE_EXPORT FinalState : public State
 
 public:
     explicit FinalState(State* parent = nullptr);
-    virtual ~FinalState();
+    ~FinalState() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
 private:
     struct Private;
@@ -164,9 +164,9 @@ class KDSME_CORE_EXPORT StateMachine : public State
 
 public:
     explicit StateMachine(QObject* parent = nullptr);
-    virtual ~StateMachine();
+    ~StateMachine() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
     RuntimeController* runtimeController() const;
     void setRuntimeController(RuntimeController* runtimeController);
@@ -191,16 +191,16 @@ public:
     Q_ENUMS(Kind)
 
     explicit PseudoState(Kind kind = InitialState, State* parent = nullptr);
-    virtual ~PseudoState();
+    ~PseudoState() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
     Kind kind() const;
     void setKind(Kind kind);
 
     QString kindString() const;
 
-    virtual QString toDisplayString() const override;
+    QString toDisplayString() const override;
 
 Q_SIGNALS:
     void kindChanged(Kind kind);

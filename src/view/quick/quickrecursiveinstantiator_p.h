@@ -47,7 +47,7 @@ public:
     QQmlComponent* delegate() const;
     void setDelegate(QQmlComponent* delegate);
 
-    virtual QObject* itemForIndex(const QModelIndex& index) const override;
+    QObject* itemForIndex(const QModelIndex& index) const override;
 
     QList<QObject*> rootItems() const;
 

@@ -45,7 +45,7 @@ class KDSME_VIEW_EXPORT PropertyEditor : public QStackedWidget
 
 public:
     explicit PropertyEditor(QWidget *parent = nullptr);
-    ~PropertyEditor();
+    ~PropertyEditor() override;
 
     void setSelectionModel(QItemSelectionModel* selectionModel);
     void setCommandController(CommandController *cmdController);

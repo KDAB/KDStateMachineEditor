@@ -39,7 +39,7 @@ class KDSME_CORE_EXPORT Transition : public Element
 
 public:
     explicit Transition(State* sourceState = nullptr);
-    virtual ~Transition();
+    ~Transition() override;
 
     Q_INVOKABLE KDSME::StateMachine* machine() const;
 
@@ -49,7 +49,7 @@ public:
     State* targetState() const;
     void setTargetState(State* targetState);
 
-    virtual Type type() const override;
+    Type type() const override;
 
     /**
      * The guard condition for this transition (executable content)
@@ -86,9 +86,9 @@ class KDSME_CORE_EXPORT SignalTransition : public Transition
 
 public:
     explicit SignalTransition(State* sourceState);
-    virtual ~SignalTransition();
+    ~SignalTransition() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
     QString signal() const;
     void setSignal(const QString& signal);
@@ -108,9 +108,9 @@ class KDSME_CORE_EXPORT TimeoutTransition : public Transition
 
 public:
     explicit TimeoutTransition(State* sourceState);
-    virtual ~TimeoutTransition();
+    ~TimeoutTransition() override;
 
-    virtual Type type() const override;
+    Type type() const override;
 
     int timeout() const;
     void setTimeout(int timeout);

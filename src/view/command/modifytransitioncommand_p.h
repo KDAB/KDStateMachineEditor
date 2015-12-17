@@ -46,15 +46,15 @@ class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
 public:
     explicit ModifyTransitionCommand(Transition* transition, StateModel* model, QUndoCommand* parent = nullptr);
 
-    virtual int id() const override { return ModifyTransition; }
+    int id() const override { return ModifyTransition; }
 
     Q_INVOKABLE void setSourceState(KDSME::State* sourceState);
     Q_INVOKABLE void setTargetState(KDSME::State* targetState);
     Q_INVOKABLE void setShape(const QPainterPath& path);
 
-    virtual void redo() override;
-    virtual void undo() override;
-    virtual bool mergeWith(const QUndoCommand* other) override;
+    void redo() override;
+    void undo() override;
+    bool mergeWith(const QUndoCommand* other) override;
 
 private:
     void updateText();

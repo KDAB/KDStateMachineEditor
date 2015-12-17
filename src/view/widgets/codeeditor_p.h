@@ -62,7 +62,7 @@ public:
     int lineNumberAreaWidth();
 protected:
     void resizeEvent(QResizeEvent *event) override;
-    virtual void focusOutEvent(QFocusEvent *) override;
+    void focusOutEvent(QFocusEvent *) override;
 
 signals:
     void editingFinished(QString);

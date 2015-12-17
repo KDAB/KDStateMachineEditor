@@ -44,7 +44,7 @@ class KDSME_CORE_EXPORT LayoutProperties : public QObject
 
 public:
     explicit LayoutProperties(QObject* parent = nullptr);
-    virtual ~LayoutProperties();
+    ~LayoutProperties() override;
 
     qreal regionMargins() const;
     void setRegionMargins(qreal margins);

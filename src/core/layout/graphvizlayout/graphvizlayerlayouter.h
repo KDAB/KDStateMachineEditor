@@ -37,9 +37,9 @@ class GraphvizLayerLayouter : public Layouter
 
 public:
     explicit GraphvizLayerLayouter(QObject* parent = nullptr);
-    virtual ~GraphvizLayerLayouter();
+    ~GraphvizLayerLayouter() override;
 
-    virtual QRectF layout(State* state, const LayoutProperties* properties) override;
+    QRectF layout(State* state, const LayoutProperties* properties) override;
 
 private:
     GraphvizLayouterBackend* m_backend;

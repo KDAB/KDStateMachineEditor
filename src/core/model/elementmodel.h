@@ -49,11 +49,11 @@ class KDSME_CORE_EXPORT TransitionModel : public QSortFilterProxyModel
 
 public:
     explicit TransitionModel(QObject* parent = nullptr);
-    virtual ~TransitionModel();
+    ~TransitionModel() override;
 
-    virtual void setSourceModel(QAbstractItemModel* sourceModel) override;
+    void setSourceModel(QAbstractItemModel* sourceModel) override;
 
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 private:
     struct Private;
@@ -78,16 +78,16 @@ public:
     };
 
     explicit TransitionListModel(QObject* parent = nullptr);
-    virtual ~TransitionListModel();
+    ~TransitionListModel() override;
 
     State* state() const;
     void setState(State* list);
 
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    virtual int columnCount(const QModelIndex& parent) const override;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    virtual QHash< int, QByteArray > roleNames() const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QHash< int, QByteArray > roleNames() const override;
 
 private:
     struct Private;
@@ -105,7 +105,7 @@ public:
     };
 
     explicit StateModel(QObject* parent = nullptr);
-    virtual ~StateModel();
+    ~StateModel() override;
 
     State* state() const;
     void setState(State* state);

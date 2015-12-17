@@ -40,7 +40,7 @@ class KDSME_DEBUGINTERFACECLIENT_EXPORT DebugInterfaceClient : public RuntimeCon
 
 public:
     explicit DebugInterfaceClient(QObject* parent = nullptr);
-    virtual ~DebugInterfaceClient();
+    ~DebugInterfaceClient() override;
 
 public:
     DebugInterfaceReplica* debugInterface() const;

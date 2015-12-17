@@ -50,8 +50,8 @@ public:
     QPainterPath path() const;
     void setPath(const QPainterPath& path);
 
-    virtual bool contains(const QPointF& point) const override;
-    virtual bool intersects(const QRectF& rect) const override;
+    bool contains(const QPointF& point) const override;
+    bool intersects(const QRectF& rect) const override;
 
 Q_SIGNALS:
     void pathChanged(const QPainterPath& path);
@@ -80,7 +80,7 @@ public:
     qreal tolerance() const;
     void setTolerance(qreal tolerance);
 
-    virtual bool contains(const QPointF& point) const override;
+    bool contains(const QPointF& point) const override;
 
 Q_SIGNALS:
     void pressed();
@@ -96,11 +96,11 @@ protected:
     void setPressed(bool pressed);
     void setContainsMouse(bool containsMouse);
 
-    virtual void mousePressEvent(QMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QMouseEvent *event) override;
-    virtual void hoverEnterEvent(QHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QHoverEvent *event) override;
-    virtual void mouseUngrabEvent() override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void hoverEnterEvent(QHoverEvent *event) override;
+    void hoverLeaveEvent(QHoverEvent *event) override;
+    void mouseUngrabEvent() override;
 
 private:
     bool m_pressed;

@@ -40,7 +40,7 @@ class QuickSceneItem : public QQuickItem
 
 public:
     explicit QuickSceneItem(QQuickItem* parent = nullptr);
-    virtual ~QuickSceneItem();
+    ~QuickSceneItem() override;
 
     KDSME::StateMachineScene* scene() const;
 
@@ -84,7 +84,7 @@ class QuickTransitionItem : public QuickSceneItem
 public:
     explicit QuickTransitionItem(QQuickItem* parent = nullptr);
 
-    virtual void setElement(KDSME::Element* element) override;
+    void setElement(KDSME::Element* element) override;
 
 private Q_SLOTS:
     void updatePosition();

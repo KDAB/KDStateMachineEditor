@@ -50,10 +50,10 @@ public:
     ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = nullptr);
     ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = nullptr);
 
-    virtual int id() const override { return ModifyProperty; }
+    int id() const override { return ModifyProperty; }
 
-    virtual void redo() override;
-    virtual void undo() override;
+    void redo() override;
+    void undo() override;
 
 private:
     void init();

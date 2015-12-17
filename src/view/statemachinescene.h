@@ -51,10 +51,10 @@ class KDSME_VIEW_EXPORT StateMachineScene : public AbstractScene
 
 public:
     explicit StateMachineScene(QQuickItem* parent = nullptr);
-    virtual ~StateMachineScene();
+    ~StateMachineScene() override;
 
     StateModel* stateModel() const;
-    virtual void setModel(QAbstractItemModel* model) override;
+    void setModel(QAbstractItemModel* model) override;
 
     State* rootState() const;
     void setRootState(State* rootState);
@@ -97,11 +97,11 @@ Q_SIGNALS:
     void maximumDepthChanged(int depth);
 
 protected Q_SLOTS:
-    virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
+    void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
 
-    virtual void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
-    virtual void rowsInserted(const QModelIndex& parent, int start, int end) override;
-    virtual void layoutChanged() override;
+    void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
+    void rowsInserted(const QModelIndex& parent, int start, int end) override;
+    void layoutChanged() override;
 
 private:
     struct Private;
