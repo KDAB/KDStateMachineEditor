@@ -42,22 +42,20 @@ using namespace KDSME;
 
 struct QsmAdapter : public DebugInterfaceClient
 {
-    QRemoteObjectNode registryHostNode;
-    QRemoteObjectNode hostNode;
+    QRemoteObjectRegistryHost registryNode;
     QRemoteObjectNode clientNode;
     QsmDebugInterfaceSource interface;
 
     QsmAdapter(QObject* parent = nullptr)
         : DebugInterfaceClient(parent)
+        , registryNode(QUrl(QStringLiteral("local:registry")))
+        , clientNode(QUrl(QStringLiteral("local:registry")))
     {
         // set up the debug interface on the local registry and connect to it
         // this is simpler than writing another class that handles in-process debuggging
         // just pay the cost for the in-process communication, it's not that much anyway
-        registryHostNode = QRemoteObjectNode::createRegistryHostNode();
-        hostNode = QRemoteObjectNode::createHostNodeConnectedToRegistry();
-        hostNode.enableRemoting(interface.remoteObjectSource());
+        registryNode.enableRemoting(interface.remoteObjectSource());
 
-        clientNode = QRemoteObjectNode::createNodeConnectedToRegistry();
         auto interfaceReplica = clientNode.acquire<DebugInterfaceReplica>();
         interfaceReplica->waitForSource();
         setDebugInterface(interfaceReplica);

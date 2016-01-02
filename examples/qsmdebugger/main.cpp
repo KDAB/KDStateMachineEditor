@@ -51,8 +51,8 @@ int main(int argc, char** argv)
     // set up the debug interface on the local registry and connect to it
     // this is simpler than writing another class that handles in-process debuggging
     // just pay the cost for the in-process communication, it's not that much anyway
-    auto registryHostNode = QRemoteObjectNode::createRegistryHostNode();
-    auto hostNode = QRemoteObjectNode::createHostNodeConnectedToRegistry();
+    QRemoteObjectRegistryHost registryHostNode(QUrl(QStringLiteral("local:registry")));
+    QRemoteObjectHost hostNode(QUrl(QStringLiteral("local:replica")), QUrl(QStringLiteral("local:registry")));
     QsmDebugInterfaceSource interfaceSource;
     interfaceSource.setQStateMachine(trafficLight.machine());
     hostNode.enableRemoting(interfaceSource.remoteObjectSource());
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     view.resize(800, 600);
     view.show();
 
-    auto clientNode = QRemoteObjectNode::createNodeConnectedToRegistry();
+    QRemoteObjectNode clientNode(QUrl(QStringLiteral("local:registry")));
     auto interfaceReplica = clientNode.acquire<DebugInterfaceReplica>();
     interfaceReplica->waitForSource();
 
