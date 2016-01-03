@@ -15,7 +15,7 @@ Copyright Assignment Agreement.  Contact info@kdab.com for more information.
 
 Licensing
 =========
-The KDAB State Machine Editor Library is (C) 2014 Klarälvdalens Datakonsult AB (KDAB).
+The KDAB State Machine Editor Library is (C) 2014-2016 Klarälvdalens Datakonsult AB (KDAB).
 Commercial licensing terms are available in the included file
         LICENSE.txt (for non-US customers)
 or
