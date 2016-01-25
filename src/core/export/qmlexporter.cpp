@@ -71,12 +71,13 @@ QString elementToComponent(Element* element)
         return "HistoryState";
     case Element::StateType:
         return "State";
+    case Element::TransitionType: // fall-through
     case Element::SignalTransitionType:
         return "SignalTransition";
     case Element::TimeoutTransitionType:
         return "TimeoutTransition";
-    default:
-        Q_ASSERT(false);
+    case Element::PseudoStateType: // fall-through
+    case Element::ElementType:
         return QString();
     }
 }
