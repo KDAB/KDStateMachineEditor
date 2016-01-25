@@ -251,7 +251,7 @@ bool QmlExporter::Private::writeStateInner(State* state)
     }
 
     if (State* initial = ElementUtil::findInitialState(state)) {
-        writeAttribute(state, "initialState", initial->label());
+        writeAttribute(state, "initialState", toQmlId(initial->label()));
     }
 
     if (HistoryState *historyState = qobject_cast<HistoryState*>(state)) {
