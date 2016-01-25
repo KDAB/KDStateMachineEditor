@@ -80,6 +80,9 @@ QString elementToComponent(Element* element)
     case Element::ElementType:
         return QString();
     }
+
+    Q_UNREACHABLE();
+    return QString();
 }
 
 /// Turn input @p input into a usable QML ID (remove invalid chars)
