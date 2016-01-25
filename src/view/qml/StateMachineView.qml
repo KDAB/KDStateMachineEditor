@@ -145,7 +145,7 @@ Rectangle {
             top: topDock.bottom
             left: parent.left
             right: parent.right
-            bottom: statusBarArea.top
+            bottom: parent.bottom
         }
 
         Flickable {
@@ -234,30 +234,6 @@ Rectangle {
 
         Behavior on opacity {
             NumberAnimation { duration: 500 }
-        }
-    }
-
-    Item {
-        id: statusBarArea
-
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: childrenRect.height
-        z: 1
-
-        StatusBar {
-            id: statusBar
-
-            RowLayout {
-                Label {
-                    property string label: (rootState ? rootState.label : "")
-                    text: qsTr("Current: ") + (label !== "" ? label : qsTr("<Unnamed>"))
-                }
-                Label { text: "|" }
-                Label {
-                    text: qsTr("Zoom: ") + Math.round(stateMachineScene.zoom * 100) + " %"
-                }
-            }
         }
     }
 

@@ -119,13 +119,15 @@ ToolBar {
             minimumValue: Constants.zoomMin
             maximumValue: Constants.zoomMax
             value: root.stateMachineView.zoom
-            tickmarksEnabled: true
             stepSize: Constants.zoomStepSize
             onValueChanged: root.stateMachineView.zoom = value
             Connections {
                 target: root.stateMachineView
                 onZoomChanged: zoomSlider.value = zoom
             }
+        }
+        Label {
+            text: Math.round(stateMachineScene.zoom * 100) + " %"
         }
 
         ToolBarSeparator {}
