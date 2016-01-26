@@ -114,8 +114,7 @@ void MainWindow::setupStateMachineView()
 {
     m_stateMachineView = new StateMachineView;
     m_stateMachineView->editController()->setEditModeEnabled(true);
-
-    ui->sceneBox->layout()->addWidget(m_stateMachineView);
+    setCentralWidget(m_stateMachineView);
 }
 
 void MainWindow::setupPresetsView()
