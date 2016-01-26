@@ -24,6 +24,7 @@
 
 #include "statemachinetoolbar.h"
 
+#include "debug.h"
 #include "export/scxmlexporter.h"
 #include "export/qmlexporter.h"
 #include "export/svgexporter.h"
@@ -32,11 +33,30 @@
 #include "statemachinescene.h"
 
 #include <QAction>
-#include "debug.h"
+#include <QDir>
+#include <QMenu>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QToolButton>
+#include <QWidgetAction>
+
+#include <algorithm>
 
 using namespace KDSME;
+
+namespace {
+
+QStringList availableThemeNames()
+{
+    QDir dir(":/kdsme/qml/themes");
+    auto entries = dir.entryList();
+    std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString& x) {
+        return QString(x).replace(".qml", "");
+    });
+    return entries;
+}
+
+}
 
 struct StateMachineToolBar::Private
 {
@@ -72,8 +92,21 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent
     d->m_exportAction = new QAction(tr("Export to file..."), this);
     d->m_exportAction->setStatusTip("Export current state machine to a file.");
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
-
     addAction(d->m_exportAction);
+
+    QToolButton* themeSelectionButton = new QToolButton(this);
+    themeSelectionButton->setText(tr("Theme"));
+    themeSelectionButton->setPopupMode(QToolButton::InstantPopup);
+    QMenu* themeSelectionMenu = new QMenu(themeSelectionButton);
+    foreach (const QString& themeName, availableThemeNames()) {
+        auto action = new QAction(themeName, this);
+        connect(action, &QAction::triggered, this, [this, themeName]() {
+            d->m_view->setThemeName(themeName);
+        });
+        themeSelectionMenu->addAction(action);
+    }
+    themeSelectionButton->setMenu(themeSelectionMenu);
+    addWidget(themeSelectionButton);
 }
 
 StateMachineToolBar::~StateMachineToolBar()
