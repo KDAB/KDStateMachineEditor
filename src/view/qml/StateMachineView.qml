@@ -227,7 +227,7 @@ Rectangle {
         scene: stateMachineScene
 
         anchors {
-            bottom: statusBarArea.top
+            bottom: parent.bottom
             right: parent.right
             margins: 20
         }
