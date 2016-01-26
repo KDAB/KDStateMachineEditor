@@ -96,7 +96,7 @@
   </widget>
   <widget class="QDockWidget" name="dockWidget_3">
    <property name="windowTitle">
-    <string>Presets</string>
+    <string>&amp;Presets</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -116,7 +116,11 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="presetsTreeView"/>
+      <widget class="QTreeView" name="presetsTreeView">
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
