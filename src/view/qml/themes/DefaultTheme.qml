@@ -36,7 +36,7 @@ QtObject {
     readonly property color stateBorderColor: "#BABABA";
     readonly property color stateBorderColor_Active: "#DADADA";
     readonly property color stateBorderColor_Glow: "#4589AA";
-    readonly property bool  stateBorderColor_GlowEnabled: false;
+    readonly property bool  stateBorderColor_GlowEnabled: true;
     readonly property color stateLabelFontColor: "white";
     readonly property color transitionEdgeColor: "#BABABA";
     readonly property color transitionEdgeColor_Active: "#DADADA";
