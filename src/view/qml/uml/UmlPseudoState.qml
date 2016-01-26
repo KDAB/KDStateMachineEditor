@@ -62,8 +62,8 @@ StateItem {
         Rectangle {
             anchors.fill: parent
 
-            color: Theme.stateBackgroundColor
-            border.color: Theme.stateBorderColor
+            color: Theme.currentTheme.stateBackgroundColor
+            border.color: Theme.currentTheme.stateBorderColor
             radius: width
         }
 

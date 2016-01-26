@@ -26,30 +26,28 @@ pragma Singleton
 
 import QtQuick 2.0
 
-QtObject {
+import com.kdab.kdsme 1.0
+
+Item {
+    property alias currentTheme: themeLoader.item
+
+    readonly property string __currentThemeName: _quickView.themeName
+
+    Loader {
+        id: themeLoader
+
+        source: "qrc:///kdsme/qml/themes/" + __currentThemeName + ".qml"
+
+        onStatusChanged: {
+            if (status == Loader.Error)
+                console.log("Failed to load theme: " + __currentThemeName)
+        }
+    }
+
     /**
      * Change alpha channel of color @p color by alpha value @p alpha
      */
     function alphaTint(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha);
     }
-
-    readonly property color highlightForegroundColor: "#CACACA";
-    readonly property color highlightBackgroundColor: "#545454";
-    readonly property color activeHighlightColor: "white";
-    readonly property color activeHighlightColor_Glow: "white";
-
-    readonly property color compositeStateLabelBackgroundColor: "#363636";
-    readonly property color compositeStateLabelFontColor: "white";
-    readonly property color compositeStateBackgroundColor_Lightest: "#666666";
-    readonly property color compositeStateBackgroundColor_Darkest: "#202020";
-    readonly property color stateBackgroundColor: "#262626";
-    readonly property color stateBorderColor: "#BABABA";
-    readonly property color stateBorderColor_Active: "#DADADA";
-    readonly property color stateBorderColor_Glow: "#4589AA";
-    readonly property color stateLabelFontColor: "white";
-    readonly property color transitionEdgeColor: "#BABABA";
-    readonly property color transitionEdgeColor_Active: "#DADADA";
-    readonly property color transitionLabelFontColor: "#BABABA";
-    readonly property color viewBackgroundColor: "#262626";
 }

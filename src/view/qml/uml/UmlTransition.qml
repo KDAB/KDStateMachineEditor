@@ -78,7 +78,7 @@ TransitionItem {
             path: outlinePathStroker.createStroke(root.path)
         }
 
-        color: Theme.alphaTint(Theme.transitionEdgeColor, 0.5)
+        color: Theme.alphaTint(Theme.currentTheme.transitionEdgeColor, 0.5)
     }
 
     Item {
@@ -95,7 +95,7 @@ TransitionItem {
                 lineWidth: (activeness > 0 ? 2 : 1)
             }
 
-            color: Qt.tint(Theme.transitionEdgeColor, Theme.alphaTint(Theme.transitionEdgeColor_Active, activeness))
+            color: Qt.tint(Theme.currentTheme.transitionEdgeColor, Theme.alphaTint(Theme.currentTheme.transitionEdgeColor_Active, activeness))
 
             ArrowHead {
                 function angle() {
@@ -122,7 +122,7 @@ TransitionItem {
             y: labelRect.y
             width: labelRect.width
             height: labelRect.height
-            color: Theme.transitionLabelFontColor
+            color: Theme.currentTheme.transitionLabelFontColor
             font.italic: true
             visible: element.sourceState.type != Element.PseudoStateType
                 && labelRect.height > 0 && element.label != ""

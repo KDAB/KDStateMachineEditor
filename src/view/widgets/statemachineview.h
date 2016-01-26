@@ -52,6 +52,8 @@ class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
     Q_PROPERTY(KDSME::CommandController* commandController READ commandController CONSTANT)
     Q_PROPERTY(KDSME::EditController* editController READ editController CONSTANT)
 
+    Q_PROPERTY(QString themeName READ themeName WRITE setThemeName NOTIFY themeNameChanged)
+
 public:
     explicit StateMachineView(QWidget* parent = nullptr);
     ~StateMachineView();
@@ -60,6 +62,9 @@ public:
 
     CommandController* commandController() const;
     EditController* editController() const;
+
+    QString themeName() const;
+    void setThemeName(const QString& themeName);
 
     Q_INVOKABLE void sendCommand(KDSME::Command* cmd);
 
@@ -74,6 +79,7 @@ protected:
 
 Q_SIGNALS:
     void sceneChanged(KDSME::StateMachineScene* scene);
+    void themeNameChanged(const QString& themeName);
 
 private:
     struct Private;

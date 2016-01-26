@@ -74,7 +74,7 @@ Rectangle {
         }
     }
 
-    color: Theme.viewBackgroundColor
+    color: Theme.currentTheme.viewBackgroundColor
 
     function setZoom(nominalFactor, centerX, centerY) {
         var scale = Math.min(Math.max(stateMachineScene.zoom * nominalFactor, Constants.zoomMin), Constants.zoomMax);

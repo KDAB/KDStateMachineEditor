@@ -98,6 +98,7 @@ struct StateMachineView::Private
 
     CommandController* m_controller;
     EditController* m_editController;
+    QString m_themeName;
     bool m_editModeEnabled;
 
     QRectF adjustedViewRect();
@@ -110,6 +111,7 @@ StateMachineView::Private::Private(StateMachineView* q)
     , m_scene(nullptr)
     , m_controller(nullptr)
     , m_editController(nullptr)
+    , m_themeName("DefaultTheme")
     , m_editModeEnabled(false)
 {
 }
@@ -215,6 +217,20 @@ CommandController* StateMachineView::commandController() const
 EditController* StateMachineView::editController() const
 {
     return d->m_editController;
+}
+
+QString StateMachineView::themeName() const
+{
+    return d->m_themeName;
+}
+
+void StateMachineView::setThemeName(const QString& themeName)
+{
+    if (d->m_themeName == themeName)
+        return;
+
+    d->m_themeName = themeName;
+    emit themeNameChanged(d->m_themeName);
 }
 
 QQuickItem* StateMachineView::viewPortObject() const

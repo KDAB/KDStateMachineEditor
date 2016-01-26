@@ -57,11 +57,11 @@ Item {
         id: effect
 
         anchors.fill: rect
-        visible: active
+        visible: Theme.currentTheme.stateBorderColor_GlowEnabled && active
 
         glowRadius: 10
         spread: 0.1
-        color: Theme.stateBorderColor_Glow
+        color: Theme.currentTheme.stateBorderColor_Glow
         cornerRadius: rect.radius
     }
 
@@ -87,7 +87,7 @@ Item {
 
             radius: rect.radius
 
-            color: Theme.compositeStateLabelBackgroundColor
+            color: Theme.currentTheme.compositeStateLabelBackgroundColor
             border.color: rect.border.color
             border.width: rect.border.width
         }
@@ -116,7 +116,7 @@ Item {
                 anchors.centerIn: parent
                 width: parent.width
 
-                color: Theme.compositeStateLabelFontColor
+                color: Theme.currentTheme.compositeStateLabelFontColor
                 text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>"))
                 font.bold: true
                 elide: Text.ElideRight

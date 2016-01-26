@@ -42,11 +42,11 @@ Item {
         id: effect
 
         anchors.fill: rect
-        visible: active
+        visible: Theme.currentTheme.stateBorderColor_GlowEnabled && active
 
         glowRadius: 10
         spread: 0.1
-        color: Theme.stateBorderColor_Glow
+        color: Theme.currentTheme.stateBorderColor_Glow
         cornerRadius: rect.radius
     }
 
@@ -59,8 +59,8 @@ Item {
 
         anchors.fill: parent
 
-        color: Theme.stateBackgroundColor
-        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+        color: Qt.tint(Theme.currentTheme.stateBackgroundColor, Theme.alphaTint(Theme.currentTheme.stateBackgroundColor_Active, activeness))
+        border.color: Qt.tint(Theme.currentTheme.stateBorderColor, Theme.alphaTint(Theme.currentTheme.stateBorderColor_Active, activeness))
         border.width: (activeness > 0 ? 2 : 1)
         radius: 5
 
@@ -71,7 +71,7 @@ Item {
             width: parent.width
 
             text: control.element.label
-            color: Theme.stateLabelFontColor
+            color: Theme.currentTheme.stateLabelFontColor
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }

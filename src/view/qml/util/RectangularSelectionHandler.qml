@@ -40,7 +40,7 @@ Item {
         anchors.fill: parent
 
         border {
-            color: Theme.highlightForegroundColor
+            color: Theme.currentTheme.highlightForegroundColor
             width: 2
         }
         color: "transparent"

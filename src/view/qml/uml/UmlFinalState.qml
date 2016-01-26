@@ -52,11 +52,11 @@ KDSME.StateItem {
         id: effect
 
         anchors.fill: rect
-        visible: active
+        visible: Theme.currentTheme.stateBorderColor_GlowEnabled && active
 
         glowRadius: 10
         spread: 0.1
-        color: Theme.stateBorderColor_Glow
+        color: Theme.currentTheme.stateBorderColor_Glow
         cornerRadius: rect.radius
     }
 
@@ -65,8 +65,8 @@ KDSME.StateItem {
 
         anchors.fill: parent
 
-        color: Theme.stateBackgroundColor
-        border.color: Qt.tint(Theme.stateBorderColor, Theme.alphaTint(Theme.stateBorderColor_Active, activeness))
+        color: Theme.currentTheme.stateBackgroundColor
+        border.color: Qt.tint(Theme.currentTheme.stateBorderColor, Theme.alphaTint(Theme.currentTheme.stateBorderColor_Active, activeness))
         border.width: (activeness > 0 ? 2 : 1)
         radius: width
 

@@ -56,8 +56,8 @@ KDSME.StateItem {
             width: Math.min(dummyLabel.width + 2*margins, element.width)
             height: dummyLabel.height + 2*margins
 
-            color: Theme.compositeStateLabelBackgroundColor
-            border.color: Theme.stateBorderColor
+            color: Theme.currentTheme.compositeStateLabelBackgroundColor
+            border.color: Theme.currentTheme.stateBorderColor
             border.width: 1
 
             Text {
@@ -69,7 +69,7 @@ KDSME.StateItem {
                 }
 
                 text: element.label !== "" ? element.label : qsTr("<Unnamed>")
-                color: Theme.compositeStateLabelFontColor
+                color: Theme.currentTheme.compositeStateLabelFontColor
                 font.bold: true
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter

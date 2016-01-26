@@ -38,15 +38,15 @@ KDSME.StateItem {
 
         anchors.fill: parent
 
-        color: Theme.stateBackgroundColor
-        border.color: Theme.stateBorderColor
+        color: Theme.currentTheme.stateBackgroundColor
+        border.color: Theme.currentTheme.stateBorderColor
         radius: width
 
         Text {
             anchors.centerIn: parent
 
             text: root.element.historyType === KDSME.HistoryState.ShallowHistory ? "H" : "H*"
-            color: Theme.stateLabelFontColor
+            color: Theme.currentTheme.stateLabelFontColor
             elide: Text.ElideRight
         }
     }

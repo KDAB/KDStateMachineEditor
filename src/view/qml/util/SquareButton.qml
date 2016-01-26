@@ -38,18 +38,18 @@ MouseArea {
 
         anchors.fill: parent
 
-        border.color: Theme.stateBorderColor
+        border.color: Theme.currentTheme.stateBorderColor
         radius: 5
         color: !button.pressed ?
-            Theme.compositeStateLabelBackgroundColor :
-            Theme.compositeStateBackgroundColor_Darkest
+            Theme.currentTheme.compositeStateLabelBackgroundColor :
+            Theme.currentTheme.compositeStateBackgroundColor_Darkest
 
         Text {
             id: textItem
 
             anchors.centerIn: parent
 
-            color: Theme.compositeStateLabelFontColor
+            color: Theme.currentTheme.compositeStateLabelFontColor
         }
     }
 
