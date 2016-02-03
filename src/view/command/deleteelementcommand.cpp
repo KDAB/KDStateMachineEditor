@@ -72,7 +72,7 @@ void DeleteElementCommand::undo()
     qCDebug(KDSME_VIEW) << Q_FUNC_INFO;
 
     if (!m_parentElement) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Aborting undo, element was never deleted";
+        qCDebug(KDSME_VIEW) << "Aborting undo, element was never deleted";
         return;
     }
 

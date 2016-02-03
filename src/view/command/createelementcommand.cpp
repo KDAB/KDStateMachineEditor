@@ -85,7 +85,7 @@ void CreateElementCommand::redo()
     static const ElementFactory factory;
 
     if (!model() || m_type == Element::ElementType) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Can't redo, invalid model or type";
+        qCDebug(KDSME_VIEW) << "Can't redo, invalid model or type";
         return;
     }
 
@@ -96,7 +96,7 @@ void CreateElementCommand::redo()
     } else {
         Element* element = factory.create(m_type);
         if (!element) {
-            qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Element could not be instantiated, type:" << m_type;
+            qCDebug(KDSME_VIEW) << "Element could not be instantiated, type:" << m_type;
             return;
         }
 
@@ -110,7 +110,7 @@ void CreateElementCommand::redo()
 void CreateElementCommand::undo()
 {
     if (!m_createdElement) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Aborting undo, element was never created";
+        qCDebug(KDSME_VIEW) << "Aborting undo, element was never created";
         return;
     }
 

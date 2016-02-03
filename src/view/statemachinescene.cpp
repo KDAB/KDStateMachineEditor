@@ -264,7 +264,7 @@ void StateMachineScene::Private::zoomByInternal(qreal scale)
 
 void StateMachineScene::layout()
 {
-    qCDebug(KDSME_VIEW) << Q_FUNC_INFO << d->m_layouter << d->m_rootState;
+    qCDebug(KDSME_VIEW) << d->m_layouter << d->m_rootState;
 
     if (!d->m_layouter || !d->m_rootState) {
         return;

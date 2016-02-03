@@ -284,7 +284,7 @@ void ScxmlImporter::Private::visitHistory(State* parent)
 
 void ScxmlImporter::Private::resolveTargetStates()
 {
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << m_nameToStateMap;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << m_nameToStateMap;)
 
     auto it = m_unresolvedTargetStateIds.constBegin();
     while (it != m_unresolvedTargetStateIds.constEnd()) {
@@ -318,7 +318,7 @@ T* ScxmlImporter::Private::createState(State* parent)
 {
     const QXmlStreamAttributes attributes = m_reader.attributes();
     const QString id = attributes.value("id").toString();
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << parent->label() << id;)
+    IF_DEBUG(qCDebug(KDSME_CORE) << parent->label() << id;)
     if (id.isEmpty()) {
         qWarning() << "Unnamed state at offset:" << m_reader.characterOffset();
     }
@@ -330,7 +330,7 @@ T* ScxmlImporter::Private::createState(State* parent)
 
 Transition* ScxmlImporter::Private::createTransition(State* parent, const QString& targetStateId)
 {
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << parent->label() << targetStateId);
+    IF_DEBUG(qCDebug(KDSME_CORE) << parent->label() << targetStateId);
     if (targetStateId.isEmpty()) {
         return nullptr;
     }

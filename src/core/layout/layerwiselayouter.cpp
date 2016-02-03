@@ -100,6 +100,7 @@ LayerwiseLayouter::LayerwiseLayouter(QObject* parent)
     , m_regionLayouter(new RegionLayouter(this))
     , m_properties(nullptr)
 {
+    qCDebug(KDSME_CORE) << "Using" << m_layerLayouter << "as layouter";
 }
 
 QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* properties)
@@ -113,7 +114,7 @@ QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* propertie
     ElementWalker walker(ElementWalker::PostOrderTraversal);
     walker.walkItems(state, [&](Element* element) { return layoutState(element); });
 
-    qCDebug(KDSME_CORE) << Q_FUNC_INFO << "Took" << timer.elapsed() << "ms";
+    qCDebug(KDSME_CORE) << "Layouting took" << timer.elapsed() << "ms";
 
     return QRect();
 }

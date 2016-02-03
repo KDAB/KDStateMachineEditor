@@ -69,7 +69,7 @@ void ModifyElementCommand::setGeometry(const QRectF& geometry)
 void KDSME::ModifyElementCommand::redo()
 {
     if (!m_item || m_operation == NoOperation) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
+        qCDebug(KDSME_VIEW) << "Invalid item or no operation requested";
         return;
     }
 
@@ -87,7 +87,7 @@ void KDSME::ModifyElementCommand::redo()
 void KDSME::ModifyElementCommand::undo()
 {
     if (!m_item || m_operation == NoOperation) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid item or no operation requested";
+        qCDebug(KDSME_VIEW) << "Invalid item or no operation requested";
         return;
     }
 

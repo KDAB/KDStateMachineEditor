@@ -180,7 +180,7 @@ void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
     Q_ASSERT(state);
     Q_ASSERT(graph);
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << state->label() << *state << graph);
+    IF_DEBUG(qCDebug(KDSME_CORE) << state->label() << *state << graph);
 
     LocaleLocker lock;
 
@@ -218,7 +218,7 @@ void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
 
 void GraphvizLayouterBackend::Private::buildTransitions(State* state, Agraph_t* graph)
 {
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << state->label() << *state << graph);
+    IF_DEBUG(qCDebug(KDSME_CORE) << state->label() << *state << graph);
 
     foreach (Transition* transition, state->transitions()) {
         buildTransition(transition, graph);
@@ -237,7 +237,7 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
         return;
     }
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << transition->label() << *transition << graph);
+    IF_DEBUG(qCDebug(KDSME_CORE) << transition->label() << *transition << graph);
 
     Agnode_t* source = agnodeForState(transition->sourceState());
     Q_ASSERT(source);
@@ -254,7 +254,7 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
 
 void GraphvizLayouterBackend::Private::import()
 {
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << m_elementToPointerMap.keys();)
+    IF_DEBUG(qCDebug(KDSME_CORE) << m_elementToPointerMap.keys();)
 
     LocaleLocker lock;
     QSet<Element*> importedItems;
@@ -293,7 +293,7 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agnode_t* node)
     Q_ASSERT(state);
     Q_ASSERT(node);
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "before" << state->label() << *state << node);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "before" << state->label() << *state << node);
 
     // Fetch the X coordinate, apply the DPI conversion rate (actual DPI / 72, used by dot)
     const qreal x = ND_coord(node).x * TO_DOT_DPI_RATIO;
@@ -307,7 +307,7 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agnode_t* node)
     const QPointF pos = QPointF(x - state->width()/2, y - state->height()/2);
     state->setPos(pos);
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "after" << state->label() << *state << node);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "after" << state->label() << *state << node);
 }
 
 void GraphvizLayouterBackend::Private::importState(State* state, Agraph_t* graph)
@@ -315,7 +315,7 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agraph_t* graph
     Q_ASSERT(state);
     Q_ASSERT(graph);
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "before" << state->label() << *state << graph);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "before" << state->label() << *state << graph);
 
     QRectF rect = boundingRectForGraph(graph);
 
@@ -323,7 +323,7 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agraph_t* graph
     state->setHeight(rect.height());
     state->setPos(rect.topLeft());
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "after" << state->label() << *state << graph);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "after" << state->label() << *state << graph);
 }
 
 void GraphvizLayouterBackend::Private::importTransition(Transition* transition, Agedge_t* edge)
@@ -331,7 +331,7 @@ void GraphvizLayouterBackend::Private::importTransition(Transition* transition, 
     Q_ASSERT(transition);
     Q_ASSERT(edge);
 
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "before" << transition << edge);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "before" << transition << edge);
     // transform to local coordinate system, set position offset
     const QPainterPath path = pathForEdge(edge);
     const QRectF labelRect = labelRectForEdge(edge);
@@ -342,7 +342,7 @@ void GraphvizLayouterBackend::Private::importTransition(Transition* transition, 
     transition->setPos(relativePos);
     transition->setShape(path.translated(-absolutePos));
     transition->setLabelBoundingRect(labelRect.translated(-absolutePos));
-    IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO << "after" << transition << edge);
+    IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
 }
 
 void GraphvizLayouterBackend::Private::openContext(const QString& id)

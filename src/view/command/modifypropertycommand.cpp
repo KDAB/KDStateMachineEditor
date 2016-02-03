@@ -66,7 +66,7 @@ void ModifyPropertyCommand::init()
 void ModifyPropertyCommand::redo()
 {
     if (!m_object) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid object";
+        qCDebug(KDSME_VIEW) << "Invalid object";
         return;
     }
 
@@ -74,7 +74,7 @@ void ModifyPropertyCommand::redo()
     while (it != m_propertyMap.constEnd()) {
         m_oldPropertyMap.insert(it.key(), m_object->property(it.key()));
         if (!m_object->setProperty(it.key(), it.value())) {
-            qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Failed to set property" << it.key();
+            qCDebug(KDSME_VIEW) << "Failed to set property" << it.key();
         }
         ++it;
     }
@@ -83,14 +83,14 @@ void ModifyPropertyCommand::redo()
 void ModifyPropertyCommand::undo()
 {
     if (!m_object) {
-        qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Invalid object";
+        qCDebug(KDSME_VIEW) << "Invalid object";
         return;
     }
 
     auto it = m_oldPropertyMap.constBegin();
     while (it != m_oldPropertyMap.constEnd()) {
         if (!m_object->setProperty(it.key(), it.value())) {
-            qCDebug(KDSME_VIEW) << Q_FUNC_INFO << "Failed to set property" << it.key();
+            qCDebug(KDSME_VIEW) << "Failed to set property" << it.key();
         }
         ++it;
     }
