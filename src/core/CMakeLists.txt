@@ -35,6 +35,11 @@ if(GRAPHVIZ_FOUND)
     layout/graphvizlayout/graphvizlayouter.cpp
     layout/graphvizlayout/graphvizlayouterbackend.cpp
   )
+  if (WITH_INTERNAL_GRAPHVIZ)
+    list(APPEND LIB_SRCS
+      layout/graphvizlayout/graphviz_staticbuild.c
+    )
+  endif()
   add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 endif()
 
@@ -56,20 +61,26 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(GRAPHVIZ_FOUND)
-  target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_GVC_LIBRARY})
-
-  if(GRAPHVIZ_CGRAPH_LIBRARY AND GRAPHVIZ_VERSION VERSION_GREATER 2.30.0)
-    message(STATUS "Enabling use of experimental 'cgraph' library of GraphViz")
-    target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_CGRAPH_LIBRARY})
+  if(WITH_INTERNAL_GRAPHVIZ)
+    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
+    list(APPEND LIB_EXTRA_INCLUDES
+      ${GRAPHVIZ_INCLUDE_DIR}
+    )
   else()
-    target_link_libraries(kdstatemachineeditor_core LINK_PUBLIC ${GRAPHVIZ_GRAPH_LIBRARY})
+    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY})
+    if(GRAPHVIZ_CGRAPH_LIBRARY AND GRAPHVIZ_VERSION VERSION_GREATER 2.30.0)
+      message(STATUS "Enabling use of experimental 'cgraph' library of GraphViz")
+      target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_CGRAPH_LIBRARY})
+    else()
+      target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GRAPH_LIBRARY})
+    endif()
+    list(APPEND LIB_EXTRA_INCLUDES
+      ${GRAPHVIZ_INCLUDE_DIR}
+      # TODO: Work-around issue in graphviz/types.h header
+      # <cgraph.h> is included there, but it should rather be "cgraph.h"
+      ${GRAPHVIZ_INCLUDE_DIR}/graphviz
+    )
   endif()
-  list(APPEND LIB_EXTRA_INCLUDES
-    ${GRAPHVIZ_INCLUDE_DIR}
-    # TODO: Work-around issue in graphviz/types.h header
-    # <cgraph.h> is included there, but it should rather be "cgraph.h"
-    ${GRAPHVIZ_INCLUDE_DIR}/graphviz
-  )
   target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${GRAPHVIZ_MAJOR_VERSION} -DGRAPHVIZ_MINOR_VERSION=${GRAPHVIZ_MINOR_VERSION})
 endif()
 

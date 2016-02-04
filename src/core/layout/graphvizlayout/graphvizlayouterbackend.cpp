@@ -26,6 +26,8 @@
 
 #include "graphvizlayouterbackend_p.h"
 
+#include "config-kdsme.h"
+
 #include "gvutils.h"
 
 #include "state.h"
@@ -345,6 +347,10 @@ void GraphvizLayouterBackend::Private::importTransition(Transition* transition, 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
 }
 
+#if WITH_INTERNAL_GRAPHVIZ
+extern "C" GVC_t* gvContextWithStaticPlugins();
+#endif
+
 void GraphvizLayouterBackend::Private::openContext(const QString& id)
 {
     if (m_context) {
@@ -355,7 +361,12 @@ void GraphvizLayouterBackend::Private::openContext(const QString& id)
     m_elementToPointerMap.clear();
 
     // create context
+#if WITH_INTERNAL_GRAPHVIZ
+    m_context = gvContextWithStaticPlugins();
+#else
     m_context = gvContext();
+#endif
+
 #ifdef WITH_CGRAPH
     m_graph = _agopen(id, Agdirected, &AgDefaultDisc);
 #else

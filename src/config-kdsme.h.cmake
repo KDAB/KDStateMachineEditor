@@ -6,4 +6,6 @@
 
 #cmakedefine01 HAVE_GRAPHVIZ
 
+#cmakedefine01 WITH_INTERNAL_GRAPHVIZ
+
 #endif

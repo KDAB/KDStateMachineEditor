@@ -27,9 +27,11 @@ if(WIN32)
 endif()
 
 include(CheckCXXCompilerFlag)
+include(CheckIncludeFiles)
 include(CMakePackageConfigHelpers)
 include(CTest)
 include(GenerateExportHeader)
+include(ExternalProject)
 include(MacroLogFeature)
 include(ECMAddTests)
 include(ECMGeneratePriFile)
@@ -81,6 +83,7 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
 # There is no 64-bit Graphviz available for Windows.
 include(CheckTypeSize)
 check_type_size("void*" SIZEOF_VOID_P BUILTIN_TYPES_ONLY)
+
 if(WIN32 AND SIZEOF_VOID_P EQUAL 8)
   set(GRAPHVIZ_FOUND FALSE)
   add_feature_info("Graph visualization software" FALSE "A 64-bit Graphviz library does not exist for Windows at this time.")
@@ -93,6 +96,52 @@ else()
     PURPOSE "RECOMMENDED: Needed for automatic layout of state charts"
     URL "http://www.graphviz.org/"
   )
+endif()
+
+option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" OFF)
+message(STATUS "Building external project Graphviz: ${WITH_INTERNAL_GRAPHVIZ}")
+if (NOT WITH_INTERNAL_GRAPHVIZ)
+    message(STATUS "  (enable with WITH_INTERNAL_GRAPHVIZ=ON)")
+endif()
+
+if(WITH_INTERNAL_GRAPHVIZ)
+    ExternalProject_Add(GraphvizExternalProject
+        GIT_REPOSITORY "https://github.com/krf/graphviz.git"
+        GIT_TAG "bcdb3e9a9020a89fa64df827a806f8b36ba3785a"
+        CMAKE_ARGS
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+        INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install
+        INSTALL_COMMAND
+            ${CMAKE_COMMAND} --build . --target install
+    )
+    ExternalProject_Get_Property(GraphvizExternalProject source_dir)
+    ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
+    ExternalProject_Get_Property(GraphvizExternalProject install_dir)
+
+    # work-around: https://cmake.org/Bug/view.php?id=15052
+    set(include_dir "${install_dir}/include")
+    file(MAKE_DIRECTORY ${include_dir})
+
+    # CMake is really awful here...
+    set(link_libraries "dotgen;common;xdot;gvc;cgraph;cdt;pathplan;ortho;pack;label;ingraphs")
+    set(link_libraries_absolute)
+    foreach(link_library ${link_libraries})
+        list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
+    endforeach()
+
+    add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
+    set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
+        IMPORTED_LOCATION "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS" # Fix export macro madness in Graphviz
+        INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
+        INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
+    )
+    add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
+    set(GRAPHVIZ_FOUND TRUE)
+    set(GRAPHVIZ_MAJOR_VERSION 2)
+    set(GRAPHVIZ_MINOR_VERSION 39)
+    set(GRAPHVIZ_PATCH_VERSION 0)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
