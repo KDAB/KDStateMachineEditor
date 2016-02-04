@@ -229,7 +229,7 @@ void StateMachineView::setThemeName(const QString& themeName)
     if (d->m_themeName == themeName)
         return;
 
-    d->m_themeName = themeName;
+    d->m_themeName = !themeName.isEmpty() ? themeName : QStringLiteral("DefaultTheme");
     emit themeNameChanged(d->m_themeName);
 }
 
