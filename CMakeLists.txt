@@ -87,7 +87,7 @@ check_type_size("void*" SIZEOF_VOID_P BUILTIN_TYPES_ONLY)
 if(WIN32 AND SIZEOF_VOID_P EQUAL 8)
   set(GRAPHVIZ_FOUND FALSE)
   add_feature_info("Graph visualization software" FALSE "A 64-bit Graphviz library does not exist for Windows at this time.")
-else()
+elseif(NOT WITH_INTERNAL_GRAPHVIZ)
   set(GRAPHVIZ_MIN_VERSION "2.20")
   find_package(Graphviz)
   set_package_properties(Graphviz PROPERTIES
