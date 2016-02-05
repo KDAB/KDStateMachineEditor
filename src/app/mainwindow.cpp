@@ -166,7 +166,6 @@ void MainWindow::setStateMachine(StateMachine* stateMachine)
     if (!stateMachine) {
         stateMachine = new StateMachine;
         stateMachine->setLabel(tr("New"));
-        m_owningStateMachine.take()->deleteLater();
         m_owningStateMachine.reset(stateMachine);
     }
 

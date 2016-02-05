@@ -83,7 +83,7 @@ private:
     KDSME::TransitionListModel* m_transitionsModel;
 
     KDSME::StateMachineView* m_stateMachineView;
-    QScopedPointer<KDSME::StateMachine> m_owningStateMachine;
+    QScopedPointer<KDSME::StateMachine, QScopedPointerDeleteLater> m_owningStateMachine;
 };
 
 #endif // MAINWINDOW_H
