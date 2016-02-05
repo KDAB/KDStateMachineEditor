@@ -63,6 +63,7 @@ public:
     CommandController* commandController() const;
     EditController* editController() const;
 
+    QString defaultThemeName() const;
     QString themeName() const;
     void setThemeName(const QString& themeName);
 

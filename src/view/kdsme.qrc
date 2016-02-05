@@ -35,7 +35,7 @@
         <file>qml/util/Theme.qml</file>
         <file>qml/util/ToolBarSeparator.qml</file>
         <file>qml/util/ToolTip.qml</file>
-        <file>qml/themes/DefaultTheme.qml</file>
-        <file>qml/themes/HighContrastTheme.qml</file>
+        <file>qml/themes/DarkTheme.qml</file>
+        <file>qml/themes/SystemTheme.qml</file>
     </qresource>
 </RCC>

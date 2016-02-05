@@ -111,7 +111,7 @@ StateMachineView::Private::Private(StateMachineView* q)
     , m_scene(nullptr)
     , m_controller(nullptr)
     , m_editController(nullptr)
-    , m_themeName("DefaultTheme")
+    , m_themeName(q->defaultThemeName())
     , m_editModeEnabled(false)
 {
 }
@@ -219,6 +219,11 @@ EditController* StateMachineView::editController() const
     return d->m_editController;
 }
 
+QString StateMachineView::defaultThemeName() const
+{
+    return QStringLiteral("DarkTheme");
+}
+
 QString StateMachineView::themeName() const
 {
     return d->m_themeName;
@@ -229,7 +234,18 @@ void StateMachineView::setThemeName(const QString& themeName)
     if (d->m_themeName == themeName)
         return;
 
-    d->m_themeName = !themeName.isEmpty() ? themeName : QStringLiteral("DefaultTheme");
+    QString selectedThemeName = themeName;
+    if (themeName.isEmpty()) {
+        selectedThemeName = defaultThemeName();
+    } else {
+        const QString themeFile = QStringLiteral(":/kdsme/qml/themes/%1.qml").arg(themeName);
+        if (!QFileInfo::exists(themeFile)) {
+            qWarning() << "Theme file" << themeFile << "does not exist, using fallback";
+            selectedThemeName = defaultThemeName();
+        }
+    }
+
+    d->m_themeName = selectedThemeName;
     emit themeNameChanged(d->m_themeName);
 }
 
