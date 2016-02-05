@@ -63,9 +63,6 @@ generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_exp
 if(GRAPHVIZ_FOUND)
   if(WITH_INTERNAL_GRAPHVIZ)
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
-    list(APPEND LIB_EXTRA_INCLUDES
-      ${GRAPHVIZ_INCLUDE_DIR}
-    )
   else()
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY})
     if(GRAPHVIZ_CGRAPH_LIBRARY AND GRAPHVIZ_VERSION VERSION_GREATER 2.30.0)
