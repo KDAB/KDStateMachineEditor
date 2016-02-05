@@ -71,7 +71,7 @@ Item {
             width: parent.width
 
             text: control.element.label
-            color: Theme.currentTheme.stateLabelFontColor
+            color: (activeness > 0 ? Theme.currentTheme.highlightFontColor : Theme.currentTheme.stateLabelFontColor)
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }

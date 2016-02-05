@@ -22,25 +22,28 @@
 
 import QtQuick 2.0
 
-QtObject {
-    readonly property color highlightForegroundColor: "#CACACA";
-    readonly property color highlightBackgroundColor: "#545454";
-    readonly property color activeHighlightColor: "gray";
+Item {
+    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-    readonly property color compositeStateLabelBackgroundColor: "white";
-    readonly property color compositeStateLabelFontColor: "black";
-    readonly property color compositeStateBackgroundColor_Lightest: "#F2F2F2";
-    readonly property color compositeStateBackgroundColor_Darkest: "#9B9DA3";
-    readonly property color stateBackgroundColor: "white";
-    readonly property color stateBackgroundColor_Active: "white";
-    readonly property color stateBorderColor: "black";
-    readonly property color stateBorderColor_Active: "#FF0000";
-    readonly property color stateBorderColor_Glow: "#C20003";
+    readonly property color highlightBackgroundColor: myPalette.highlight;
+    readonly property color highlightFontColor: myPalette.highlightedText;
+
+    readonly property color compositeStateLabelBackgroundColor: myPalette.window;
+    readonly property color compositeStateLabelFontColor: myPalette.text;
+    readonly property color compositeStateBackgroundColor_Lightest: myPalette.midlight;
+    readonly property color compositeStateBackgroundColor_Darkest: myPalette.dark;
+    readonly property color stateBackgroundColor: myPalette.base;
+    readonly property color stateBackgroundColor_Active: myPalette.highlight;
+    readonly property color stateBorderColor: myPalette.text;
+    readonly property color stateBorderColor_Active: myPalette.text;
+    readonly property color stateBorderColor_Glow: Qt.lighter(myPalette.highlight, 0.4);
     readonly property bool  stateBorderColor_GlowEnabled: false;
-    readonly property color stateLabelFontColor: "black";
-    readonly property color transitionEdgeColor: "black";
-    readonly property color transitionEdgeColor_Active: "#FF0000";
-    readonly property color transitionLabelFontColor: "black";
-    readonly property color viewBackgroundColor: "white";
+    readonly property color stateLabelFontColor: myPalette.text;
+    readonly property color transitionEdgeColor: myPalette.text;
+    readonly property color transitionEdgeColor_Active: myPalette.highlight;
+    readonly property color transitionLabelFontColor: myPalette.text;
+
+    readonly property color viewBackgroundColor: myPalette.base;
+    readonly property color viewAlternateBackgroundColor: myPalette.alternateBase;
 }
 

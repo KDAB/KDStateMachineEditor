@@ -40,7 +40,7 @@ Rectangle {
     width: 6
     height: 6
 
-    color: (mouseArea.pressed ? Theme.currentTheme.activeHighlightColor : Theme.currentTheme.highlightForegroundColor)
+    color: (mouseArea.pressed ? Theme.currentTheme.highlightFontColor : Theme.currentTheme.highlightBackgroundColor)
 
     Drag.active: mouseArea.drag.active
     Drag.hotSpot.x: width/2

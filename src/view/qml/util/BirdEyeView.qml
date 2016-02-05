@@ -59,8 +59,8 @@ Item {
         height: (scene.height/scene.scale) * root.nominalScale
 
         opacity: 0.8
-        color: Theme.currentTheme.highlightBackgroundColor
-        border.color: Theme.currentTheme.highlightForegroundColor
+        color: Theme.currentTheme.viewAlternateBackgroundColor
+        border.color: Theme.currentTheme.highlightBackgroundColor
         border.width: 1
 
         MouseArea {
@@ -101,7 +101,7 @@ Item {
             height: (root.flickable.visibleArea.heightRatio * sceneRect.height).clamp(0, sceneRect.height - y)
 
             color: "#10ffffff"
-            border.color: Theme.currentTheme.highlightForegroundColor
+            border.color: Theme.currentTheme.highlightBackgroundColor
             border.width: 2
             visible: flickable
 

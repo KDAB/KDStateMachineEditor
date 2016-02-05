@@ -23,9 +23,8 @@
 import QtQuick 2.0
 
 QtObject {
-    readonly property color highlightForegroundColor: "#CACACA";
-    readonly property color highlightBackgroundColor: "#545454";
-    readonly property color activeHighlightColor: "white";
+    readonly property color highlightBackgroundColor: "#CACACA";
+    readonly property color highlightFontColor: "white";
 
     readonly property color compositeStateLabelBackgroundColor: "#363636";
     readonly property color compositeStateLabelFontColor: "white";
@@ -41,5 +40,7 @@ QtObject {
     readonly property color transitionEdgeColor: "#BABABA";
     readonly property color transitionEdgeColor_Active: "#DADADA";
     readonly property color transitionLabelFontColor: "#BABABA";
+
     readonly property color viewBackgroundColor: "#262626";
+    readonly property color viewAlternateBackgroundColor: "#545454";
 }
