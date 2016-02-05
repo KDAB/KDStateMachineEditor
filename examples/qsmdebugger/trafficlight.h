@@ -8,7 +8,7 @@ class QStateMachine;
 /**
  * Copy of the infamous traffic light example from Qt
  *
- * See http://doc-snapshot.qt-project.org/qt5-5.4/qtwidgets-statemachine-trafficlight-example.html
+ * See http://doc.qt.io/qt-5/qtwidgets-statemachine-trafficlight-example.html
  */
 class TrafficLight : public QWidget
 {
