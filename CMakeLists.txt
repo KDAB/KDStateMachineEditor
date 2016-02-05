@@ -84,25 +84,8 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
 include(CheckTypeSize)
 check_type_size("void*" SIZEOF_VOID_P BUILTIN_TYPES_ONLY)
 
-if(WIN32 AND SIZEOF_VOID_P EQUAL 8)
-  set(GRAPHVIZ_FOUND FALSE)
-  add_feature_info("Graph visualization software" FALSE "A 64-bit Graphviz library does not exist for Windows at this time.")
-elseif(NOT WITH_INTERNAL_GRAPHVIZ)
-  set(GRAPHVIZ_MIN_VERSION "2.20")
-  find_package(Graphviz)
-  set_package_properties(Graphviz PROPERTIES
-    TYPE OPTIONAL
-    DESCRIPTION "Graph visualization software"
-    PURPOSE "RECOMMENDED: Needed for automatic layout of state charts"
-    URL "http://www.graphviz.org/"
-  )
-endif()
-
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" OFF)
-message(STATUS "Building external project Graphviz: ${WITH_INTERNAL_GRAPHVIZ}")
-if (NOT WITH_INTERNAL_GRAPHVIZ)
-    message(STATUS "  (enable with WITH_INTERNAL_GRAPHVIZ=ON)")
-endif()
+add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
 if(WITH_INTERNAL_GRAPHVIZ)
     ExternalProject_Add(GraphvizExternalProject
@@ -142,6 +125,21 @@ if(WITH_INTERNAL_GRAPHVIZ)
     set(GRAPHVIZ_MAJOR_VERSION 2)
     set(GRAPHVIZ_MINOR_VERSION 39)
     set(GRAPHVIZ_PATCH_VERSION 0)
+else()
+  # search for Graphviz
+  if(WIN32 AND SIZEOF_VOID_P EQUAL 8)
+    set(GRAPHVIZ_FOUND FALSE)
+    add_feature_info("Graph visualization software" FALSE "A 64-bit Graphviz library does not exist for Windows at this time.")
+  else()
+    set(GRAPHVIZ_MIN_VERSION "2.20")
+    find_package(Graphviz)
+    set_package_properties(Graphviz PROPERTIES
+      TYPE RECOMMENDED
+      DESCRIPTION "Graph visualization software"
+      PURPOSE "Needed for automatic layout of state charts"
+      URL "http://www.graphviz.org/"
+    )
+  endif()
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
