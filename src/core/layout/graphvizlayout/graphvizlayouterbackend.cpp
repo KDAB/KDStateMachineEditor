@@ -26,7 +26,7 @@
 
 #include "graphvizlayouterbackend_p.h"
 
-#include "config-kdsme.h"
+#include <config-kdsme.h>
 
 #include "gvutils.h"
 

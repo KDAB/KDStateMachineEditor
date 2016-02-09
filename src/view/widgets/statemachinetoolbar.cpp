@@ -51,7 +51,7 @@ QStringList availableThemeNames()
     QDir dir(":/kdsme/qml/themes");
     auto entries = dir.entryList();
     std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString& x) {
-        return QString(x).replace(".qml", "");
+        return QString(x).remove(".qml");
     });
     return entries;
 }
