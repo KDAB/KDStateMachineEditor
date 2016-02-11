@@ -190,8 +190,6 @@ void ScxmlImporter::Private::visitState(State* parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "state");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    // TODO: This could be a atomic or composite state
-    // How to resolve?
     State* state = createState<State>(parent);
     tryCreateInitialState(state);
 
