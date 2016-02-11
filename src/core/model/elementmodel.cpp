@@ -117,13 +117,13 @@ QVariant StateModel::headerData(int section, Qt::Orientation orientation, int ro
 
 Qt::ItemFlags StateModel::flags(const QModelIndex& index) const
 {
-    if (index.row() < 0 || index.row() >= rowCount()) {
+    const Element* element = index.data(ElementRole).value<Element*>();
+    Q_ASSERT(element);
+    if (!element) {
         return QAbstractItemModel::flags(index);
     }
 
-    const Element* element = index.data(ElementRole).value<Element*>();
-    Q_ASSERT(element);
-    return toItemFlags(element->flags());
+    return toItemFlags(element->flags()) | Qt::ItemIsEnabled;
 }
 
 struct TransitionModel::Private
