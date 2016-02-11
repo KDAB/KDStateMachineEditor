@@ -101,7 +101,8 @@ class KDSME_CORE_EXPORT StateModel : public ObjectTreeModel
 
 public:
     enum Role {
-        ElementRole = ObjectTreeModel::UserRole + 1
+        ElementRole = ObjectTreeModel::UserRole + 1, ///< return Element*
+        InternalIdRole,                              ///< return quint64
     };
 
     explicit StateModel(QObject* parent = nullptr);

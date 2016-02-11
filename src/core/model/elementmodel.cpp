@@ -91,10 +91,10 @@ QVariant StateModel::data(const QModelIndex& index, int role) const
     switch (role) {
     case Qt::DisplayRole:
         return element->toDisplayString();
-
     case ElementRole:
         return QVariant::fromValue<Element*>(element);
-
+    case InternalIdRole:
+        return element->internalId();
     case Qt::EditRole:
         return element->label();
     }
