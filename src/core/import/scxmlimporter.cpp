@@ -58,9 +58,9 @@ struct ScxmlImporter::Private
 
     /// Create initial state based on current stream reader context
     State* tryCreateInitialState(State* parent);
-    /// Create state based on current stream reader context
-    template<typename T>
-    T* createState(State* parent);
+    /// Initialize @p state based on current stream reader context
+    void initState(State* state);
+
     /// Create Transition
     Transition* createTransition(State* parent, const QString& targetStateId);
 
@@ -161,7 +161,8 @@ void ScxmlImporter::Private::visitParallel(State* parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "parallel");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    State* state = createState<State>(parent);
+    State* state = new State(parent);
+    initState(state);
     tryCreateInitialState(state);
 
     while (m_reader.readNextStartElement()) {
@@ -190,7 +191,8 @@ void ScxmlImporter::Private::visitState(State* parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "state");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    State* state = createState<State>(parent);
+    auto state = new State(parent);
+    initState(state);
     tryCreateInitialState(state);
 
     while (m_reader.readNextStartElement()) {
@@ -248,7 +250,8 @@ void ScxmlImporter::Private::visitFinal(State* parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "final");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    createState<FinalState>(parent);
+    auto state = new FinalState(parent);
+    initState(state);
 
     m_reader.skipCurrentElement();
 }
@@ -310,20 +313,18 @@ State* ScxmlImporter::Private::tryCreateInitialState(State* parent)
     return nullptr;
 }
 
-// TODO: Error handling
-template<typename T>
-T* ScxmlImporter::Private::createState(State* parent)
+void ScxmlImporter::Private::initState(State* state)
 {
+    Q_ASSERT(state);
+
     const QXmlStreamAttributes attributes = m_reader.attributes();
     const QString id = attributes.value("id").toString();
     IF_DEBUG(qCDebug(KDSME_CORE) << parent->label() << id;)
     if (id.isEmpty()) {
         qWarning() << "Unnamed state at offset:" << m_reader.characterOffset();
     }
-    T* state = new T(parent);
     state->setLabel(id);
     m_nameToStateMap[id] = state;
-    return state;
 }
 
 Transition* ScxmlImporter::Private::createTransition(State* parent, const QString& targetStateId)
