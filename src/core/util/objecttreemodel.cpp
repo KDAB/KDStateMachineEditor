@@ -181,7 +181,8 @@ ObjectTreeModel::~ObjectTreeModel()
 QHash< int, QByteArray > ObjectTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roleNames = QAbstractItemModel::roleNames();
-    roleNames.insert(ObjectRole,  "object");
+    roleNames.insert(ObjectRole, "object");
+    roleNames.insert(ObjectIdRole, "objectid");
     return roleNames;
 }
 
@@ -242,6 +243,8 @@ QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
         return ("0x" + QString::number(reinterpret_cast<quint64>(obj), 16));
     } else if (role == ObjectRole) {
         return QVariant::fromValue(obj);
+    } else if (role == ObjectIdRole) {
+        return reinterpret_cast<quint64>(obj);
     }
     return QVariant();
 

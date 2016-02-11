@@ -79,7 +79,8 @@ public:
     };
 
     enum Roles {
-        ObjectRole = Qt::UserRole + 1,
+        ObjectRole = Qt::UserRole + 1, ///< return QObject*
+        ObjectIdRole,                  ///< return quint64
         UserRole = Qt::UserRole + 100
     };
 
