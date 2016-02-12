@@ -162,6 +162,7 @@ void ScxmlImporter::Private::visitParallel(State* parent)
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     State* state = new State(parent);
+    state->setChildMode(State::ParallelStates);
     initState(state);
     tryCreateInitialState(state);
 
