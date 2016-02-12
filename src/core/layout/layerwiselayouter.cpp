@@ -108,13 +108,8 @@ QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* propertie
     Q_ASSERT(state);
     m_properties = properties;
 
-    QElapsedTimer timer;
-    timer.start();
-
     ElementWalker walker(ElementWalker::PostOrderTraversal);
     walker.walkItems(state, [&](Element* element) { return layoutState(element); });
-
-    qCDebug(KDSME_CORE) << "Layouting took" << timer.elapsed() << "ms";
 
     return QRect();
 }

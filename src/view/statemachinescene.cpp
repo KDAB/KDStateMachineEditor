@@ -276,7 +276,13 @@ void StateMachineScene::layout()
     // reset
     setZoom(1.0);
 
+    QElapsedTimer timer;
+    timer.start();
+
     d->m_layouter->layout(d->m_rootState, layoutProperties());
+
+    qCDebug(KDSME_VIEW) << "Layouting took" << timer.elapsed() << "ms";
+
     setViewState(oldViewState);
 }
 
