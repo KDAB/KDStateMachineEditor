@@ -130,6 +130,7 @@ QObject* QuickRecursiveInstantiator::createItems(const QModelIndex& index, QObje
 
     auto createdObject = m_delegate->create(context);
     createdObject->setParent(parent);
+    context->setParent(createdObject);
     if (auto quickItem = qobject_cast<QQuickItem*>(createdObject)) {
         if (auto quickParentItem = qobject_cast<QQuickItem*>(parent)) {
             quickItem->setParentItem(quickParentItem);
