@@ -74,13 +74,6 @@ QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* prope
 
     m_backend->layout();
 
-#if 0
-    //  Debugging
-    const QString machineName = (qobject_cast<State*>(state)->machine() ? qobject_cast<State*>(state)->machine()->label() : state->label());
-    const QString fileName = QString("/tmp/gvgraph_%1_%2.png").arg(machineName).arg(state->label());
-    m_backend->saveToFile(fileName);
-#endif
-
     // Step 2: Import the information from the Graphviz structures to the State/Transition tree
     m_backend->import();
 

@@ -45,6 +45,8 @@
 #endif
 
 #include "debug.h"
+
+#include <QDir>
 #include <QFile>
 #include <QPainterPath>
 #include <QPoint>
@@ -563,6 +565,23 @@ void GraphvizLayouterBackend::layout()
 {
     // do the actual layouting
     _gvLayout(d->m_context, d->m_graph, DEFAULT_LAYOUT_TOOL);
+
+    if (qEnvironmentVariableIsSet("KDSME_DEBUG_GRAPHVIZ")) {
+        const auto state = d->m_root;
+        const auto machine = state->machine();
+        Q_ASSERT(machine);
+        const QString machineName = !machine->label().isEmpty() ?
+            machine->label() :
+            ObjectHelper::addressToString(machine);
+        const QString stateName = !state->label().isEmpty() ?
+            state->label() :
+            ObjectHelper::addressToString(state);
+        QDir tmpDir = QDir::temp();
+        tmpDir.mkdir("kdsme_debug");
+        const QString baseName = QString("%1/%2_%3").arg(tmpDir.filePath("kdsme_debug")).arg(machineName).arg(stateName);
+        saveToFile(baseName + ".png");
+        saveToFile(baseName + ".dot", "dot");
+    }
 }
 
 void GraphvizLayouterBackend::saveToFile(const QString& filePath, const QString& format)

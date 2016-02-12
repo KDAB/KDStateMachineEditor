@@ -29,6 +29,7 @@
 #include "state.h"
 
 #include "debug.h"
+
 #include <QRectF>
 
 using namespace KDSME;
