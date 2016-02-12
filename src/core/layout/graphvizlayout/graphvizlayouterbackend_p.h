@@ -53,8 +53,8 @@ public:
     LayoutMode layoutMode() const;
     void setLayoutMode(LayoutMode mode);
 
-    void openContext();
-    void closeContext();
+    void openLayout(KDSME::State* state);
+    void closeLayout();
 
     /**
      * Fill the Graphviz with nodes based on attributes of state @p state

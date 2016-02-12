@@ -33,6 +33,7 @@
 #include "state.h"
 #include "transition.h"
 #include "elementmodel.h"
+#include "elementwalker.h"
 #include "layoututils.h"
 #include "util/objecthelper.h"
 
@@ -133,7 +134,7 @@ struct GraphvizLayouterBackend::Private
     /// Allocate resources from Graphviz
     void openContext(const QString& id);
     /// Free resources
-    void closeContext();
+    void closeLayout();
 
     /**
      * Return the bounding rect of the label for graph @p graph in global coordinate system
@@ -158,7 +159,9 @@ struct GraphvizLayouterBackend::Private
     LayoutMode m_layoutMode;
 
     /// Mapping from state machine items to Graphviz layout items
-    QMap<Element*, void*> m_elementToPointerMap;
+    QPointer<State> m_root;
+    QHash<Element*, Agnode_t*> m_elementToDummyNodeMap;
+    QHash<Element*, void*> m_elementToPointerMap;
 };
 
 GraphvizLayouterBackend::Private::Private()
@@ -174,7 +177,6 @@ GraphvizLayouterBackend::Private::Private()
 
 GraphvizLayouterBackend::Private::~Private()
 {
-    closeContext();
 }
 
 void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
@@ -190,10 +192,14 @@ void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
     if (m_layoutMode == RecursiveMode && !state->childStates().isEmpty()) {
         const QString graphName = "cluster" + addressToString(state);
         Agraph_t* newGraph = _agsubg(graph, graphName);
+
         m_elementToPointerMap[state] = newGraph;
-        if (!state->label().isEmpty()) {
-            _agset(newGraph, "label", state->label());
-        }
+        _agset(newGraph, "label", state->label().isEmpty() ? QObject::tr("<unnamed>") : state->label());
+
+        auto dummyNode = _agnode(newGraph,  "dummynode_" + graphName);
+        _agset(dummyNode, "shape", "point");
+        _agset(dummyNode, "style", "invis");
+        m_elementToDummyNodeMap[state] = dummyNode;
 
         Q_FOREACH (State* childState, state->childStates()) {
             buildState(childState, newGraph);
@@ -246,9 +252,27 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
     Agnode_t* target = agnodeForState(transition->targetState());
     Q_ASSERT(target);
 
-    Agedge_t* edge = _agedge(graph, source, target, addressToString(transition), true);
+
+    auto sourceDummyNode = m_elementToDummyNodeMap.value(transition->sourceState());
+    auto targetDummyNode = m_elementToDummyNodeMap.value(transition->targetState());
+
+    Agedge_t* edge = _agedge(graph,
+                             sourceDummyNode ? sourceDummyNode : source,
+                             targetDummyNode ? targetDummyNode : target,
+                             addressToString(transition), true);
     if (!transition->label().isEmpty()) {
         _agset(edge, "label", transition->label());
+    }
+
+    // in order to connect subgraphs we need to leverage ltail + lhead attribute of edges
+    // see: http://stackoverflow.com/questions/2012036/graphviz-how-to-connect-subgraphs
+    if (sourceDummyNode) {
+        const QString graphName = "cluster" + addressToString(transition->sourceState());
+        _agset(edge, "ltail", graphName);
+    }
+    if (targetDummyNode) {
+        const QString graphName = "cluster" + addressToString(transition->targetState());
+        _agset(edge, "lhead", graphName);
     }
     m_elementToPointerMap[transition] = edge;
     Q_ASSERT(edge);
@@ -259,22 +283,13 @@ void GraphvizLayouterBackend::Private::import()
     IF_DEBUG(qCDebug(KDSME_CORE) << m_elementToPointerMap.keys();)
 
     LocaleLocker lock;
-    QSet<Element*> importedItems;
-    auto it = m_elementToPointerMap.constBegin();
-    while (it != m_elementToPointerMap.constEnd()) {
-        // always import parent items first
-        Element* parent = it.key()->parentElement();
-        if (parent && !importedItems.contains(parent) && m_elementToPointerMap.contains(parent)) {
-            importItem(parent, m_elementToPointerMap[parent]);
-            importedItems << parent;
+    ElementWalker walker(ElementWalker::PreOrderTraversal);
+    walker.walkItems(m_root, [this](Element* element) {
+        if (auto obj = m_elementToPointerMap.value(element)) {
+            importItem(element, obj);
         }
-
-        if (!importedItems.contains(it.key())) {
-            importItem(it.key(), it.value());
-            importedItems << it.key();
-        }
-        ++it;
-    }
+        return ElementWalker::RecursiveWalk;
+    });
 }
 
 void GraphvizLayouterBackend::Private::importItem(Element* item, void* obj)
@@ -304,10 +319,17 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agnode_t* node)
     const qreal y = (GD_bb(m_graph).UR.y - ND_coord(node).y) * TO_DOT_DPI_RATIO;
 
     // Transform the width and height from inches to pixels
+
     state->setWidth(ND_width(node) * DISPLAY_DPI);
     state->setHeight(ND_height(node) * DISPLAY_DPI);
-    const QPointF pos = QPointF(x - state->width()/2, y - state->height()/2);
-    state->setPos(pos);
+
+    const QPointF absolutePos = QPointF(x - state->width()/2, y - state->height()/2);
+    if (m_layoutMode == RecursiveMode) {
+        const QPointF relativePos = absolutePos - (state->parentElement() ? state->parentElement()->absolutePos() : QPointF());
+        state->setPos(relativePos);
+    } else {
+        state->setPos(absolutePos);
+    }
 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << state->label() << *state << node);
 }
@@ -323,7 +345,14 @@ void GraphvizLayouterBackend::Private::importState(State* state, Agraph_t* graph
 
     state->setWidth(rect.width());
     state->setHeight(rect.height());
-    state->setPos(rect.topLeft());
+
+    const QPointF absolutePos = rect.topLeft();
+    if (m_layoutMode == RecursiveMode) {
+        const QPointF relativePos = absolutePos - (state->parentElement() ? state->parentElement()->absolutePos() : QPointF());
+        state->setPos(relativePos);
+    } else {
+        state->setPos(absolutePos);
+    }
 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << state->label() << *state << graph);
 }
@@ -340,8 +369,12 @@ void GraphvizLayouterBackend::Private::importTransition(Transition* transition, 
     const QRectF boundingRect = labelRect.united(path.boundingRect());
     const QPointF absolutePos = boundingRect.topLeft();
     Q_ASSERT(transition->parentElement());
-    const QPointF relativePos = absolutePos - transition->parentElement()->pos();
-    transition->setPos(relativePos);
+    if (m_layoutMode == RecursiveMode) {
+        const QPointF relativePos = absolutePos - transition->parentElement()->absolutePos();
+        transition->setPos(relativePos);
+    } else {
+        transition->setPos(absolutePos - transition->parentElement()->pos());
+    }
     transition->setShape(path.translated(-absolutePos));
     transition->setLabelBoundingRect(labelRect.translated(-absolutePos));
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
@@ -353,19 +386,10 @@ extern "C" GVC_t* gvContextWithStaticPlugins();
 
 void GraphvizLayouterBackend::Private::openContext(const QString& id)
 {
-    if (m_context) {
-        qWarning() << "Context already open:" << m_context;
-        return;
-    }
+    LocaleLocker lock;
 
+    m_elementToDummyNodeMap.clear();
     m_elementToPointerMap.clear();
-
-    // create context
-#if WITH_INTERNAL_GRAPHVIZ
-    m_context = gvContextWithStaticPlugins();
-#else
-    m_context = gvContext();
-#endif
 
 #ifdef WITH_CGRAPH
     m_graph = _agopen(id, Agdirected, &AgDefaultDisc);
@@ -374,22 +398,32 @@ void GraphvizLayouterBackend::Private::openContext(const QString& id)
 #endif
 
     // modify settings
+    if (m_layoutMode == RecursiveMode) {
+        _agset(m_graph, "compound", "true");
+    }
     _agset(m_graph, "overlap", "prism");
+    _agset(m_graph, "overlap_shrink", "true");
     _agset(m_graph, "splines", "true");
     _agset(m_graph, "pad", "0.0");
     _agset(m_graph, "dpi", "96.0");
     _agset(m_graph, "nodesep", "0.2");
 }
 
-void GraphvizLayouterBackend::Private::closeContext()
+void GraphvizLayouterBackend::Private::closeLayout()
 {
-    if (!m_context)
+    if (!m_graph) {
         return;
+    }
 
-    gvFreeLayout(m_context, m_graph);
-    m_context = nullptr;
+    // TODO: Intentional leak: Graphviz segfaults otherwise
+    //gvFreeLayout(m_context, m_graph);
+
     agclose(m_graph);
     m_graph = nullptr;
+
+    m_root = nullptr;
+
+    agreseterrors();
 }
 
 QRectF GraphvizLayouterBackend::Private::boundingRectForGraph(Agraph_t *graph) const
@@ -470,10 +504,24 @@ Agnode_t* GraphvizLayouterBackend::Private::agnodeForState(State* state)
 GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
 {
+    // create context
+#if WITH_INTERNAL_GRAPHVIZ
+    d->m_context = gvContextWithStaticPlugins();
+#else
+    d->m_context = gvContext();
+#endif
+    Q_ASSERT(d->m_context);
 }
 
 GraphvizLayouterBackend::~GraphvizLayouterBackend()
 {
+    closeLayout();
+
+    // close context
+    Q_ASSERT(d->m_context);
+    gvFreeContext(d->m_context);
+    d->m_context = nullptr;
+
     delete d;
 }
 
@@ -513,14 +561,16 @@ void GraphvizLayouterBackend::saveToFile(const QString& filePath, const QString&
     }
 }
 
-void GraphvizLayouterBackend::openContext()
+void GraphvizLayouterBackend::openLayout(State* state)
 {
+    d->m_root = state;
+
     d->openContext(QString("GraphvizLayouterBackend@%1").arg(addressToString(this)));
 }
 
-void GraphvizLayouterBackend::closeContext()
+void GraphvizLayouterBackend::closeLayout()
 {
-    d->closeContext();
+    d->closeLayout();
 }
 
 void GraphvizLayouterBackend::buildState(State* state)
@@ -547,5 +597,6 @@ QRectF GraphvizLayouterBackend::boundingRect() const
 {
     if (!d->m_graph)
         return QRectF();
+
     return d->boundingRectForGraph(d->m_graph);
 }

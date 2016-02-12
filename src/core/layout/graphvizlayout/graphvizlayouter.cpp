@@ -26,6 +26,7 @@
 
 #include "graphvizlayouterbackend_p.h"
 #include "element.h"
+#include "state.h"
 
 #include "debug.h"
 #include <QRectF>
@@ -55,8 +56,7 @@ QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties
     qCDebug(KDSME_CORE) << state << properties;
 
     // open context
-    //const QString id = state->label();
-    m_backend->openContext();
+    m_backend->openLayout(state);
 
     // Step 1: Create Graphviz structures out of the State/Transition tree
     // Step 1.1: build nodes
@@ -70,7 +70,6 @@ QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties
     m_backend->import();
 
     const QRectF boundingRect = m_backend->boundingRect();
-
-    m_backend->closeContext();
+    m_backend->closeLayout();
     return boundingRect;
 }

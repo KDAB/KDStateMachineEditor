@@ -30,6 +30,7 @@
 #include "transition.h"
 
 #include "debug.h"
+
 #include <QRectF>
 
 using namespace KDSME;
@@ -38,7 +39,6 @@ GraphvizLayerLayouter::GraphvizLayerLayouter(QObject* parent)
     : Layouter(parent)
     , m_backend(new GraphvizLayouterBackend)
 {
-    // TODO: Get rid off this enum and just provide appropriate methods in the backend
     m_backend->setLayoutMode(GraphvizLayouterBackend::NonRecursiveMode);
 }
 
@@ -52,9 +52,7 @@ QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* prope
     Q_UNUSED(properties);
     Q_ASSERT(state);
 
-    // open context
-    //const QString id = state->label();
-    m_backend->openContext();
+    m_backend->openLayout(state);
 
     const QList<State*> childStates = state->childStates();
 
@@ -76,11 +74,6 @@ QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* prope
 
     m_backend->layout();
 
-    // Step 2: Import the information from the Graphviz structures to the State/Transition tree
-    m_backend->import();
-
-    const QRectF boundingRect = m_backend->boundingRect();
-
 #if 0
     //  Debugging
     const QString machineName = (qobject_cast<State*>(state)->machine() ? qobject_cast<State*>(state)->machine()->label() : state->label());
@@ -88,6 +81,10 @@ QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* prope
     m_backend->saveToFile(fileName);
 #endif
 
-    m_backend->closeContext();
+    // Step 2: Import the information from the Graphviz structures to the State/Transition tree
+    m_backend->import();
+
+    const QRectF boundingRect = m_backend->boundingRect();
+    m_backend->closeLayout();
     return boundingRect;
 }
