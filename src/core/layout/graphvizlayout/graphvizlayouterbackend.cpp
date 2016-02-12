@@ -179,6 +179,19 @@ GraphvizLayouterBackend::Private::~Private()
 {
 }
 
+bool isAncestorCollapsed(State* state)
+{
+    auto current = state;
+    while (current) {
+        auto parent = current->parentState();
+        if (parent && !parent->isExpanded())
+            return true;
+
+        current = parent;
+    }
+    return false;
+}
+
 void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
 {
     Q_ASSERT(state);
@@ -194,17 +207,23 @@ void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
         Agraph_t* newGraph = _agsubg(graph, graphName);
 
         m_elementToPointerMap[state] = newGraph;
-        _agset(newGraph, "label", state->label().isEmpty() ? QObject::tr("<unnamed>") : state->label());
+        _agset(newGraph, "label", state->label().isEmpty() ? QObject::tr("<unnamed>") : state->label() + " ###"); // add a placeholder for the expand/collapse button
 
         auto dummyNode = _agnode(newGraph,  "dummynode_" + graphName);
         _agset(dummyNode, "shape", "point");
         _agset(dummyNode, "style", "invis");
         m_elementToDummyNodeMap[state] = dummyNode;
 
-        Q_FOREACH (State* childState, state->childStates()) {
-            buildState(childState, newGraph);
+        if (!isAncestorCollapsed(state)) {
+            Q_FOREACH (State* childState, state->childStates()) {
+                buildState(childState, newGraph);
+            }
         }
     } else {
+        if (m_layoutMode == RecursiveMode && isAncestorCollapsed(state)) {
+            return;
+        }
+
         Agnode_t* newNode = _agnode(graph, addressToString(state));
         m_elementToPointerMap[state] = newNode;
 
@@ -245,16 +264,22 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
         return;
     }
 
+    if (m_layoutMode == RecursiveMode && isAncestorCollapsed(transition->sourceState())) {
+        return;
+    }
+
     IF_DEBUG(qCDebug(KDSME_CORE) << transition->label() << *transition << graph);
 
-    Agnode_t* source = agnodeForState(transition->sourceState());
-    Q_ASSERT(source);
-    Agnode_t* target = agnodeForState(transition->targetState());
-    Q_ASSERT(target);
+    const auto sourceState = transition->sourceState();
+    const auto targetState = transition->targetState();
 
+    Agnode_t* source = agnodeForState(sourceState);
+    if (!source) return;
+    Agnode_t* target = agnodeForState(targetState);
+    if (!target) return;
 
-    auto sourceDummyNode = m_elementToDummyNodeMap.value(transition->sourceState());
-    auto targetDummyNode = m_elementToDummyNodeMap.value(transition->targetState());
+    auto sourceDummyNode = m_elementToDummyNodeMap.value(sourceState);
+    auto targetDummyNode = m_elementToDummyNodeMap.value(targetState);
 
     Agedge_t* edge = _agedge(graph,
                              sourceDummyNode ? sourceDummyNode : source,
@@ -267,11 +292,11 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
     // in order to connect subgraphs we need to leverage ltail + lhead attribute of edges
     // see: http://stackoverflow.com/questions/2012036/graphviz-how-to-connect-subgraphs
     if (sourceDummyNode) {
-        const QString graphName = "cluster" + addressToString(transition->sourceState());
+        const QString graphName = "cluster" + addressToString(sourceState);
         _agset(edge, "ltail", graphName);
     }
     if (targetDummyNode) {
-        const QString graphName = "cluster" + addressToString(transition->targetState());
+        const QString graphName = "cluster" + addressToString(targetState);
         _agset(edge, "lhead", graphName);
     }
     m_elementToPointerMap[transition] = edge;
@@ -497,8 +522,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t* edge) const
 Agnode_t* GraphvizLayouterBackend::Private::agnodeForState(State* state)
 {
     Q_ASSERT(state);
-    Q_ASSERT(m_elementToPointerMap.contains(state));
-    return static_cast<Agnode_t*>(m_elementToPointerMap[state]);
+    return static_cast<Agnode_t*>(m_elementToPointerMap.value(state));
 }
 
 GraphvizLayouterBackend::GraphvizLayouterBackend()
