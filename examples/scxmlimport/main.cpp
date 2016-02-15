@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
-    const QString fileName = TEST_DATA_DIR "/scxml/example_microwave.scxml";
+    const QString fileName = TEST_DATA_DIR "/scxml/microwave.scxml";
     QFile file(fileName);
     if (!file.exists()) {
         qWarning() << "File does not exist:" << file.fileName();

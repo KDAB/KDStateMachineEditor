@@ -266,9 +266,9 @@ void ScxmlImportTest::testExampleCalculator()
 
         Special case: Contains <datamodel>, <onentry>, <onexit>
      */
-    State* root = parseFile("scxml/example_calculator.scxml");
+    State* root = parseFile("scxml/calculator.scxml");
     QVERIFY(root);
-    QCOMPARE(root->label(),  QLatin1String("calc"));
+    QCOMPARE(root->label(),  QLatin1String("Calculator"));
     QCOMPARE(root->childStates().size(), 2);
 
     State* wrapper = root->childStates()[1];
@@ -297,7 +297,7 @@ void ScxmlImportTest::testExampleMicrowave()
 
         Special case: Contains <initial> element
      */
-    State* root = parseFile("scxml/example_microwave.scxml");
+    State* root = parseFile("scxml/microwave.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String(""));
     QCOMPARE(root->childStates().size(), 3);
@@ -323,9 +323,9 @@ void ScxmlImportTest::testExampleTrafficLight()
             (I) -> (redGoingYellow) -> (yellowGoingGreen) -> (greenGoingYellow) -> (yellowGoingRed) --.
                            ^--------------------------------------------------------------------------'
     */
-    State* root = parseFile("scxml/example_trafficlight.scxml");
+    State* root = parseFile("scxml/trafficlight_alternative.scxml");
     QVERIFY(root);
-    QCOMPARE(root->label(),  QLatin1String("example_trafficlight"));
+    QCOMPARE(root->label(),  QLatin1String("trafficlight"));
     QCOMPARE(root->childStates().size(), 5);
 
     // check first state
@@ -354,7 +354,7 @@ void ScxmlImportTest::testExampleTrafficReport()
 
         Special case: Contains <invoke>
     */
-    State* root = parseFile("scxml/example_trafficreport.scxml");
+    State* root = parseFile("scxml/trafficreport.scxml");
     QVERIFY(root);
     QCOMPARE(root->label(),  QLatin1String(""));
     QCOMPARE(root->childStates().size(), 8);
