@@ -118,6 +118,7 @@ Item {
 
                 color: Theme.currentTheme.compositeStateLabelFontColor
                 text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>"))
+                renderType: Text.NativeRendering
                 font.bold: true
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter

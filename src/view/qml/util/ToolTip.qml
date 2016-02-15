@@ -75,6 +75,7 @@ Rectangle {
     Text {
         id: dummyItem
         text: root.text
+        renderType: Text.NativeRendering
         visible: false
     }
 
@@ -83,6 +84,7 @@ Rectangle {
 
         anchors.centerIn: parent
         text: root.text
+        renderType: Text.NativeRendering
         // QTBUG? anchors.centerIn + multiline text + word-wrap breaks layouting
         //wrapMode: Text.WordWrap
     }

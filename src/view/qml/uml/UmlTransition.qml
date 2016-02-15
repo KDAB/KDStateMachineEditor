@@ -129,6 +129,7 @@ TransitionItem {
                 && scene.zoom >= 1.0
 
             text: element.label
+            renderType: Text.NativeRendering
         }
     }
 

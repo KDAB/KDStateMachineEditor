@@ -50,6 +50,7 @@ MouseArea {
             anchors.centerIn: parent
 
             color: Theme.currentTheme.compositeStateLabelFontColor
+            renderType: Text.NativeRendering
         }
     }
 

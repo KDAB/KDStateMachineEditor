@@ -46,6 +46,7 @@ KDSME.StateItem {
             anchors.centerIn: parent
 
             text: root.element.historyType === KDSME.HistoryState.ShallowHistory ? "H" : "H*"
+            renderType: Text.NativeRendering
             color: Theme.currentTheme.stateLabelFontColor
             elide: Text.ElideRight
         }

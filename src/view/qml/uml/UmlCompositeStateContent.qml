@@ -58,6 +58,7 @@ Rectangle {
 
         color: Theme.currentTheme.compositeStateLabelFontColor
         text: "..."
+        renderType: Text.NativeRendering
         horizontalAlignment: Text.AlignHCenter
     }
 }

@@ -69,6 +69,7 @@ KDSME.StateItem {
                 }
 
                 text: element.label !== "" ? element.label : qsTr("<Unnamed>")
+                renderType: Text.NativeRendering
                 color: Theme.currentTheme.compositeStateLabelFontColor
                 font.bold: true
                 elide: Text.ElideRight
@@ -79,6 +80,7 @@ KDSME.StateItem {
             Text {
                 id: dummyLabel
                 text: label.text
+                renderType: Text.NativeRendering
                 font.bold: true
                 visible: false
             }
