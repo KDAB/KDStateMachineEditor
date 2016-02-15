@@ -117,7 +117,8 @@ Item {
                 width: parent.width
 
                 color: Theme.currentTheme.compositeStateLabelFontColor
-                text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>"))
+                text: (control.element.label != "" ? control.element.label : qsTr("<Unnamed State>")) +
+                    (control.element.childMode === KDSME.State.ParallelStates ? " " + qsTr("[parallel]") : "")
                 renderType: Text.NativeRendering
                 font.bold: true
                 elide: Text.ElideRight
