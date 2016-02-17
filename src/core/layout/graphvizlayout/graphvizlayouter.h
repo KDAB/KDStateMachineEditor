@@ -25,6 +25,8 @@
 #ifndef KDSME_LAYOUT_GRAPHVIZLAYOUTER_H
 #define KDSME_LAYOUT_GRAPHVIZLAYOUTER_H
 
+#include "kdsme_core_export.h"
+
 #include "layouter.h"
 
 class GraphvizLayouterBackend;
@@ -33,7 +35,7 @@ namespace KDSME {
 
 class StateMachineScene;
 
-class GraphvizLayouter : public Layouter
+class KDSME_CORE_EXPORT GraphvizLayouter : public Layouter
 {
     Q_OBJECT
 
