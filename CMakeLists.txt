@@ -123,7 +123,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
     set(GRAPHVIZ_FOUND TRUE)
     set(GRAPHVIZ_MAJOR_VERSION 2)
-    set(GRAPHVIZ_MINOR_VERSION 39)
+    set(GRAPHVIZ_MINOR_VERSION 38)
     set(GRAPHVIZ_PATCH_VERSION 0)
 else()
   # search for Graphviz
