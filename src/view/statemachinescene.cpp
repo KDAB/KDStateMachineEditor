@@ -25,16 +25,22 @@
 #include "statemachinescene.h"
 #include "statemachinescene_p.h"
 
+#include "config-kdsme.h"
 #include "debug.h"
 #include "state.h"
 #include "transition.h"
-#include "layerwiselayouter.h"
 #include "layouter.h"
 #include "layoutproperties.h"
 #include "layoututils.h"
 #include "elementmodel.h"
 #include "elementwalker.h"
 #include "objecthelper.h"
+
+#if HAVE_GRAPHVIZ
+#include "graphvizlayout/graphvizlayouter.h"
+#else
+#include "layerwiselayouter.h"
+#endif
 
 #include <QDir>
 #include <QElapsedTimer>
@@ -49,7 +55,11 @@ using namespace KDSME;
 StateMachineScene::Private::Private(StateMachineScene* view)
     : q(view)
     , m_rootState(nullptr)
+#if HAVE_GRAPHVIZ
+    , m_layouter(new GraphvizLayouter(q))
+#else
     , m_layouter(new LayerwiseLayouter(q))
+#endif
     , m_properties(new LayoutProperties(q))
     , m_zoom(1.0)
     , m_maximumDepth(3)
