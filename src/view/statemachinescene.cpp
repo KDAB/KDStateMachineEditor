@@ -146,7 +146,7 @@ void StateMachineScene::setCurrentItem(Element* item)
     setCurrentIndex(index);
 }
 
-Element* StateMachineScene::currentState()
+Element* StateMachineScene::currentState() const
 {
     Element *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element*>();
     if (!element || element->type() == Element::ElementType)

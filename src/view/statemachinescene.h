@@ -84,7 +84,7 @@ public:
     KDSME::Element* currentItem() const;
     void setCurrentItem(KDSME::Element* item);
 
-    KDSME::Element* currentState();
+    KDSME::Element* currentState() const;
 
 public Q_SLOTS:
     void layout();
