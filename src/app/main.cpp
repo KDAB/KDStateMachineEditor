@@ -22,6 +22,9 @@
   clear to you.
 */
 
+#include "config-test.h"
+
+#include "parsehelper.h"
 #include "mainwindow.h"
 #include "scxmlimporter.h"
 
@@ -36,14 +39,18 @@ using namespace KDSME;
 namespace
 {
 
-QByteArray readFile(const QString& fileName)
+QString presetsLocation()
 {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Could not open file:" << file.fileName();
-        return QByteArray();
+    const QString presetsLocation = qgetenv("KDSME_PRESETS_LOCATION");
+    if (!presetsLocation.isEmpty()) {
+        return presetsLocation;
     }
-    return file.readAll();
+    return QStringLiteral(TEST_DATA_DIR);
+}
+
+QString scxmlPresetsLocation()
+{
+    return presetsLocation() + "/scxml";
 }
 
 }
@@ -69,7 +76,7 @@ int main(int argc, char** argv)
 
     StateMachine* stateMachine = nullptr;
     if (!source.isEmpty()) {
-        ScxmlImporter parser(readFile(source));
+        ScxmlImporter parser(ParseHelper::readFile(source));
         stateMachine = parser.import();
 
         if (!stateMachine) {
@@ -78,6 +85,7 @@ int main(int argc, char** argv)
     }
 
     MainWindow mainWindow;
+    mainWindow.loadPresets(scxmlPresetsLocation());
     mainWindow.resize(1024, 800);
     if (stateMachine) {
         mainWindow.setStateMachine(stateMachine);

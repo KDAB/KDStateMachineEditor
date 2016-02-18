@@ -186,10 +186,6 @@ if(NOT CMAKE_CROSSCOMPILING)
 endif()
 
 set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
-add_custom_target(copy_data ALL)
-add_custom_command(TARGET copy_data
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${PROJECT_BINARY_DIR}/data"
-)
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)

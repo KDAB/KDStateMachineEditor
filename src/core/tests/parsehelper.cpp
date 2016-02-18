@@ -35,7 +35,7 @@ using namespace KDSME;
 
 QByteArray ParseHelper::readFile(const QString& fileName)
 {
-    QFile file(QString("%1/%2").arg(TEST_DATA_DIR, fileName));
+    QFile file(fileName);
     if (!file.exists()) {
         qWarning() << "File does not exist:" << file.fileName();
         return QByteArray();

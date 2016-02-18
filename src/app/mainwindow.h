@@ -60,6 +60,8 @@ public:
     /// When in PresetsInputMode, return the currently selected file name
     QString selectedFile() const;
 
+    void loadPresets(const QString& presetsDir);
+
 public Q_SLOTS:
     void setStateMachine(KDSME::StateMachine* stateMachine);
     void setInputMode(InputMode mode);

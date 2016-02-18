@@ -15,4 +15,5 @@ target_link_libraries(${KDSME_APPBIN}
   Qt5::QuickWidgets
   kdstatemachineeditor_core
   kdstatemachineeditor_view
+  kdsme_testhelper
 )

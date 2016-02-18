@@ -24,6 +24,7 @@
 */
 
 #include <config-kdsme.h>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -34,6 +35,7 @@
 #include "state.h"
 #include "transition.h"
 #include "commandcontroller.h"
+#include "parsehelper.h"
 #include "statemachinescene.h"
 #include "widgets/statemachineview.h"
 #include "widgets/statemachinetoolbar.h"
@@ -54,30 +56,6 @@ namespace {
 enum PresetsModelDataRoles {
     AbsoluteFilePathRole = Qt::UserRole + 1
 };
-
-QByteArray readFile(const QString& fileName)
-{
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Could not open file:" << file.fileName();
-        return QByteArray();
-    }
-    return file.readAll();
-}
-
-QString presetsLocation()
-{
-    const QString presetsLocation = qgetenv("KDSME_PRESETS_LOCATION");
-    if (!presetsLocation.isEmpty()) {
-        return presetsLocation;
-    }
-    return QCoreApplication::applicationDirPath() + "/../data";
-}
-
-QString scxmlPresetsLocation()
-{
-    return presetsLocation() + "/scxml";
-}
 
 }
 
@@ -110,21 +88,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setupStateMachineView()
-{
-    m_stateMachineView = new StateMachineView;
-    m_stateMachineView->editController()->setEditModeEnabled(true);
-    setCentralWidget(m_stateMachineView);
-}
-
-void MainWindow::setupPresetsView()
+void MainWindow::loadPresets(const QString& presetsDir)
 {
     m_presetsModel->clear();
 
-    const QString presetsLocation = ::scxmlPresetsLocation();
-    QDir dir(presetsLocation);
+    QDir dir(presetsDir);
     if (!dir.exists()) {
-        qWarning() << "Non-existent presets location:" << presetsLocation;
+        qWarning() << "Non-existent presets location:" << presetsDir;
     }
 
     QStringList files = dir.entryList(QDir::Files);
@@ -138,6 +108,17 @@ void MainWindow::setupPresetsView()
     }
 
     m_presetsModel->setHeaderData(0, Qt::Horizontal, tr("Preset"));
+}
+
+void MainWindow::setupStateMachineView()
+{
+    m_stateMachineView = new StateMachineView;
+    m_stateMachineView->editController()->setEditModeEnabled(true);
+    setCentralWidget(m_stateMachineView);
+}
+
+void MainWindow::setupPresetsView()
+{
     ui->presetsTreeView->setModel(m_presetsModel);
     ui->presetsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     connect(ui->presetsTreeView, SIGNAL(clicked(QModelIndex)), SLOT(handlePresetActivated(QModelIndex)));
@@ -206,7 +187,7 @@ QString MainWindow::selectedFile() const
 void MainWindow::importFromScxmlFile(const QString& filePath)
 {
     if (!filePath.isEmpty()) {
-        ScxmlImporter parser(readFile(filePath));
+        ScxmlImporter parser(ParseHelper::readFile(filePath));
         StateMachine* stateMachine = parser.import();
         setStateMachine(stateMachine);
         if (stateMachine) {
@@ -223,11 +204,10 @@ void MainWindow::importFromScxmlFile(const QString& filePath)
 
 void MainWindow::handlePresetActivated(const QModelIndex& index)
 {
-    const QString fileName = index.data().toString();
-    if (fileName.isEmpty())
+    const QString filePath = index.data(AbsoluteFilePathRole).toString();
+    if (filePath.isEmpty())
         return;
 
-    const QString filePath = scxmlPresetsLocation() + '/' + fileName;
     importFromScxmlFile(filePath);
 }
 

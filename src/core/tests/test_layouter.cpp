@@ -93,7 +93,7 @@ void LayouterTest::testBasicState()
         State chart:
             (I) -> (S1) -> (S2) -> (Final)
     */
-    ScxmlImporter importer(ParseHelper::readFile("scxml/basicstate.scxml"));
+    ScxmlImporter importer(ParseHelper::readFile(TEST_DATA_DIR "/scxml/basicstate.scxml"));
     QScopedPointer<StateMachine> machine(importer.import());
 
     auto elements = machine->findChildren<Element*>();
@@ -111,7 +111,7 @@ void LayouterTest::testParallelState()
                 S1: (I) -> (S11) -> (S1Final)
                 S2: (I) -> (S21) -> (S2Final)
     */
-    ScxmlImporter importer(ParseHelper::readFile("scxml/parallelstate.scxml"));
+    ScxmlImporter importer(ParseHelper::readFile(TEST_DATA_DIR  "/scxml/parallelstate.scxml"));
     QScopedPointer<StateMachine> machine(importer.import());
     QVERIFY(machine);
 

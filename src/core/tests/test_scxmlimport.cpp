@@ -22,6 +22,8 @@
   clear to you.
 */
 
+#include "config-test.h"
+
 #include "scxmlimporter.h"
 #include "parsehelper.h"
 #include "state.h"
@@ -60,7 +62,7 @@ StateMachine* parse(const QByteArray& data)
 
 StateMachine* parseFile(const QString& fileName)
 {
-    const QByteArray data = ParseHelper::readFile(fileName);
+    const QByteArray data = ParseHelper::readFile(QStringLiteral(TEST_DATA_DIR) + '/' + fileName);
     return parse(data);
 }
 
