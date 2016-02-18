@@ -90,7 +90,7 @@ add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable wit
 if(WITH_INTERNAL_GRAPHVIZ)
     ExternalProject_Add(GraphvizExternalProject
         GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "1c932bc91582bd5d34c528ba3b40ac956312a24d"
+        GIT_TAG "ed87878d212ec879e77f632726392a14b0844b4d"
         CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -116,7 +116,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
     set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
         IMPORTED_LOCATION "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}"
-        INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS" # Fix export macro madness in Graphviz
+        INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
         INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
         INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
     )
