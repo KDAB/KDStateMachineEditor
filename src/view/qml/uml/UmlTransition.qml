@@ -124,7 +124,8 @@ TransitionItem {
             height: labelRect.height
             color: Theme.currentTheme.transitionLabelFontColor
             font.italic: true
-            visible: element.sourceState.type != Element.PseudoStateType
+            visible: scene.layoutProperties.showTransitionLabels
+                && element.sourceState.type != Element.PseudoStateType
                 && labelRect.height > 0 && element.label != ""
                 && scene.zoom >= 1.0
 

@@ -132,6 +132,18 @@ ToolBar {
 
         ToolBarSeparator {}
 
+        ToolButton {
+            action: Action {
+                text: qsTr("Show Transition Labels")
+                checkable: true
+                checked: stateMachineScene.layoutProperties.showTransitionLabels
+                onTriggered: {
+                    stateMachineScene.layoutProperties.showTransitionLabels = checked
+                    stateMachineScene.layout()
+                }
+            }
+        }
+
         Label {
             text: "Max. Depth:"
         }

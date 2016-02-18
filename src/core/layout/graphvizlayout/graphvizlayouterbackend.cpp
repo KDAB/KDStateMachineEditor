@@ -34,6 +34,7 @@
 #include "transition.h"
 #include "elementmodel.h"
 #include "elementwalker.h"
+#include "layoutproperties.h"
 #include "layoututils.h"
 #include "util/objecthelper.h"
 
@@ -159,6 +160,7 @@ struct GraphvizLayouterBackend::Private
     GVC_t* m_context;
 
     LayoutMode m_layoutMode;
+    const LayoutProperties* m_properties;
 
     /// Mapping from state machine items to Graphviz layout items
     QPointer<State> m_root;
@@ -233,10 +235,9 @@ void GraphvizLayouterBackend::Private::buildState(State* state, Agraph_t* graph)
             _agset(newNode, "width", QString::number(state->width() / DISPLAY_DPI));
             _agset(newNode, "height", QString::number(state->height() / DISPLAY_DPI));
             _agset(newNode, "fixedsize", "true");
-        } else {
-            if (!state->label().isEmpty()) {
-                _agset(newNode, "label", state->label());
-            }
+        }
+        if (!state->label().isEmpty()) {
+            _agset(newNode, "label", state->label());
         }
 
         foreach (const auto& kv, attributesForState(qobject_cast<State*>(state))) {
@@ -287,7 +288,7 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
                              sourceDummyNode ? sourceDummyNode : source,
                              targetDummyNode ? targetDummyNode : target,
                              addressToString(transition), true);
-    if (!transition->label().isEmpty()) {
+    if (!transition->label().isEmpty() && m_properties->showTransitionLabels()) {
         _agset(edge, "label", transition->label());
     }
 
@@ -449,6 +450,7 @@ void GraphvizLayouterBackend::Private::closeLayout()
     m_graph = nullptr;
 
     m_root = nullptr;
+    m_properties = nullptr;
 
     agreseterrors();
 }
@@ -604,9 +606,10 @@ void GraphvizLayouterBackend::saveToFile(const QString& filePath, const QString&
     }
 }
 
-void GraphvizLayouterBackend::openLayout(State* state)
+void GraphvizLayouterBackend::openLayout(State* state, const LayoutProperties* properties)
 {
     d->m_root = state;
+    d->m_properties = properties;
 
     d->openContext(QString("GraphvizLayouterBackend@%1").arg(addressToString(this)));
 }

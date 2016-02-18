@@ -34,12 +34,14 @@ struct LayoutProperties::Private
     QFont regionLabelFont;
     qreal regionLabelMargins;
     QSizeF regionLabelButtonBoxSize;
+    bool showTransitionLabels;
 };
 
 LayoutProperties::Private::Private()
     : regionMargins(10.)
     , regionLabelMargins(5.)
     , regionLabelButtonBoxSize(18., 18.)
+    , showTransitionLabels(true)
 {
     regionLabelFont.setBold(true);
 }
@@ -67,6 +69,7 @@ void LayoutProperties::setRegionMargins(qreal margins)
 
     d->regionMargins = margins;
     emit regionMarginsChanged(margins);
+    emit changed();
 }
 
 QFont LayoutProperties::regionLabelFont() const
@@ -82,6 +85,7 @@ void LayoutProperties::setRegionLabelFont(const QFont& font)
 
     d->regionLabelFont = font;
     emit regionLabelFontChanged(font);
+    emit changed();
 }
 
 qreal LayoutProperties::regionLabelMargins() const
@@ -97,6 +101,7 @@ void LayoutProperties::setRegionLabelMargins(qreal margins)
 
     d->regionLabelMargins = margins;
     emit regionLabelMarginsChanged(margins);
+    emit changed();
 }
 
 QSizeF LayoutProperties::regionLabelButtonBoxSize() const
@@ -112,4 +117,21 @@ void LayoutProperties::setRegionLabelButtonBoxSize(const QSizeF& size)
 
     d->regionLabelButtonBoxSize = size;
     emit regionLabelButtonBoxSizeChanged(size);
+    emit changed();
+}
+
+bool LayoutProperties::showTransitionLabels() const
+{
+    return d->showTransitionLabels;
+}
+
+void LayoutProperties::setShowTransitionLabels(bool show)
+{
+    if (d->showTransitionLabels == show) {
+        return;
+    }
+
+    d->showTransitionLabels = show;
+    emit showTransitionLabelsChanged(show);
+    emit changed();
 }

@@ -49,10 +49,7 @@ GraphvizLayerLayouter::~GraphvizLayerLayouter()
 
 QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* properties)
 {
-    Q_UNUSED(properties);
-    Q_ASSERT(state);
-
-    m_backend->openLayout(state);
+    m_backend->openLayout(state, properties);
 
     const QList<State*> childStates = state->childStates();
 

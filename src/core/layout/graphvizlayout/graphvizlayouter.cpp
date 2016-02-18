@@ -47,8 +47,6 @@ GraphvizLayouter::~GraphvizLayouter()
 
 QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties)
 {
-    Q_UNUSED(properties);
-
     if (!state) {
         qWarning() << "Null state passed to layout function";
         return QRectF();
@@ -57,7 +55,7 @@ QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties
     qCDebug(KDSME_CORE) << state << properties;
 
     // open context
-    m_backend->openLayout(state);
+    m_backend->openLayout(state, properties);
 
     // Step 1: Create Graphviz structures out of the State/Transition tree
     // Step 1.1: build nodes

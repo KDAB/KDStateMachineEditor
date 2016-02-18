@@ -29,6 +29,7 @@
 class QRectF;
 
 namespace KDSME {
+class LayoutProperties;
 class Transition;
 class State;
 class StateMachineScene;
@@ -53,7 +54,7 @@ public:
     LayoutMode layoutMode() const;
     void setLayoutMode(LayoutMode mode);
 
-    void openLayout(KDSME::State* state);
+    void openLayout(KDSME::State* state, const KDSME::LayoutProperties* properties);
     void closeLayout();
 
     /**
