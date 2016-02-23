@@ -22,7 +22,7 @@
   clear to you.
 */
 
-#include "config-test.h"
+#include <config-test.h>
 
 #include "parsehelper.h"
 #include "mainwindow.h"

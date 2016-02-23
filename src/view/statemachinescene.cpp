@@ -22,10 +22,11 @@
   clear to you.
 */
 
+#include <config-kdsme.h>
+
 #include "statemachinescene.h"
 #include "statemachinescene_p.h"
 
-#include "config-kdsme.h"
 #include "debug.h"
 #include "state.h"
 #include "transition.h"
