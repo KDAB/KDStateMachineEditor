@@ -72,7 +72,7 @@ Item {
 
             text: control.element.label
             renderType: Text.NativeRendering
-            color: (activeness > 0 ? Theme.currentTheme.highlightFontColor : Theme.currentTheme.stateLabelFontColor)
+            color: (activeness > 0.5 ? Theme.currentTheme.highlightFontColor : Theme.currentTheme.stateLabelFontColor)
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
         }
