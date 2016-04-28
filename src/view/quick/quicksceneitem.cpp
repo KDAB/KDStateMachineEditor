@@ -24,6 +24,7 @@
 
 #include "quicksceneitem_p.h"
 
+#include "abstractscene_p.h"
 #include "debug.h"
 #include "objecttreemodel.h"
 #include "state.h"
@@ -62,6 +63,8 @@ QuickSceneItem::QuickSceneItem(QQuickItem* parent)
     , m_element(nullptr)
     , m_activeness(0.)
 {
+    setAcceptHoverEvents(true);
+    setAcceptedMouseButtons(Qt::AllButtons);
 }
 
 QuickSceneItem::~QuickSceneItem()
@@ -103,6 +106,53 @@ void QuickSceneItem::setScene(StateMachineScene* scene)
 Element* QuickSceneItem::element() const
 {
     return m_element;
+}
+
+QPainterPath QuickSceneItem::shape() const
+{
+    return m_shape;
+}
+
+void QuickSceneItem::setShape(const QPainterPath& shape)
+{
+    if (m_shape == shape) {
+        return;
+    }
+
+    m_shape = shape;
+    emit shapeChanged(m_shape);
+}
+
+void QuickSceneItem::mousePressEvent(QMouseEvent*)
+{
+}
+
+void QuickSceneItem::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::RightButton) {
+        // note: ideally we'd send the context menu event when we're in the mousePressEvent handler
+        // but this leads to unexpected behavior in the QQuickWindow implementation.
+        // when showing a context menu (i.e. QMenu::exec) from within mousePressEvent,
+        // the QQuickWindow will never get the mouse release event.
+        // Internally QQuickWindow then assumes the currently clicked item is
+        // still actively handling further mouse input, thus are unable to
+        // select other items in the scene until we reset the QQuickWindow's state
+        AbstractSceneContextMenuEvent contextMenuEvent(
+            QContextMenuEvent::Mouse,
+            event->pos(), event->globalPos(), event->modifiers(),
+            element()
+        );
+        QCoreApplication::sendEvent(scene(), &contextMenuEvent);
+    }
+}
+
+bool QuickSceneItem::contains(const QPointF& point) const
+{
+    if (m_shape.isEmpty()) {
+        return QQuickItem::contains(point);
+    }
+
+    return m_shape.contains(point);
 }
 
 void QuickSceneItem::setElement(Element* element)

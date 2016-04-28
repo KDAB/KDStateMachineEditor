@@ -21,6 +21,7 @@
 */
 
 #include "abstractscene.h"
+#include "abstractscene_p.h"
 
 #include "debug.h"
 #include "instantiatorinterface_p.h"
@@ -29,28 +30,60 @@
 
 using namespace KDSME;
 
-struct AbstractScene::Private
+class KDSME::AbstractSceneContextMenuEventPrivate
 {
-    Private();
-
-    QAbstractItemModel* m_model;
-    QPointer<QItemSelectionModel> m_selectionModel;
-    QQuickItem* m_instantiator;
-    AbstractScene::EditTriggers m_editTriggers;
-    AbstractScene::ViewState m_state;
+public:
+    Element* m_elementUnderCursor = nullptr;
 };
 
-AbstractScene::Private::Private()
-    : m_model(nullptr)
-    , m_instantiator(nullptr)
-    , m_editTriggers(NoEditTriggers)
-    , m_state(NoState)
+AbstractSceneContextMenuEvent::AbstractSceneContextMenuEvent(Reason reason, const QPoint & pos, const QPoint& globalPos, Qt::KeyboardModifiers modifiers, Element* elementUnderCursor)
+    : QContextMenuEvent(reason, pos, globalPos, modifiers)
+    , d(new AbstractSceneContextMenuEventPrivate)
 {
+    d->m_elementUnderCursor = elementUnderCursor;
+}
+
+AbstractSceneContextMenuEvent::~AbstractSceneContextMenuEvent()
+{
+}
+
+Element* AbstractSceneContextMenuEvent::elementUnderCursor() const
+{
+    return d->m_elementUnderCursor;
+}
+
+AbstractScenePrivate::AbstractScenePrivate(AbstractScene* qq)
+    : q(qq)
+    , m_model(nullptr)
+    , m_instantiator(nullptr)
+    , m_editTriggers(AbstractScene::NoEditTriggers)
+    , m_state(AbstractScene::NoState)
+{
+}
+
+bool AbstractScene::event(QEvent* event)
+{
+    if (auto contextMenuEvent = dynamic_cast<AbstractSceneContextMenuEvent*>(event)) {
+        switch (d->m_contextMenuPolicy) {
+        case Qt::CustomContextMenu:
+            event->accept();
+            emit customContextMenuEvent(contextMenuEvent);
+            break;
+        default:
+            event->ignore();
+            break;
+        }
+    }
+
+    if (event->isAccepted())
+        return true;
+
+    return QQuickItem::event(event);
 }
 
 AbstractScene::AbstractScene(QQuickItem* parent)
     : QQuickItem(parent)
-    , d(new Private)
+    , d(new AbstractScenePrivate(this))
 {
 }
 
@@ -163,6 +196,21 @@ AbstractScene::EditTriggers AbstractScene::editTriggers() const
 void AbstractScene::setEditTriggers(AbstractScene::EditTriggers triggers)
 {
     d->m_editTriggers = triggers;
+}
+
+Qt::ContextMenuPolicy AbstractScene::contextMenuPolicy() const
+{
+    return d->m_contextMenuPolicy;
+}
+
+void AbstractScene::setContextMenuPolicy(Qt::ContextMenuPolicy contextMenuPolicy)
+{
+    if (d->m_contextMenuPolicy == contextMenuPolicy) {
+        return;
+    }
+
+    d->m_contextMenuPolicy = contextMenuPolicy;
+    return contextMenuPolicyChanged(d->m_contextMenuPolicy);
 }
 
 QObject* AbstractScene::itemForIndex(const QModelIndex& index) const

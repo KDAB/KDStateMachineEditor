@@ -23,6 +23,7 @@
 #ifndef KDSME_QUICK_QUICKSCENEITEM_P_H
 #define KDSME_QUICK_QUICKSCENEITEM_P_H
 
+#include <QPainterPath>
 #include <QQuickItem>
 
 namespace KDSME {
@@ -36,6 +37,7 @@ class QuickSceneItem : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged FINAL)
     Q_PROPERTY(KDSME::Element* element READ element WRITE setElement NOTIFY elementChanged FINAL)
+    Q_PROPERTY(QPainterPath shape READ shape WRITE setShape NOTIFY shapeChanged FINAL)
     Q_PROPERTY(qreal activeness READ activeness WRITE setActiveness NOTIFY activenessChanged FINAL)
 
 public:
@@ -46,18 +48,27 @@ public:
 
     KDSME::Element* element() const;
 
+    QPainterPath shape() const;
+    void setShape(const QPainterPath& path);
+
     qreal activeness() const;
     void setActiveness(qreal activeness);
 
 Q_SIGNALS:
     void sceneChanged(KDSME::StateMachineScene* scene);
     void elementChanged(KDSME::Element* element);
+    void shapeChanged(const QPainterPath& shape);
     void activenessChanged(qreal activeness);
     void clicked();
 
 protected:
     virtual void setScene(KDSME::StateMachineScene* scene);
     virtual void setElement(KDSME::Element* element);
+
+    bool contains(const QPointF& point) const override;
+
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
     QQuickItem* itemForElement(KDSME::Element* element) const;
 
@@ -66,6 +77,7 @@ protected:
 private:
     KDSME::StateMachineScene* m_scene;
     KDSME::Element* m_element;
+    QPainterPath m_shape;
     qreal m_activeness;
 };
 

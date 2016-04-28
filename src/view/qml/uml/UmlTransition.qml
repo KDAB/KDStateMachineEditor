@@ -33,11 +33,11 @@ TransitionItem {
     id: root
 
     property rect labelRect: element.labelBoundingRect
-    property var path: element.shape
 
     width: container.width
     height: container.height
 
+    shape: element.shape
     visible: !painterPathItem.isEmpty
 
     opacity: (element.sourceState ? element.sourceState.visible : 1) &&
@@ -45,7 +45,7 @@ TransitionItem {
 
     PainterPath {
         id: painterPathItem
-        path: root.path
+        path: root.shape
     }
 
     MaskedMouseArea {
@@ -54,7 +54,7 @@ TransitionItem {
         anchors.fill: parent
 
         mask: PainterPathMask {
-            path: root.path
+            path: root.shape
         }
         tolerance: 5
 
@@ -75,7 +75,7 @@ TransitionItem {
         visible: element.selected
 
         geometry: PainterPathGeometry {
-            path: outlinePathStroker.createStroke(root.path)
+            path: outlinePathStroker.createStroke(root.shape)
         }
 
         color: Theme.alphaTint(Theme.currentTheme.transitionEdgeColor, 0.5)
@@ -91,7 +91,7 @@ TransitionItem {
             id: edge
 
             geometry: PainterPathGeometry {
-                path: root.path
+                path: root.shape
                 lineWidth: (activeness > 0 ? 2 : 1)
             }
 
