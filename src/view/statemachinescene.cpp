@@ -172,7 +172,6 @@ void StateMachineScene::setRootState(State* rootState)
 
     // reset properties
     setZoom(1.0);
-    setMaximumDepth(3);
 
     Q_ASSERT(stateModel());
     stateModel()->setState(rootState);
