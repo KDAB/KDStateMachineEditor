@@ -95,7 +95,9 @@ target_include_directories(kdstatemachineeditor_view
     # FIXME: It is recommended to use a relative path here.
     # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
-  PRIVATE ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+)
+target_include_directories(kdstatemachineeditor_view
+  SYSTEM PRIVATE ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
 )
 
 install(TARGETS kdstatemachineeditor_view EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -95,7 +95,9 @@ target_include_directories(kdstatemachineeditor_core
     # FIXME: It is recommended to use a relative path here.
     # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
-  PRIVATE
+)
+target_include_directories(kdstatemachineeditor_core
+  SYSTEM PRIVATE
     "${Qt5Qml_PRIVATE_INCLUDE_DIRS}" # qqmlcustomparser_p.h
     ${LIB_EXTRA_INCLUDES}
 )
