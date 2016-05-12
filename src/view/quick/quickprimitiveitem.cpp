@@ -36,7 +36,7 @@ QuickGeometryItem::VertexDataType typeOfGeometry(const QSGGeometry* geometry)
 {
     switch (geometry->sizeOfVertex()) {
     default:
-        Q_ASSERT(!"Unknown vertex data type from QSGGeometry");
+        Q_ASSERT_X(false, "VertexDataType", "Unknown vertex data type from QSGGeometry");
     case 2 * sizeof(float):
         return QuickGeometryItem::Point2DType;
     case 4 * sizeof(float):

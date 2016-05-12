@@ -172,6 +172,7 @@ GraphvizLayouterBackend::Private::Private()
     : m_graph(nullptr)
     , m_context(nullptr)
     , m_layoutMode(RecursiveMode)
+    , m_properties(0)
 {
     // hide non-critical warnings, such as
     // Warning: node '0x15e1800', graph 'GraphvizLayouterBackend@0xa90330' size too small for label
