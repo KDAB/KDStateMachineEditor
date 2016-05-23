@@ -30,7 +30,7 @@ namespace KDSME {
 class AbstractScenePrivate
 {
 public:
-    AbstractScenePrivate(AbstractScene* q);
+    explicit AbstractScenePrivate(AbstractScene* q);
 
     static AbstractScenePrivate* get(AbstractScene* q) { return q->d.data(); }
 
