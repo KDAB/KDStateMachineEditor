@@ -90,7 +90,7 @@ add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable wit
 if(WITH_INTERNAL_GRAPHVIZ)
     ExternalProject_Add(GraphvizExternalProject
         GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "b08e963e3db325f7fd300eb830d2138c7e2da595"
+        GIT_TAG "e8cb0e4ce1c34ec030a99da256de2040add4836c"
         CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
