@@ -28,8 +28,10 @@
 #include <QHash>
 #include <QPointer>
 
+QT_BEGIN_NAMESPACE
 class QJsonObject;
 class QVariant;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

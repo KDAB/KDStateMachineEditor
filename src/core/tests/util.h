@@ -25,7 +25,11 @@
 #ifndef TESTS_UTIL_H
 #define TESTS_UTIL_H
 
+#include <qglobal.h>
+
+QT_BEGIN_NAMESPACE
 class QObject;
+QT_END_NAMESPACE
 
 namespace TestUtil {
 

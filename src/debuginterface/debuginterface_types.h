@@ -27,8 +27,10 @@
 #include <QList>
 #include <QMetaType>
 
+QT_BEGIN_NAMESPACE
 class QAbstractTransition;
 class QAbstractState;
+QT_END_NAMESPACE
 
 namespace KDSME {
 namespace DebugInterface {

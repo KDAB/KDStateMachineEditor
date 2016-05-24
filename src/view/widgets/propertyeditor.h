@@ -30,8 +30,10 @@
 
 #include <QStackedWidget>
 
+QT_BEGIN_NAMESPACE
 class QItemSelectionModel;
 class QModelIndex;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

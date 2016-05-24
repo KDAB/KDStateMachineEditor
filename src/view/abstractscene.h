@@ -28,10 +28,12 @@
 #include <QQuickItem>
 #include <QPointer>
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 class QItemSelection;
 class QItemSelectionModel;
 class QModelIndex;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

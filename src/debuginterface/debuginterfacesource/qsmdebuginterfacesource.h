@@ -27,7 +27,9 @@
 
 #include <QScopedPointer>
 
+QT_BEGIN_NAMESPACE
 class QStateMachine;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

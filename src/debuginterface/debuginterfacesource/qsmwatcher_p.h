@@ -26,11 +26,13 @@
 #include <QObject>
 #include <QVector>
 
+QT_BEGIN_NAMESPACE
 class QAbstractState;
 class QAbstractState;
 class QAbstractTransition;
 class QState;
 class QStateMachine;
+QT_END_NAMESPACE
 
 class QSMWatcher : public QObject
 {

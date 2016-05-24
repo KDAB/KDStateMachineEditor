@@ -31,7 +31,9 @@
 #include <QObject>
 #include <QMetaType>
 
+QT_BEGIN_NAMESPACE
 class QPainterPath;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

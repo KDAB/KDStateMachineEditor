@@ -27,7 +27,11 @@
 
 #include "kdsme_core_export.h"
 
+#include <qglobal.h>
+
+QT_BEGIN_NAMESPACE
 class QString;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

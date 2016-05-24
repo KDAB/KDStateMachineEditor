@@ -27,7 +27,9 @@
 #include <QtQuick/QSGGeometry>
 #include <QtQuick/QQuickItem>
 
+QT_BEGIN_NAMESPACE
 class QRectF;
+QT_END_NAMESPACE
 
 namespace GeometryUtils {
 

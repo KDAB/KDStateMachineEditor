@@ -29,8 +29,10 @@
 
 #include "abstractcontroller.h"
 
+QT_BEGIN_NAMESPACE
 class QUndoCommand;
 class QUndoStack;
+QT_END_NAMESPACE
 
 namespace KDSME {
 class Command;

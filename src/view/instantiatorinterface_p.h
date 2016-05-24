@@ -23,8 +23,12 @@
 #ifndef KDSME_VIEW_INSTANTIATORINTERFACE_P_H
 #define KDSME_VIEW_INSTANTIATORINTERFACE_P_H
 
+#include <qglobal.h>
+
+QT_BEGIN_NAMESPACE
 class QModelIndex;
 class QObject;
+QT_END_NAMESPACE
 
 class InstantiatorInterface
 {

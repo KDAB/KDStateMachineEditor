@@ -44,10 +44,12 @@
 #include <QPlainTextEdit>
 #include <QObject>
 
+QT_BEGIN_NAMESPACE
 class QPaintEvent;
 class QResizeEvent;
 class QSize;
 class QWidget;
+QT_END_NAMESPACE
 
 class LineNumberArea;
 

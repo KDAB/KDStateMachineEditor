@@ -26,7 +26,9 @@
 #include <QColor>
 #include <QObject>
 
+QT_BEGIN_NAMESPACE
 class QPen;
+QT_END_NAMESPACE
 
 /**
  * QObject-wrapper for QPen

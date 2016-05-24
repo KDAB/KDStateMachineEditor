@@ -28,8 +28,10 @@
 #include <QPersistentModelIndex>
 #include <QQuickItem>
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 class QQmlContext;
+QT_END_NAMESPACE
 
 class QuickRecursiveInstantiator : public QQuickItem, public InstantiatorInterface
 {

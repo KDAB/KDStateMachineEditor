@@ -30,7 +30,9 @@
 #include <QObject>
 #include <QList>
 
+QT_BEGIN_NAMESPACE
 class QRectF;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

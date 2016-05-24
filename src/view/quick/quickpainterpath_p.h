@@ -29,7 +29,9 @@
 #include <QObject>
 #include <QPainterPath>
 
+QT_BEGIN_NAMESPACE
 class QPoint;
+QT_END_NAMESPACE
 
 class QuickPainterPathStroker : public QObject
 {

@@ -29,7 +29,9 @@
 
 #include <QToolBar>
 
+QT_BEGIN_NAMESPACE
 class QAction;
+QT_END_NAMESPACE
 
 namespace KDSME {
 

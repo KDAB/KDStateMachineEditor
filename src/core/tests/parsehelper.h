@@ -25,12 +25,16 @@
 #ifndef PARSEHELPER
 #define PARSEHELPER
 
+#include <qglobal.h>
+
 namespace KDSME {
 class StateMachine;
 }
 
+QT_BEGIN_NAMESPACE
 class QByteArray;
 class QString;
+QT_END_NAMESPACE
 
 #include <QtCore/qglobal.h>
 

@@ -27,8 +27,10 @@
 
 #include "abstractexporter.h"
 
+QT_BEGIN_NAMESPACE
 class QByteArray;
 class QIODevice;
+QT_END_NAMESPACE
 
 namespace KDSME {
 
