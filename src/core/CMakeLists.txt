@@ -131,7 +131,7 @@ ecm_generate_pri_file(BASE_NAME KDSMECore
                       LIB_NAME kdstatemachineeditor_core
                       DEPS "core gui"
                       FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include ${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/${INCLUDE_INSTALL_DIR}/core"
+                      INCLUDE_INSTALL_DIRS include/ ${INCLUDE_INSTALL_DIR} ${INCLUDE_INSTALL_DIR}/core
 )
 
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
