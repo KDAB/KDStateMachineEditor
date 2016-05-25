@@ -95,6 +95,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install
+        BUILD_COMMAND "" # skip, make install is enough
         INSTALL_COMMAND
             ${CMAKE_COMMAND} --build . --target install
     )
