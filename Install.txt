@@ -45,7 +45,8 @@ visualization software (http://www.graphviz.org) for the state chart automatic
 layout feature.
 
 When you run cmake it will inform you about these missing dependencies.
-Note that at this time a 64-bit Graphviz library is not available for Windows.
+Note that at this time a 64-bit Graphviz library is not available for Windows
+so a 64-built build with Graphiz is not currently possible on Windows.
 
 You can also force CMake to ignore any or all of the optional dependencies
 by passing the option -DCMAKE_DISABLE_FIND_PACKAGE_<PACKAGE>=True.
