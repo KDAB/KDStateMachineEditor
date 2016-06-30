@@ -39,9 +39,11 @@ configuration:
   - Debug
   - Release
 
-build_script:
+install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" %PLATFORM%
-  - set PATH=C:\Qt\5.6\msvc2013\bin;%PATH%
+  - set QTDIR=C:\Qt\5.6\msvc2013
+  - set PATH=%QTDIR%\bin;%PATH%
+build_script:
   - mkdir build
   - cd build
   - cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CONFIGURATION% ..
