@@ -41,7 +41,7 @@ configuration:
 
 build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" %PLATFORM%
-  - set PATH C:\Qt\5.6\msvc2013\bin;%PATH%
+  - set PATH=C:\Qt\5.6\msvc2013\bin;%PATH%
   - mkdir build
   - cd build
   - cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CONFIGURATION% ..
