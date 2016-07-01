@@ -1,5 +1,13 @@
 Version 1.1:
 -----------
+ * View: Added button to show/hide transition labels
+ * View: Now using native text rendering
+ * View: Status bar got removed
+ * API: Added API for context menu handling (cf. StateMachineView class)
+ * Build system: Added toolchain files for cross-compiling (QNX, Android, etc.)
+ * Build system: Enabled compilation with namespaced Qt
+ * Build system: Allow to build with an internal Graphviz build (-DWITH_INTERNAL_GRAPHVIZ=ON)
+   Works on all major platforms (tested on Linux, OS X, Windows)
 
 Version 1.0:
 -----------
