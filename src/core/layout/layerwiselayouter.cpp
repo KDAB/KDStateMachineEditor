@@ -26,8 +26,10 @@
 
 #include "layerwiselayouter.h"
 
+#if HAVE_GRAPHVIZ
 #include "graphvizlayout/graphvizlayerlayouter.h"
 #include "graphvizlayout/graphvizlayouter.h"
+#endif
 #include "layoutproperties.h"
 #include "layoututils.h"
 #include "elementwalker.h"
