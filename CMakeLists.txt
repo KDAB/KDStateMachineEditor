@@ -101,35 +101,40 @@ option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
 if(WITH_INTERNAL_GRAPHVIZ)
-    ExternalProject_Add(GraphvizExternalProject
-        GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "e8cb0e4ce1c34ec030a99da256de2040add4836c"
-        CMAKE_ARGS
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-        INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install
-        BUILD_COMMAND "" # skip, make install is enough
-        INSTALL_COMMAND
-            ${CMAKE_COMMAND} --build . --target install
-    )
-    ExternalProject_Get_Property(GraphvizExternalProject source_dir)
-    ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
-    ExternalProject_Get_Property(GraphvizExternalProject install_dir)
-
-    # work-around: https://cmake.org/Bug/view.php?id=15052
-    set(include_dir "${install_dir}/include")
-    file(MAKE_DIRECTORY ${include_dir})
-
     # CMake is really awful here...
+    set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
+    set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
     set(link_libraries "dotgen;common;xdot;gvc;cgraph;cdt;pathplan;ortho;pack;label;ingraphs")
     set(link_libraries_absolute)
     foreach(link_library ${link_libraries})
         list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
     endforeach()
+    ExternalProject_Add(GraphvizExternalProject
+        GIT_REPOSITORY "https://github.com/krf/graphviz.git"
+        GIT_TAG "e8cb0e4ce1c34ec030a99da256de2040add4836c"
+        CMAKE_ARGS
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_INSTALL_PREFIX=${install_dir}
+        BUILD_COMMAND "" # skip, make install is enough
+        INSTALL_DIR ${install_dir}
+        INSTALL_COMMAND
+            ${CMAKE_COMMAND} --build . --target install
+
+        # Note: BUILD_BYPRODUCTS only available since CMake 3.2
+        # Needed to make ExternalProject_Add in combination with the Ninja generator work
+        # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
+        BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
+    )
+    ExternalProject_Get_Property(GraphvizExternalProject source_dir)
+    ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
+
+    # work-around: https://cmake.org/Bug/view.php?id=15052
+    set(include_dir "${install_dir}/include")
+    file(MAKE_DIRECTORY ${include_dir})
 
     add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
     set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
-        IMPORTED_LOCATION "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
         INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
         INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
         INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
