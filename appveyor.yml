@@ -24,6 +24,7 @@ image:
 # scripts that are called at very beginning, before repo cloning
 init:
   - git config --global core.autocrlf input
+  - choco install winflexbison
 
 #---------------------------------#
 #       build configuration       #
