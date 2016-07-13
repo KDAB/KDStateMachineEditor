@@ -103,6 +103,9 @@ target_include_directories(kdstatemachineeditor_core
 )
 
 install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
+if(MSVC)
+    install(FILES "${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR}/kdstatemachineeditor_core.pdb" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+endif()
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_core_export.h
 
