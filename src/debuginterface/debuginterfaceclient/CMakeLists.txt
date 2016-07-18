@@ -37,7 +37,7 @@ ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 install(TARGETS kdstatemachineeditor_debuginterfaceclient EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
-    install(FILES "${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR}/kdstatemachineeditor_debuginterfaceclient.pdb" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+    install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
 endif()
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfaceclient_export.h
