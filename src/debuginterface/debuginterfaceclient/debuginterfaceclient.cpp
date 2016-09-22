@@ -77,7 +77,7 @@ public Q_SLOTS:
     void repopulateView();
     void clearGraph();
 
-    void validChanged();
+    void stateChanged(QRemoteObjectReplica::State state);
 
 public:
     DebugInterfaceClient* q;
@@ -125,8 +125,8 @@ void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterfa
                    d.data(), &Private::clearGraph);
         disconnect(d->m_debugInterface, &DebugInterfaceReplica::graphRepopulated,
                    d.data(), &Private::repopulateView);
-        disconnect(d->m_debugInterface, &DebugInterfaceReplica::isReplicaValidChanged,
-                   d.data(), &Private::validChanged);
+        disconnect(d->m_debugInterface, &DebugInterfaceReplica::stateChanged,
+                   d.data(), &Private::stateChanged);
 
         d->clearGraph();
     }
@@ -150,8 +150,8 @@ void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterfa
                 d.data(), &Private::clearGraph);
         connect(d->m_debugInterface, &DebugInterfaceReplica::graphRepopulated,
                 d.data(), &Private::repopulateView);
-        connect(d->m_debugInterface, &DebugInterfaceReplica::isReplicaValidChanged,
-                d.data(), &Private::validChanged);
+        connect(d->m_debugInterface, &DebugInterfaceReplica::stateChanged,
+                d.data(), &Private::stateChanged);
 
         d->m_debugInterface->repopulateGraph();
     }
@@ -261,9 +261,9 @@ void DebugInterfaceClient::Private::clearGraph()
     emit q->clearGraph();
 }
 
-void DebugInterfaceClient::Private::validChanged()
+void DebugInterfaceClient::Private::stateChanged(QRemoteObjectReplica::State state)
 {
-    if (m_debugInterface->isReplicaValid()) {
+    if (state == QRemoteObjectReplica::Valid) {
         m_debugInterface->repopulateGraph();
     } else {
         clearGraph();
