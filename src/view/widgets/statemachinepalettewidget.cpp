@@ -126,7 +126,7 @@ QMimeData* PaletteModel::mimeData(const QModelIndexList& indexes) const
 
     QMimeData* mimeData = new QMimeData;
 
-    mimeData->setUrls(QList<QUrl>() << QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, typeString));
+    mimeData->setUrls(QList<QUrl>() << QUrl(QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, typeString)));
 
     // Following setData calls are used in QML DropArea.keys to accept/reject a drag and drop
     // depending on the data given. We are using this to allow for example "TransitionType"
