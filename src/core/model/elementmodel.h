@@ -34,12 +34,6 @@
 #include <QPointer>
 #include <QSortFilterProxyModel>
 
-QT_BEGIN_NAMESPACE
-class QAbstractState;
-class QState;
-class QStateMachine;
-QT_END_NAMESPACE
-
 namespace KDSME {
 
 class StateModel;

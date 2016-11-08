@@ -36,7 +36,6 @@ class StateMachineScene;
 }
 
 class QStandardItemModel;
-class QStateMachine;
 class QTimer;
 class QQuickView;
 

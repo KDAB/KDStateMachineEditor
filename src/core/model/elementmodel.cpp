@@ -32,7 +32,6 @@
 #include <QAbstractTransition>
 #include "debug.h"
 #include <QVariant>
-#include <QStateMachine>
 
 using namespace KDSME;
 
