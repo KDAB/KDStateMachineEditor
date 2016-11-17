@@ -39,6 +39,15 @@ using namespace std;
 
 namespace {
 
+StateId makeStateId(QAbstractState *state)
+{
+    return StateId{reinterpret_cast<quint64>(state)};
+}
+TransitionId makeTransitionId(QAbstractTransition *transition)
+{
+    return TransitionId{reinterpret_cast<quint64>(transition)};
+}
+
 QString labelForTransition(QAbstractTransition *transition)
 {
     const QString objectName = transition->objectName();
@@ -190,7 +199,7 @@ void QsmDebugInterfaceSource::Private::setQStateMachine(QStateMachine* machine)
 
 void QsmDebugInterfaceSource::Private::handleTransitionTriggered(QAbstractTransition *transition)
 {
-    emit transitionTriggered(TransitionId(transition), ObjectHelper::displayString(transition));
+    emit transitionTriggered(makeTransitionId(transition), ObjectHelper::displayString(transition));
 }
 
 void QsmDebugInterfaceSource::Private::stateEntered(QAbstractState *state)
@@ -220,7 +229,7 @@ void QsmDebugInterfaceSource::Private::handleStateConfigurationChanged()
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
     foreach (QAbstractState* state, newConfig) {
-        config << StateId(state);
+        config << makeStateId(state);
     }
 
     emit stateConfigurationChanged(config);
@@ -257,8 +266,8 @@ void QsmDebugInterfaceSource::Private::addState(QAbstractState *state)
         type = StateMachineState;
     }
 
-    qDebug() << StateId(state) << StateId(parentState) << type;
-    emit stateAdded(StateId(state), StateId(parentState),
+    qDebug() << makeStateId(state) << makeStateId(parentState) << type;
+    emit stateAdded(makeStateId(state), makeStateId(parentState),
                     hasChildren, label, type, connectToInitial);
 
       // add outgoing transitions
@@ -280,8 +289,8 @@ void QsmDebugInterfaceSource::Private::addTransition(QAbstractTransition *transi
     addState(targetState);
 
     const QString label = labelForTransition(transition);
-    emit transitionAdded(TransitionId(transition), StateId(sourceState),
-                         StateId(targetState), label);
+    emit transitionAdded(makeTransitionId(transition), makeStateId(sourceState),
+                         makeStateId(targetState), label);
 }
 
 void QsmDebugInterfaceSource::Private::updateStartStop()

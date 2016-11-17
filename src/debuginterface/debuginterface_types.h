@@ -40,12 +40,6 @@ namespace DebugInterface {
 // to the meta type system)...
 struct TransitionId
 {
-    TransitionId(const TransitionId &id)
-        : id(id.id)
-    {}
-    explicit TransitionId(QAbstractTransition *transition = nullptr)
-        : id(reinterpret_cast<quint64>(transition))
-    {}
     operator quint64() const
     {
         return id;
@@ -67,12 +61,6 @@ inline QDataStream &operator>>(QDataStream &in, TransitionId &value)
 
 struct StateId
 {
-    StateId(const StateId &id)
-        : id(id.id)
-    {}
-    explicit StateId(QAbstractState *state= nullptr)
-        : id(reinterpret_cast<quint64>(state))
-    {}
     operator quint64() const
     {
         return id;
