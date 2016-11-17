@@ -4,10 +4,14 @@ set(QSMDEBUGINTERFACESOURCE_SRCS
 
   ../../core/util/objecthelper.cpp
 )
+
+if (Qt5Scxml_FOUND)
+  list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
+endif()
+
 qt5_generate_repc(QSMDEBUGINTERFACESOURCE_SRCS ../debuginterface.rep SOURCE)
 
 add_library(kdstatemachineeditor_debuginterfacesource STATIC ${QSMDEBUGINTERFACESOURCE_SRCS})
-#target_include_directories(kdstatemachineeditor_debuginterfacesource PRIVATE ../../core/util)
 add_library(KDSME::DebugInterfaceSource ALIAS kdstatemachineeditor_debuginterfacesource)
 target_link_libraries(kdstatemachineeditor_debuginterfacesource
   LINK_PRIVATE
@@ -16,6 +20,13 @@ target_link_libraries(kdstatemachineeditor_debuginterfacesource
   LINK_PUBLIC
     Qt5::Core
 )
+if (Qt5Scxml_FOUND)
+  target_include_directories(kdstatemachineeditor_debuginterfacesource PRIVATE ${Qt5Scxml_PRIVATE_INCLUDE_DIRS})
+  target_link_libraries(kdstatemachineeditor_debuginterfacesource
+    LINK_PUBLIC
+      Qt5::Scxml
+  )
+endif()
 set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES
   SOVERSION ${KDSME_SOVERSION}
   VERSION ${KDSME_SOVERSION}
