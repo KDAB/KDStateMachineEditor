@@ -78,4 +78,5 @@ notifications:
   - provider: Email
     to:
       - allen.winter@kdab.com
+      - kevin.funk@kdab.com
     on_build_status_changed: true
