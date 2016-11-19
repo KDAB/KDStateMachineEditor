@@ -111,8 +111,13 @@ private:
             return QString();
         }
 
-        // TODO: How to get the event name?
-        return QString::number(transition);
+        auto events = m_info->transitionEvents(transition);
+        if (events.empty()) {
+            return QString();
+        }
+
+        // TODO return all events combined instead of just first one
+        return QStringLiteral("%1 (%2)").arg(events.first()).arg(transition);
     }
 
     QScxmlStateMachineInfo *m_info = nullptr;
