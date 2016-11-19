@@ -120,7 +120,7 @@ private:
         return QStringLiteral("%1 (%2)").arg(events.first()).arg(transition);
     }
 
-    QScxmlStateMachineInfo *m_info = nullptr;
+    QScopedPointer<QScxmlStateMachineInfo> m_info;
     QSet<QScxmlStateMachineInfo::StateId> m_recursionGuard;
     QSet<QScxmlStateMachineInfo::TransitionId> m_recursionGuardForTransition;
     QVector<QScxmlStateMachineInfo::StateId> m_lastStateConfig;
@@ -194,32 +194,29 @@ void QScxmlDebugInterfaceSource::Private::setQScxmlStateMachine(QScxmlStateMachi
 {
     repopulateGraph();
 
-    if (m_info) {
-        delete m_info;
-        m_info = nullptr;
-    }
+    m_info.reset();
 
     handleStateConfigurationChanged();
 
-    m_info = machine ? new QScxmlStateMachineInfo(machine) : nullptr;
+    m_info.reset(machine ? new QScxmlStateMachineInfo(machine) : nullptr);
     repopulateGraph();
 
     if (m_info) {
-        connect(m_info, &QScxmlStateMachineInfo::statesEntered, this,
+        connect(m_info.data(), &QScxmlStateMachineInfo::statesEntered, this,
                 [this](const QVector<QScxmlStateMachineInfo::StateId> &states) {
             // TODO: Don't just use the first
             if (!states.isEmpty()) {
                 stateEntered(states.first());
             }
         });
-        connect(m_info, &QScxmlStateMachineInfo::statesExited, this,
+        connect(m_info.data(), &QScxmlStateMachineInfo::statesExited, this,
                 [this](const QVector<QScxmlStateMachineInfo::StateId> &states) {
             // TODO: Don't just use the first
             if (!states.isEmpty()) {
                 stateExited(states.first());
             }
         });
-        connect(m_info, &QScxmlStateMachineInfo::transitionsTriggered,
+        connect(m_info.data(), &QScxmlStateMachineInfo::transitionsTriggered,
                 this, [this](const QVector<QScxmlStateMachineInfo::TransitionId> &transitions) {
             // TODO: Don't just use the first
             if (!transitions.isEmpty()) {
