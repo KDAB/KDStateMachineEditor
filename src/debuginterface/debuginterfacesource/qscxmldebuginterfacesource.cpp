@@ -46,8 +46,6 @@ StateType makeStateType(QScxmlStateMachineInfo::StateType stateType)
 {
     switch (stateType) {
         case QScxmlStateMachineInfo::InvalidState:
-            Q_ASSERT(false); return OtherState;
-        case QScxmlStateMachineInfo::StateMachineRootState:
             return StateMachineState;
         case QScxmlStateMachineInfo::NormalState:
             return OtherState;
@@ -93,13 +91,9 @@ private:
 
     QString labelForState(QScxmlStateMachineInfo::StateId state) const
     {
-        if (state == QScxmlStateMachineInfo::InvalidState) {
-            return QString();
-        }
-
         // hide the state id for the root state + invalid states
-        if (state == QScxmlStateMachineInfo::StateMachineRootState) {
-            return m_info->stateName(state);
+        if (state == QScxmlStateMachineInfo::InvalidStateId) {
+            return m_info->stateMachine()->name();
         }
 
         return QStringLiteral("%1 (%2)").arg(m_info->stateName(state)).arg(state);
@@ -107,7 +101,7 @@ private:
 
     QString labelForTransition(QScxmlStateMachineInfo::TransitionId transition) const
     {
-        if (transition == QScxmlStateMachineInfo::InvalidTransition) {
+        if (transition == QScxmlStateMachineInfo::InvalidTransitionId) {
             return QString();
         }
 
@@ -166,7 +160,7 @@ void QScxmlDebugInterfaceSource::Private::repopulateGraph()
 
     if (m_info) {
         // root state is not part of 'allStates', add it manually
-        addState(QScxmlStateMachineInfo::StateMachineRootState);
+        addState(QScxmlStateMachineInfo::InvalidStateId);
 
         foreach (auto stateId, m_info->allStates()) {
             addState(stateId);
@@ -275,9 +269,7 @@ void QScxmlDebugInterfaceSource::Private::addState(QScxmlStateMachineInfo::State
     m_recursionGuard.insert(state);
 
     auto parentState = m_info->stateParent(state);
-    if (parentState != QScxmlStateMachineInfo::InvalidState) {
-        addState(parentState); // be sure that parent is added first
-    }
+    addState(parentState); // be sure that parent is added first
 
     const auto children = m_info->stateChildren(state);
     const bool hasChildren = !children.isEmpty();
@@ -285,14 +277,14 @@ void QScxmlDebugInterfaceSource::Private::addState(QScxmlStateMachineInfo::State
     // add a connection from parent state to initial state if
     // parent state is valid and parent state has an initial state
     const auto parentInitialTransition = m_info->initialTransition(parentState);
-    if (parentInitialTransition != QScxmlStateMachineInfo::InvalidTransition) {
+    if (parentInitialTransition != QScxmlStateMachineInfo::InvalidTransitionId) {
         m_recursionGuardForTransition.insert(parentInitialTransition);
     }
 
     const auto parentInitialTransitionTargets = m_info->transitionTargets(parentInitialTransition);
     Q_ASSERT(parentInitialTransitionTargets.size() <= 1); // assume there can only be at most one 'initial state'
     const auto parentInitialState = parentInitialTransitionTargets.value(0);
-    const bool connectToInitial = parentState != QScxmlStateMachineInfo::InvalidState && parentInitialState == state;
+    const bool connectToInitial = parentInitialState == state; // TODO ?
     emit stateAdded(makeStateId(state), makeStateId(parentState),
                     hasChildren, labelForState(state),
                     makeStateType(m_info->stateType(state)), connectToInitial);
