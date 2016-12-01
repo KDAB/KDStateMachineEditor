@@ -90,6 +90,7 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent
 
     setWindowTitle(tr("State Machine Tool Bar"));
     d->m_exportAction = new QAction(tr("Export to File..."), this);
+    d->m_exportAction->setObjectName(QStringLiteral("actionExportToFile"));
     d->m_exportAction->setStatusTip("Export current state machine to a file.");
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
     addAction(d->m_exportAction);
@@ -100,6 +101,7 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent
     QMenu* themeSelectionMenu = new QMenu(themeSelectionButton);
     foreach (const QString& themeName, availableThemeNames()) {
         auto action = new QAction(themeName, this);
+        action->setObjectName(QStringLiteral("action%1").arg(themeName));
         connect(action, &QAction::triggered, this, [this, themeName]() {
             d->m_view->setThemeName(themeName);
         });
