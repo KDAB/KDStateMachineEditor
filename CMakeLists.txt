@@ -46,7 +46,7 @@ set_package_properties(Qt5RemoteObjects PROPERTIES
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
 
-find_package(Qt5Scxml 5.6 QUIET)
+find_package(Qt5Scxml 5.8 QUIET)
 set_package_properties(Qt5Scxml PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt SCXML module"
