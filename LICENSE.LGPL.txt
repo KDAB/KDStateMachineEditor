@@ -1,5 +1,5 @@
 
- The KDAB State Machine Editor Library is Copyright (C) 2014-2016 Klarälvdalens Datakonsult AB.
+ The KDAB State Machine Editor Library is Copyright (C) 2014-2017 Klarälvdalens Datakonsult AB.
 
  You may use, distribute and copy the KDAB State Machine Editor Library
  under the terms of the GNU Lesser General Public License version 2.1,
