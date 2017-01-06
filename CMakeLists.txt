@@ -199,6 +199,9 @@ endif()
 if(${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
 endif()
+if(MSVC)
+  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+endif()
 
 # linker flags
 if(CMAKE_SYSTEM_NAME MATCHES Linux OR CMAKE_SYSTEM_NAME STREQUAL GNU)
