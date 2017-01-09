@@ -34,7 +34,7 @@ namespace KDSME {
 class Element;
 
 /**
- * @brief Command for modifying properties of a @brief KDSME::Element
+ * @brief Command for modifying properties of KDSME::Element
  *
  * A command can only set one property at the time.
  * On undo, the previous value of the property is restored.
