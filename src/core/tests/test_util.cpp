@@ -42,7 +42,7 @@ private Q_SLOTS:
 
 void UtilTest::testElementWalker()
 {
-    /// @return List of walked states
+    // returns list of walked states
     auto walkAllStates = [](ElementWalker&& walker, Element* item) -> QVector<Element*> {
         QVector<Element*> walkedStates;
         walker.walkItems(item, [&](Element* state) -> ElementWalker::VisitResult {
@@ -52,7 +52,7 @@ void UtilTest::testElementWalker()
         return walkedStates;
     };
 
-    /// @return Number of calls to our visit-lambda
+    // returns number of calls to our visit-lambda
     auto walkOneState = [](ElementWalker&& walker, Element* item) -> int {
         int counter = -1;
         walker.walkItems(item, [&](Element*) -> ElementWalker::VisitResult {
