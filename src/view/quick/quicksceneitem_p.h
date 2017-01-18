@@ -49,7 +49,7 @@ public:
     KDSME::Element* element() const;
 
     QPainterPath shape() const;
-    void setShape(const QPainterPath& path);
+    void setShape(const QPainterPath& shape);
 
     qreal activeness() const;
     void setActiveness(qreal activeness);

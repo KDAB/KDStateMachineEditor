@@ -95,9 +95,9 @@ QString ObjectHelper::toString(const QRectF& rect)
             .arg(toString(rect.size()));
 }
 
-bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *obj)
+bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *object)
 {
-    QObject *parent = obj->parent();
+    QObject *parent = object->parent();
     if (!parent) {
         return false;
     }

@@ -51,7 +51,7 @@ public:
     int id() const override { return ChangeStateMachine; }
 
     KDSME::State* stateMachine() const;
-    void setStateMachine(KDSME::State* statemachine);
+    void setStateMachine(KDSME::State* stateMachine);
 
     void redo() override;
     void undo() override;

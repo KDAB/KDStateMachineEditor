@@ -69,7 +69,7 @@ public:
     void zoomBy(qreal scale);
 
     int maximumDepth() const;
-    void setMaximumDepth(int depth);
+    void setMaximumDepth(int maximumDepth);
 
     LayoutProperties* layoutProperties() const;
 

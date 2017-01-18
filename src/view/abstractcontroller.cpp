@@ -37,11 +37,11 @@ struct AbstractController::Private
     StateMachineView* m_view;
 };
 
-AbstractController::AbstractController(StateMachineView* parent)
-    : QObject(parent)
+AbstractController::AbstractController(StateMachineView* view)
+    : QObject(view)
     , d(new Private)
 {
-    d->m_view = parent;
+    d->m_view = view;
 }
 
 AbstractController::~AbstractController()

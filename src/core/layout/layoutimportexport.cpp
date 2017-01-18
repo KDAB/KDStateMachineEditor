@@ -146,17 +146,17 @@ void importTransitionLayout(const QJsonObject& data, Transition* transition)
 
 } // anonymous namespace
 
-void LayoutImportExport::importLayout(const QJsonObject &rootData, State *state)
+void LayoutImportExport::importLayout(const QJsonObject &data, State *state)
 {
-    importStateLayout(rootData, state);
+    importStateLayout(data, state);
 
-    const QJsonArray states = rootData.value("childStates").toArray();
+    const QJsonArray states = data.value("childStates").toArray();
     for (int i = 0; i < states.size() && i < state->childStates().size(); ++i) {
         State *child = state->childStates().at(i);
         importLayout(states.at(i).toObject(), child);
     }
 
-    const QJsonArray transitions = rootData.value("transitions").toArray();
+    const QJsonArray transitions = data.value("transitions").toArray();
     for (int i = 0; i < transitions.size() && i < state->transitions().size(); ++i) {
         Transition *child = state->transitions().at(i);
         importTransitionLayout(transitions.at(i).toObject(), child);

@@ -201,15 +201,15 @@ QuickGeometryItem* QuickPrimitiveItem::geometryItem() const
     return m_geometryItem;
 }
 
-void QuickPrimitiveItem::setGeometryItem(QuickGeometryItem* geometry)
+void QuickPrimitiveItem::setGeometryItem(QuickGeometryItem* item)
 {
-    if (m_geometryItem == geometry)
+    if (m_geometryItem == item)
         return;
 
     if (m_geometryItem) {
         disconnect(m_geometryItem, &QuickGeometryItem::changed, this, &QuickPrimitiveItem::updateGeometry);
     }
-    m_geometryItem = geometry;
+    m_geometryItem = item;
     if (m_geometryItem) {
         connect(m_geometryItem, &QuickGeometryItem::changed, this, &QuickPrimitiveItem::updateGeometry);
     }
@@ -245,8 +245,10 @@ void QuickPrimitiveItem::updateGeometry()
     update();
 }
 
-QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
+QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data)
 {
+    Q_UNUSED(data);
+
     if (!geometryItem())
         return nullptr;
 

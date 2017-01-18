@@ -140,7 +140,7 @@ private:
     QScopedPointer<Private> d;
 };
 
-KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const State* representative);
+KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const State* state);
 
 class KDSME_CORE_EXPORT FinalState : public State
 {
@@ -210,7 +210,7 @@ private:
     QScopedPointer<Private> d;
 };
 
-KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const PseudoState* representative);
+KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const PseudoState* state);
 
 }
 

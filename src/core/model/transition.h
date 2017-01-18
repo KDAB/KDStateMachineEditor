@@ -60,7 +60,7 @@ public:
     void setGuard(const QString& guard);
 
     QPainterPath shape() const;
-    void setShape(const QPainterPath& path);
+    void setShape(const QPainterPath& shape);
 
     QRectF labelBoundingRect() const;
     void setLabelBoundingRect(const QRectF& rect);

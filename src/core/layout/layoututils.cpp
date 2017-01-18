@@ -69,22 +69,22 @@ bool LayoutUtils::fixupLayout(State* /*state*/)
     return true;
 }
 
-bool LayoutUtils::moveToParent(Element* obj, Element* newParent)
+bool LayoutUtils::moveToParent(Element* item, Element* parentItem)
 {
-    if (!obj || !newParent)
+    if (!item || !parentItem)
         return false;
 
-    auto oldParent = obj->parentElement();
-    if (oldParent == newParent)
+    auto oldParent = item->parentElement();
+    if (oldParent == parentItem)
         return false; // do nothing
 
     // map item coordinates to new parent item's coordinate system
     const QPointF oldParentPos = (oldParent ? oldParent->absolutePos() : QPointF(0, 0));
-    const QPointF newParentPos = newParent->absolutePos();
+    const QPointF newParentPos = parentItem->absolutePos();
     const QPointF delta = oldParentPos - newParentPos;
 
-    obj->setParent(newParent);
-    const QPointF itemRelPos = obj->pos();
-    obj->setPos(itemRelPos + delta);
+    item->setParent(parentItem);
+    const QPointF itemRelPos = item->pos();
+    item->setPos(itemRelPos + delta);
     return true;
 }

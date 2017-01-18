@@ -50,7 +50,7 @@ public:
 
     Q_INVOKABLE void setSourceState(KDSME::State* sourceState);
     Q_INVOKABLE void setTargetState(KDSME::State* targetState);
-    Q_INVOKABLE void setShape(const QPainterPath& path);
+    Q_INVOKABLE void setShape(const QPainterPath& shape);
 
     void redo() override;
     void undo() override;

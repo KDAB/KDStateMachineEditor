@@ -123,8 +123,9 @@ void QuickSceneItem::setShape(const QPainterPath& shape)
     emit shapeChanged(m_shape);
 }
 
-void QuickSceneItem::mousePressEvent(QMouseEvent*)
+void QuickSceneItem::mousePressEvent(QMouseEvent* event)
 {
+    Q_UNUSED(event);
 }
 
 void QuickSceneItem::mouseReleaseEvent(QMouseEvent* event)

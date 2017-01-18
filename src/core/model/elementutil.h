@@ -43,7 +43,7 @@ class StateMachine;
 namespace ElementUtil {
 
 KDSME_CORE_EXPORT State* findInitialState(const State* state);
-KDSME_CORE_EXPORT void setInitialState(State* parent, State* initialState);
+KDSME_CORE_EXPORT void setInitialState(State* state, State* initialState);
 
 KDSME_CORE_EXPORT State* findState(State* root, const QString &label);
 KDSME_CORE_EXPORT StateMachine* findStateMachine(const Element* element);

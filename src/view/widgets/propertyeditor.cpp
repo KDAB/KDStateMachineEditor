@@ -199,9 +199,10 @@ static QStringList childStates(const State * state)
     return ret;
 }
 
-void PropertyEditor::Private::currentChanged(const QModelIndex &currentIndex, const QModelIndex &/*previous*/)
+void PropertyEditor::Private::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    KDSME::Element* currentElement = currentIndex.data(StateModel::ElementRole).value<Element*>();
+    Q_UNUSED(previous);
+    KDSME::Element* currentElement = current.data(StateModel::ElementRole).value<Element*>();
     setCurrentElement(currentElement);
 }
 

@@ -62,9 +62,10 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
-    void focusOutEvent(QFocusEvent *) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 signals:
     void editingFinished(QString);
