@@ -291,7 +291,11 @@ void PropertyEditor::Private::loadFromCurrentElement()
         }
         m_transitionWidget->targetStateComboBox->clear();
         State* targetState = transition->targetState();
-        m_transitionWidget->targetStateComboBox->addItems(allStates(sourceState->machine()));
+        if (sourceState) {
+            m_transitionWidget->targetStateComboBox->addItems(allStates(sourceState->machine()));
+        } else {
+            m_transitionWidget->targetStateComboBox->setCurrentText(QString());
+        }
         if (targetState)
             m_transitionWidget->targetStateComboBox->setCurrentText(targetState->label());
         else
