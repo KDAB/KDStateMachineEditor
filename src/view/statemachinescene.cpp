@@ -126,7 +126,7 @@ bool StateMachineScene::isItemSelected(Element* item)
 
 void StateMachineScene::setItemSelected(Element* item, bool selected)
 {
-    if (!stateModel() || !item || !item)
+    if (!stateModel() || !item)
         return;
 
     const QModelIndex index = stateModel()->indexForObject(item);
