@@ -1,3 +1,8 @@
+Version 1.2:
+-----------
+ * Introduce adapter for QtSCXML (requires Qt 5.8 or higher)
+ * Build system: Generate and install pdb files on Windows
+
 Version 1.1:
 -----------
  * View: Added button to show/hide transition labels
