@@ -121,6 +121,8 @@ void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& c
 
 void SemanticZoomManager::updateRuntimeController()
 {
-    const auto machine = m_scene->rootState() ? m_scene->rootState()->machine() : nullptr;
-    setRuntimeController(machine ? machine->runtimeController() : nullptr);
+    if (m_scene) {
+        const auto machine = m_scene->rootState() ? m_scene->rootState()->machine() : nullptr;
+        setRuntimeController(machine ? machine->runtimeController() : nullptr);
+    }
 }
