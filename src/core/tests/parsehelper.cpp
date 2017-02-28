@@ -24,11 +24,11 @@
 
 #include <config-test.h>
 
+#include "debug.h"
 #include "parsehelper.h"
 #include "scxmlimporter.h"
 #include "element.h"
 
-#include <QDebug>
 #include <QFile>
 
 using namespace KDSME;

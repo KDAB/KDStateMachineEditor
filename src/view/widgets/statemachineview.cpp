@@ -33,6 +33,7 @@
 #include "command/changestatemachinecommand_p.h"
 #include "command/modifyelementcommand_p.h"
 #include "common/metatypedeclarations.h"
+#include "debug.h"
 #include "editcontroller.h"
 #include "layoutimportexport.h"
 #include "quick/quickpainterpath_p.h"
@@ -240,7 +241,7 @@ void StateMachineView::setThemeName(const QString& themeName)
     } else {
         const QString themeFile = QStringLiteral(":/kdsme/qml/themes/%1.qml").arg(themeName);
         if (!QFileInfo::exists(themeFile)) {
-            qWarning() << "Theme file" << themeFile << "does not exist, using fallback";
+            qCWarning(KDSME_VIEW) << "Theme file" << themeFile << "does not exist, using fallback";
             selectedThemeName = defaultThemeName();
         }
     }

@@ -48,7 +48,7 @@ GraphvizLayouter::~GraphvizLayouter()
 QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties)
 {
     if (!state) {
-        qWarning() << "Null state passed to layout function";
+        qCWarning(KDSME_CORE) << "Null state passed to layout function";
         return QRectF();
     }
 

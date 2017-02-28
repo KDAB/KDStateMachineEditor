@@ -279,7 +279,7 @@ void ScxmlImporter::Private::visitHistory(State* parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == "transition");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    qWarning() << "NYI";
+    qCWarning(KDSME_CORE) << "NYI";
 
     m_reader.skipCurrentElement();
 }
@@ -322,7 +322,7 @@ void ScxmlImporter::Private::initState(State* state)
     const QString id = attributes.value("id").toString();
     IF_DEBUG(qCDebug(KDSME_CORE) << parent->label() << id;)
     if (id.isEmpty()) {
-        qWarning() << "Unnamed state at offset:" << m_reader.characterOffset();
+        qCWarning(KDSME_CORE) << "Unnamed state at offset:" << m_reader.characterOffset();
     }
     state->setLabel(id);
     m_nameToStateMap[id] = state;
