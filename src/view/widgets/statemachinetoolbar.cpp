@@ -135,7 +135,7 @@ void StateMachineToolBar::Private::exportToFile(StateMachine* machine, const QSt
     QFile file(fileName);
     bool success = file.open(QIODevice::WriteOnly);
     if (!success) {
-        qWarning() << "Failed to open file:" << fileName;
+        qCWarning(KDSME_VIEW) << "Failed to open file:" << fileName;
         return;
     }
 

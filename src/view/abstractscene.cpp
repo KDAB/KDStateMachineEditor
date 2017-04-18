@@ -145,9 +145,9 @@ void AbstractScene::setSelectionModel(QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
     if (selectionModel->model() != d->m_model) {
-        qWarning("QAbstractItemView::setSelectionModel() failed: "
-                 "Trying to set a selection model, which works on "
-                 "a different model than the view.");
+        qCWarning(KDSME_VIEW) << "QAbstractItemView::setSelectionModel() failed: "
+            "Trying to set a selection model, which works on "
+            "a different model than the view.";
         return;
     }
 

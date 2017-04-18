@@ -148,7 +148,7 @@ void TransitionModel::setSourceModel(QAbstractItemModel* sourceModel)
 
     StateModel* model = qobject_cast<StateModel*>(sourceModel);
     if (!model) {
-        qWarning() << "called with invalid model instance:" << model;
+        qCWarning(KDSME_CORE) << "called with invalid model instance:" << model;
         return;
     }
 

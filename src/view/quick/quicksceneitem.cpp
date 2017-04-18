@@ -214,7 +214,7 @@ void QuickTransitionItem::setElement(Element* element)
 
     auto transition = qobject_cast<Transition*>(element);
     if (element && !transition) {
-        qWarning() << "Set invalid element on QuickEdgeItem:" << element;
+        qCWarning(KDSME_VIEW) << "Set invalid element on QuickEdgeItem:" << element;
         return;
     }
 
