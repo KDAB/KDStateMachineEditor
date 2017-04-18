@@ -22,7 +22,9 @@
 
 #include "qscxmldebuginterfacesource.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
+#include "config-kdsme.h"
+
+#if Qt5RemoteObjects_VERSION < QT_VERSION_CHECK(5, 9, 0)
 #include "debuginterface_source.h"
 #else
 #include "rep_debuginterface_source.h"
