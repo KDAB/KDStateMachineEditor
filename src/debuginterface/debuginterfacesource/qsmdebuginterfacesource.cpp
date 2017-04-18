@@ -22,7 +22,12 @@
 
 #include "qsmdebuginterfacesource.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
 #include "debuginterface_source.h"
+#else
+#include "rep_debuginterface_source.h"
+#endif
+
 #include "qsmwatcher_p.h"
 
 #include "objecthelper.h"
