@@ -22,9 +22,7 @@
 
 #include "config-examples.h"
 
-#include <qglobal.h>
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
+#if Qt5RemoteObjects_VERSION < QT_VERSION_CHECK(5, 9, 0)
 #include "debuginterface_replica.h"
 #else
 #include "rep_debuginterface_replica.h"

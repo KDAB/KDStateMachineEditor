@@ -46,6 +46,12 @@ set_package_properties(Qt5RemoteObjects PROPERTIES
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
+if (Qt5RemoteObjects_FOUND)
+    string(REPLACE "." ";" VERSION_LIST ${Qt5RemoteObjects_VERSION})
+    list(GET VERSION_LIST 0 Qt5RemoteObjects_VERSION_MAJOR)
+    list(GET VERSION_LIST 1 Qt5RemoteObjects_VERSION_MINOR)
+    list(GET VERSION_LIST 2 Qt5RemoteObjects_VERSION_PATCH)
+endif()
 
 find_package(Qt5Scxml 5.8 QUIET)
 set_package_properties(Qt5Scxml PROPERTIES
