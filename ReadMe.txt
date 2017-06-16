@@ -35,8 +35,8 @@ Contact info@kdab.com for more information.
 
 Licensing
 =========
-The KDAB State Machine Editor Library is (C) 2014-2016 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of the LGPL (see LICENSE.LGPL.txt for details).
+The KDAB State Machine Editor Library is (C) 2014-2017 Klarälvdalens Datakonsult AB (KDAB),
+and is available under the terms of the LGPL 2.1. See LICENSE.LGPL.txt for license details.
 
 Commercial use is also permitted as described in ReadMe-commercial.txt.
 
