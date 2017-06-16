@@ -49,6 +49,7 @@ include(ECMGeneratePriFile)
 
 find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
 find_package(Qt5 5.3 REQUIRED QuickWidgets)
+include(QtInstallPaths) #to set QT_INSTALL_FOO variables
 
 find_package(Qt5RemoteObjects 5.4 QUIET)
 set_package_properties(Qt5RemoteObjects PROPERTIES
@@ -79,6 +80,8 @@ set_package_properties(Qt5XmlPatterns PROPERTIES
 
 option(DEPLOY_DEPENDENCIES "Install Qt5 and graphviz" ON)
 
+option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
+
 if(NOT CMAKE_CROSSCOMPILING)
   option(BUILD_EXAMPLES "Build examples directory" ON)
 endif()
@@ -93,6 +96,7 @@ set(BIN_INSTALL_DIR bin)
 set(LIB_INSTALL_DIR lib CACHE STRING "Library install destination.")
 set(INCLUDE_INSTALL_DIR include/${CMAKE_PROJECT_NAME})
 set(XDG_DATA_INSTALL_DIR share/${CMAKE_PROJECT_NAME})
+set(QCH_INSTALL_DIR "doc" CACHE STRING "Install location of Qt Assistant help files.")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
@@ -135,7 +139,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     endforeach()
     ExternalProject_Add(GraphvizExternalProject
         GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "e8cb0e4ce1c34ec030a99da256de2040add4836c"
+        GIT_TAG "beb594846326add06a25be8dbd94a6829d3db21d"
         CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=${install_dir}
@@ -235,26 +239,15 @@ endif()
 
 set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
-# add a target to generate API documentation with Doxygen
-find_package(Doxygen)
-set_package_properties(Doxygen PROPERTIES
-  TYPE OPTIONAL
-  DESCRIPTION "Doxygen documentation generator"
-  PURPOSE "Needed for generating API documentation (make docs)"
-)
-if(DOXYGEN_FOUND)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-  add_custom_target(docs
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen" VERBATIM
-  )
-endif()
+add_subdirectory(src)
 
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
-add_subdirectory(src)
+
+if(BUILD_DOCS)
+  add_subdirectory(docs)
+endif()
 
 set(CONFIG_DIR "KDSME")
 write_basic_package_version_file(
