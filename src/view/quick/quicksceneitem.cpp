@@ -258,7 +258,7 @@ void QuickTransitionItem::updatePosition()
     const QRectF endRect(mapFromItem(targetStateItem, QPointF(0, 0)),
                          QSizeF(targetStateItem->width(), targetStateItem->height()));
 
-    const auto shape = transition->shape();
+    //const auto shape = transition->shape();
     const auto labelBoundingRect = transition->labelBoundingRect();
 
     const auto preliminaryEdge = QLineF(startRect.center(), endRect.center());

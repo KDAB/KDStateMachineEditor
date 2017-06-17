@@ -96,7 +96,7 @@ void ScxmlImportTest::testEmptyInput()
     ScxmlImporter parser(data);
     QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
-    const QString errorString = parser.errorString();
+    //const QString errorString = parser.errorString();
     QVERIFY(!parser.errorString().isEmpty());
 }
 

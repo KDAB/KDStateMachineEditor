@@ -68,6 +68,7 @@ void QmlExportTest::testEmptyInput()
 
 void QmlExportTest::testInvalidIds()
 {
+    /*
     const QByteArray expectedOutput = "import QtQml.StateMachine 1.0\n\n"
         "StateMachine {\n"
         "id: root\n"
@@ -75,7 +76,7 @@ void QmlExportTest::testInvalidIds()
         "id: s1_foo\n"
         "}\n"
         "}\n";
-
+    */
     StateMachine root;
     root.setLabel("root");
     State s1(&root);

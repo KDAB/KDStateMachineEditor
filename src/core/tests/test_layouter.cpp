@@ -98,7 +98,7 @@ void LayouterTest::testBasicState()
 
     auto elements = machine->findChildren<Element*>();
     auto states = copy_if_type<State*>(elements);
-    auto transitions = copy_if_type<Transition*>(elements);
+    //auto transitions = copy_if_type<Transition*>(elements);
     QCOMPARE(states.size(), 4);
     //QCOMPARE(transitions.size(), 3);
 }
