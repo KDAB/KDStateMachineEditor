@@ -22,12 +22,12 @@
   clear to you.
 */
 
-#include <config-test.h>
-
-#include "debug.h"
 #include "parsehelper.h"
+#include "debug.h"
 #include "scxmlimporter.h"
 #include "element.h"
+
+#include <config-test.h>
 
 #include <QFile>
 

@@ -25,7 +25,7 @@
 #include "runtimecontroller.h"
 #include "util.h"
 
-#include "config-kdsme.h"
+#include <config-kdsme.h>
 
 #if Qt5RemoteObjects_VERSION < QT_VERSION_CHECK(5, 9, 0)
 #include "debuginterface_replica.h"
