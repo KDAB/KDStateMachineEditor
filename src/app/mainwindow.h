@@ -35,14 +35,14 @@ class TransitionListModel;
 class StateMachineScene;
 }
 
+QT_BEGIN_NAMESPACE
 class QStandardItemModel;
-class QTimer;
-class QQuickView;
 
 namespace Ui
 {
 class MainWindow;
 }
+QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {

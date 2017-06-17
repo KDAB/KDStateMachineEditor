@@ -26,7 +26,9 @@
 #include <QString>
 #include <clocale>
 
+QT_BEGIN_NAMESPACE
 class QRectF;
+QT_END_NAMESPACE
 
 namespace KDSME {
 class LayoutProperties;

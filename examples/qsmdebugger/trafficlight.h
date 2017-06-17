@@ -3,7 +3,9 @@
 
 #include <QWidget>
 
+QT_BEGIN_NAMESPACE
 class QStateMachine;
+QT_END_NAMESPACE
 
 /**
  * Copy of the infamous traffic light example from Qt
