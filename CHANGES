@@ -1,3 +1,10 @@
+Version 1.2.1:
+-------------
+ * Handle building with QtRemoteObjects from Qt5.9
+ * API docs are always built if doxygen is found (unless -DBUILD_DOCS is off)
+ * QCH docs are also built
+ * Fix build against namespaced Qt
+
 Version 1.2:
 -----------
  * Introduce adapter for QtSCXML (requires Qt 5.8 or higher)
