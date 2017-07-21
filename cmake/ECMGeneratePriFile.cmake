@@ -96,36 +96,30 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the License for more information.
-#=============================================================================
 
-if(KDE_INSTALL_USE_QT_SYS_PATHS)
+# Replicate the logic from KDEInstallDirs.cmake as we can't depend on it
+# Ask qmake if we're using the same prefix as Qt
+set(_askqmake OFF)
+if(NOT DEFINED KDE_INSTALL_USE_QT_SYS_PATHS)
+    include(ECMQueryQmake)
+    query_qmake(qt_install_prefix_dir QT_INSTALL_PREFIX)
+    if(qt_install_prefix_dir STREQUAL "${CMAKE_INSTALL_PREFIX}")
+        set(_askqmake ON)
+    endif()
+endif()
+
+if(KDE_INSTALL_USE_QT_SYS_PATHS OR _askqmake)
   include(ECMQueryQmake)
   query_qmake(qt_host_data_dir QT_HOST_DATA)
   set(ECM_MKSPECS_INSTALL_DIR ${qt_host_data_dir}/mkspecs/modules CACHE PATH "The directory where mkspecs will be installed to.")
-else ()
+else()
   set(ECM_MKSPECS_INSTALL_DIR mkspecs/modules CACHE PATH "The directory where mkspecs will be installed to.")
 endif()
-
-macro(_fixup_include_dir include_dir outvar)
-  if(IS_ABSOLUTE "${include_dir}")
-    set(result "${include_dir}")
-  else()
-    set(result "${CMAKE_INSTALL_PREFIX}/${include_dir}")
-  endif()
-  if (KDE_INSTALL_USE_QT_SYS_PATHS)
-    string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}/include" "\$\$QT_MODULE_INCLUDE_BASE" result "${result}")
-  endif()
-  set(${outvar} ${result})
-endmacro()
 
 function(ECM_GENERATE_PRI_FILE)
   set(options )
   set(oneValueArgs BASE_NAME LIB_NAME DEPS FILENAME_VAR INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
-  set(multiValueArgs INCLUDE_INSTALL_DIRS)
+  set(multiValueArgs )
 
   cmake_parse_arguments(EGPF "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -142,24 +136,15 @@ function(ECM_GENERATE_PRI_FILE)
   if(NOT PROJECT_VERSION_STRING)
     message(FATAL_ERROR "Required variable PROJECT_VERSION_STRING not set before ECM_GENERATE_PRI_FILE() call. Did you call ecm_setup_version?")
   endif()
-  if(EGPF_INCLUDE_INSTALL_DIR AND EGPF_INCLUDE_INSTALL_DIRS)
-    message(FATAL_ERROR "Cannot specify both variable INCLUDE_INSTALL_DIR and INCLUDE_INSTALL_DIRS. This does not make sense.")
-  endif()
-
-  if(EGPF_INCLUDE_INSTALL_DIR)
-    set(EGPF_INCLUDE_INSTALL_DIRS ${EGPF_INCLUDE_INSTALL_DIR}) # backwards compatibility
-  endif()
-
-  if(NOT EGPF_INCLUDE_INSTALL_DIRS)
+  if(NOT EGPF_INCLUDE_INSTALL_DIR)
       if(INCLUDE_INSTALL_DIR)
-          set(EGPF_INCLUDE_INSTALL_DIRS "${INCLUDE_INSTALL_DIR}/${EGPF_BASE_NAME}")
+          set(EGPF_INCLUDE_INSTALL_DIR "${INCLUDE_INSTALL_DIR}/${EGPF_BASE_NAME}")
       elseif(CMAKE_INSTALL_INCLUDEDIR)
-          set(EGPF_INCLUDE_INSTALL_DIRS "${CMAKE_INSTALL_INCLUDEDIR}/${EGPF_BASE_NAME}")
+          set(EGPF_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/${EGPF_BASE_NAME}")
       else()
-          set(EGPF_INCLUDE_INSTALL_DIRS "include/${EGPF_BASE_NAME}")
+          set(EGPF_INCLUDE_INSTALL_DIR "include/${EGPF_BASE_NAME}")
       endif()
   endif()
-
   if(NOT EGPF_LIB_INSTALL_DIR)
       if(LIB_INSTALL_DIR)
           set(EGPF_LIB_INSTALL_DIR "${LIB_INSTALL_DIR}")
@@ -177,20 +162,16 @@ function(ECM_GENERATE_PRI_FILE)
   set(PRI_TARGET_BASENAME ${EGPF_BASE_NAME})
   set(PRI_TARGET_LIBNAME ${EGPF_LIB_NAME})
   set(PRI_TARGET_QTDEPS ${EGPF_DEPS})
-
-  foreach(include_dir ${EGPF_INCLUDE_INSTALL_DIRS})
-    _fixup_include_dir(${include_dir} fixed_include_dir)
-    set(PRI_TARGET_INCLUDES "${PRI_TARGET_INCLUDES} ${fixed_include_dir}")
-  endforeach()
-
-  if (KDE_INSTALL_USE_QT_SYS_PATHS)
-      set(PRI_TARGET_LIBS "\$\$QT_MODULE_LIB_BASE")
-  elseif(IS_ABSOLUTE "${EGPF_LIB_INSTALL_DIR}")
+  if(IS_ABSOLUTE "${EGPF_INCLUDE_INSTALL_DIR}")
+      set(PRI_TARGET_INCLUDES "${EGPF_INCLUDE_INSTALL_DIR}")
+  else()
+      set(PRI_TARGET_INCLUDES "${CMAKE_INSTALL_PREFIX}/${EGPF_INCLUDE_INSTALL_DIR}")
+  endif()
+  if(IS_ABSOLUTE "${EGPF_LIB_INSTALL_DIR}")
       set(PRI_TARGET_LIBS "${EGPF_LIB_INSTALL_DIR}")
   else()
       set(PRI_TARGET_LIBS "${CMAKE_INSTALL_PREFIX}/${EGPF_LIB_INSTALL_DIR}")
   endif()
-
   set(PRI_TARGET_DEFINES "")
 
   set(PRI_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/qt_${PRI_TARGET_BASENAME}.pri)
@@ -214,4 +195,3 @@ QT.${PRI_TARGET_BASENAME}.depends = ${PRI_TARGET_QTDEPS}
 "
   )
 endfunction()
-
