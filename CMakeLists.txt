@@ -126,11 +126,6 @@ elseif (NOT CMAKE_SYSTEM_NAME STREQUAL QNX)
 endif()
 
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
-#there is no 64-bit Graphviz for Windows
-if(WITH_INTERNAL_GRAPHVIZ AND WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-  message(STATUS "Unfortunately, there is no 64-bit Graphviz version for Windows -- will not attempt to build the internal version of Graphviz.")
-    set(WITH_INTERNAL_GRAPHVIZ_DEFAULT ON)
-endif()
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
 if(WITH_INTERNAL_GRAPHVIZ)
