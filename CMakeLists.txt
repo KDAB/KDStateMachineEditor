@@ -139,7 +139,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     endforeach()
     ExternalProject_Add(GraphvizExternalProject
         GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "beb594846326add06a25be8dbd94a6829d3db21d"
+        GIT_TAG "9f64e9807d76747dc53db88fcca1fd999c48ec4b"
         CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=${install_dir}
