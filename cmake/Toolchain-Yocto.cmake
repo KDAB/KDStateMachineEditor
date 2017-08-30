@@ -1,11 +1,11 @@
-# Basic cmake toolchain file for Freescale iMX6
-# Assumptions: toolchain is in path, $SYSROOT points to the sysroot
+# Basic cmake toolchain file for Qt for Yocto Environment
+# Assumptions: toolchain script is sourced
 #
 
-# Copyright (c) 2013-2018 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# Copyright (c) 2013-2017 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 # All rights reserved.
 #
-# Author: Volker Krause <volker.krause@kdab.com>
+# Author: Christoph Sterz <christoph.sterz@kdab.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -31,16 +31,20 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 set(CMAKE_SYSTEM_NAME "Linux")
-set(CMAKE_SYSTEM_PROCESSOR "armv7-a")
-set(CMAKE_C_COMPILER "arm-linux-gcc")
-set(CMAKE_CXX_COMPILER "arm-linux-g++")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --sysroot=$ENV{SYSROOT} -march=armv7-a -mfpu=neon")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --sysroot=$ENV{SYSROOT} -march=armv7-a -mfpu=neon")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=$ENV{SYSROOT}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --sysroot=$ENV{SYSROOT}")
-set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} --sysroot=$ENV{SYSROOT}")
 
-set(CMAKE_FIND_ROOT_PATH "$ENV{SYSROOT}")
+if(DEFINED ENV{ARCH})
+    #$ARCH is set through the yocto environment script, use this
+    set(CMAKE_SYSTEM_PROCESSOR "$ENV{ARCH}")
+elseif(DEFINED ENV{CC})
+    #No $ARCH found, trying to deduce processor from -march=<name> flag in CC
+    string(REGEX MATCH "-march=([^\ ]+)" DUMMY "$ENV{CC}")
+    set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_MATCH_1})
+else()
+    message(FATAL_ERROR "Could not find processor architecture (no ARCH or CC found in environment).")
+endif()
+
+set(OE_QMAKE_PATH_EXTERNAL_HOST_BINS "$ENV{OE_QMAKE_PATH_HOST_BINS}")
+set(CMAKE_FIND_ROOT_PATH "$ENV{SDKTARGETSYSROOT}")
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
