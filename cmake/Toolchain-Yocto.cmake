@@ -1,9 +1,11 @@
-# Basic cmake toolchain file for BlackBerry 10
+# Basic cmake toolchain file for Qt for Yocto Environment
+# Assumptions: toolchain script is sourced
+#
 
 # Copyright (c) 2013-2017 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 # All rights reserved.
 #
-# Author: Rafael Roquetto <rafael.roquetto@kdab.com>
+# Author: Christoph Sterz <christoph.sterz@kdab.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -28,28 +30,22 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# the name of the target operating system
-set(CMAKE_SYSTEM_NAME QNX)
-set(CMAKE_SYSTEM_PROCESSOR "armv7le")
+set(CMAKE_SYSTEM_NAME "Linux")
 
-# which compilers to use for C and C++
-set(arch gcc_ntoarmv7le)
-set(CMAKE_C_COMPILER qcc -V${arch})
-set(CMAKE_CXX_COMPILER QCC -V${arch})
-
-# here is the target environment located
-set(CMAKE_FIND_ROOT_PATH $ENV{QNX_TARGET}/armle-v7 $ENV{QNX_TARGET})
-
-if(CMAKE_HOST_WIN32)
-  set(HOST_EXECUTABLE_SUFFIX ".exe")
+if(DEFINED ENV{ARCH})
+    #$ARCH is set through the yocto environment script, use this
+    set(CMAKE_SYSTEM_PROCESSOR "$ENV{ARCH}")
+elseif(DEFINED ENV{CC})
+    #No $ARCH found, trying to deduce processor from -march=<name> flag in CC
+    string(REGEX MATCH "-march=([^\ ]+)" DUMMY "$ENV{CC}")
+    set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_MATCH_1})
+else()
+    message(FATAL_ERROR "Could not find processor architecture (no ARCH or CC found in environment).")
 endif()
 
-set(CMAKE_AR "$ENV{QNX_HOST}/usr/bin/ntoarmv7-ar${HOST_EXECUTABLE_SUFFIX}" CACHE PATH "QNX ar Program")
-set(CMAKE_RANLIB "$ENV{QNX_HOST}/usr/bin/ntoarmv7-ranlib${HOST_EXECUTABLE_SUFFIX}" CACHE PATH "QNX ar Program")
+set(OE_QMAKE_PATH_EXTERNAL_HOST_BINS "$ENV{OE_QMAKE_PATH_HOST_BINS}")
+set(CMAKE_FIND_ROOT_PATH "$ENV{SDKTARGETSYSROOT}")
 
-# adjust the default behaviour of the FIND_XXX() commands:
-# search headers and libraries in the target environment, search
-# programs in the host environment
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
