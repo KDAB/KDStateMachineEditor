@@ -1,7 +1,4 @@
 # Top-level CMakeLists.txt file for the KDAB State Machine Editor Library.
-
-project(kdstatemachineeditor CXX C)
-
 cmake_minimum_required(VERSION 2.8.12) # because of ALIAS targets
 if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW)
@@ -9,6 +6,8 @@ endif()
 if(POLICY CMP0063)
   cmake_policy(SET CMP0063 NEW)
 endif()
+
+project(kdstatemachineeditor CXX C)
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
