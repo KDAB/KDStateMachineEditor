@@ -38,7 +38,9 @@
  **
  ****************************************************************************/
 
-#include <QtGui>
+#include <QPlainTextEdit>
+#include <QPainter>
+#include <QTextBlock>
 
 #include "codeeditor_p.h"
 
