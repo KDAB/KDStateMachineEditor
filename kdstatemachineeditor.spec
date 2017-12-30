@@ -31,6 +31,9 @@ Authors:
 --------
       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
 
+%define debug_package %{nil}
+%global __debug_install_post %{nil}
+
 %package devel
 Summary: Development files for %{name}
 Group: Development/Libraries
