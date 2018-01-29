@@ -1,9 +1,8 @@
-Version 1.2.1:
+Version 1.2.2:
 -------------
- * Handle building with QtRemoteObjects from Qt5.9
- * API docs are always built if doxygen is found (unless -DBUILD_DOCS is off)
- * QCH docs are also built
- * Fix build against namespaced Qt
+ * Fix build issue with Qt 5.10 on windows+MSVC
+ * Update graphviz SHA1 (fixes issues regarding sort.exe lookup)
+ * Minor CMake improvements
 
 Version 1.2:
 -----------
