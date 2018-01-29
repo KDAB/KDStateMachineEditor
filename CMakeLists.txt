@@ -1,7 +1,4 @@
 # Top-level CMakeLists.txt file for the KDAB State Machine Editor Library.
-
-project(kdstatemachineeditor CXX C)
-
 cmake_minimum_required(VERSION 2.8.12) # because of ALIAS targets
 if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW)
@@ -9,6 +6,8 @@ endif()
 if(POLICY CMP0063)
   cmake_policy(SET CMP0063 NEW)
 endif()
+
+project(kdstatemachineeditor CXX C)
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
@@ -42,6 +41,7 @@ include(CheckIncludeFiles)
 include(CMakePackageConfigHelpers)
 include(CTest)
 include(GenerateExportHeader)
+include(GNUInstallDirs)
 include(ExternalProject)
 include(MacroLogFeature)
 include(ECMAddTests)
@@ -92,11 +92,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 set(CMAKE_AUTOMOC TRUE)
 
-set(BIN_INSTALL_DIR bin)
-set(LIB_INSTALL_DIR lib CACHE STRING "Library install destination.")
-set(INCLUDE_INSTALL_DIR include/${CMAKE_PROJECT_NAME})
-set(XDG_DATA_INSTALL_DIR share/${CMAKE_PROJECT_NAME})
-set(QCH_INSTALL_DIR "doc" CACHE STRING "Install location of Qt Assistant help files.")
+set(BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
+set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "Library install destination.")
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
+set(XDG_DATA_INSTALL_DIR ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME})
+set(QCH_INSTALL_DIR ${CMAKE_INSTALL_DOCDIR} CACHE STRING "Install location of Qt Assistant help files.")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
