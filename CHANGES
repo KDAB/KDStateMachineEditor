@@ -1,3 +1,7 @@
+Version 1.2.3:
+-------------
+ * minor syncing with externals
+
 Version 1.2.2:
 -------------
  * Fix build issue with Qt 5.10 on windows+MSVC
