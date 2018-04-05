@@ -1,5 +1,5 @@
 Name:           kdstatemachineeditor
-Version:        1.2.2
+Version:        1.2.3
 Release:        1
 Summary:        State Machine Editor Library
 Source:         %{name}-%{version}.tar.gz
@@ -71,6 +71,8 @@ make install DESTDIR=%{buildroot} %{?_smp_mflags}
 %{_libdir}/qt5/mkspecs/modules/*
 
 %changelog
+* Wed Feb 28 2018 Allen Winter <allen.winter@kdab.com> 1.2.3
+  1.2.3 Patch Release
 * Mon Jan 29 2018 Allen Winter <allen.winter@kdab.com> 1.2.2
   1.2.2 Patch Release
 * Mon Jun 19 2017 Allen Winter <allen.winter@kdab.com> 1.2.1
