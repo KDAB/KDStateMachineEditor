@@ -30,6 +30,7 @@
 
 #include <QObject>
 #include <QMetaType>
+#include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QPainterPath;
