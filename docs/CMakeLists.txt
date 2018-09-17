@@ -1,4 +1,6 @@
-find_program(QHELPGEN_EXECUTABLE qhelpgenerator)
+find_program(QHELPGEN_EXECUTABLE qhelpgenerator
+	HINTS ${QT_INSTALL_BINS}
+)
 
 if(NOT QHELPGEN_EXECUTABLE)
   message(STATUS "Unable to build API documentation in qch format.")
