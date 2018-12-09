@@ -181,7 +181,9 @@ StateMachineView::StateMachineView(QWidget* parent)
     setFormat(format);
     setResizeMode(QQuickWidget::SizeRootObjectToView);
     setSource(QUrl("qrc:/kdsme/qml/StateMachineView.qml"));
+#if !defined(NDEBUG)
     Q_ASSERT_X(errors().isEmpty(), __FUNCTION__, qPrintable(kdsme_qmlErrorString(errors())));
+#endif
 }
 
 StateMachineView::~StateMachineView()
