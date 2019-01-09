@@ -47,11 +47,11 @@ include(MacroLogFeature)
 include(ECMAddTests)
 include(ECMGeneratePriFile)
 
-find_package(Qt5 5.3 REQUIRED Quick Test Widgets)
-find_package(Qt5 5.3 REQUIRED QuickWidgets)
+find_package(Qt5 5.3 CONFIG REQUIRED Quick Test Widgets)
+find_package(Qt5 5.3 CONFIG REQUIRED QuickWidgets)
 include(QtInstallPaths) #to set QT_INSTALL_FOO variables
 
-find_package(Qt5RemoteObjects 5.4 QUIET)
+find_package(Qt5RemoteObjects 5.4 CONFIG QUIET)
 set_package_properties(Qt5RemoteObjects PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt Remote Objects module"
@@ -64,14 +64,14 @@ if (Qt5RemoteObjects_FOUND)
     list(GET VERSION_LIST 2 Qt5RemoteObjects_VERSION_PATCH)
 endif()
 
-find_package(Qt5Scxml 5.8 QUIET)
+find_package(Qt5Scxml 5.8 CONFIG QUIET)
 set_package_properties(Qt5Scxml PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt SCXML module"
   PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt5RemoteObjects)"
 )
 
-find_package(Qt5 5.3 OPTIONAL_COMPONENTS XmlPatterns)
+find_package(Qt5 5.3 CONFIG OPTIONAL_COMPONENTS XmlPatterns)
 set_package_properties(Qt5XmlPatterns PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt5 XmlPatterns library"
