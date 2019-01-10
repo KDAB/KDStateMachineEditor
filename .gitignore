@@ -12,3 +12,7 @@ CMakeLists.txt.user
 *.BASE.*
 *.LOCAL.*
 *.REMOTE.*
+*_BACKUP_*
+*_BASE_*
+*_LOCAL_*
+*_REMOTE_*
