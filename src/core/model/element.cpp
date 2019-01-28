@@ -3,7 +3,7 @@
 
   This file is part of the KDAB State Machine Editor Library.
 
-  Copyright (C) 2014-2018 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
+  Copyright (C) 2014-2019 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com.
   All rights reserved.
   Author: Kevin Funk <kevin.funk@kdab.com>
   Author: Sebastian Sauer <sebastian.sauer@kdab.com>
