@@ -1,3 +1,7 @@
+Version 1.2.5:
+-------------
+ * Keeping up with Qt5, CMake and QNX
+
 Version 1.2.4:
 -------------
  * Fix minor compile error
