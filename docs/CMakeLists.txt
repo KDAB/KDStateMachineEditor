@@ -1,5 +1,5 @@
 find_program(QHELPGEN_EXECUTABLE qhelpgenerator
-	HINTS ${QT_INSTALL_BINS}
+  HINTS ${QT_INSTALL_BINS}
 )
 
 if(NOT QHELPGEN_EXECUTABLE)
@@ -13,7 +13,7 @@ set_package_properties(Doxygen PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "API Documentation system"
   URL "http://www.doxygen.org"
-  PURPOSE "Needed to build the API documention."
+  PURPOSE "Needed to build the API documentation."
 )
 if(DOXYGEN_FOUND AND QHELPGEN_EXECUTABLE)
   add_subdirectory(api)
