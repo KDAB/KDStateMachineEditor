@@ -24,7 +24,6 @@
 
 #include "quickprimitiveitem_p.h"
 
-#include "debug.h"
 #include <QSGFlatColorMaterial>
 #include <QSGNode>
 
