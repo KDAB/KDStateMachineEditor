@@ -23,6 +23,7 @@ It can be run from the bin/ directory once built.
 ![KDSME visualizing stickman.scxml](screenshots/kdstatemachineeditor-stickman.png?raw=true "KDSME demo")
 ![KDSME visualizing trafficreport.scxml (with a different theme)](screenshots/kdstatemachineeditor_trafficreport_systemtheme.png?raw=true "KDSME demo")
 ![KDSME visualizing a live-running QScxmlStateMachine](screenshots/kdstatemachineeditor_qscxmldebugger.png?raw=true "KDSME demo")
+![KDSME embedded in another application (here: GammaRay)](screenshots/gammaray-qsm-debugger.png?raw=true "KDSME demo")
 
 ## Features
 
