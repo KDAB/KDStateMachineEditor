@@ -14,16 +14,28 @@ wiki on GitHub, https://github.com/KDAB/KDStateMachineEditor/wiki.
 
 The main feature of KDStateMachineEditor is visualizing and editing state charts.
 
-### KDSME demo application)
+Note: A proof-of-concept application called `kdstatemachineditor` executable is part of this repository and will be built automatically.
+It can be run from the bin/ directory once the project built.
 
-The `kdstatemachineditor` executable is part of this repository and will be built automatically.
-It can be run from the bin/ directory once built.
+### KDSME visualizing microwave_parallel.scxml
 
-![KDSME visualizing microwave_parallel.scxml](screenshots/kdstatemachineeditor_microwave_parallel.png?raw=true "KDSME demo ")
-![KDSME visualizing stickman.scxml](screenshots/kdstatemachineeditor-stickman.png?raw=true "KDSME demo")
-![KDSME visualizing trafficreport.scxml (with a different theme)](screenshots/kdstatemachineeditor_trafficreport_systemtheme.png?raw=true "KDSME demo")
-![KDSME visualizing a live-running QScxmlStateMachine](screenshots/kdstatemachineeditor_qscxmldebugger.png?raw=true "KDSME demo")
-![KDSME embedded in another application (here: GammaRay)](screenshots/gammaray-qsm-debugger.png?raw=true "KDSME demo")
+![KDSME visualizing microwave_parallel.scxml](screenshots/kdstatemachineeditor_microwave_parallel.png)
+
+### KDSME visualizing stickman.scxml
+
+![KDSME visualizing stickman.scxml](screenshots/kdstatemachineeditor-stickman.png)
+
+### KDSME visualizing trafficreport.scxml (using a different theme)
+
+![KDSME visualizing trafficreport.scxml (using a different theme)](screenshots/kdstatemachineeditor_trafficreport_systemtheme.png)
+
+### KDSME visualizing a live-running QScxmlStateMachine
+
+![KDSME visualizing a live-running QScxmlStateMachine](screenshots/kdstatemachineeditor_qscxmldebugger.png)
+
+### KDSME embedded in another application (here: GammaRay)
+
+![KDSME embedded in another application (here: GammaRay)](screenshots/gammaray-qsm-debugger.png)
 
 ## Features
 
