@@ -1,5 +1,7 @@
-Introduction
-============
+# KDStateMachineEditor - Library for visualizing and editing state charts
+
+## Introduction
+
 The KDAB State Machine Editor Library is a framework that can be used to
 help develop full-featured State Machine Editing graphical user interfaces
 and tools.  Output from such applications is in metacode or QML that can
@@ -8,8 +10,45 @@ then be used in larger Qt or QtQuick projects.
 For a full description of the KDAB State Machine Editor Library, read our
 wiki on GitHub, https://github.com/KDAB/KDStateMachineEditor/wiki.
 
-Building and running
-================================
+## Screenshots
+
+The main feature of KDStateMachineEditor is visualizing and editing state charts.
+
+### KDSME demo application)
+
+The `kdstatemachineditor` executable is part of this repository and will be built automatically.
+It can be run from the bin/ directory once built.
+
+![KDSME visualizing microwave_parallel.scxml](screenshots/kdstatemachineeditor_microwave_parallel.png?raw=true "KDSME demo ")
+![KDSME visualizing stickman.scxml](screenshots/kdstatemachineeditor-stickman.png?raw=true "KDSME demo")
+![KDSME visualizing trafficreport.scxml (with a different theme)](screenshots/kdstatemachineeditor_trafficreport_systemtheme.png?raw=true "KDSME demo")
+![KDSME visualizing a live-running QScxmlStateMachine](screenshots/kdstatemachineeditor_qscxmldebugger.png?raw=true "KDSME demo")
+
+## Features
+
+* Internal API to create state charts
+  * Consisting of states and transitions
+  * Also supports history/initial states (in short: everything the SCXML spec provides)
+* QML scene which shows the state charts
+  * Custom items for drawing transitions using bezier curves
+  * Editing: Drag & drop support, move support, etc.
+  * Editing: Undo stack implementation, redo/undo actions for all operations
+* Abstract interface to layout state charts
+  * [GraphViz's cgraph](https://www.graphviz.org/pdf/libguide.pdf) is one of the implemented layouting backends (part of this repository)
+* Import/Export capabilities
+  * Allows to import/export .scxml files
+  * Allows to export .svg files
+  * Allows to export .qml files (in [QtQml.StateMachine](https://doc.qt.io/qt-5/qmlstatemachine.html) syntax)
+* Allows to inspect running state machine instances
+  * Both supports visualizing `QStateMachine` or `QScxmlStateMachine`
+  * Can inspect remote applications (i.e. processes living on another machine)
+  * Using [QtRemoteObjects](https://doc.qt.io/qt-5/qtremoteobjects-index.html) for communication
+    * Requires the target application to be "instrumented", cf. the [qsmdebugger](examples/qsmdebugger/] example
+* Theming support (cf. screenshots above) -- currently available are:
+  * DarkTheme
+  * SystemTheme
+
+## Building and running
 
 Install the dependencies (here: Ubuntu):
 
@@ -27,21 +66,29 @@ Start the test app:
 
     $ ./bin/kdstatemachineeditor
 
-Contributing
-============
+## Known Issues
+
+The editor part of the library still is somewhat "rough"; not a lot of development time has been spend on streamlining this feature.
+KDStateMachineEditor's main user is KDAB's [GammaRay](https://github.com/KDAB/GammaRay), a tool for introspecting Qt application.
+GammaRay has the capability to display the state chart of a `QStateMachine` embedded in the application.
+It's also possible to inspect the live configuration changes of the state machine.
+Zooming into child state (machines) is another feature; all backed by KDStateMachineEditor.
+
+## Contributing
+
 KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement.
 Contact info@kdab.com for more information.
 
-Licensing
-=========
+## Licensing
+
 The KDAB State Machine Editor Library is (C) 2014-2018 Klarälvdalens Datakonsult AB (KDAB),
 and is available under the terms of the LGPL 2.1. See LICENSE.LGPL.txt for license details.
 
 Commercial use is also permitted as described in ReadMe-commercial.txt.
 
-About KDAB
-==========
+## About KDAB
+
 This State Machine Editor Library is supported and maintained by
 Klarälvdalens Datakonsult AB (KDAB).
 
