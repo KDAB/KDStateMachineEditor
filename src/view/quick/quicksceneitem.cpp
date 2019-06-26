@@ -98,7 +98,7 @@ StateMachineScene* QuickSceneItem::scene() const
 void QuickSceneItem::setScene(StateMachineScene* scene)
 {
     Q_ASSERT(scene);
-    Q_ASSERT(!m_scene);
+    Q_ASSERT(!m_scene || scene == m_scene);
 
     m_scene = scene;
 }
