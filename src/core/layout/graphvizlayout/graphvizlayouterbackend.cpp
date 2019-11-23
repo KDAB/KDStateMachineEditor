@@ -62,7 +62,7 @@ using namespace ObjectHelper;
 
 namespace {
 
-/// Default Graphviz layouting  tool, see http://www.graphviz.org/
+/// Default Graphviz layouting  tool, see https://www.graphviz.org/
 const char DEFAULT_LAYOUT_TOOL[] = "dot";
 
 /**
@@ -294,7 +294,7 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition* transition, A
     }
 
     // in order to connect subgraphs we need to leverage ltail + lhead attribute of edges
-    // see: http://stackoverflow.com/questions/2012036/graphviz-how-to-connect-subgraphs
+    // see: https://stackoverflow.com/questions/2012036/graphviz-how-to-connect-subgraphs
     if (sourceDummyNode) {
         const QString graphName = "cluster" + addressToString(sourceState);
         _agset(edge, "ltail", graphName);

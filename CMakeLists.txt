@@ -115,7 +115,7 @@ set_package_properties(Graphviz PROPERTIES
     TYPE RECOMMENDED
     DESCRIPTION "Graph visualization software"
     PURPOSE "Needed for automatic layout of state charts"
-    URL "http://www.graphviz.org/"
+    URL "https://www.graphviz.org/"
 )
 
 if(GRAPHVIZ_FOUND)
@@ -298,7 +298,7 @@ if(WIN32)
   set(CPACK_PACKAGE_FILE_NAME "KDStateMachineEditor-${KDSME_VERSION}")
   set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/${LICENSE_FILE}")
   set(CPACK_NSIS_EXECUTABLES_DIRECTORY "${BIN_INSTALL_DIR}")
-  set(CPACK_NSIS_URL_INFO_ABOUT "http://www.kdab.com/")
+  set(CPACK_NSIS_URL_INFO_ABOUT "https://www.kdab.com/")
   set(CPACK_NSIS_MENU_LINKS
     "${LICENSE_FILE}" "License"
     "${README_FILE}" "Readme"

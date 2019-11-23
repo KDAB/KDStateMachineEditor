@@ -20,6 +20,9 @@ BuildRequires: qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtxmlpatterns-devel
 %if 0%{?fedora} > 23
 BuildRequires: ghostscript-core
 %endif
+%if 0%{?fedora} > 30
+BuildRequires: qt5-qtbase-private-devel
+%endif
 %endif
 
 %description
