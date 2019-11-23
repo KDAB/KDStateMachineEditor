@@ -99,7 +99,7 @@ private:
  * Graphviz internally uses atof() and friends to convert strings to numbers, and these are locale-specific.
  * We need to make sure the current locale is "C" so these conversions are done correctly.
  *
- * Also see: http://lists.research.att.com/pipermail/graphviz-interest/2011q1/006316.html
+ * Also see: https://marc.info/?l=graphviz-interest&m=129408843223794&w=2
  */
 class LocaleLocker
 {
