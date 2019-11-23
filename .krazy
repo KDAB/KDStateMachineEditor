@@ -18,3 +18,4 @@ SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/MacroLogFeature.cmake|/cmake/T
 
 #if you have a build subdir, skip it
 SKIP /build-
+SKIP Doxyfile.cmake
