@@ -35,7 +35,7 @@ if(GRAPHVIZ_FOUND)
     layout/graphvizlayout/graphvizlayouter.cpp
     layout/graphvizlayout/graphvizlayouterbackend.cpp
   )
-  if (WITH_INTERNAL_GRAPHVIZ)
+  if(WITH_INTERNAL_GRAPHVIZ)
     list(APPEND LIB_SRCS
       layout/graphvizlayout/graphviz_staticbuild.c
     )
@@ -104,7 +104,7 @@ target_include_directories(kdstatemachineeditor_core
 
 install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
-    install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_core>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_core>" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_core>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_core>" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
 endif()
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_core_export.h
@@ -141,6 +141,6 @@ install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-if(NOT CMAKE_CROSSCOMPILING)
+if(BUILD_TESTS)
   add_subdirectory(tests)
 endif()
