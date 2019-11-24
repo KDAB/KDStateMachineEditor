@@ -87,8 +87,8 @@ GammaRay has the capability to display the state chart of a `QStateMachine` embe
 It's also possible to inspect the live configuration changes of the state machine.
 Zooming into child state (machines) is another feature; all backed by KDStateMachineEditor.
 
-Get Involved
-============
+## Contributing
+
 KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement
 (see docs/KDStateMachineEditor-CopyrightAssignmentForm.docx).
@@ -98,8 +98,8 @@ Contact info@kdab.com for more information.
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDStateMachineEditor
 
-Licensing
-=========
+## Licensing
+
 The KDAB State Machine Editor Library is (C) 2014-2019 Klarälvdalens Datakonsult AB (KDAB),
 and is available under the terms of the LGPL 2.1. See LICENSE.LGPL.txt for license details.
 
