@@ -13,6 +13,6 @@ if(Qt5RemoteObjects_FOUND)
   add_subdirectory(debuginterface)
 endif()
 
-if(NOT CMAKE_CROSSCOMPILING)
+if(BUILD_TESTS)
   add_subdirectory(app)
 endif()

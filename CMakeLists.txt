@@ -1,5 +1,27 @@
-# Top-level CMakeLists.txt file for the KDAB State Machine Editor Library.
-cmake_minimum_required(VERSION 2.8.12) # because of ALIAS targets
+# This is the top-level CMakeLists.txt file for the KDStateMachineEditor project.
+#
+# Pass the following variables to cmake to control the build:
+# (See INSTALL.txt for more information)
+#
+# -DWITH_INTERNAL_GRAPHVIZ=[true|false]
+#  Allow to build with an internal Graphviz install.
+#  In the case where a separate Graphviz installation is not practical or desired.
+#  Default=true if Graphviz is not located; false otherwise
+#
+# -DBUILD_DOCS=[true|false]
+#  Build the documentation. Documentation is never built when cross-compiling.
+#  Default=true
+#
+# -DBUILD_EXAMPLES=[true|false]
+#  Build the examples. Examples are never built when cross-compiling.
+#  Default=true
+#
+# -DBUILD_TESTS=[true|false]
+#  Build the test harness. Tests are never built when cross-compiling.
+#  Note: disabling tests also disables building the kdstatemachineeditor test application.
+#  Default=True
+#
+cmake_minimum_required(VERSION 2.8.12)
 if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW)
 endif()
@@ -57,11 +79,11 @@ set_package_properties(Qt5RemoteObjects PROPERTIES
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
-if (Qt5RemoteObjects_FOUND)
-    string(REPLACE "." ";" VERSION_LIST ${Qt5RemoteObjects_VERSION})
-    list(GET VERSION_LIST 0 Qt5RemoteObjects_VERSION_MAJOR)
-    list(GET VERSION_LIST 1 Qt5RemoteObjects_VERSION_MINOR)
-    list(GET VERSION_LIST 2 Qt5RemoteObjects_VERSION_PATCH)
+if(Qt5RemoteObjects_FOUND)
+  string(REPLACE "." ";" VERSION_LIST ${Qt5RemoteObjects_VERSION})
+  list(GET VERSION_LIST 0 Qt5RemoteObjects_VERSION_MAJOR)
+  list(GET VERSION_LIST 1 Qt5RemoteObjects_VERSION_MINOR)
+  list(GET VERSION_LIST 2 Qt5RemoteObjects_VERSION_PATCH)
 endif()
 
 find_package(Qt5Scxml 5.8 CONFIG QUIET)
@@ -78,12 +100,17 @@ set_package_properties(Qt5XmlPatterns PROPERTIES
   PURPOSE "Required for unit tests dealing with XML input/output"
 )
 
+#TODO: Remove. not used.
 option(DEPLOY_DEPENDENCIES "Install Qt5 and graphviz" ON)
 
-option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
-
-if(NOT CMAKE_CROSSCOMPILING)
+if(CMAKE_CROSSCOMPILING)
+  set(BUILD_DOCS OFF)
+  set(BUILD_EXAMPLES OFF)
+  set(BUILD_TESTS OFF)
+else()
+  option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
   option(BUILD_EXAMPLES "Build examples directory" ON)
+  option(BUILD_TESTS "Build the test harness" ON)
 endif()
 
 # Don't require lots of include_directories(${CMAKE_CURRENT_SOURCE_DIR}) etc.
@@ -119,69 +146,68 @@ set_package_properties(Graphviz PROPERTIES
 )
 
 if(GRAPHVIZ_FOUND)
-    set(WITH_INTERNAL_GRAPHVIZ_DEFAULT OFF)
-elseif (NOT CMAKE_SYSTEM_NAME STREQUAL QNX)
-    message(STATUS "Auto-enabling internal Graphviz build, since no installed version is available")
-    set(WITH_INTERNAL_GRAPHVIZ_DEFAULT ON)
+  set(WITH_INTERNAL_GRAPHVIZ_DEFAULT OFF)
+elseif(NOT CMAKE_SYSTEM_NAME STREQUAL QNX)
+  message(STATUS "Auto-enabling internal Graphviz build, since no installed version is available")
+  set(WITH_INTERNAL_GRAPHVIZ_DEFAULT ON)
 endif()
 
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
 if(WITH_INTERNAL_GRAPHVIZ)
-    # CMake is really awful here...
-    set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
-    set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
-    set(link_libraries "dotgen;common;xdot;gvc;cgraph;cdt;pathplan;ortho;pack;label;ingraphs")
-    set(link_libraries_absolute)
-    foreach(link_library ${link_libraries})
-        list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
-    endforeach()
-    ExternalProject_Add(GraphvizExternalProject
-        GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-        GIT_TAG "9f64e9807d76747dc53db88fcca1fd999c48ec4b"
-        CMAKE_ARGS
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_INSTALL_PREFIX=${install_dir}
-        BUILD_COMMAND "" # skip, make install is enough
-        INSTALL_DIR ${install_dir}
-        INSTALL_COMMAND
-            ${CMAKE_COMMAND} --build . --target install
+  # CMake is really awful here...
+  set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
+  set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
+  set(link_libraries "dotgen;common;xdot;gvc;cgraph;cdt;pathplan;ortho;pack;label;ingraphs")
+  set(link_libraries_absolute)
+  foreach(link_library ${link_libraries})
+    list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
+  endforeach()
+  ExternalProject_Add(GraphvizExternalProject
+    GIT_REPOSITORY "https://github.com/krf/graphviz.git"
+    GIT_TAG "9f64e9807d76747dc53db88fcca1fd999c48ec4b"
+    CMAKE_ARGS
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DCMAKE_INSTALL_PREFIX=${install_dir}
+    BUILD_COMMAND "" # skip, make install is enough
+    INSTALL_DIR ${install_dir}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
 
-        # Note: BUILD_BYPRODUCTS only available since CMake 3.2
-        # Needed to make ExternalProject_Add in combination with the Ninja generator work
-        # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
-        BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
-    )
-    ExternalProject_Get_Property(GraphvizExternalProject source_dir)
-    ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
+    # Note: BUILD_BYPRODUCTS only available since CMake 3.2
+    # Needed to make ExternalProject_Add in combination with the Ninja generator work
+    # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
+    BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
+  )
+  ExternalProject_Get_Property(GraphvizExternalProject source_dir)
+  ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
 
-    # work-around: https://cmake.org/Bug/view.php?id=15052
-    set(include_dir "${install_dir}/include")
-    file(MAKE_DIRECTORY ${include_dir})
+  # work-around: https://cmake.org/Bug/view.php?id=15052
+  set(include_dir "${install_dir}/include")
+  file(MAKE_DIRECTORY ${include_dir})
 
-    add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
-    set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
-        IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
-        INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
-        INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
-        INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
-    )
-    add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
-    set(GRAPHVIZ_FOUND TRUE)
-    set(GRAPHVIZ_MAJOR_VERSION 2)
-    set(GRAPHVIZ_MINOR_VERSION 38)
-    set(GRAPHVIZ_PATCH_VERSION 0)
+  add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
+  set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
+    IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
+    INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
+    INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
+    INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
+  )
+  add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
+  set(GRAPHVIZ_FOUND TRUE)
+  set(GRAPHVIZ_MAJOR_VERSION 2)
+  set(GRAPHVIZ_MINOR_VERSION 38)
+  set(GRAPHVIZ_PATCH_VERSION 0)
 endif()
 
 #
 # Compiler & linker settings
 #
 function(append_if condition value)
-  if (${condition})
+  if(${condition})
     foreach(variable ${ARGN})
       set(${variable} "${${variable}} ${value}" PARENT_SCOPE)
-    endforeach(variable)
+    endforeach()
   endif()
 endfunction()
 
@@ -302,6 +328,6 @@ if(WIN32)
   set(CPACK_NSIS_MENU_LINKS
     "${LICENSE_FILE}" "License"
     "${README_FILE}" "Readme"
-   )
+  )
 endif()
 include(CPack)
