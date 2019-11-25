@@ -33,7 +33,8 @@ addons:
     - qttools5-dev-tools
     - qtdeclarative5-dev
     - qtdeclarative5-dev-tools
-    - qtxmlpatterns5-dev
+    - libqt5xmlpatterns5-dev
+    - libqt5xmlpatterns5
     - qtxmlpatterns5-dev-tools
     - graphviz-dev
   homebrew:
