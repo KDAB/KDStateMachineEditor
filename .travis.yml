@@ -28,10 +28,12 @@ addons:
     - qt5-default
     - qtbase5-dev
     - qtbase5-dev-tools
+    - qtbase5-private-dev
     - qttools5-dev
     - qttools5-dev-tools
     - qtdeclarative5-dev
     - qtdeclarative5-dev-tools
+    - qtxmlpatterns5-dev
     - qtxmlpatterns5-dev-tools
     - graphviz-dev
   homebrew:
