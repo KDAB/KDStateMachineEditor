@@ -13,6 +13,7 @@ matrix:
     - os: osx
       env:
         - QT_SELECT=qt5
+        - CMAKE_PREFIX_PATH=/usr/local/opt/qt
 
 language: cpp
 compiler:
