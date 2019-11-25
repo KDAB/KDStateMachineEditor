@@ -5,8 +5,14 @@ env:
 branches:
   only:
     - master
-os:
-  - osx
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      env:
+        - QT_SELECT=qt5
 
 language: cpp
 compiler:
@@ -17,6 +23,7 @@ script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make &
 
 addons:
   apt:
+    update: true
     packages:
     - qt5-default
     - qtbase5-dev
@@ -28,6 +35,7 @@ addons:
     - qtxmlpatterns5-dev-tools
     - graphviz-dev
   homebrew:
+    update: true
     packages:
     - qt5
     - graphviz
