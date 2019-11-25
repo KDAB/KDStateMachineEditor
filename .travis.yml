@@ -25,8 +25,7 @@ before_install:
       sudo apt-get install qtxmlpatterns5-dev-tools &&
       sudo apt-get install graphviz-dev &&
       export QT_SELECT=qt5;
-    fi
-  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    else
       brew install qt5 graphviz &&
       export PATH=/usr/local/opt/qt5/bin:$PATH;
     fi
