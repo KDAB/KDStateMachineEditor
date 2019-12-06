@@ -170,6 +170,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     CMAKE_ARGS
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       -DCMAKE_INSTALL_PREFIX=${install_dir}
+      -DCMAKE_IGNORE_PATH="C:/Strawberry/c/bin"
     BUILD_COMMAND "" # skip, make install is enough
     INSTALL_DIR ${install_dir}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
