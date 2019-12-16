@@ -5,7 +5,7 @@ set(QSMDEBUGINTERFACESOURCE_SRCS
   ../../core/util/objecthelper.cpp
 )
 
-if (Qt5Scxml_FOUND)
+if(Qt5Scxml_FOUND)
   list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
 endif()
 
@@ -20,7 +20,7 @@ target_link_libraries(kdstatemachineeditor_debuginterfacesource
   LINK_PUBLIC
     Qt5::Core
 )
-if (Qt5Scxml_FOUND)
+if(Qt5Scxml_FOUND)
   target_include_directories(kdstatemachineeditor_debuginterfacesource PRIVATE ${Qt5Scxml_PRIVATE_INCLUDE_DIRS})
   target_link_libraries(kdstatemachineeditor_debuginterfacesource
     LINK_PUBLIC
