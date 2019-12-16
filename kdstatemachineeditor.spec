@@ -1,8 +1,9 @@
 Name:           kdstatemachineeditor
-Version:        1.2.5
+Version:        1.2.6
 Release:        1
 Summary:        State Machine Editor Library
-Source:         %{name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.tar.gz
+Source1:        %{name}-%{version}.tar.gz.asc
 Url:            https://github.com/KDAB/KDStateMachineEditor
 Group:          System/Libraries
 License:        LGPLv2+
@@ -47,7 +48,7 @@ This package contains headers and libraries necessary to develop programs
 using the KDAB State Machine Editor library.
 
 %prep
-%setup -q
+%autosetup
 
 %build
 cmake . -DCMAKE_INSTALL_PREFIX=/usr -DLIB_INSTALL_DIR=%{_lib} -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
@@ -74,6 +75,8 @@ make install DESTDIR=%{buildroot} %{?_smp_mflags}
 %{_libdir}/qt5/mkspecs/modules/*
 
 %changelog
+* Mon Dec 16 2019 Allen Winter <allen.winter@kdab.com> 1.2.6
+  1.2.6 Patch Release
 * Sat Feb 16 2019 Allen Winter <allen.winter@kdab.com> 1.2.5
   1.2.5 Patch Release
 * Thu Jun 21 2018 Allen Winter <allen.winter@kdab.com> 1.2.4

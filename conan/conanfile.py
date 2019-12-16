@@ -21,7 +21,6 @@
 
 from conans import ConanFile, CMake, tools
 
-
 class KDStateMachineEditorConan(ConanFile):
     name = "KDStateMachineEditor"
     version = "1.2"
