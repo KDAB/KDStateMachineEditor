@@ -198,6 +198,12 @@ function(ECM_GENERATE_PRI_FILE)
      set(${EGPF_FILENAME_VAR} ${PRI_FILENAME} PARENT_SCOPE)
   endif()
 
+  set(PRI_TARGET_MODULE_CONFIG "")
+  get_target_property(target_type ${EGPF_LIB_NAME} TYPE)
+  if (target_type STREQUAL "STATIC_LIBRARY")
+      set(PRI_TARGET_MODULE_CONFIG "staticlib")
+  endif()
+
   file(GENERATE
      OUTPUT ${PRI_FILENAME}
      CONTENT
@@ -212,6 +218,7 @@ QT.${PRI_TARGET_BASENAME}.includes = ${PRI_TARGET_INCLUDES}
 QT.${PRI_TARGET_BASENAME}.private_includes =
 QT.${PRI_TARGET_BASENAME}.libs = ${PRI_TARGET_LIBS}
 QT.${PRI_TARGET_BASENAME}.depends = ${PRI_TARGET_QTDEPS}
+QT.${PRI_TARGET_BASENAME}.module_config = ${PRI_TARGET_MODULE_CONFIG}
 "
   )
 endfunction()
