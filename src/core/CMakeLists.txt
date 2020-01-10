@@ -139,8 +139,6 @@ ecm_generate_pri_file(BASE_NAME KDSMECore
 
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
 if(BUILD_TESTS)
   add_subdirectory(tests)
 endif()
