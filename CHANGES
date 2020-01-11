@@ -1,39 +1,39 @@
-Version 1.2.7 (UNRELEASED):
--------------
- *
+Version 1.2.7:
+--------------
+ * Small buildsystem fixes for rpath and static builds
 
 Version 1.2.6:
--------------
+--------------
  * New EULA (see LICENSE.txt)
  * New CMake option BUILD_TESTS to disable building the tests
  * Comes with an installing file for Conan (see conan folder)
  * Small cleanups
 
 Version 1.2.5:
--------------
+--------------
  * Keeping up with Qt5, CMake and QNX
 
 Version 1.2.4:
--------------
+--------------
  * Fix minor compile error
 
 Version 1.2.3:
--------------
+--------------
  * minor syncing with externals
 
 Version 1.2.2:
--------------
+--------------
  * Fix build issue with Qt 5.10 on windows+MSVC
  * Update graphviz SHA1 (fixes issues regarding sort.exe lookup)
  * Minor CMake improvements
 
 Version 1.2:
------------
+------------
  * Introduce adapter for QtSCXML (requires Qt 5.8 or higher)
  * Build system: Generate and install pdb files on Windows
 
 Version 1.1:
------------
+------------
  * View: Added button to show/hide transition labels
  * View: Now using native text rendering
  * View: Status bar got removed
@@ -44,5 +44,5 @@ Version 1.1:
    Works on all major platforms (tested on Linux, OS X, Windows)
 
 Version 1.0:
------------
+------------
  * Initial Release
