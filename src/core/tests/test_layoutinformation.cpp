@@ -28,6 +28,7 @@
 #include "transition.h"
 
 #include <QDebug>
+#include <QPainterPath>
 #include <QtTest>
 
 using namespace KDSME;
