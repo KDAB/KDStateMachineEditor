@@ -1,6 +1,6 @@
-Version 1.2.8: (UNRELEASED)
+Version 1.2.8:
 --------------
- *
+ * Keeping it building with Qt5.15
 
 Version 1.2.7:
 --------------
