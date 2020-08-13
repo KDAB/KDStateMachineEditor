@@ -58,6 +58,17 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES
   EXPORT_NAME Core
   INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
 )
+#version libraries on Windows
+if(WIN32)
+  set(postfix ${KDSME_VERSION_MAJOR})
+  set(CMAKE_RELEASE_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_core PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
+  #append 'd' to debug libraries
+  string(CONCAT postfix ${postfix} "d")
+  set(CMAKE_DEBUG_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_core PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+endif()
+
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(GRAPHVIZ_FOUND)

@@ -85,7 +85,23 @@ set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}/widgets
 )
 
-set_target_properties(kdstatemachineeditor_view PROPERTIES SOVERSION ${KDSME_SOVERSION} VERSION ${KDSME_SOVERSION} EXPORT_NAME View INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set_target_properties(kdstatemachineeditor_view PROPERTIES
+  SOVERSION ${KDSME_SOVERSION}
+  VERSION ${KDSME_SOVERSION}
+  EXPORT_NAME View
+  INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+)
+#version libraries on Windows
+if(WIN32)
+  set(postfix ${KDSME_VERSION_MAJOR})
+  set(CMAKE_RELEASE_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_view PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
+  #append 'd' to debug libraries
+  string(CONCAT postfix ${postfix} "d")
+  set(CMAKE_DEBUG_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_view PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+endif()
+
 generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
 target_include_directories(kdstatemachineeditor_view
   # FIXME: It is recommended to use a relative path here.
