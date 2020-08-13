@@ -118,7 +118,7 @@ target_include_directories(kdstatemachineeditor_view
 
 install(TARGETS kdstatemachineeditor_view EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
-  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_view>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_view>" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_view>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_view>" DESTINATION ${LIB_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
 endif()
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kdsme_view_export.h
