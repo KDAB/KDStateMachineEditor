@@ -35,7 +35,7 @@ set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES
 )
 #version libraries on Windows
 if(WIN32)
-  set(postfix ${KDSME_VERSION_MAJOR})
+  set(postfix ${KDSME_SOVERSION})
   set(CMAKE_RELEASE_POSTFIX ${postfix})
   set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
   #append 'd' to debug libraries
