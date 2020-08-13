@@ -18,6 +18,17 @@ set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES
   EXPORT_NAME DebugInterfaceClient
   INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
 )
+#version libraries on Windows
+if(WIN32)
+  set(postfix ${KDSME_VERSION_MAJOR})
+  set(CMAKE_RELEASE_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
+  #append 'd' to debug libraries
+  string(CONCAT postfix ${postfix} "d")
+  set(CMAKE_DEBUG_POSTFIX ${postfix})
+  set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+endif()
+
 generate_export_header(kdstatemachineeditor_debuginterfaceclient EXPORT_FILE_NAME kdsme_debuginterfaceclient_export.h BASE_NAME KDSME_DEBUGINTERFACECLIENT)
 set(build_iface_dirs
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -37,7 +48,7 @@ ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 install(TARGETS kdstatemachineeditor_debuginterfaceclient EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
-  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>" DESTINATION ${BIN_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>" DESTINATION ${LIB_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
 endif()
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfaceclient_export.h

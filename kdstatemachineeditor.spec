@@ -1,12 +1,12 @@
 Name:           kdstatemachineeditor
-Version:        1.2.7
+Version:        1.2.8
 Release:        1
 Summary:        State Machine Editor Library
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-%{version}.tar.gz.asc
 Url:            https://github.com/KDAB/KDStateMachineEditor
 Group:          System/Libraries
-License:        LGPLv2+
+License:        LGPL-2.1-only
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Vendor:         Klaralvdalens Datakonsult AB (KDAB)
 Packager:       Klaralvdalens Datakonsult AB (KDAB) <info@kdab.com>
@@ -75,6 +75,8 @@ make install DESTDIR=%{buildroot} %{?_smp_mflags}
 %{_libdir}/qt5/mkspecs/modules/*
 
 %changelog
+* Wed Aug 12 2020 Allen Winter <allen.winter@kdab.com> 1.2.8
+  1.2.8 Patch Release
 * Sat Jan 11 2020 Allen Winter <allen.winter@kdab.com> 1.2.7
   1.2.7 Patch Release
 * Mon Dec 16 2019 Allen Winter <allen.winter@kdab.com> 1.2.6
