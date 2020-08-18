@@ -1,8 +1,8 @@
 #
-# Copyright (C) 2016-2020 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
-# All rights reserved.
-#
+# SPDX-FileCopyrightText: 2016-2020 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 # Author: Allen Winter <allen.winter@kdab.com>
+#
+# SPDX-License-Identifier: BSD-3-Clause
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,17 +27,14 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 #
 # Create variables for all the various install paths for the Qt version in use
-# Make sure to have found Qt4 or Qt5 before using this.
+# Make sure to have found Qt5 before using this.
 # sets variables like QT_INSTALL_PREFIX, QT_INSTALL_DATA, QT_INSTALL_DOCS, etc.
 # run qmake -query to see a full list
 
 if(TARGET Qt5::qmake)
-  get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-elseif(TARGET Qt4::qmake)
-  get_target_property(QT_QMAKE_EXECUTABLE Qt4::qmake IMPORTED_LOCATION)
+  get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake LOCATION)
 else()
   message(FATAL_ERROR "No supported Qt version found. Make sure you find Qt before calling this")
 endif()
