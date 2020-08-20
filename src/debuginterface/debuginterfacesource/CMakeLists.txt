@@ -56,7 +56,7 @@ ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceSource
                       LIB_NAME kdstatemachineeditor_debuginterfacesource
                       DEPS ""
                       FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIRS include/ ${INCLUDE_INSTALL_DIR} ${INCLUDE_INSTALL_DIR}/debuginterfacesource ${INCLUDE_INSTALL_DIR}/debuginterface
+                      INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfacesource
 )
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 install(TARGETS kdstatemachineeditor_debuginterfacesource EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
