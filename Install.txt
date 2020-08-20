@@ -41,7 +41,7 @@ Building on Windows with mingw:
 == Optional Dependencies ==
 The KDAB State Machine Editor Library relies on optional (FOSS) dependencies
 to provide some of its functionality.  For example, you'll need the Graphviz
-visualization software (http://www.graphviz.org) for the state chart automatic
+visualization software (https://www.graphviz.org) for the state chart automatic
 layout feature.
 
 When you run cmake it will inform you about missing dependencies.

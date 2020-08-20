@@ -1,7 +1,7 @@
 /**
  * Copy of the infamous traffic light example from Qt
  *
- * See http://doc.qt.io/qt-5/qtwidgets-statemachine-trafficlight-example.html
+ * See https://doc.qt.io/qt-5/qtwidgets-statemachine-trafficlight-example.html
  */
 
 #include "trafficlight.h"
