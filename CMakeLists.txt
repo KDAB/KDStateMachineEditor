@@ -49,7 +49,7 @@ project(kdstatemachineeditor CXX C)
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
 set(KDSME_VERSION_MINOR "2")
-set(KDSME_VERSION_PATCH "8")
+set(KDSME_VERSION_PATCH "9")
 set(KDSME_VERSION "${KDSME_VERSION_MAJOR}.${KDSME_VERSION_MINOR}.${KDSME_VERSION_PATCH}")
 set(KDSME_VERSION_STRING "${KDSME_VERSION}")
 set(KDSME_SOVERSION "1") #means the 1.x ABI is frozen. ABI changes will must go to version 2
