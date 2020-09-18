@@ -40,10 +40,11 @@ https://github.com/KDAB/KDStateMachineEditor
 
 Licensing
 =========
-The KDAB State Machine Editor Library is (C) 2014-2020 Klarälvdalens Datakonsult AB (KDAB),
-and is available under the terms of the LGPL 2.1. See LICENSE.LGPL.txt for license details.
+The KDAB State Machine Editor Library is (C) 2014-2020 Klarälvdalens Datakonsult AB (KDAB), and
+is available under the terms of the LGPL 2.1. See LICENSES/LGPL-2.1-only.txt for license details.
 
-Commercial licensing terms are available in the included file LICENSE.txt.
+Commercial licensing terms are available in the included file
+LICENSES/LicenseRef-KDAB-KDStateMachineEditor.txt.
 
 For terms of redistribution, refer to the corresponding license agreement.
 
