@@ -1,6 +1,7 @@
 Version 1.2.8:
 --------------
- * Keeping it building with Qt5.15
+ * Support for Qt5.15
+ * REUSE compliant licensing
 
 Version 1.2.7:
 --------------
