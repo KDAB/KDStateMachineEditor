@@ -33,7 +33,8 @@ KDAB will happily accept external contributions, but substantial
 contributions will require a signed Copyright Assignment Agreement
 (see docs/KDStateMachineEditor-CopyrightAssignmentForm.docx).
 
-Contact info@kdab.com for more information.
+Contact info@kdab.com for more information about the Copyright Assignment
+Agreement.
 
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDStateMachineEditor
