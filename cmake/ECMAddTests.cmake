@@ -53,31 +53,10 @@
 # Since pre-1.0.0.
 
 #=============================================================================
-# Copyright 2013 Alexander Richardson <arichardson.kde@gmail.com>
-# Copyright 2015 Alex Merry <alex.merry@kde.org>
+# SPDX-FileCopyrightText: 2013 Alexander Richardson <arichardson.kde@gmail.com>
+# SPDX-FileCopyrightText: 2015 Alex Merry <alex.merry@kde.org>
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-#
-# 1. Redistributions of source code must retain the copyright
-#    notice, this list of conditions and the following disclaimer.
-# 2. Redistributions in binary form must reproduce the copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-# 3. The name of the author may not be used to endorse or promote products
-#    derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# SPDX-License-Identifier: BSD-3-Clause
 
 include(CMakeParseArguments)
 include(ECMMarkAsTest)
@@ -114,6 +93,15 @@ function(ecm_add_test)
   add_test(NAME ${_testname} COMMAND ${_targetname})
   target_link_libraries(${_targetname} ${ARG_LINK_LIBRARIES})
   ecm_mark_as_test(${_targetname})
+  if (CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+    if(CMAKE_HOST_SYSTEM MATCHES "Windows")
+      set(PATHSEP ";")
+    else() # e.g. Linux
+      set(PATHSEP ":")
+    endif()
+    set(_plugin_path $ENV{QT_PLUGIN_PATH})
+    set_property(TEST ${_testname} PROPERTY ENVIRONMENT QT_PLUGIN_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}${PATHSEP}${_plugin_path})
+  endif()
   if (ARG_TARGET_NAME_VAR)
     set(${ARG_TARGET_NAME_VAR} "${_targetname}" PARENT_SCOPE)
   endif()

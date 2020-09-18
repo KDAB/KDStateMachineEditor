@@ -1,3 +1,14 @@
+#
+# SPDX-FileCopyrightText: 2009 Johns Hopkins University (JHU), All Rights Reserved.
+# SPDX-License-Identifier: LicenseRef-CISST
+
+# --- begin cisst license - do not edit ---
+#
+# This software is provided "as is" under an open source license, with no warranty.
+# The complete license can be found in LICENSES/LicenseRef-CISST.txt.
+#
+# --- end cisst license ---
+
 include("${CMAKE_CURRENT_LIST_DIR}/Toolchain-QNX-common.cmake")
 
 # QNX 6.6.0 ships with a QCC 4.7.3 (based on the same GCC version)

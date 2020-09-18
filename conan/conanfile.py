@@ -19,9 +19,9 @@ from conans import ConanFile, CMake, tools
 class KDStateMachineEditorConan(ConanFile):
     name = "KDStateMachineEditor"
     version = "1.2.8"
-    license = ("https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSE.txt,"
-               "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSE.LGPL.txt,"
-               "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSE.BSD3.txt").format(version)
+    license = ("https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/LicenseRef-KDAB-KDStateMachineEditor.txt,"
+               "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/LGPL-2.1-only.txt,"
+               "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/BSD-3-Clause.txt").format(version)
     author = "Klaralvdalens Datakonsult AB (KDAB) info@kdab.com"
     url = "https://github.com/KDAB/KDStateMachineEditor.git"
     description = "The KDAB State Machine Editor Library is a framework that can be used to help develop full-featured State Machine Editing graphical user interfaces and tools."

@@ -13,13 +13,16 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
+# qhelpgenerator
 find_program(QHELPGEN_EXECUTABLE qhelpgenerator
   HINTS ${QT_INSTALL_BINS}
 )
 
-if(NOT QHELPGEN_EXECUTABLE)
-  message(STATUS "Unable to build API documentation in qch format.")
-  message(STATUS "qhelpgenerator exectuable: ${QHELPGEN_EXECUTABLE}")
+if(QHELPGEN_EXECUTABLE)
+  set(HAVE_QHELPGEN "YES")
+else()
+  set(HAVE_QHELPGEN "NO")
+  message(STATUS "Unable to generate the API documentation in qch format. To fix, install the qthelpgenerator program which comes with Qt5.")
 endif()
 
 # Doxygen
