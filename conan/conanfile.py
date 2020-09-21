@@ -43,7 +43,7 @@ class KDStateMachineEditorConan(ConanFile):
     def source(self):
         git = tools.Git(folder="")
         git.clone(self.url)
-        git.checkout("%s"%self.version)
+        git.checkout("v{0}".format(self.version))
 
     def configure(self):
         # Use kdab flags to match qt package hash
