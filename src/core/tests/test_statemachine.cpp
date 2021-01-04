@@ -17,7 +17,7 @@
 #include "transition.h"
 
 #include <QDebug>
-#include <QtTest>
+#include <QTest>
 
 using namespace KDSME;
 

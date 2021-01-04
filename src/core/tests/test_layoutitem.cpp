@@ -16,7 +16,7 @@
 #include "element.h"
 #include "layout/layoututils.h"
 
-#include <QtTest>
+#include <QTest>
 
 using namespace KDSME;
 

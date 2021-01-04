@@ -29,11 +29,15 @@
 #include "debuginterfaceclient.h"
 #include "qsmdebuginterfacesource.h"
 
-#include <QtTest>
+#include <QTest>
 #include <QFile>
 #include <QFileInfo>
+#include <QFinalState>
 #include <QRemoteObjectNode>
+#include <QSignalSpy>
+#include <QStateMachine>
 #include <QString>
+#include <QTimer>
 
 #define QVERIFY_RETURN(statement, retval) \
     do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)

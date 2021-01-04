@@ -16,7 +16,8 @@
 #include "objecttreemodel.h"
 
 #include <QDebug>
-#include <QtTest>
+#include <QSignalSpy>
+#include <QTest>
 
 using namespace KDSME;
 

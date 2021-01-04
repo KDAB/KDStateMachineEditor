@@ -26,7 +26,7 @@
 #include "state.h"
 #include "transition.h"
 
-#include <QtTest>
+#include <QTest>
 #include <QFile>
 #include <QFileInfo>
 

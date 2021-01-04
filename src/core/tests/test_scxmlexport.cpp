@@ -20,9 +20,10 @@
 #include "transition.h"
 
 #include <QDebug>
-#include <QtTest>
+#include <QTest>
 
 #ifdef USE_QT_XMLPATTERNS_LIB
+#include <QBuffer>
 #include <QXmlQuery>
 #endif
 

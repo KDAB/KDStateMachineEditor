@@ -26,7 +26,8 @@
 
 #include "debug.h"
 #include <QAction>
-#include <QtTest>
+#include <QJsonObject>
+#include <QTest>
 
 using namespace KDSME;
 

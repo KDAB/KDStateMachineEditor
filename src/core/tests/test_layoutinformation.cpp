@@ -19,8 +19,10 @@
 #include "transition.h"
 
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QPainterPath>
-#include <QtTest>
+#include <QTest>
 
 using namespace KDSME;
 

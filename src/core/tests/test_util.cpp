@@ -19,7 +19,7 @@
 
 #include <QDebug>
 #include <QVector>
-#include <QtTest>
+#include <QTest>
 
 using namespace KDSME;
 

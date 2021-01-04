@@ -16,7 +16,7 @@
 #include "debug.h"
 #include "statemachineview.h"
 
-#include <QtTest>
+#include <QTest>
 
 using namespace KDSME;
 
