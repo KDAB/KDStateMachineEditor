@@ -1,7 +1,7 @@
 /*
   This file is part of the KDAB State Machine Editor Library.
 
-  SPDX-FileCopyrightText: 2014-2020 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+  SPDX-FileCopyrightText: 2014-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
   Author: Kevin Funk <kevin.funk@kdab.com>
 
   SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
@@ -26,7 +26,8 @@
 
 #include "debug.h"
 #include <QAction>
-#include <QtTest>
+#include <QJsonObject>
+#include <QTest>
 
 using namespace KDSME;
 

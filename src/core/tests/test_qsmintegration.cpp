@@ -1,7 +1,7 @@
 /*
   This file is part of the KDAB State Machine Editor Library.
 
-  SPDX-FileCopyrightText: 2015-2020 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+  SPDX-FileCopyrightText: 2015-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
   Author: Kevin Funk <kevin.funk@kdab.com>
 
   SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
@@ -29,11 +29,15 @@
 #include "debuginterfaceclient.h"
 #include "qsmdebuginterfacesource.h"
 
-#include <QtTest>
+#include <QTest>
 #include <QFile>
 #include <QFileInfo>
+#include <QFinalState>
 #include <QRemoteObjectNode>
+#include <QSignalSpy>
+#include <QStateMachine>
 #include <QString>
+#include <QTimer>
 
 #define QVERIFY_RETURN(statement, retval) \
     do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
