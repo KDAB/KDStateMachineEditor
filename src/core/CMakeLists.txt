@@ -76,12 +76,13 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES
 #version libraries on Windows
 if(WIN32)
   set(postfix ${KDSME_SOVERSION})
-  set(CMAKE_RELEASE_POSTFIX ${postfix})
-  set_target_properties(kdstatemachineeditor_core PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
-  #append 'd' to debug libraries
-  string(CONCAT postfix ${postfix} "d")
-  set(CMAKE_DEBUG_POSTFIX ${postfix})
-  set_target_properties(kdstatemachineeditor_core PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+  string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
+  if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
+    string(CONCAT postfix ${postfix} "d")
+    set_target_properties(kdstatemachineeditor_core PROPERTIES DEBUG_POSTFIX ${postfix})
+  else()
+    set_target_properties(kdstatemachineeditor_core PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix})
+  endif()
 endif()
 
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)

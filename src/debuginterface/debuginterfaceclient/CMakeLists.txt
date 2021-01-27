@@ -36,12 +36,13 @@ set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES
 #version libraries on Windows
 if(WIN32)
   set(postfix ${KDSME_SOVERSION})
-  set(CMAKE_RELEASE_POSTFIX ${postfix})
-  set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES RELEASE_POSTFIX ${CMAKE_RELEASE_POSTFIX})
-  #append 'd' to debug libraries
-  string(CONCAT postfix ${postfix} "d")
-  set(CMAKE_DEBUG_POSTFIX ${postfix})
-  set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+  string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
+  if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
+    string(CONCAT postfix ${postfix} "d")
+    set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES DEBUG_POSTFIX ${postfix})
+  else()
+    set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix})
+  endif()
 endif()
 
 generate_export_header(kdstatemachineeditor_debuginterfaceclient EXPORT_FILE_NAME kdsme_debuginterfaceclient_export.h BASE_NAME KDSME_DEBUGINTERFACECLIENT)
