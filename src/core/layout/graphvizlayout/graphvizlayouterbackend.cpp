@@ -398,7 +398,7 @@ void GraphvizLayouterBackend::Private::importTransition(Transition* transition, 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
 }
 
-#if WITH_INTERNAL_GRAPHVIZ
+#if WITH_STATIC_GRAPHVIZ
 extern "C" GVC_t* gvContextWithStaticPlugins();
 #endif
 
@@ -518,7 +518,7 @@ GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
 {
     // create context
-#if WITH_INTERNAL_GRAPHVIZ
+#if WITH_STATIC_GRAPHVIZ
     d->m_context = gvContextWithStaticPlugins();
 #else
     d->m_context = gvContext();

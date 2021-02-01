@@ -173,23 +173,37 @@ endif()
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
+set(WITH_STATIC_GRAPHVIZ OFF) # Whether the Graphviz build we're using is static or not -- WIP
+
 if(WITH_INTERNAL_GRAPHVIZ)
   # CMake is really awful here...
+  set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-src)
   set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
-  set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
-  set(link_libraries "dotgen;common;xdot;gvc;cgraph;cdt;pathplan;ortho;pack;label;ingraphs")
-  set(link_libraries_absolute)
-  foreach(link_library ${link_libraries})
-    list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
-  endforeach()
+  if (WITH_STATIC_GRAPHVIZ)
+    set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
+    set(link_libraries "xdot;gvc;cgraph;pathplan")
+    set(link_libraries_absolute)
+    foreach(link_library ${link_libraries})
+      list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
+    endforeach()
+  else()
+    set(cgraph_library "${install_dir}/$<$<BOOL:${WIN32}>:bin:lib>/${CMAKE_SHARED_LIBRARY_PREFIX}cgraph${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    set(link_libraries "${GRAPHVIZ_CGRAPH_LIBRARY}")
+  endif()
   ExternalProject_Add(GraphvizExternalProject
-    GIT_REPOSITORY "https://github.com/krf/graphviz.git"
-    GIT_TAG "9f64e9807d76747dc53db88fcca1fd999c48ec4b"
+    GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
+    GIT_TAG "2.46.0"
     CMAKE_ARGS
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_C_COMPILER_AR=${CMAKE_C_COMPILER_AR}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+      -DCMAKE_CXX_COMPILER_AR=${CMAKE_CXX_COMPILER_AR}
       -DCMAKE_INSTALL_PREFIX=${install_dir}
-      -DCMAKE_IGNORE_PATH="C:/Strawberry/c/bin"
+      $<$<BOOL:${WIN32}>:-DCMAKE_IGNORE_PATH="C:/Strawberry/c/bin">
+      $<$<BOOL:${WIN32}>:-DCMAKE_SYSTEM_PREFIX_PATH=${source_dir}/windows/dependencies/graphviz-build-utilities$<SEMICOLON>${source_dir}/windows/dependencies/graphviz-build-utilities/winflexbison$<SEMICOLON>${source_dir}/windows/dependencies/graphviz-build-utilities/Perl64>
     BUILD_COMMAND "" # skip, make install is enough
+    SOURCE_DIR ${source_dir}
     INSTALL_DIR ${install_dir}
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
 
@@ -198,24 +212,35 @@ if(WITH_INTERNAL_GRAPHVIZ)
     # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
     BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
   )
-  ExternalProject_Get_Property(GraphvizExternalProject source_dir)
   ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
 
   # work-around: https://cmake.org/Bug/view.php?id=15052
   set(include_dir "${install_dir}/include")
   file(MAKE_DIRECTORY ${include_dir})
 
-  add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
-  set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
-    IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
-    INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
-    INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
-    INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
-  )
-  add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
+  if (WITH_STATIC_GRAPHVIZ)
+    add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
+    set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
+      IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
+      INTERFACE_COMPILE_DEFINITIONS "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
+      INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
+      INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
+    )
+    add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
+  else()
+    # in case of a Graphviz dynamic library build, we need to install
+    install(DIRECTORY ${install_dir}/ DESTINATION ".")
+
+    add_library(GRAPHVIZ_CGRAPH_LIBRARY IMPORTED SHARED)
+    set_target_properties(GRAPHVIZ_CGRAPH_LIBRARY PROPERTIES
+      IMPORTED_LOCATION "${cgraph_library}"
+    )
+    add_dependencies(GRAPHVIZ_CGRAPH_LIBRARY GraphvizExternalProject)
+  endif()
+
   set(GRAPHVIZ_FOUND TRUE)
   set(GRAPHVIZ_MAJOR_VERSION 2)
-  set(GRAPHVIZ_MINOR_VERSION 38)
+  set(GRAPHVIZ_MINOR_VERSION 46)
   set(GRAPHVIZ_PATCH_VERSION 0)
 endif()
 

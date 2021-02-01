@@ -50,7 +50,7 @@ if(GRAPHVIZ_FOUND)
     layout/graphvizlayout/graphvizlayouter.cpp
     layout/graphvizlayout/graphvizlayouterbackend.cpp
   )
-  if(WITH_INTERNAL_GRAPHVIZ)
+  if(WITH_STATIC_GRAPHVIZ)
     list(APPEND LIB_SRCS
       layout/graphvizlayout/graphviz_staticbuild.c
     )
@@ -88,7 +88,7 @@ endif()
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(GRAPHVIZ_FOUND)
-  if(WITH_INTERNAL_GRAPHVIZ)
+  if(WITH_STATIC_GRAPHVIZ)
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
   else()
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})

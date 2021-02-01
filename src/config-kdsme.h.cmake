@@ -23,7 +23,7 @@
 
 #cmakedefine01 HAVE_GRAPHVIZ
 
-#cmakedefine01 WITH_INTERNAL_GRAPHVIZ
+#cmakedefine01 WITH_STATIC_GRAPHVIZ
 
 #cmakedefine Qt5RemoteObjects_VERSION QT_VERSION_CHECK(${Qt5RemoteObjects_VERSION_MAJOR}, ${Qt5RemoteObjects_VERSION_MINOR}, ${Qt5RemoteObjects_VERSION_PATCH})
 
