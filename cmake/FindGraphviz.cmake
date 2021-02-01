@@ -42,8 +42,17 @@ endif()
 
 if(NOT _GRAPHVIZ_ROOT)
   if(WIN32)
+      message(STATUS "Trying to find a Graphviz installation by looking up the `dot` tool.")
       find_program(DOT_TOOL dot)
-      get_filename_component(_GRAPHVIZ_ROOT ${DOT_TOOL} PATH)
+      if (DOT_TOOL)
+        get_filename_component(_dotPath ${DOT_TOOL} PATH)
+        message(STATUS "Found dot tool in ${_dotPath}, checking whether it's in a valid Graphviz install")
+        # dot.exe could be installed elsewhere, make sure that's not the case here
+        if (EXISTS "${_dotPath}/include")
+          message("Found valid Graphviz install: ${dotPath}")
+          set(_GRAPHVIZ_ROOT ${dotPath})
+        endif()
+      endif()
   endif()
 endif()
 
