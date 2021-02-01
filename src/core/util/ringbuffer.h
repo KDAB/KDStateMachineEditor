@@ -30,7 +30,7 @@ namespace KDSME {
  * Or, in other words, RingBuffer is a QQueue with limited capacity.
  *
  * The API is essentially simplified version of QVector, which additional methods
- * such as @ref enqueue(), @ref
+ * such as @ref enqueue(), @ref setCapacity()
  *
  * @sa QVector
  */
