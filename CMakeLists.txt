@@ -179,16 +179,22 @@ if(WITH_INTERNAL_GRAPHVIZ)
   # CMake is really awful here...
   set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-src)
   set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
+
+  # work-around: https://cmake.org/Bug/view.php?id=15052
+  set(include_dir "${install_dir}/include")
+  file(MAKE_DIRECTORY ${include_dir})
+  set(GRAPHVIZ_INCLUDE_DIR ${include_dir})
+
   if (WITH_STATIC_GRAPHVIZ)
     set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
-    set(link_libraries "xdot;gvc;cgraph;pathplan")
     set(link_libraries_absolute)
-    foreach(link_library ${link_libraries})
+    foreach(link_library "xdot;gvc;cgraph;pathplan")
       list(APPEND link_libraries_absolute ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX})
     endforeach()
   else()
-    set(cgraph_library "${install_dir}/$<$<BOOL:${WIN32}>:bin:lib>/${CMAKE_SHARED_LIBRARY_PREFIX}cgraph${CMAKE_SHARED_LIBRARY_SUFFIX}")
-    set(link_libraries "${GRAPHVIZ_CGRAPH_LIBRARY}")
+    set(GRAPHVIZ_CGRAPH_LIBRARY "${install_dir}/$<IF:${WIN32},bin,lib>/${CMAKE_SHARED_LIBRARY_PREFIX}cgraph${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    set(GRAPHVIZ_GVC_LIBRARY "${install_dir}/$<IF:${WIN32},bin,lib>/${CMAKE_SHARED_LIBRARY_PREFIX}gvc${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    set(link_libraries_absolute "${GRAPHVIZ_CGRAPH_LIBRARY};${GRAPHVIZ_GVC_LIBRARY}")
   endif()
   ExternalProject_Add(GraphvizExternalProject
     GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
@@ -212,11 +218,6 @@ if(WITH_INTERNAL_GRAPHVIZ)
     # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
     BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
   )
-  ExternalProject_Get_Property(GraphvizExternalProject binary_dir)
-
-  # work-around: https://cmake.org/Bug/view.php?id=15052
-  set(include_dir "${install_dir}/include")
-  file(MAKE_DIRECTORY ${include_dir})
 
   if (WITH_STATIC_GRAPHVIZ)
     add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
@@ -226,16 +227,9 @@ if(WITH_INTERNAL_GRAPHVIZ)
       INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
       INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
     )
-    add_dependencies(GraphvizStaticDotLayoutPlugin GraphvizExternalProject)
   else()
     # in case of a Graphviz dynamic library build, we need to install
     install(DIRECTORY ${install_dir}/ DESTINATION ".")
-
-    add_library(GRAPHVIZ_CGRAPH_LIBRARY IMPORTED SHARED)
-    set_target_properties(GRAPHVIZ_CGRAPH_LIBRARY PROPERTIES
-      IMPORTED_LOCATION "${cgraph_library}"
-    )
-    add_dependencies(GRAPHVIZ_CGRAPH_LIBRARY GraphvizExternalProject)
   endif()
 
   set(GRAPHVIZ_FOUND TRUE)

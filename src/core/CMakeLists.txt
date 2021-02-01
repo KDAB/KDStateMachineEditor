@@ -90,16 +90,12 @@ generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_exp
 if(GRAPHVIZ_FOUND)
   if(WITH_STATIC_GRAPHVIZ)
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
-  else()
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
-    list(APPEND LIB_EXTRA_INCLUDES
-      ${GRAPHVIZ_INCLUDE_DIR}
-      # TODO: Work-around issue in graphviz/types.h header
-      # <cgraph.h> is included there, but it should rather be "cgraph.h"
-      ${GRAPHVIZ_INCLUDE_DIR}/graphviz
-    )
   endif()
-  target_compile_definitions(kdstatemachineeditor_core PRIVATE -DGRAPHVIZ_MAJOR_VERSION=${GRAPHVIZ_MAJOR_VERSION} -DGRAPHVIZ_MINOR_VERSION=${GRAPHVIZ_MINOR_VERSION})
+  target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
+  if(WITH_INTERNAL_GRAPHVIZ)
+      add_dependencies(kdstatemachineeditor_core GraphvizExternalProject)
+  endif()
+  target_include_directories(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_INCLUDE_DIR})
 endif()
 
 set(build_iface_dirs
@@ -120,7 +116,6 @@ target_include_directories(kdstatemachineeditor_core
 target_include_directories(kdstatemachineeditor_core
   SYSTEM PRIVATE
     "${Qt5Qml_PRIVATE_INCLUDE_DIRS}" # qqmlcustomparser_p.h
-    ${LIB_EXTRA_INCLUDES}
 )
 
 install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
