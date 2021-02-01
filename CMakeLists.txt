@@ -202,6 +202,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
     set(GRAPHVIZ_GVC_LIBRARY "${install_dir}/${libfolder}/${CMAKE_SHARED_LIBRARY_PREFIX}gvc${CMAKE_SHARED_LIBRARY_SUFFIX}")
     set(link_libraries_absolute "${GRAPHVIZ_CGRAPH_LIBRARY};${GRAPHVIZ_GVC_LIBRARY}")
   endif()
+
+  set(win_build_utilities ${source_dir}/windows/dependencies/graphviz-build-utilities)
   ExternalProject_Add(GraphvizExternalProject
     GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
     GIT_TAG "2.46.0"
@@ -213,7 +215,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
       -DCMAKE_CXX_COMPILER_AR=${CMAKE_CXX_COMPILER_AR}
       -DCMAKE_INSTALL_PREFIX=${install_dir}
       $<$<BOOL:${WIN32}>:-DCMAKE_IGNORE_PATH="C:/Strawberry/c/bin">
-      $<$<BOOL:${WIN32}>:-DCMAKE_SYSTEM_PREFIX_PATH=${source_dir}/windows/dependencies/graphviz-build-utilities$<SEMICOLON>${source_dir}/windows/dependencies/graphviz-build-utilities/winflexbison$<SEMICOLON>${source_dir}/windows/dependencies/graphviz-build-utilities/Perl64>
+      $<$<BOOL:${WIN32}>:-DCMAKE_SYSTEM_PREFIX_PATH=${win_build_utilities}$<SEMICOLON>${win_build_utilities}/winflexbison$<SEMICOLON>${win_build_utilities}/Perl64$<SEMICOLON>${win_build_utilities}/GnuWin/bin>
     BUILD_COMMAND "" # skip, make install is enough
     SOURCE_DIR ${source_dir}
     INSTALL_DIR ${install_dir}
