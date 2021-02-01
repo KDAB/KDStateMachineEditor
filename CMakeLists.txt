@@ -154,7 +154,7 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
 )
 
 # search for Graphviz
-set(GRAPHVIZ_MIN_VERSION "2.20")
+set(GRAPHVIZ_MIN_VERSION "2.30.1")
 find_package(Graphviz)
 set_package_properties(Graphviz PROPERTIES
     TYPE RECOMMENDED

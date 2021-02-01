@@ -91,13 +91,7 @@ if(GRAPHVIZ_FOUND)
   if(WITH_INTERNAL_GRAPHVIZ)
     target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
   else()
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY})
-    if(GRAPHVIZ_CGRAPH_LIBRARY AND GRAPHVIZ_VERSION VERSION_GREATER 2.30.0)
-      message(STATUS "Enabling use of experimental 'cgraph' library of GraphViz")
-      target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_CGRAPH_LIBRARY})
-    else()
-      target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GRAPH_LIBRARY})
-    endif()
+    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
     list(APPEND LIB_EXTRA_INCLUDES
       ${GRAPHVIZ_INCLUDE_DIR}
       # TODO: Work-around issue in graphviz/types.h header
