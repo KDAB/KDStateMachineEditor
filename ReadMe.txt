@@ -97,8 +97,7 @@ Contact info@kdab.com for more information about the Copyright Assignment Agreem
 Please submit your contributions or issue reports from our GitHub space at
 https://github.com/KDAB/KDStateMachineEditor
 
-Licensing
-=========
+## Licensing
 The KDAB State Machine Editor Library is (C) 2014-2021 Klarälvdalens Datakonsult AB (KDAB), and
 is licensed according to the terms of the [LGPL 2.1](LICENSES/LGPL-2.1-only.txt).
 

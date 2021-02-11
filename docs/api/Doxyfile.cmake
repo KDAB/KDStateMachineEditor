@@ -44,7 +44,7 @@ PROJECT_NUMBER         = @KDSME_VERSION_STRING@
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "A framework for creating Qt State Machine metacode using a graphical user interface"
+PROJECT_BRIEF          =
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -259,7 +259,7 @@ TAB_SIZE               = 4
 # commands \{ and \} for these it is advised to use the version @{ and @} or use
 # a double escape (\\{ and \\})
 
-ALIASES                =
+ALIASES                = "reimp=Reimplemented for internal purposes.\n"
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -835,7 +835,7 @@ WARN_LOGFILE           = doxygen.log
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @CMAKE_SOURCE_DIR@/src \
-                         @CMAKE_CURRENT_SOURCE_DIR@/Mainpage.dox
+                         @CMAKE_SOURCE_DIR@/ReadMe.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -862,7 +862,16 @@ INPUT_ENCODING         = UTF-8
 # C comment), *.py, *.pyw, *.f90, *.f95, *.f03, *.f08, *.f18, *.f, *.for, *.vhd,
 # *.vhdl, *.ucf, *.qsf and *.ice.
 
-FILE_PATTERNS          =
+FILE_PATTERNS          = *.cpp \
+                         *.cc \
+                         *.cxx \
+                         *.h \
+                         *.hh \
+                         *.hxx \
+                         *.hpp \
+                         *.dox \
+                         *.md \
+                         *.png
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -932,7 +941,8 @@ EXAMPLE_RECURSIVE      = YES
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@ \
+                         @CMAKE_SOURCE_DIR@/screenshots
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -988,7 +998,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE =
+USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/ReadMe.md"
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -2217,9 +2227,9 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               = @QDOC_TAG_DIR@/qtcore/qtcore.tags=qthelp://org.qt-project.qtcore/qtcore/ \
-                         @QDOC_TAG_DIR@/qtgui/qtgui.tags=qthelp://org.qt-project.qtgui/qtgui/ \
-                         @QDOC_TAG_DIR@/qtwidgets/qtwidgets.tags=qthelp://org.qt-project.qtwidgets/qtwidgets/
+TAGFILES               = @QDOC_TAG_DIR@/qtcore/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         @QDOC_TAG_DIR@/qtgui/qtgui.tags=https://doc.qt.io/qt-5/ \
+                         @QDOC_TAG_DIR@/qtwidgets/qtwidgets.tags=https://doc.qt.io/qt-5/
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to
