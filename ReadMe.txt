@@ -90,7 +90,7 @@ Zooming into child state (machines) is another feature; all backed by KDStateMac
 ## Contributing
 
 KDAB will happily accept external contributions, but substantial contributions require a signed
-[Copyright Assignment Agreement](docs/KDStateMachineEditor-CopyrightAssignmentForm.docx).
+[Copyright Assignment Agreement](docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf).
 
 Contact info@kdab.com for more information about the Copyright Assignment Agreement.
 
