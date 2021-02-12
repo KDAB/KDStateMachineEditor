@@ -1,6 +1,7 @@
-Version 1.2.9: (unreleased)
+Version 1.3.0: (unreleased)
 --------------
- * no changes yet
+ * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True
+   (Bad side-effect: allows dynamic builds only)
 
 Version 1.2.8:
 --------------
