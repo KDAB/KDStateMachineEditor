@@ -87,7 +87,7 @@ include(ECMGeneratePriFile)
 set(REQUIRED_QT_VERSION "5.3")
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Quick QuickWidgets Test Widgets)
-include(QtInstallPaths) #to set QT_INSTALL_FOO variables
+include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
 find_package(Qt5RemoteObjects 5.4 CONFIG QUIET)
 set_package_properties(Qt5RemoteObjects PROPERTIES
