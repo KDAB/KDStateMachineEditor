@@ -191,7 +191,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     set(libfolder "bin")
   endif()
 
-  if (WITH_STATIC_GRAPHVIZ)
+  if(WITH_STATIC_GRAPHVIZ)
     set(staticdotlayoutplugin_library "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}")
     set(link_libraries_absolute)
     foreach(link_library "xdot;gvc;cgraph;pathplan")
@@ -229,7 +229,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
   )
 
-  if (WITH_STATIC_GRAPHVIZ)
+  if(WITH_STATIC_GRAPHVIZ)
     add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
     set_target_properties(GraphvizStaticDotLayoutPlugin PROPERTIES
       IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
@@ -379,3 +379,6 @@ if(WIN32)
   )
 endif()
 include(CPack)
+
+# Add uninstall target
+include(ECMUninstallTarget)
