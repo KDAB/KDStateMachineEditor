@@ -324,25 +324,29 @@ if(BUILD_DOCS)
 endif()
 
 set(CONFIG_DIR "KDSME")
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfigVersion.cmake"
-  VERSION ${KDSME_VERSION}
+set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/${CONFIG_DIR})
+
+# Generate library version files
+include(ECMSetupVersion)
+ecm_setup_version(
+  ${KDSME_VERSION}
+  VARIABLE_PREFIX KDSME
+  VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kdsme_version.h"
+  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfigVersion.cmake"
+  SOVERSION ${KDSME_SOVERSION}
   COMPATIBILITY AnyNewerVersion
 )
-configure_file(cmake/KDSMEConfig.cmake
-  "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfig.cmake"
-  COPYONLY
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/kdsme_version.h" DESTINATION ${INCLUDE_INSTALL_DIR})
+
+install(EXPORT KDSME_TARGETS
+        FILE KDSMETargets.cmake
+        NAMESPACE KDSME::
+        DESTINATION ${CMAKECONFIG_INSTALL_DIR}
 )
 
-set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/${CONFIG_DIR})
-install(EXPORT KDSME_TARGETS
-  NAMESPACE
-    KDSME::
-  FILE
-    KDSMETargets.cmake
-  DESTINATION
-    ${CMAKECONFIG_INSTALL_DIR}
-)
+configure_file(cmake/KDSMEConfig.cmake
+  "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfig.cmake" COPYONLY)
+
 install(
   FILES
     cmake/KDSMEConfig.cmake

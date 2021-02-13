@@ -3,6 +3,8 @@ Version 1.3.0: (unreleased)
  * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True
    (Bad side-effect: allows dynamic builds only)
  * Buildsystem - add uninstall target
+ * Install a version header (kdsme_version.h) that defines a version string
+   and other useful versioning macros
 
 Version 1.2.8:
 --------------
