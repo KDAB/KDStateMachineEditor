@@ -94,13 +94,14 @@ function(ecm_add_test)
   target_link_libraries(${_targetname} ${ARG_LINK_LIBRARIES})
   ecm_mark_as_test(${_targetname})
   if (CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    if(CMAKE_HOST_SYSTEM MATCHES "Windows")
-      set(PATHSEP ";")
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+       # https://stackoverflow.com/questions/59862894/how-do-i-make-a-list-in-cmake-with-the-semicolon-value
+       set(PATHSEP "\\\;") # Don't want cmake to treat it like a list
     else() # e.g. Linux
       set(PATHSEP ":")
     endif()
-    set(_plugin_path $ENV{QT_PLUGIN_PATH})
-    set_property(TEST ${_testname} PROPERTY ENVIRONMENT QT_PLUGIN_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}${PATHSEP}${_plugin_path})
+    set(_plugin_path "$ENV{QT_PLUGIN_PATH}")
+    set_property(TEST ${_testname} PROPERTY ENVIRONMENT "QT_PLUGIN_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}${PATHSEP}${_plugin_path}")
   endif()
   if (ARG_TARGET_NAME_VAR)
     set(${ARG_TARGET_NAME_VAR} "${_targetname}" PARENT_SCOPE)
