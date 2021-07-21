@@ -19,13 +19,13 @@
 
 #include "kdsme_view_export.h"
 #include "abstractscene.h"
+#include "layoutproperties.h"
 
 #include <QObject>
 
 namespace KDSME {
 class Element;
 class Layouter;
-class LayoutProperties;
 class State;
 class StateMachine;
 class StateModel;

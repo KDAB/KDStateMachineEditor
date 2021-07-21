@@ -18,11 +18,11 @@
 
 #include "kdsme_view_export.h"
 
+#include <QAbstractItemModel>
 #include <QQuickItem>
 #include <QPointer>
 
 QT_BEGIN_NAMESPACE
-class QAbstractItemModel;
 class QItemSelection;
 class QItemSelectionModel;
 class QModelIndex;

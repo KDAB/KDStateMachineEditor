@@ -23,6 +23,15 @@
 
 using namespace KDSME;
 
+static void doOutput(QTextStream &qOut, const QByteArray &output)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    qOut << output << Qt::endl;
+#else
+    qOut << output << endl;
+#endif
+}
+
 /**
  * @brief Instantiate a state chart by hand and then export it to different formats
  */
@@ -49,9 +58,10 @@ int main()
         return 1;
     }
 
-    qOut << "=== Output [QML] ===" << endl;
-    qOut << qmlOutput << endl;
-    qOut << endl;
+    doOutput(qOut, "=== Output [QML] ===");
+    doOutput(qOut, qmlOutput);
+    doOutput(qOut, {});
+
     //! [Export to QML]
 
     //! [Export to SCXML]
@@ -62,8 +72,8 @@ int main()
         return 1;
     }
 
-    qOut << "=== Output [SCXML] ===" << endl;
-    qOut << scxmlOutput << endl;
-    qOut << endl;
+    doOutput(qOut, "=== Output [SCXML] ===");
+    doOutput(qOut, scxmlOutput);
+    doOutput(qOut, {});
     //! [Export to SCXML]
 }

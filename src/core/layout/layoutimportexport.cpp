@@ -20,6 +20,8 @@
 #include "transition.h"
 
 #include "debug.h"
+
+#include <QIODevice>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QPainterPath>

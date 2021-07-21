@@ -19,6 +19,7 @@
 #include "kdsme_view_export.h"
 
 #include "element.h"
+#include "elementmodel.h"
 
 #include <QObject>
 
@@ -31,7 +32,6 @@ class ModifyElementCommand;
 class ModifyTransitionCommand;
 class ReparentElementCommand;
 class ChangeStateMachineCommand;
-class StateModel;
 class Transition;
 class StateMachineScene;
 }

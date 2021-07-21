@@ -20,9 +20,9 @@
 
 #include <QObject>
 
-namespace KDSME {
+#include "widgets/statemachineview.h"
 
-class StateMachineView;
+namespace KDSME {
 
 class KDSME_VIEW_EXPORT AbstractController : public QObject
 {

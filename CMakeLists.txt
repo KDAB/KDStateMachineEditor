@@ -23,6 +23,10 @@
 #  In the case where a separate Graphviz installation is not practical or desired.
 #  Default=true if Graphviz is not located; false otherwise
 #
+# -DBUILD_QT6=[true|false]
+#  Build against Qt6 rather than Qt5
+#  Default=false (Qt5 will be used even if Qt6 is available)
+#
 # -DBUILD_DOCS=[true|false]
 #  Build the documentation. Documentation is never built when cross-compiling.
 #  Default=true
@@ -36,7 +40,14 @@
 #  Note: disabling tests also disables building the kdstatemachineeditor test application.
 #  Default=True
 #
-cmake_minimum_required(VERSION 2.8.12)
+option(BUILD_QT6 "Build against Qt 6" OFF)
+
+if(BUILD_QT6)
+  cmake_minimum_required(VERSION 3.15)
+else()
+  cmake_minimum_required(VERSION 3.1)
+endif()
+
 if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW)
 endif()
@@ -45,6 +56,7 @@ if(POLICY CMP0063)
 endif()
 
 project(kdstatemachineeditor CXX C)
+
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
@@ -83,43 +95,49 @@ include(GNUInstallDirs)
 include(ExternalProject)
 include(MacroLogFeature)
 include(ECMAddTests)
-include(ECMGeneratePriFile)
 
-set(REQUIRED_QT_VERSION "5.3")
+if(BUILD_QT6)
+  cmake_policy(SET CMP0071 NEW)
+  set(REQUIRED_QT_VERSION "6.1.0")
+  find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets StateMachine)
+  set(QT_MAJOR_VERSION 6)
+  set(KDSME_LIBRARY_QTID "-qt6")
 
-set(QT_MAJOR_VERSION 5) #needed for KDQtInstallPaths
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Quick QuickWidgets Test Widgets)
-include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
+  find_package(Qt6Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
+  set_package_properties(Qt6Core5Compat PROPERTIES
+    TYPE OPTIONAL
+    DESCRIPTION "Qt6-Qt5 compatibility module"
+    PURPOSE "Needed for the layoutinformation unit test"
+  )
+else()
+  include(ECMGeneratePriFile)
+  set(REQUIRED_QT_VERSION "5.9")
+  set(QT_MAJOR_VERSION 5) #needed for KDQtInstallPaths
+  find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
+  include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
+  set(KDSME_LIBRARY_QTID "")
+endif()
 
-find_package(Qt5RemoteObjects 5.4 CONFIG QUIET)
-set_package_properties(Qt5RemoteObjects PROPERTIES
+find_package(Qt${QT_MAJOR_VERSION}RemoteObjects ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${QT_MAJOR_VERSION}RemoteObjects PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
-if(Qt5RemoteObjects_FOUND)
-  string(REPLACE "." ";" VERSION_LIST ${Qt5RemoteObjects_VERSION})
-  list(GET VERSION_LIST 0 Qt5RemoteObjects_VERSION_MAJOR)
-  list(GET VERSION_LIST 1 Qt5RemoteObjects_VERSION_MINOR)
-  list(GET VERSION_LIST 2 Qt5RemoteObjects_VERSION_PATCH)
-endif()
 
-find_package(Qt5Scxml 5.8 CONFIG QUIET)
-set_package_properties(Qt5Scxml PROPERTIES
+find_package(Qt${QT_MAJOR_VERSION}Scxml ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${QT_MAJOR_VERSION}Scxml PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt SCXML module"
-  PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt5RemoteObjects)"
+  PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
 
-find_package(Qt5XmlPatterns ${REQUIRED_QT_VERSION} CONFIG QUIET)
-set_package_properties(Qt5XmlPatterns PROPERTIES
+find_package(Qt${QT_MAJOR_VERSION}XmlPatterns ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${QT_MAJOR_VERSION}XmlPatterns PROPERTIES
   TYPE OPTIONAL
-  DESCRIPTION "Qt5 XmlPatterns library"
+  DESCRIPTION "Qt XmlPatterns library"
   PURPOSE "Required for unit tests dealing with XML input/output"
 )
-
-#TODO: Remove. not used.
-option(DEPLOY_DEPENDENCIES "Install Qt5 and graphviz" ON)
 
 if(CMAKE_CROSSCOMPILING)
   set(BUILD_DOCS OFF)
@@ -136,12 +154,14 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Automatically include the current dirs in the INTERFACE_INCLUDE_DIRS of targets.
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 set(CMAKE_AUTOMOC TRUE)
+set(CMAKE_AUTOUIC TRUE)
+set(CMAKE_AUTORCC TRUE)
 
 set(BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
 set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "Library install destination.")
-set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME})
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}${KDSME_LIBRARY_QTID})
 set(XDG_DATA_INSTALL_DIR ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME})
-set(QCH_INSTALL_DIR ${CMAKE_INSTALL_DOCDIR} CACHE STRING "Install location of Qt Assistant help files.")
+set(QCH_INSTALL_DIR ${CMAKE_INSTALL_DOCDIR}${KDSME_LIBRARY_QTID} CACHE STRING "Install location of Qt Assistant help files.")
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
@@ -152,7 +172,7 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT Devel
-  BUNDLE DESTINATION "/Applications/Qt5"
+  BUNDLE DESTINATION "/Applications/Qt${QT_MAJOR_VERSION}"
 )
 
 # search for Graphviz
@@ -280,10 +300,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   check_cxx_compiler_flag(-std=gnu++0x HAVE_GXX_GNUXX11)
   check_cxx_compiler_flag(-std=c++0x HAVE_GXX_CXX11)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -Wextra -Woverloaded-virtual -Winit-self -Wmissing-include-dirs -Wunused -Wno-div-by-zero -Wundef -Wpointer-arith -Wmissing-noreturn -Werror=return-type -Wswitch")
-  if(HAVE_GXX_GNUXX11) # QNX needs gnu++0x rather than c++0x for compiling QML V4 private headers
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
-  elseif(HAVE_GXX_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+  if(NOT BUILD_QT6)
+    if(HAVE_GXX_GNUXX11) # QNX needs gnu++0x rather than c++0x for compiling QML V4 private headers
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+    elseif(HAVE_GXX_CXX11)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+    endif()
   endif()
   if(MINGW)
     # mingw will error out on the crazy casts in probe.cpp without this
@@ -325,7 +347,7 @@ if(BUILD_DOCS)
   add_subdirectory(docs)
 endif()
 
-set(CONFIG_DIR "KDSME")
+set(CONFIG_DIR "KDSME${KDSME_LIBRARY_QTID}")
 set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/${CONFIG_DIR})
 
 # Generate library version files
@@ -338,7 +360,10 @@ ecm_setup_version(
   SOVERSION ${KDSME_SOVERSION}
   COMPATIBILITY AnyNewerVersion
 )
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/kdsme_version.h" DESTINATION ${INCLUDE_INSTALL_DIR})
+configure_file(cmake/KDSMEConfig.cmake
+  "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfig.cmake"
+  @ONLY
+)
 
 install(EXPORT KDSME_TARGETS
         FILE KDSMETargets.cmake
@@ -351,7 +376,7 @@ configure_file(cmake/KDSMEConfig.cmake
 
 install(
   FILES
-    cmake/KDSMEConfig.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfig.cmake"
     cmake/KDSMEFindDependencyMacro.cmake
     "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSMEConfigVersion.cmake"
   DESTINATION

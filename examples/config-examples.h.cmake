@@ -20,6 +20,4 @@
 
 #cmakedefine TEST_DATA_DIR "${TEST_DATA_DIR}"
 
-#cmakedefine Qt5RemoteObjects_VERSION QT_VERSION_CHECK(${Qt5RemoteObjects_VERSION_MAJOR}, ${Qt5RemoteObjects_VERSION_MINOR}, ${Qt5RemoteObjects_VERSION_PATCH})
-
 #endif

@@ -15,8 +15,6 @@
 
 #include "abstractcontroller.h"
 
-#include "widgets/statemachineview.h"
-
 using namespace KDSME;
 
 struct AbstractController::Private

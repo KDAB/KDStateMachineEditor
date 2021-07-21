@@ -16,16 +16,23 @@
 set(DEBUGINTERFACECLIENT_SRCS
   debuginterfaceclient.cpp
 )
-qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
+if (NOT BUILD_QT6)
+  qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
+endif()
 
 add_library(kdstatemachineeditor_debuginterfaceclient SHARED ${DEBUGINTERFACECLIENT_SRCS})
+
+if (BUILD_QT6)
+  qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
+endif()
+
 add_library(KDSME::DebugInterfaceClient ALIAS kdstatemachineeditor_debuginterfaceclient)
 target_link_libraries(kdstatemachineeditor_debuginterfaceclient
   LINK_PRIVATE
-    Qt5::RemoteObjects
+    Qt${QT_MAJOR_VERSION}::RemoteObjects
   LINK_PUBLIC
     KDSME::Core
-    Qt5::Core
+    Qt${QT_MAJOR_VERSION}::Core
 )
 set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES
   SOVERSION ${KDSME_SOVERSION}
@@ -55,13 +62,16 @@ target_include_directories(kdstatemachineeditor_debuginterfaceclient
     "$<BUILD_INTERFACE:${build_iface_dirs}>"
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
 )
-ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient
-                      LIB_NAME kdstatemachineeditor_debuginterfaceclient
-                      DEPS ""
-                      FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
-)
-install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+if (NOT BUILD_QT6)
+  ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient
+                        LIB_NAME kdstatemachineeditor_debuginterfaceclient
+                        DEPS ""
+                        FILENAME_VAR PRI_FILENAME
+                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
+  )
+  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+endif()
+set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfaceclient${KDSME_LIBRARY_QTID}")
 install(TARGETS kdstatemachineeditor_debuginterfaceclient EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
   install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>" DESTINATION ${LIB_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)

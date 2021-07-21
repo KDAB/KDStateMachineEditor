@@ -15,9 +15,7 @@
 
 #include "runtimecontroller.h"
 
-#include "state.h"
 #include "ringbuffer.h"
-#include "transition.h"
 
 using namespace KDSME;
 

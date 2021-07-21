@@ -56,10 +56,7 @@ set(LIB_UIS
   widgets/transitionpropertyeditor.ui
 )
 
-qt5_wrap_ui(LIB_SRCS ${LIB_UIS})
-
 set(LIB_QRCS kdsme.qrc)
-qt5_add_resources(LIB_SRCS ${LIB_QRCS})
 
 # Make the files show up in Qt Creator
 set(QML_FILES
@@ -85,13 +82,15 @@ set(QML_FILES
   qml/Scene.qml
 )
 
-add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_QRCS} ${QML_FILES})
+add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_UIS} ${LIB_QRCS} ${QML_FILES})
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(kdstatemachineeditor_view
+  LINK_PRIVATE
+    Qt${QT_MAJOR_VERSION}::GuiPrivate
   LINK_PUBLIC
-    Qt5::Quick
-    Qt5::QuickWidgets
-    Qt5::Widgets
+    Qt${QT_MAJOR_VERSION}::Quick
+    Qt${QT_MAJOR_VERSION}::QuickWidgets
+    Qt${QT_MAJOR_VERSION}::Widgets
     kdstatemachineeditor_core
 )
 
@@ -128,9 +127,8 @@ target_include_directories(kdstatemachineeditor_view
     # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
 )
-target_include_directories(kdstatemachineeditor_view
-  SYSTEM PRIVATE ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-)
+
+set_target_properties(kdstatemachineeditor_view PROPERTIES OUTPUT_NAME "kdstatemachineeditor_view${KDSME_LIBRARY_QTID}")
 
 install(TARGETS kdstatemachineeditor_view EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
@@ -152,14 +150,15 @@ install(FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/view
 )
 
-ecm_generate_pri_file(BASE_NAME KDSMEView
-                      LIB_NAME kdstatemachineeditor_view
-                      DEPS "core gui qml quickwidgets widgets KDSMECore"
-                      FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/view
-)
-
-install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+if (NOT BUILD_QT6)
+  ecm_generate_pri_file(BASE_NAME KDSMEView
+                        LIB_NAME kdstatemachineeditor_view
+                        DEPS "core gui qml quickwidgets widgets KDSMECore"
+                        FILENAME_VAR PRI_FILENAME
+                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/view
+  )
+  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+endif()
 
 if(BUILD_TESTS)
   add_subdirectory(tests)

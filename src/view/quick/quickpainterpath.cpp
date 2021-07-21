@@ -125,7 +125,7 @@ void QuickPainterPath::updateState(const QPainterPath& path)
 QuickPainterPathGeometryItem::QuickPainterPathGeometryItem(QQuickItem* parent)
     : QuickGeometryItem(parent)
 {
-    setDrawingMode(GL_LINE_STRIP);
+    setDrawingMode(LineStrip);
 }
 
 

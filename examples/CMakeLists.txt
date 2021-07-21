@@ -24,9 +24,9 @@ configure_file(
 
 add_subdirectory(layoutexport)
 add_subdirectory(export)
-if(Qt5RemoteObjects_FOUND)
+if(Qt${QT_MAJOR_VERSION}RemoteObjects_FOUND)
     add_subdirectory(qsmdebugger)
-    if(Qt5Scxml_FOUND)
+    if(Qt${QT_MAJOR_VERSION}Scxml_FOUND)
         add_subdirectory(qscxmldebugger)
     endif()
 endif()

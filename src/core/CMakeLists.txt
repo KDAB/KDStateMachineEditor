@@ -62,11 +62,19 @@ add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(kdstatemachineeditor_core
   LINK_PRIVATE
-    Qt5::Quick # TODO: Get rid off this
+    Qt${QT_MAJOR_VERSION}::Quick # TODO: Get rid off this
   LINK_PUBLIC
-    Qt5::Core
-    Qt5::Gui
+    Qt${QT_MAJOR_VERSION}::Core
+    Qt${QT_MAJOR_VERSION}::Gui
 )
+
+if (BUILD_QT6)
+  target_link_libraries(kdstatemachineeditor_core
+    LINK_PRIVATE
+      Qt6::StateMachine
+  )
+endif()
+
 set_target_properties(kdstatemachineeditor_core PROPERTIES
   SOVERSION ${KDSME_SOVERSION}
   VERSION ${KDSME_SOVERSION}
@@ -113,10 +121,8 @@ target_include_directories(kdstatemachineeditor_core
     # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
 )
-target_include_directories(kdstatemachineeditor_core
-  SYSTEM PRIVATE
-    "${Qt5Qml_PRIVATE_INCLUDE_DIRS}" # qqmlcustomparser_p.h
-)
+
+set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatemachineeditor_core${KDSME_LIBRARY_QTID}")
 
 install(TARGETS kdstatemachineeditor_core EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 if(MSVC)
@@ -146,14 +152,15 @@ install(FILES
   DESTINATION ${INCLUDE_INSTALL_DIR}/core
 )
 
-ecm_generate_pri_file(BASE_NAME KDSMECore
-                      LIB_NAME kdstatemachineeditor_core
-                      DEPS "core gui"
-                      FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/core
-)
-
-install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+if (NOT BUILD_QT6)
+  ecm_generate_pri_file(BASE_NAME KDSMECore
+                        LIB_NAME kdstatemachineeditor_core
+                        DEPS "core gui"
+                        FILENAME_VAR PRI_FILENAME
+                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/core
+  )
+  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+endif()
 
 if(BUILD_TESTS)
   add_subdirectory(tests)

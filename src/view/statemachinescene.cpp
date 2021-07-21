@@ -22,7 +22,6 @@
 #include "state.h"
 #include "transition.h"
 #include "layouter.h"
-#include "layoutproperties.h"
 #include "layoututils.h"
 #include "elementmodel.h"
 #include "elementwalker.h"
@@ -37,9 +36,9 @@
 #include <QDir>
 #include <QElapsedTimer>
 #include <QItemSelectionModel>
-#include <QMatrix>
 #include <QPainterPath>
 #include <QSortFilterProxyModel>
+#include <QTransform>
 #include <QQmlEngine>
 
 using namespace KDSME;
@@ -243,7 +242,7 @@ void StateMachineScene::Private::zoomByInternal(qreal scale)
 {
     auto root = q->rootState();
 
-    QMatrix matrix;
+    QTransform matrix;
     matrix.scale(scale, scale);
 
     auto oldViewState = q->viewState();

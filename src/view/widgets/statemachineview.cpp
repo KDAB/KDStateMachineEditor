@@ -130,7 +130,6 @@ StateMachineView::StateMachineView(QWidget* parent)
 
     // creatable types
     qmlRegisterType<DepthChecker>(KDSME_QML_NAMESPACE, 1, 0, "DepthChecker");
-    qmlRegisterType<QAbstractItemModel>();
     qmlRegisterType<QuickMaskedMouseArea>(KDSME_QML_NAMESPACE, 1, 0, "MaskedMouseArea");
     qmlRegisterType<QuickPainterPath>(KDSME_QML_NAMESPACE, 1, 0, "PainterPath");
     qmlRegisterType<QuickPainterPathGeometryItem>(KDSME_QML_NAMESPACE, 1, 0, "PainterPathGeometry");

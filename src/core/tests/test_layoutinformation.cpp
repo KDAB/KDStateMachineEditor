@@ -24,6 +24,10 @@
 #include <QPainterPath>
 #include <QTest>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QBinaryJson>
+#endif
+
 using namespace KDSME;
 
 namespace {
@@ -129,7 +133,11 @@ void LayoutInformationTest::testLayoutInformation()
     }
 
     QJsonDocument doc(LayoutImportExport::exportLayout(&rootState));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    LayoutImportExport::importLayout(QBinaryJson::fromBinaryData(QBinaryJson::toBinaryData(doc)).object(), &copyState);
+#else
     LayoutImportExport::importLayout(QJsonDocument::fromBinaryData(doc.toBinaryData()).object(), &copyState);
+#endif
     compare(&rootState, &copyState);
 }
 

@@ -79,7 +79,7 @@ QRectF GeometryUtils::boundingRect(QSGGeometry* geometry)
 QuickGeometryItem::QuickGeometryItem(QObject* parent)
     : QObject(parent)
     , m_vertexDataType(Point2DType)
-    , m_drawingMode(GL_TRIANGLE_STRIP)
+    , m_drawingMode(TriangleStrip)
     , m_lineWidth(1.f)
 {
 }
@@ -115,12 +115,12 @@ void QuickGeometryItem::setVertexDataType(QuickGeometryItem::VertexDataType type
     emit changed();
 }
 
-GLenum QuickGeometryItem::drawingMode() const
+QuickGeometryItem::DrawingMode QuickGeometryItem::drawingMode() const
 {
     return m_drawingMode;
 }
 
-void QuickGeometryItem::setDrawingMode(GLenum drawingMode)
+void QuickGeometryItem::setDrawingMode(DrawingMode drawingMode)
 {
     if (m_drawingMode == drawingMode)
         return;

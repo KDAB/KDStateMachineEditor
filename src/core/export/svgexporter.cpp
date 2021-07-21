@@ -165,7 +165,11 @@ bool SvgExporterPrivate::writeStateMachine(StateMachine* machine)
     writeSvgRect(machine->boundingRect());
     const QFontMetricsF metrics(QGuiApplication::font());
     const QRectF headerBox(machine->pos().x(), machine->pos().y(),
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+                           metrics.horizontalAdvance(machine->label()) + 2*margin(), headerHeight());
+#else
                            metrics.width(machine->label()) + 2*margin(), headerHeight());
+#endif
     writeSvgRect(headerBox);
     writeSvgText(machine->label(), machine->pos() + QPointF(margin(), headerHeight()/ 2.0));
     return writeStateInner(machine);
@@ -268,7 +272,11 @@ double SvgExporterPrivate::headerHeight() const
 double SvgExporterPrivate::margin() const
 {
     QFontMetricsF metrics(QGuiApplication::font());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    return metrics.horizontalAdvance('x');
+#else
     return metrics.width('x');
+#endif
 }
 
 double SvgExporterPrivate::arrowSize() const

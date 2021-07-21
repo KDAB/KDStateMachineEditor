@@ -20,26 +20,35 @@ set(QSMDEBUGINTERFACESOURCE_SRCS
   ../../core/util/objecthelper.cpp
 )
 
-if(Qt5Scxml_FOUND)
+if(Qt${QT_MAJOR_VERSION}Scxml_FOUND)
   list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
 endif()
 
-qt5_generate_repc(QSMDEBUGINTERFACESOURCE_SRCS ../debuginterface.rep SOURCE)
+if (NOT BUILD_QT6)
+  qt5_generate_repc(QSMDEBUGINTERFACESOURCE_SRCS ../debuginterface.rep SOURCE)
+endif()
 
 add_library(kdstatemachineeditor_debuginterfacesource STATIC ${QSMDEBUGINTERFACESOURCE_SRCS})
+
+if (BUILD_QT6)
+  qt6_add_repc_sources(kdstatemachineeditor_debuginterfacesource ../debuginterface.rep)
+  target_link_libraries(kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt6::StateMachine)
+endif()
+
 add_library(KDSME::DebugInterfaceSource ALIAS kdstatemachineeditor_debuginterfacesource)
 target_link_libraries(kdstatemachineeditor_debuginterfacesource
   LINK_PRIVATE
-    Qt5::RemoteObjects
+    Qt${QT_MAJOR_VERSION}::RemoteObjects
     kdstatemachineeditor_core
   LINK_PUBLIC
-    Qt5::Core
+    Qt${QT_MAJOR_VERSION}::Core
 )
-if(Qt5Scxml_FOUND)
-  target_include_directories(kdstatemachineeditor_debuginterfacesource PRIVATE ${Qt5Scxml_PRIVATE_INCLUDE_DIRS})
+if(Qt${QT_MAJOR_VERSION}Scxml_FOUND)
   target_link_libraries(kdstatemachineeditor_debuginterfacesource
+    LINK_PRIVATE
+      Qt${QT_MAJOR_VERSION}::ScxmlPrivate
     LINK_PUBLIC
-      Qt5::Scxml
+      Qt${QT_MAJOR_VERSION}::Scxml
   )
 endif()
 set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES
@@ -68,13 +77,16 @@ target_include_directories(kdstatemachineeditor_debuginterfacesource
   PRIVATE
     ../
 )
-ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceSource
-                      LIB_NAME kdstatemachineeditor_debuginterfacesource
-                      DEPS ""
-                      FILENAME_VAR PRI_FILENAME
-                      INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfacesource
-)
-install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+if (NOT BUILD_QT6)
+  ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceSource
+                        LIB_NAME kdstatemachineeditor_debuginterfacesource
+                        DEPS ""
+                        FILENAME_VAR PRI_FILENAME
+                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfacesource
+  )
+  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+endif()
+set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfacesource${KDSME_LIBRARY_QTID}")
 install(TARGETS kdstatemachineeditor_debuginterfacesource EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
 # No need to install PDB, since there's no PDB generated, it's a static library.
 install(FILES

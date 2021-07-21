@@ -33,7 +33,11 @@ QSizeF LayoutUtils::sizeForLabel(const QString& label)
 
     // TODO: Improve
     QFontMetricsF fm(QGuiApplication::font());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    const qreal width = fm.horizontalAdvance(label);
+#else
     const qreal width = fm.width(label);
+#endif
     return QSizeF(width + 2*margin, fm.height() + 2*margin);
 }
 

@@ -19,7 +19,6 @@
 #include "debug.h"
 #include "objecttreemodel.h"
 #include "state.h"
-#include "statemachinescene.h"
 #include "statemachinescene_p.h"
 #include "transition.h"
 
@@ -29,19 +28,31 @@ using namespace KDSME;
 
 namespace {
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+static QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
+{
+    return line1.intersects(line2, intersectionPoint);
+}
+#else
+static QLineF::IntersectType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
+{
+    return line1.intersect(line2, intersectionPoint);
+}
+#endif
+
 /**
  * Return the first intersection point of @p line with @p rect
  */
 QPointF intersected(const QLineF& line, const QRectF& rect)
 {
     QPointF point;
-    if (line.intersect(QLineF(rect.topLeft(), rect.topRight()), &point) == QLineF::BoundedIntersection)
+    if (intersects(line, QLineF(rect.topLeft(), rect.topRight()), &point) == QLineF::BoundedIntersection)
         return point;
-    if (line.intersect(QLineF(rect.topRight(), rect.bottomRight()), &point) == QLineF::BoundedIntersection)
+    if (intersects(line, QLineF(rect.topRight(), rect.bottomRight()), &point) == QLineF::BoundedIntersection)
         return point;
-    if (line.intersect(QLineF(rect.bottomRight(), rect.bottomLeft()), &point) == QLineF::BoundedIntersection)
+    if (intersects(line, QLineF(rect.bottomRight(), rect.bottomLeft()), &point) == QLineF::BoundedIntersection)
         return point;
-    if (line.intersect(QLineF(rect.bottomLeft(), rect.topLeft()), &point) == QLineF::BoundedIntersection)
+    if (intersects(line, QLineF(rect.bottomLeft(), rect.topLeft()), &point) == QLineF::BoundedIntersection)
         return point;
     return point;
 }

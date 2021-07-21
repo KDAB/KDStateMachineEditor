@@ -18,14 +18,14 @@
 
 #include "kdsme_core_export.h"
 
+#include "state.h"
+#include "transition.h"
+
 #include <QObject>
 #include <QRectF>
 #include <QSet>
 
 namespace KDSME {
-
-class State;
-class Transition;
 
 class KDSME_CORE_EXPORT RuntimeController : public QObject
 {

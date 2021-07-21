@@ -17,11 +17,7 @@
 
 #include <qglobal.h>
 
-#if Qt5RemoteObjects_VERSION < QT_VERSION_CHECK(5, 9, 0)
-#include "debuginterface_replica.h"
-#else
 #include "rep_debuginterface_replica.h"
-#endif
 
 #include "statemachine.h"
 #include "trafficlight.h"

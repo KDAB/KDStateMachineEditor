@@ -18,13 +18,14 @@
 
 #include "command_p.h"
 
+#include "state.h"
+
 #include <QPointer>
 
 namespace KDSME {
 
 class StateMachineScene;
 class StateMachine;
-class State;
 
 /**
  * @brief Changes the state machine of a @ref KDSME::StateMachineScene and records the old state machine the scene was showing.

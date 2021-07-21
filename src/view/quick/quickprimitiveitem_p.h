@@ -37,7 +37,7 @@ class QuickGeometryItem : public QObject
     Q_PROPERTY(QuickGeometryItem::VertexDataType type READ dataType READ vertexDataType WRITE setVertexDataType NOTIFY vertexDataTypeChanged)
     Q_PROPERTY(float lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChanged)
 
-    Q_PROPERTY(unsigned int drawingMode READ drawingMode READ drawingMode WRITE setDrawingMode NOTIFY drawingModeChanged)
+    Q_PROPERTY(DrawingMode drawingMode READ drawingMode READ drawingMode WRITE setDrawingMode NOTIFY drawingModeChanged)
     Q_ENUMS(VertexDataType)
     Q_ENUMS(DrawingMode)
 
@@ -48,19 +48,13 @@ public:
         TexturedPoint2DType
     };
     enum DrawingMode {
-        Points = GL_POINTS,
-        Lines = GL_LINES,
-        LineLoop = GL_LINE_LOOP,
-        LineStrip = GL_LINE_STRIP,
-        Triangles = GL_TRIANGLES,
-        TriangleStrip = GL_TRIANGLE_STRIP,
-        TriangleFan = GL_TRIANGLE_FAN,
-        // According to Sean, these are unsupported on modern OpenGL and ES2
-        /*
-        Quads = GL_QUADS,
-        QuadStrip = GL_QUAD_STRIP,
-        Polygon = GL_POLYGON
-        */
+        Points = QSGGeometry::DrawPoints,
+        Lines = QSGGeometry::DrawLines,
+        LineLoop = QSGGeometry::DrawLineLoop,
+        LineStrip = QSGGeometry::DrawLineStrip,
+        Triangles = QSGGeometry::DrawTriangles,
+        TriangleStrip = QSGGeometry::DrawTriangleStrip,
+        TriangleFan = QSGGeometry::DrawTriangleFan
     };
 
     explicit QuickGeometryItem(QObject* parent = nullptr);
@@ -71,8 +65,8 @@ public:
     VertexDataType vertexDataType() const;
     void setVertexDataType(VertexDataType type);
 
-    GLenum drawingMode() const;
-    void setDrawingMode(GLenum drawingMode);
+    DrawingMode drawingMode() const;
+    void setDrawingMode(DrawingMode drawingMode);
 
     float lineWidth() const;
     void setLineWidth(float lineWidth);
@@ -82,7 +76,7 @@ public:
 Q_SIGNALS:
     void vertexDataChanged(const QList<qreal>& vertexData);
     void vertexDataTypeChanged(VertexDataType type);
-    void drawingModeChanged(GLenum drawingMode);
+    void drawingModeChanged(DrawingMode drawingMode);
     void lineWidthChanged(float lineWidth);
     /// Emitted in case any of this object properties changes
     void changed();
@@ -90,7 +84,7 @@ Q_SIGNALS:
 private:
     QList<qreal> m_vertexData;
     VertexDataType m_vertexDataType;
-    GLenum m_drawingMode;
+    DrawingMode m_drawingMode;
     float m_lineWidth;
 };
 

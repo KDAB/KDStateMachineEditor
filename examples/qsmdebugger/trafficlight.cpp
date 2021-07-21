@@ -69,7 +69,7 @@ public:
         m_green = new LightWidget(Qt::green);
         vbox->addWidget(m_green);
         QPalette pal = palette();
-        pal.setColor(QPalette::Background, Qt::black);
+        pal.setColor(QPalette::Window, Qt::black);
         setPalette(pal);
         setAutoFillBackground(true);
     }
@@ -110,7 +110,7 @@ TrafficLight::TrafficLight(QWidget *parent)
     QVBoxLayout *vbox = new QVBoxLayout(this);
     TrafficLightWidget *widget = new TrafficLightWidget();
     vbox->addWidget(widget);
-    vbox->setMargin(0);
+    vbox->setContentsMargins(0, 0, 0, 0);
 
     QStateMachine *machine = new QStateMachine(this);
     QState *redGoingYellow = createLightState(widget->redLight(), 3000);

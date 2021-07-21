@@ -99,10 +99,12 @@ typedef QList<StateId> StateMachineConfiguration;
 
 inline void registerTypes() //krazy:exclude=inline
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<StateId>();
     qRegisterMetaTypeStreamOperators<StateMachineConfiguration>();
     qRegisterMetaTypeStreamOperators<TransitionId>();
     qRegisterMetaTypeStreamOperators<StateType>();
+#endif
 }
 
 }

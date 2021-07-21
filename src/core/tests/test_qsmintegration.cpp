@@ -20,11 +20,7 @@
 
 #include <config-kdsme.h>
 
-#if Qt5RemoteObjects_VERSION < QT_VERSION_CHECK(5, 9, 0)
-#include "debuginterface_replica.h"
-#else
 #include "rep_debuginterface_replica.h"
-#endif
 
 #include "debuginterfaceclient.h"
 #include "qsmdebuginterfacesource.h"

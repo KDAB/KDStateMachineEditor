@@ -16,12 +16,14 @@
 #ifndef KDSME_QUICK_QUICKSCENEITEM_P_H
 #define KDSME_QUICK_QUICKSCENEITEM_P_H
 
-#include <QPainterPath>
 #include <QQuickItem>
+
+#include "statemachinescene.h"
+
+#include <QPainterPath>
 
 namespace KDSME {
 class Element;
-class StateMachineScene;
 class Transition;
 }
 
