@@ -17,11 +17,13 @@ find_file(QDOC_QTCORE_TAG qtcore.tags
   HINTS ${QT_INSTALL_DOCS}/qtcore
   HINTS ${QT_INSTALL_DATA}/doc/qtcore
 )
+set(QDOC_TAG_DIR "<QDOC_TAG_DIR_not_found>")
 if(QDOC_QTCORE_TAG)
   get_filename_component(QDOC_TAG_DIR ${QDOC_QTCORE_TAG} DIRECTORY)
   get_filename_component(QDOC_TAG_DIR ${QDOC_TAG_DIR} DIRECTORY)
 endif()
 
+file(GLOB _dox_deps *.dox *.html)
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 #apidox generation using doxygen
@@ -44,5 +46,6 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 add_custom_target(kdstatemachineeditor-api.qch ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/qch/kdstatemachineeditor-api.qch)
+add_custom_target(docs DEPENDS kdstatemachineeditor-api.qch)
 
 install(FILES ${DOXYGEN_OUTPUT_DIR}/qch/kdstatemachineeditor-api.qch DESTINATION ${QCH_INSTALL_DIR})
