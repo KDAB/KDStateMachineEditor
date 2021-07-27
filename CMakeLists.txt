@@ -206,12 +206,15 @@ if(WITH_INTERNAL_GRAPHVIZ)
   endif()
 
   set(win_build_utilities ${source_dir}/windows/dependencies/graphviz-build-utilities)
+  string(TIMESTAMP graphvizDate)
+  set(graphvizVersion "2.48.0")
   ExternalProject_Add(GraphvizExternalProject
     GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
-    GIT_TAG "2.46.0"
+    GIT_TAG ${graphvizVersion}
     GIT_PROGRESS 1
     USES_TERMINAL_DOWNLOAD TRUE   # needed for Ninja so we can see the Git progress (cf. https://gitlab.kitware.com/cmake/cmake/-/issues/18238)
     CMAKE_ARGS
+      -DVERSION=${graphvizVersion} -DDATE=${graphvizDate}
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
       -DCMAKE_C_COMPILER_AR=${CMAKE_C_COMPILER_AR}
