@@ -4,7 +4,6 @@
 *.rej
 *.orig
 *.out
-.*
 CMakeLists.txt.user
 
 # from kdiff3
