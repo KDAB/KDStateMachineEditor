@@ -42,7 +42,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/LICENSES/LicenseRef-KDAB-KDStateMachineEditor.txt ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
   COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/docs
   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf ${DOXYGEN_OUTPUT_DIR}/html/docs
-  DEPENDS ${_all_hdrs} ${_dox_deps} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+  DEPENDS ${_dox_deps} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 add_custom_target(kdstatemachineeditor-api.qch ALL DEPENDS ${DOXYGEN_OUTPUT_DIR}/qch/kdstatemachineeditor-api.qch)
