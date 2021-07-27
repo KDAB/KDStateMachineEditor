@@ -87,6 +87,7 @@ include(ECMGeneratePriFile)
 
 set(REQUIRED_QT_VERSION "5.3")
 
+set(QT_MAJOR_VERSION 5) #needed for KDQtInstallPaths
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Quick QuickWidgets Test Widgets)
 include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
