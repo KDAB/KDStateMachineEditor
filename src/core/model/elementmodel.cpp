@@ -255,7 +255,7 @@ void TransitionListModel::setState(State* state)
     beginResetModel();
     d->m_state = state;
     d->m_transitions = (state ? state->findChildren<Transition*>() : QList<Transition*>());
-    // TODO: Track updates to object (newly created/removed transtions)?
+    // TODO: Track updates to object (newly created/removed transitions)?
     endResetModel();
 }
 
