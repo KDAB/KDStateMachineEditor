@@ -207,7 +207,10 @@ if(WITH_INTERNAL_GRAPHVIZ)
 
   set(win_build_utilities ${source_dir}/windows/dependencies/graphviz-build-utilities)
   string(TIMESTAMP graphvizDate)
-  set(graphvizVersion "2.48.0")
+  set(GRAPHVIZ_MAJOR_VERSION 2)
+  set(GRAPHVIZ_MINOR_VERSION 48)
+  set(GRAPHVIZ_PATCH_VERSION 0)
+  set(graphvizVersion "${GRAPHVIZ_MAJOR_VERSION}.${GRAPHVIZ_MINOR_VERSION}.${GRAPHVIZ_PATCH_VERSION}")
   ExternalProject_Add(GraphvizExternalProject
     GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
     GIT_TAG ${graphvizVersion}
@@ -248,9 +251,6 @@ if(WITH_INTERNAL_GRAPHVIZ)
   endif()
 
   set(GRAPHVIZ_FOUND TRUE)
-  set(GRAPHVIZ_MAJOR_VERSION 2)
-  set(GRAPHVIZ_MINOR_VERSION 46)
-  set(GRAPHVIZ_PATCH_VERSION 0)
 endif()
 
 #
