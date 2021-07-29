@@ -63,21 +63,28 @@ It can be run from the bin/ directory once the project built.
 
 ## Building and running
 
-Install the dependencies (here: Ubuntu):
+We strongly recommend installing Graphviz (https://graphviz.org):
 
-    $ sudo apt-get install cmake qt5-default graphviz-dev \
-                           qtbase5-private-dev libqt5qml-graphicaleffects
+    (Ubuntu) $ sudo apt-get graphviz graphviz-dev
+    (Mac) $ brew install graphviz
+    (Windows) $ choco install graphviz
+
+of course you need a Qt5 installation and CMake too.
 
 Build:
 
+    Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
     $ mkdir build
     $ cd build
-    $ cmake ..
-    $ make
+    $ cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/path/where/to/install ..
+    $ cmake --build
+    $ cmake --build . --target install
 
 Start the test app:
 
     $ ./bin/kdstatemachineeditor
+
+See Install.txt for more information.
 
 ## Known Issues
 

@@ -11,7 +11,7 @@ You can change this location by passing the option
 To build a debug version pass -DCMAKE_BUILD_TYPE=Debug to cmake.
 
 To build this library you will need:
- - CMake 2.8.12
+ - CMake 3.1
  - Qt 5.3 or higher
 
 Optional FOSS packages (eg. Graphviz, etc) provide extra functionality.
@@ -43,6 +43,10 @@ The KDAB State Machine Editor Library relies on optional (FOSS) dependencies
 to provide some of its functionality.  For example, you'll need the Graphviz
 visualization software (https://www.graphviz.org) for the state chart automatic
 layout feature.
+
+On some systems you may need to tell the buildsystem where to find the graphviz
+installation by setting the GRAPHVIZ_ROOT environment variable.  For example,
+on Windows you might want set "GRAPHVIZ_ROOT=C:\Program Files\Graphviz".
 
 When you run cmake it will inform you about missing dependencies.
 
