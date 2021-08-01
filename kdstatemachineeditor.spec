@@ -63,7 +63,7 @@ make install DESTDIR=%{buildroot} %{?_smp_mflags}
 %files
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
-%doc ReadMe* LICENSE*
+%doc README* LICENSE*
 
 %files devel
 %defattr(-,root,root)
