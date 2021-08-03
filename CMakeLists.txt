@@ -36,15 +36,9 @@
 #  Note: disabling tests also disables building the kdstatemachineeditor test application.
 #  Default=True
 #
-cmake_minimum_required(VERSION 3.1)
-if(POLICY CMP0053)
-  cmake_policy(SET CMP0053 NEW)
-endif()
-if(POLICY CMP0063)
-  cmake_policy(SET CMP0063 NEW)
-endif()
+cmake_minimum_required(VERSION 3.3)
 
-project(kdstatemachineeditor CXX C)
+project(kdstatemachineeditor LANGUAGES CXX C)
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
