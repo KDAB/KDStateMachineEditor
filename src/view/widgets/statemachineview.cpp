@@ -85,7 +85,7 @@ struct StateMachineView::Private
 
     StateMachineView* q;
 
-    StateMachineScene* m_scene;
+    QPointer<StateMachineScene> m_scene; // potentially deleted by the QML engine, thus QPointer
 
     CommandController* m_controller;
     EditController* m_editController;
