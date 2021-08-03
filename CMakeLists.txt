@@ -40,16 +40,10 @@
 #  Note: disabling tests also disables building the kdstatemachineeditor test application.
 #  Default=True
 #
-option(BUILD_QT6 "Build against Qt 6" OFF)
 
-if(BUILD_QT6)
-  cmake_minimum_required(VERSION 3.15)
-else()
-  cmake_minimum_required(VERSION 3.1)
-endif()
+cmake_minimum_required(VERSION 3.1)
 
 project(kdstatemachineeditor LANGUAGES CXX C)
-
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
@@ -88,6 +82,8 @@ include(GNUInstallDirs)
 include(ExternalProject)
 include(MacroLogFeature)
 include(ECMAddTests)
+
+option(BUILD_QT6 "Build against Qt 6" OFF)
 
 if(BUILD_QT6)
   cmake_policy(SET CMP0071 NEW)
