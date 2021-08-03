@@ -48,14 +48,7 @@ else()
   cmake_minimum_required(VERSION 3.1)
 endif()
 
-if(POLICY CMP0053)
-  cmake_policy(SET CMP0053 NEW)
-endif()
-if(POLICY CMP0063)
-  cmake_policy(SET CMP0063 NEW)
-endif()
-
-project(kdstatemachineeditor CXX C)
+project(kdstatemachineeditor LANGUAGES CXX C)
 
 
 # Version setup
@@ -391,7 +384,7 @@ install(
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 set(LICENSE_FILE "LGPL-2.1-only.txt")
-set(README_FILE "ReadMe.txt")
+set(README_FILE "README.txt")
 
 #CPACK
 set(CPACK_PACKAGE_VERSION_MAJOR "${KDSME_VERSION_MAJOR}")
