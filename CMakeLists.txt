@@ -37,6 +37,10 @@
 #  Default=True
 #
 cmake_minimum_required(VERSION 3.3)
+if(POLICY CMP0074)
+  # Since 3.12 tells find_package to look for <Package>_ROOT variables.
+  cmake_policy(SET CMP0074 NEW)
+endif()
 
 project(kdstatemachineeditor LANGUAGES CXX C)
 

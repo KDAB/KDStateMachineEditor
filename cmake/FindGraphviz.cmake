@@ -34,6 +34,8 @@ if(GRAPHVIZ_INCLUDE_DIR AND GRAPHVIZ_CDT_LIBRARY
   set(GRAPHVIZ_FIND_QUIETLY TRUE)
 endif()
 
+# TODO: When requiring CMake 3.12 this logic can probably be simplified. Graphviz_ROOT is being handled by CMake itself
+#   Also see CMake policy CMP0074
 if (GRAPHVIZ_ROOT)
     set(_GRAPHVIZ_ROOT ${GRAPHVIZ_ROOT})
 else()
