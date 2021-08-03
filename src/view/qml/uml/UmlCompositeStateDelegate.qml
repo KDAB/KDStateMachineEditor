@@ -16,7 +16,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import com.kdab.kdsme 1.0 as KDSME
 
