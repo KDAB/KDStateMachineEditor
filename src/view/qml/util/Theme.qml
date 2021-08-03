@@ -22,7 +22,7 @@ import com.kdab.kdsme 1.0
 Item {
     property alias currentTheme: themeLoader.item
 
-    readonly property string __currentThemeName: _quickView.themeName
+    readonly property string __currentThemeName: _quickView ? _quickView.themeName : "DarkTheme"
 
     Loader {
         id: themeLoader
