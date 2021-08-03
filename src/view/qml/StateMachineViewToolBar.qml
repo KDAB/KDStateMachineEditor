@@ -14,7 +14,7 @@
 */
 
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
 
 import com.kdab.kdsme 1.0
@@ -107,8 +107,8 @@ ToolBar {
 
             Layout.maximumWidth: 100
 
-            minimumValue: Constants.zoomMin
-            maximumValue: Constants.zoomMax
+            from: Constants.zoomMin
+            to: Constants.zoomMax
             value: root.stateMachineView.zoom
             stepSize: Constants.zoomStepSize
             onValueChanged: root.stateMachineView.zoom = value
@@ -143,8 +143,8 @@ ToolBar {
 
             Layout.maximumWidth: 40
 
-            minimumValue: Constants.maximumDepthMin
-            maximumValue: Constants.maximumDepthMax
+            from: Constants.maximumDepthMin
+            to: Constants.maximumDepthMax
             value: root.stateMachineView.maximumDepth
             stepSize: 1
             onValueChanged: {

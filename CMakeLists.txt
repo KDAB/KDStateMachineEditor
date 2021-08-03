@@ -100,7 +100,7 @@ if(BUILD_QT6)
   )
 else()
   include(ECMGeneratePriFile)
-  set(REQUIRED_QT_VERSION "5.9")
+  set(REQUIRED_QT_VERSION "5.12")
   set(QT_MAJOR_VERSION 5) #needed for KDQtInstallPaths
   find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
   include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
