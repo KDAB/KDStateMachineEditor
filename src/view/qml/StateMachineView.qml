@@ -19,8 +19,8 @@ import QtQuick.Layouts 1.0
 
 import com.kdab.kdsme 1.0
 
-import "qrc:///kdsme/qml/uml/"
-import "qrc:///kdsme/qml/util"
+import "uml/"
+import "util"
 
 import "util/constants.js" as Constants
 

@@ -13,7 +13,10 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-set(LIB_SRCS
+# Make the files show up in Qt Creator
+file(GLOB_RECURSE QML_JS_FILES *.qml *.js)
+
+add_library(kdstatemachineeditor_view SHARED
   command/command.cpp
   command/commandfactory.cpp
   command/createelementcommand.cpp
@@ -36,11 +39,15 @@ set(LIB_SRCS
   quick/quickrecursiveinstantiator.cpp
   quick/quicksceneitem.cpp
 
+  kdsme.qrc
+
   widgets/codeeditor.cpp
   widgets/propertyeditor.cpp
   widgets/statemachinetoolbar.cpp
   widgets/statemachineview.cpp
   widgets/statemachinepalettewidget.cpp
+  widgets/statepropertyeditor.ui
+  widgets/transitionpropertyeditor.ui
 
   abstractscene.cpp
   statemachinescene.cpp
@@ -49,40 +56,10 @@ set(LIB_SRCS
   debug.cpp
   editcontroller.cpp
   semanticzoommanager.cpp
+
+  ${QML_JS_FILES}
 )
 
-set(LIB_UIS
-  widgets/statepropertyeditor.ui
-  widgets/transitionpropertyeditor.ui
-)
-
-set(LIB_QRCS kdsme.qrc)
-
-# Make the files show up in Qt Creator
-set(QML_FILES
-  qml/util/ChannelizedDropArea.qml
-  qml/util/DragPointGroup.qml
-  qml/util/SquareButton.qml
-  qml/util/DragPoint.qml
-  qml/util/BirdEyeView.qml
-  qml/util/DragPointDelegate.qml
-  qml/util/ToolTip.qml
-  qml/util/ArrowHead.qml
-  qml/SceneItemFactory.qml
-  qml/StateMachineView.qml
-  qml/StateMachineViewToolBar.qml
-  qml/uml/UmlCompositeStateDelegate.qml
-  qml/uml/UmlTransition.qml
-  qml/uml/UmlPseudoState.qml
-  qml/uml/UmlFinalState.qml
-  qml/uml/UmlHistoryState.qml
-  qml/uml/UmlStateMachine.qml
-  qml/uml/UmlState.qml
-  qml/uml/UmlSimpleStateDelegate.qml
-  qml/Scene.qml
-)
-
-add_library(kdstatemachineeditor_view SHARED ${LIB_SRCS} ${LIB_UIS} ${LIB_QRCS} ${QML_FILES})
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(kdstatemachineeditor_view
   LINK_PRIVATE

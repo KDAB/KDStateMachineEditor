@@ -18,7 +18,7 @@ import QtQuick.Controls 2.12
 
 import com.kdab.kdsme 1.0 as KDSME
 
-import "qrc:///kdsme/qml/util/"
+import "../util/"
 
 KDSME.StateItem {
     id: root

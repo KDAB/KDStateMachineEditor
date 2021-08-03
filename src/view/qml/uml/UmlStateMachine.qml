@@ -19,7 +19,7 @@ import QtQuick.Layouts 1.0
 
 import com.kdab.kdsme 1.0 as KDSME
 
-import "qrc:///kdsme/qml/util/"
+import "../util/"
 
 /**
  * State Machine representation

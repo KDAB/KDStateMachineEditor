@@ -15,8 +15,7 @@
 
 import QtQuick 2.0
 
-import "qrc:///kdsme/qml/util/functions.js" as Functions
-import "qrc:///kdsme/qml/util/"
+import "functions.js" as Functions
 
 Item {
     id: root
