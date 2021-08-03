@@ -41,7 +41,7 @@
 #  Default=True
 #
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.3)
 
 project(kdstatemachineeditor LANGUAGES CXX C)
 
@@ -88,7 +88,7 @@ option(BUILD_QT6 "Build against Qt 6" OFF)
 if(BUILD_QT6)
   cmake_policy(SET CMP0071 NEW)
   set(REQUIRED_QT_VERSION "6.1.0")
-  find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets StateMachine)
+  find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine)
   set(QT_MAJOR_VERSION 6)
   set(KDSME_LIBRARY_QTID "-qt6")
 
