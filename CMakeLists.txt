@@ -47,11 +47,11 @@ project(kdstatemachineeditor LANGUAGES CXX C)
 
 # Version setup
 set(KDSME_VERSION_MAJOR "1")
-set(KDSME_VERSION_MINOR "2")
+set(KDSME_VERSION_MINOR "99")
 set(KDSME_VERSION_PATCH "50")
 set(KDSME_VERSION "${KDSME_VERSION_MAJOR}.${KDSME_VERSION_MINOR}.${KDSME_VERSION_PATCH}")
 set(KDSME_VERSION_STRING "${KDSME_VERSION}")
-set(KDSME_SOVERSION "1") #means the 1.x ABI is frozen. ABI changes will must go to version 2
+set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
 set(PROJECT_VERSION_STRING "${KDSME_VERSION_STRING}")
 
 set(ECM_MODULE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")

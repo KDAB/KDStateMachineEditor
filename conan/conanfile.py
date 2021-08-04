@@ -18,7 +18,7 @@ from conans import ConanFile, CMake, tools
 
 class KDStateMachineEditorConan(ConanFile):
     name = "KDStateMachineEditor"
-    version = "1.2.8"
+    version = "2.0.0"
     license = ("https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/LicenseRef-KDAB-KDStateMachineEditor.txt,"
                "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/LGPL-2.1-only.txt,"
                "https://raw.githubusercontent.com/KDAB/KDStateMachineEditor/{0}/LICENSES/BSD-3-Clause.txt").format(version)
