@@ -165,9 +165,13 @@ StateMachineView::StateMachineView(QWidget* parent)
 
     engine()->rootContext()->setContextProperty("_quickView", this);
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    // Does not seem to work under Qt 6 -- yields a black QML scene if enabled there
     QSurfaceFormat format;
     format.setSamples(4);
     setFormat(format);
+#endif
+
     setResizeMode(QQuickWidget::SizeRootObjectToView);
     setSource(QUrl("qrc:/kdsme/qml/StateMachineView.qml"));
 #if !defined(NDEBUG)
