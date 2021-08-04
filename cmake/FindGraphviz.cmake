@@ -97,6 +97,9 @@ find_library(GRAPHVIZ_PATHPLAN_LIBRARY NAMES pathplan
   ${_GRAPHVIZ_FIND_OPTS})
 
 cmake_push_check_state()
+if(NOT DEFINED CMAKE_REQUIRED_INCLUDES)
+  set(CMAKE_REQUIRED_INCLUDES "") #to make --warn-uninitialized happy
+endif()
 set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${GRAPHVIZ_INCLUDE_DIR})
 check_include_files(graphviz/graphviz_version.h HAVE_GRAPHVIZ_VERSION_H)
 cmake_pop_check_state()
