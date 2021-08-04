@@ -39,7 +39,7 @@ configuration:
   - Release
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" %PLATFORM%
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
   - set QTDIR=C:\Qt\5.12\msvc2015_64
   - set GRAPHVIZ_ROOT=c:\Program Files\Graphviz
   - set PATH=%QTDIR%\bin;C:\Python37-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
