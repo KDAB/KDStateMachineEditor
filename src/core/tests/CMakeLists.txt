@@ -19,9 +19,9 @@ configure_file(
 )
 
 # QtXmlPatterns fails badly on OSX -- see https://bugreports.qt-project.org/browse/QTBUG-40818
-if(Qt${QT_MAJOR_VERSION}XmlPatterns_FOUND AND NOT APPLE)
+if(Qt${Qt_VERSION_MAJOR}XmlPatterns_FOUND AND NOT APPLE)
   add_definitions(-DUSE_QT_XMLPATTERNS_LIB)
-  list(APPEND KDSME_TESTHELPER_EXTRA_LIBS Qt${QT_MAJOR_VERSION}::XmlPatterns)
+  list(APPEND KDSME_TESTHELPER_EXTRA_LIBS Qt${Qt_VERSION_MAJOR}::XmlPatterns)
 endif()
 
 add_library(kdsme_testhelper STATIC
@@ -29,14 +29,14 @@ add_library(kdsme_testhelper STATIC
   util.cpp
 )
 target_link_libraries(kdsme_testhelper
-  Qt${QT_MAJOR_VERSION}::Test
+  Qt${Qt_VERSION_MAJOR}::Test
   kdstatemachineeditor_core
 )
 
 if(GRAPHVIZ_FOUND)
   ecm_add_test(test_layouter.cpp
     LINK_LIBRARIES
-      Qt${QT_MAJOR_VERSION}::Gui
+      Qt${Qt_VERSION_MAJOR}::Gui
       kdsme_testhelper
   )
 endif()
@@ -48,8 +48,8 @@ ecm_add_test(test_layoutitem.cpp
 
 ecm_add_test(test_models.cpp
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::Gui
-    Qt${QT_MAJOR_VERSION}::Test
+    Qt${Qt_VERSION_MAJOR}::Gui
+    Qt${Qt_VERSION_MAJOR}::Test
     kdstatemachineeditor_core
 )
 
@@ -58,15 +58,15 @@ ecm_add_test(test_qmlexport.cpp
     kdsme_testhelper
 )
 
-if(Qt${QT_MAJOR_VERSION}RemoteObjects_FOUND)
+if(Qt${Qt_VERSION_MAJOR}RemoteObjects_FOUND)
   set(SRCS test_qsmintegration.cpp)
   if (NOT BUILD_QT6)
     qt5_generate_repc(SRCS ../../debuginterface/debuginterface.rep REPLICA)
   endif()
   ecm_add_test(${SRCS} TEST_NAME test_qsmintegration
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::RemoteObjects
-    Qt${QT_MAJOR_VERSION}::Test
+    Qt${Qt_VERSION_MAJOR}::RemoteObjects
+    Qt${Qt_VERSION_MAJOR}::Test
     kdstatemachineeditor_debuginterfaceclient
     kdstatemachineeditor_debuginterfacesource
     kdsme_testhelper
@@ -84,7 +84,7 @@ ecm_add_test(test_scxmlimport.cpp
 
 ecm_add_test(test_scxmlexport.cpp
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::Test
+    Qt${Qt_VERSION_MAJOR}::Test
     ${KDSME_TESTHELPER_EXTRA_LIBS}
     kdstatemachineeditor_core
 )
@@ -96,15 +96,15 @@ ecm_add_test(test_statemachine.cpp
 
 ecm_add_test(test_util.cpp
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::Gui
+    Qt${Qt_VERSION_MAJOR}::Gui
     kdsme_testhelper
 )
 
 if (NOT BUILD_QT6 OR Qt6Core5Compat_FOUND)
   ecm_add_test(test_layoutinformation.cpp
     LINK_LIBRARIES
-      Qt${QT_MAJOR_VERSION}::Gui
-      Qt${QT_MAJOR_VERSION}::Test
+      Qt${Qt_VERSION_MAJOR}::Gui
+      Qt${Qt_VERSION_MAJOR}::Test
       kdstatemachineeditor_core
   )
   if (BUILD_QT6)

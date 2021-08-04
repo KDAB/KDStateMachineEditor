@@ -63,11 +63,11 @@ add_library(kdstatemachineeditor_view SHARED
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(kdstatemachineeditor_view
   LINK_PRIVATE
-    Qt${QT_MAJOR_VERSION}::GuiPrivate
+    Qt${Qt_VERSION_MAJOR}::GuiPrivate
   LINK_PUBLIC
-    Qt${QT_MAJOR_VERSION}::Quick
-    Qt${QT_MAJOR_VERSION}::QuickWidgets
-    Qt${QT_MAJOR_VERSION}::Widgets
+    Qt${Qt_VERSION_MAJOR}::Quick
+    Qt${Qt_VERSION_MAJOR}::QuickWidgets
+    Qt${Qt_VERSION_MAJOR}::Widgets
     kdstatemachineeditor_core
 )
 

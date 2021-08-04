@@ -15,12 +15,12 @@
 
 ecm_add_test(test_commands.cpp
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::Test
+    Qt${Qt_VERSION_MAJOR}::Test
     kdstatemachineeditor_view
 )
 
 ecm_add_test(test_statemachineview.cpp
   LINK_LIBRARIES
-    Qt${QT_MAJOR_VERSION}::Test
+    Qt${Qt_VERSION_MAJOR}::Test
     kdstatemachineeditor_view
 )

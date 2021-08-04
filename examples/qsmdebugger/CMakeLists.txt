@@ -28,6 +28,6 @@ target_link_libraries(qsmdebugger
   KDSME::View
   KDSME::DebugInterfaceClient
   KDSME::DebugInterfaceSource
-  Qt${QT_MAJOR_VERSION}::Widgets
-  Qt${QT_MAJOR_VERSION}::RemoteObjects
+  Qt${Qt_VERSION_MAJOR}::Widgets
+  Qt${Qt_VERSION_MAJOR}::RemoteObjects
 )

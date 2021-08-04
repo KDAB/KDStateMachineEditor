@@ -89,7 +89,7 @@ if(BUILD_QT6)
   cmake_policy(SET CMP0071 NEW)
   set(REQUIRED_QT_VERSION "6.1.0")
   find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine)
-  set(QT_MAJOR_VERSION 6)
+  set(Qt_VERSION_MAJOR 6)
   set(KDSME_LIBRARY_QTID "-qt6")
 
   find_package(Qt6Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
@@ -101,28 +101,28 @@ if(BUILD_QT6)
 else()
   include(ECMGeneratePriFile)
   set(REQUIRED_QT_VERSION "5.12")
-  set(QT_MAJOR_VERSION 5) #needed for KDQtInstallPaths
+  set(Qt_VERSION_MAJOR 5) #needed for KDQtInstallPaths
   find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
   include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
   set(KDSME_LIBRARY_QTID "")
 endif()
 
-find_package(Qt${QT_MAJOR_VERSION}RemoteObjects ${REQUIRED_QT_VERSION} CONFIG QUIET)
-set_package_properties(Qt${QT_MAJOR_VERSION}RemoteObjects PROPERTIES
+find_package(Qt${Qt_VERSION_MAJOR}RemoteObjects ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${Qt_VERSION_MAJOR}RemoteObjects PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
 
-find_package(Qt${QT_MAJOR_VERSION}Scxml ${REQUIRED_QT_VERSION} CONFIG QUIET)
-set_package_properties(Qt${QT_MAJOR_VERSION}Scxml PROPERTIES
+find_package(Qt${Qt_VERSION_MAJOR}Scxml ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${Qt_VERSION_MAJOR}Scxml PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt SCXML module"
   PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
 
-find_package(Qt${QT_MAJOR_VERSION}XmlPatterns ${REQUIRED_QT_VERSION} CONFIG QUIET)
-set_package_properties(Qt${QT_MAJOR_VERSION}XmlPatterns PROPERTIES
+find_package(Qt${Qt_VERSION_MAJOR}XmlPatterns ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt${Qt_VERSION_MAJOR}XmlPatterns PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt XmlPatterns library"
   PURPOSE "Required for unit tests dealing with XML input/output"
@@ -161,7 +161,7 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT Devel
-  BUNDLE DESTINATION "/Applications/Qt${QT_MAJOR_VERSION}"
+  BUNDLE DESTINATION "/Applications/Qt${Qt_VERSION_MAJOR}"
 )
 
 # search for Graphviz

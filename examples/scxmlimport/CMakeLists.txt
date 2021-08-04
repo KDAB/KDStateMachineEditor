@@ -17,5 +17,5 @@ add_executable(scxmlimport main.cpp)
 target_link_libraries(scxmlimport
   KDSME::Core
   KDSME::View
-  Qt${QT_MAJOR_VERSION}::Gui
+  Qt${Qt_VERSION_MAJOR}::Gui
 )
