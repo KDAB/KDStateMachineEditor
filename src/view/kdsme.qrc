@@ -37,5 +37,8 @@
         <file>qml/util/ToolTip.qml</file>
         <file>qml/themes/DarkTheme.qml</file>
         <file>qml/themes/SystemTheme.qml</file>
+        <file>qml/util/RectangularGlowQt5.qml</file>
+        <file>qml/util/RectangularGlowQt6.qml</file>
+        <file>qml/util/RectangularGlowWrapper.qml</file>
     </qresource>
 </RCC>

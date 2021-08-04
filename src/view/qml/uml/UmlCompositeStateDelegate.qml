@@ -16,7 +16,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.0
-import Qt5Compat.GraphicalEffects
 
 import com.kdab.kdsme 1.0 as KDSME
 
@@ -44,16 +43,9 @@ Item {
         SmoothedAnimation { duration: 200 }
     }
 
-    RectangularGlow {
-        id: effect
-
-        anchors.fill: rect
-        visible: Theme.currentTheme.stateBorderColor_GlowEnabled && active
-
-        glowRadius: 10
-        spread: 0.1
-        color: Theme.currentTheme.stateBorderColor_Glow
-        cornerRadius: rect.radius
+    RectangularGlowWrapper {
+        target: rect
+        activeness: control.activeness
     }
 
     UmlCompositeStateContent {

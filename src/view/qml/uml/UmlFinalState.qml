@@ -15,7 +15,6 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 2.12
-import Qt5Compat.GraphicalEffects
 
 import com.kdab.kdsme 1.0 as KDSME
 
@@ -39,16 +38,9 @@ KDSME.StateItem {
         NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
 
-    RectangularGlow {
-        id: effect
-
-        anchors.fill: rect
-        visible: Theme.currentTheme.stateBorderColor_GlowEnabled && active
-
-        glowRadius: 10
-        spread: 0.1
-        color: Theme.currentTheme.stateBorderColor_Glow
-        cornerRadius: rect.radius
+    RectangularGlowWrapper {
+        target: rect
+        activeness: activeness
     }
 
     Rectangle {
