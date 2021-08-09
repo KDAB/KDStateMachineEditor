@@ -17,7 +17,4 @@ Loader {
     anchors.fill: target
 
     source: isQt6 ? "qrc:/kdsme/qml/util/RectangularGlowQt6.qml" : "qrc:/kdsme/qml/util/RectangularGlowQt5.qml"
-    onStatusChanged: console.log("Loader said: " + root.status + " " + source)
-
-    Component.onCompleted: console.log("Loaded: " + source)
 }
