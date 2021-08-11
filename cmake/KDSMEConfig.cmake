@@ -19,4 +19,4 @@ kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@Widgets)
 kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@Quick)
 kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@QuickWidgets)
 
-include("${CMAKE_CURRENT_LIST_DIR}/KDSMETargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/KDSME@KDSME_LIBRARY_QTID@Targets.cmake")
