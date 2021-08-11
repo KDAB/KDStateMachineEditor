@@ -117,9 +117,7 @@ set(build_iface_dirs
 target_include_directories(kdstatemachineeditor_core
   PUBLIC
     "$<BUILD_INTERFACE:${build_iface_dirs}>"
-    # FIXME: It is recommended to use a relative path here.
-    # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
-    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
 
 set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatemachineeditor_core${KDSME_LIBRARY_QTID}")

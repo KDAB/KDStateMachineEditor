@@ -96,13 +96,9 @@ endif()
 
 generate_export_header(kdstatemachineeditor_view EXPORT_FILE_NAME kdsme_view_export.h BASE_NAME KDSME_VIEW)
 target_include_directories(kdstatemachineeditor_view
-  # FIXME: It is recommended to use a relative path here.
-  # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
   PUBLIC
     "$<BUILD_INTERFACE:${build_iface_dirs}>"
-    # FIXME: It is recommended to use a relative path here.
-    # Doesn't work with CMake 2.8.11, though, probably needs 2.8.12(?)
-    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
 
 set_target_properties(kdstatemachineeditor_view PROPERTIES OUTPUT_NAME "kdstatemachineeditor_view${KDSME_LIBRARY_QTID}")

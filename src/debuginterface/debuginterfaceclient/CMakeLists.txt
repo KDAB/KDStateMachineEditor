@@ -60,7 +60,7 @@ set(build_iface_dirs
 target_include_directories(kdstatemachineeditor_debuginterfaceclient
   PUBLIC
     "$<BUILD_INTERFACE:${build_iface_dirs}>"
-    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>"
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
 if (NOT BUILD_QT6)
   ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient

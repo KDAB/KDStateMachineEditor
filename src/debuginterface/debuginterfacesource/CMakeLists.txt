@@ -73,7 +73,7 @@ target_compile_definitions(kdstatemachineeditor_debuginterfacesource PRIVATE -Dk
 generate_export_header(kdstatemachineeditor_debuginterfacesource EXPORT_FILE_NAME kdsme_debuginterfacesource_export.h BASE_NAME KDSME_DEBUGINTERFACESOURCE)
 target_include_directories(kdstatemachineeditor_debuginterfacesource
   PUBLIC
-    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/>"
+    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
   PRIVATE
     ../
 )
