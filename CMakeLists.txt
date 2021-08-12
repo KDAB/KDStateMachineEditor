@@ -43,6 +43,10 @@
 
 cmake_minimum_required(VERSION 3.3)
 
+if(POLICY CMP0071)
+  cmake_policy(SET CMP0071 NEW)
+endif()
+
 project(kdstatemachineeditor LANGUAGES CXX C)
 
 # Version setup
@@ -86,7 +90,6 @@ include(ECMAddTests)
 option(BUILD_QT6 "Build against Qt 6" OFF)
 
 if(BUILD_QT6)
-  cmake_policy(SET CMP0071 NEW)
   set(Qt_VERSION_MAJOR 6)
   set(QT_MIN_VERSION "6.1.0")
   find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine)
