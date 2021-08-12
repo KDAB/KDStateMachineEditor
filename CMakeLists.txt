@@ -87,41 +87,40 @@ option(BUILD_QT6 "Build against Qt 6" OFF)
 
 if(BUILD_QT6)
   cmake_policy(SET CMP0071 NEW)
-  set(REQUIRED_QT_VERSION "6.1.0")
-  find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine)
   set(Qt_VERSION_MAJOR 6)
-  set(KDSME_LIBRARY_QTID "-qt6")
-
-  find_package(Qt6Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
+  set(QT_MIN_VERSION "6.1.0")
+  find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine)
+  find_package(Qt6Core5Compat ${QT_MIN_VERSION} CONFIG QUIET)
   set_package_properties(Qt6Core5Compat PROPERTIES
     TYPE OPTIONAL
     DESCRIPTION "Qt6-Qt5 compatibility module"
     PURPOSE "Needed for the layoutinformation unit test"
   )
+  set(${PROJECT_NAME}_LIBRARY_QTID "-qt6")
 else()
+  set(Qt_VERSION_MAJOR 5)
+  set(QT_MIN_VERSION "5.12")
+  find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
+  set(${PROJECT_NAME}KDSME_LIBRARY_QTID "")
   include(ECMGeneratePriFile)
-  set(REQUIRED_QT_VERSION "5.12")
-  set(Qt_VERSION_MAJOR 5) #needed for KDQtInstallPaths
-  find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
   include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
-  set(KDSME_LIBRARY_QTID "")
 endif()
 
-find_package(Qt${Qt_VERSION_MAJOR}RemoteObjects ${REQUIRED_QT_VERSION} CONFIG QUIET)
+find_package(Qt${Qt_VERSION_MAJOR}RemoteObjects ${QT_MIN_VERSION} CONFIG QUIET)
 set_package_properties(Qt${Qt_VERSION_MAJOR}RemoteObjects PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt Remote Objects module"
   PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
 
-find_package(Qt${Qt_VERSION_MAJOR}Scxml ${REQUIRED_QT_VERSION} CONFIG QUIET)
+find_package(Qt${Qt_VERSION_MAJOR}Scxml ${QT_MIN_VERSION} CONFIG QUIET)
 set_package_properties(Qt${Qt_VERSION_MAJOR}Scxml PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt SCXML module"
   PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
 
-find_package(Qt${Qt_VERSION_MAJOR}XmlPatterns ${REQUIRED_QT_VERSION} CONFIG QUIET)
+find_package(Qt${Qt_VERSION_MAJOR}XmlPatterns ${QT_MIN_VERSION} CONFIG QUIET)
 set_package_properties(Qt${Qt_VERSION_MAJOR}XmlPatterns PROPERTIES
   TYPE OPTIONAL
   DESCRIPTION "Qt XmlPatterns library"
