@@ -22,7 +22,7 @@ if(QHELPGEN_EXECUTABLE)
   set(HAVE_QHELPGEN "YES")
 else()
   set(HAVE_QHELPGEN "NO")
-  message(STATUS "Unable to generate the API documentation in qch format. To fix, install the qthelpgenerator program which comes with Qt5.")
+  message(STATUS "Unable to generate the API documentation in qch format. To fix, install the qthelpgenerator program which comes with Qt.")
 endif()
 
 # Doxygen
