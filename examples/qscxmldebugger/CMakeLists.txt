@@ -13,13 +13,20 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-set(SRCS trafficlight.cpp main.cpp)
+add_executable(qscxmldebugger trafficlight.cpp main.cpp trafficlight-widgets-static.qrc)
 # Copy the .rep file to your project
 if(NOT BUILD_QT6)
-    qt5_generate_repc(SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
-    qt5_add_statecharts(SRCS statemachine.scxml)
+    qt5_generate_repc(REPC_SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
+
+    qt5_add_statecharts(STATECHART_SRCS statemachine.scxml)
+    # Work-around QTBUG-84387
+    # Needed in Qt5, otherwise we'll run into duplicate symbol issues like this:
+    #   ld: error: duplicate symbol: TrafficLightStateMachine::qt_metacall(QMetaObject::Call, int, void**)
+    set_source_files_properties(${STATECHART_SRCS} PROPERTIES
+                                                GENERATED TRUE
+                                                SKIP_AUTOGEN ON)
+    target_sources(qscxmldebugger PRIVATE ${REPC_SRCS} ${STATECHART_SRCS})
 endif()
-add_executable(qscxmldebugger ${SRCS} trafficlight-widgets-static.qrc)
 if(BUILD_QT6)
     qt6_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
     qt6_add_statecharts(qscxmldebugger statemachine.scxml)

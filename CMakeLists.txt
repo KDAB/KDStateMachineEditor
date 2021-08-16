@@ -91,7 +91,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 if(BUILD_QT6)
-    cmake_policy(SET CMP0071 NEW)
     set(Qt_VERSION_MAJOR 6)
     set(QT_MIN_VERSION "6.1.0")
     find_package(
