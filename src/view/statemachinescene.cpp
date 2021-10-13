@@ -22,6 +22,7 @@
 #include "state.h"
 #include "transition.h"
 #include "layouter.h"
+#include "layoutproperties.h"
 #include "layoututils.h"
 #include "elementmodel.h"
 #include "elementwalker.h"
@@ -375,3 +376,5 @@ void StateMachineScene::layoutChanged()
 {
     AbstractScene::layoutChanged();
 }
+
+#include "moc_statemachinescene.cpp"
