@@ -19,7 +19,7 @@ BuildRequires: libqt5-qtdeclarative-devel libqt5-qtdeclarative-private-headers-d
 %if %{defined fedora}
 BuildRequires: qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtxmlpatterns-devel
 %if 0%{?fedora} > 23
-BuildRequires: ghostscript-core
+BuildRequires: ghostscript
 %endif
 %if 0%{?fedora} > 30
 BuildRequires: qt5-qtbase-private-devel
