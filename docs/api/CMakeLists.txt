@@ -1,7 +1,7 @@
 #
 # This file is part of the KDAB State Machine Editor Library.
 #
-# SPDX-FileCopyrightText: 2017-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileCopyrightText: 2017-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 # Author: Allen Winter <allen.winter@kdab.com>
 #
 # SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
