@@ -47,7 +47,7 @@ environment:
 
 install:
   - cmd: choco install winflexbison graphviz
-  - sh: if [ "`uname -s`" = "Darwin" ]; then brew install ninja graphviz; else sudo apt-get -y update; sudo apt-get -y install graphviz-dev qt5-default qtbase5-dev qtbase5-dev-tools qtbase5-private-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev qtdeclarative5-dev-tools libqt5xmlpatterns5-dev libqt5xmlpatterns5 qtxmlpatterns5-dev-toolslibX11-devel mesa-common-dev libglu1-mesa-dev; fi
+  - sh: if [ "`uname -s`" = "Darwin" ]; then brew install ninja graphviz; else sudo apt-get -y update; sudo apt-get -y install libgraphviz-dev qt5-default qtbase5-dev qtbase5-dev-tools qtbase5-private-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev qtdeclarative5-dev-tools libqt5xmlpatterns5-dev libqt5xmlpatterns5 qtxmlpatterns5-dev-tools mesa-common-dev libglu1-mesa-dev; fi
 
 before_build:
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
