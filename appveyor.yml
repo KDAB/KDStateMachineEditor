@@ -59,8 +59,7 @@ before_build:
 build_script:
   - mkdir build
   - cd build
-  - cmd: cmake -G Ninja -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DBUILD_QT6=%useqt6% -
-DBUILD_TESTS=True -DBUILD_EXAMPLES=True ..
+  - cmd: cmake -G Ninja -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DBUILD_QT6=%useqt6% -DBUILD_TESTS=True -DBUILD_EXAMPLES=True ..
   - sh: cmake -G Ninja -DCMAKE_BUILD_TYPE=$CONFIGURATION -DBUILD_QT6=$useqt6 -DBUILD_TESTS=True -DBUILD_EXAMPLES=True ..
   - cmake --build .
   - cmd: cmake --build . --target install
