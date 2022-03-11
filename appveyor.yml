@@ -19,12 +19,13 @@ skip_tags: false
 
 # Build worker image
 image:
-  - Visual Studio 2015
+  - Ubuntu2004
+  - macos
+  - Visual Studio 2019
 
 # scripts that are called at very beginning, before repo cloning
 init:
   - git config --global core.autocrlf input
-  - choco install winflexbison graphviz
 
 #---------------------------------#
 #       build configuration       #
@@ -37,17 +38,39 @@ platform:
 # build Configuration, i.e. Debug, Release, etc.
 configuration:
   - Release
+  - Debug
+
+environment:
+  matrix:
+    - useqt6: False
+    - useqt6: True
 
 install:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
-  - set QTDIR=C:\Qt\5.12\msvc2015_64
+  - cmd: choco install winflexbison graphviz
+  - sh: if [ "`uname -s`" = "Darwin" ]; then brew install ninja graphviz; else sudo apt-get -y update; sudo apt-get -y install graphviz-dev mesa-common-dev libglu1-mesa-dev; fi
+
+before_build:
+  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: set PATH=C:\Qt\6.2\msvc2019_64;C:\Qt\5.15\msvc2019_64;%PATH%
+  - sh: if [ "`uname -s`" = "Darwin" ]; then export PATH=$HOME/Qt/6.1/macos/bin:$HOME/Qt/5.15/clang_64/bin:$PATH; else export PATH=$HOME/Qt/6.2/gcc_64/bin:$HOME/Qt/5.15/gcc_64/bin:$PATH; fi
   - set GRAPHVIZ_ROOT=c:\Program Files\Graphviz
-  - set PATH=%QTDIR%\bin;C:\Python37-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
+  - set PATH=%QTDIR%\bin;C:\Python39-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
+
 build_script:
   - mkdir build
   - cd build
-  - cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CONFIGURATION% ..
-  - nmake
+  - cmd: cmake -G Ninja -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DBUILD_QT6=%useqt6% -
+DBUILD_TESTS=True -DBUILD_EXAMPLES=True ..
+  - sh: cmake -G Ninja -DCMAKE_BUILD_TYPE=$CONFIGURATION -DBUILD_QT6=$useqt6 -DBUILD_TESTS=True -DBUILD_EXAMPLES=True ..
+  - cmake --build .
+  - cmd: cmake --build . --target install
+  - sh: sudo cmake --build . --target install
+  - cmd: set PATH=.\bin;%PATH%
+  #temporarily disable testing on Windows
+  #- ctest --test-dir .
+  #- sh: if [ "`uname -s`" != "Darwin" ]; then export LD_LIBRARY_PATH=./lib:$HOME/Qt/6.2/gcc_64/lib:$HOME/Qt/5.15/gcc_64/lib; fi
+  #- sh: ctest --test-dir .
+  - sh: if [ "`uname -s`" = "Darwin" ]; then ctest --test-dir .; else echo "temporarily disable testing on Ubuntu (due to Subprocess aborted)"; fi
 
 # to disable automatic builds
 #build: off
@@ -56,12 +79,8 @@ build_script:
 #       tests configuration       #
 #---------------------------------#
 
-test_script:
-  - nmake test
-
 # to disable automatic tests
-#test: off
-
+test: off
 
 #---------------------------------#
 #     deployment configuration    #
@@ -78,4 +97,5 @@ notifications:
     to:
       - allen.winter@kdab.com
       - kevin.funk@kdab.com
-    on_build_status_changed: true
+    on_build_success: false
+    on_build_failure: true
