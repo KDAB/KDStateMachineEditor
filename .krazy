@@ -6,6 +6,11 @@ EXTRA kdabcopyright-reuse,kdabcommercial-reuse,fosslicense-reuse
 #additional checks
 EXTRA defines,null,camelcase,crud
 
+#exclude checks now being done by clazy or clang-tools
+EXCLUDE strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstrassign,doublequote_chars,qobject,sigsandslots,staticobjects,inline,postfixop
+#exclude more checks
+EXCLUDE style
+
 #no need to check 3rdparty stuff
 SKIP /3rdparty/
 #nor examples
@@ -14,7 +19,7 @@ SKIP /examples/
 SKIP /codeeditor.cpp|/codeeditor_p.h
 SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/MacroLogFeature.cmake|/cmake/Toolchain-QNX6|/cmake/Toolchain-android.cmake|/cmake/ECM/
+SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/MacroLogFeature.cmake|/cmake/Toolchain-QNX6|/cmake/Toolchain-android.cmake
 
 #if you have a build subdir, skip it
 SKIP /build-
