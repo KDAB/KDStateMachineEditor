@@ -53,8 +53,8 @@ before_build:
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: set PATH=C:\Qt\6.2\msvc2019_64;C:\Qt\5.15\msvc2019_64;%PATH%
   - sh: if [ "`uname -s`" = "Darwin" ]; then export PATH=$HOME/Qt/6.1/macos/bin:$HOME/Qt/5.15/clang_64/bin:$PATH; else export PATH=$HOME/Qt/6.2/gcc_64/bin:$HOME/Qt/5.15/gcc_64/bin:$PATH; fi
-  - set GRAPHVIZ_ROOT=c:\Program Files\Graphviz
-  - set PATH=%QTDIR%\bin;C:\Python39-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
+  - cmd: set GRAPHVIZ_ROOT=c:\Program Files\Graphviz
+  - cmd: set PATH=%QTDIR%\bin;C:\Python39-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
 
 build_script:
   - mkdir build
