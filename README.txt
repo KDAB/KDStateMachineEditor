@@ -69,7 +69,7 @@ We strongly recommend installing Graphviz (https://graphviz.org):
     (Mac) $ brew install graphviz
     (Windows) $ choco install graphviz
 
-of course you need a Qt5 installation and CMake too.
+of course you need a Qt5 or Qt6 installation and CMake too.
 
 Build:
 
@@ -84,7 +84,7 @@ Start the test app:
 
     $ ./bin/kdstatemachineeditor
 
-See Install.txt for more information.
+See INSTALL.txt for more information.
 
 ## Known Issues
 
