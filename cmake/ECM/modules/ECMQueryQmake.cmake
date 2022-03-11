@@ -1,4 +1,5 @@
-find_package(Qt5Core QUIET)
+include(${CMAKE_CURRENT_LIST_DIR}/QtVersionOption.cmake)
+find_package(Qt${QT_MAJOR_VERSION}Core QUIET)
 
 if (Qt5Core_FOUND)
     set(_qmake_executable_default "qmake-qt5")
