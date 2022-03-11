@@ -14,6 +14,9 @@ To build this library you will need:
  - CMake 3.3
  - Qt 5.3 or higher
 
+Also note that Qt6 builds require a C++17 compliant compiler,
+whereas Qt5 builds can get by with C++11 compliance.
+
 Optional FOSS packages (eg. Graphviz, etc) provide extra functionality.
 See the "Optional Dependencies" section below for more details.
 

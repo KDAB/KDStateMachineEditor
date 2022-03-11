@@ -1,7 +1,7 @@
 #
 # This file is part of the KDAB State Machine Editor Library.
 #
-# SPDX-FileCopyrightText: 2014-2021 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileCopyrightText: 2014-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 # Author: Kevin Funk <kevin.funk@kdab.com>
 #
 # SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
@@ -143,6 +143,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(TARGET Qt6::Core)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
 
 set(BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
 set(LIB_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR} CACHE STRING "Library install destination.")
