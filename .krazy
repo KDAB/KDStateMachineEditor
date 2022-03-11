@@ -18,4 +18,7 @@ SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/MacroLogFeature.cmake|/cmake/T
 
 #if you have a build subdir, skip it
 SKIP /build-
+#skip other cmake
 SKIP Doxyfile.cmake
+#skip the borrowed code in the cmake subdir
+SKIP /cmake/InstallLocation.cmake|/cmake/ECM/|/cmake/KDAB/
