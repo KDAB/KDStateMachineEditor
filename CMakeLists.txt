@@ -43,47 +43,51 @@
 
 cmake_minimum_required(VERSION 3.3)
 
-project(kdstatemachineeditor LANGUAGES CXX C)
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
+  project(KDStateMachineEditor LANGUAGES CXX C)
+else()
+  project(KDStateMachineEditor
+          DESCRIPTION "A framework for creating Qt State Machine metacode using a graphical user interface"
+          HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
+          LANGUAGES CXX C)
+endif()
 
-# Version setup
 set(KDSME_VERSION_MAJOR "1")
 set(KDSME_VERSION_MINOR "99")
 set(KDSME_VERSION_PATCH "50")
 set(KDSME_VERSION ${KDSME_VERSION_MAJOR}.${KDSME_VERSION_MINOR}.${KDSME_VERSION_PATCH})
 set(PROJECT_VERSION ${KDSME_VERSION}) #PROJECT_VERSION is needed by some ECM modules
-set(${PROJECT_NAME}_SOVERSION ${${PROJECT_NAME}_VERSION_MAJOR})
+set(${PROJECT_NAME}_SOVERSION ${KDSME_VERSION_MAJOR})
 set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
+
+include(FeatureSummary)
+
+if(CMAKE_CROSSCOMPILING)
+  set(BUILD_DOCS OFF)
+  set(BUILD_EXAMPLES OFF)
+  set(BUILD_TESTS OFF)
+else()
+  option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
+  option(BUILD_EXAMPLES "Build examples directory" ON)
+  option(BUILD_TESTS "Build the test harness" ON)
+endif()
+option(BUILD_QT6 "Build against Qt 6" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/KDAB/modules")
 
-if(NOT DEFINED CMAKE_MACOSX_RPATH)
-  set(CMAKE_MACOSX_RPATH TRUE)
+# Set a default build type if none was specified
+set(default_build_type "Release")
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  set(default_build_type "Debug")
 endif()
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to ${default_build_type} as none was specified.")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
-
-if(WIN32)
-  # Needed for qmake-integration because qmake's QT modules import mechanism does assume
-  # debug libraries at windows always have a d suffix.
-  set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "debug library postfix, usually d on windows")
-endif()
-
-include(CheckCCompilerFlag)
-include(CheckCXXCompilerFlag)
-include(CheckIncludeFiles)
-include(CMakePackageConfigHelpers)
-include(CTest)
-include(GenerateExportHeader)
-include(GNUInstallDirs)
-include(ExternalProject)
-include(MacroLogFeature)
-include(ECMAddTests)
-
-option(BUILD_QT6 "Build against Qt 6" OFF)
 
 if(BUILD_QT6)
   cmake_policy(SET CMP0071 NEW)
@@ -96,12 +100,12 @@ if(BUILD_QT6)
     DESCRIPTION "Qt6-Qt5 compatibility module"
     PURPOSE "Needed for the layoutinformation unit test"
   )
-  set(${PROJECT_NAME}_LIBRARY_QTID "-qt6")
+  set(KDSME_LIBRARY_QTID "-qt6")
 else()
   set(Qt_VERSION_MAJOR 5)
   set(QT_MIN_VERSION "5.12")
   find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
-  set(${PROJECT_NAME}KDSME_LIBRARY_QTID "")
+  set(KDSME_LIBRARY_QTID "")
   include(ECMGeneratePriFile)
   include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 endif()
@@ -127,19 +131,18 @@ set_package_properties(Qt${Qt_VERSION_MAJOR}XmlPatterns PROPERTIES
   PURPOSE "Required for unit tests dealing with XML input/output"
 )
 
-if(CMAKE_CROSSCOMPILING)
-  set(BUILD_DOCS OFF)
-  set(BUILD_EXAMPLES OFF)
-  set(BUILD_TESTS OFF)
-else()
-  option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
-  option(BUILD_EXAMPLES "Build examples directory" ON)
-  option(BUILD_TESTS "Build the test harness" ON)
-endif()
+include(CheckCCompilerFlag)
+include(CheckCXXCompilerFlag)
+include(CheckIncludeFiles)
+include(CMakePackageConfigHelpers)
+include(CTest)
+include(GenerateExportHeader)
+include(GNUInstallDirs)
+include(ExternalProject)
+include(MacroLogFeature)
+include(ECMAddTests)
 
-# Don't require lots of include_directories(${CMAKE_CURRENT_SOURCE_DIR}) etc.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Automatically include the current dirs in the INTERFACE_INCLUDE_DIRS of targets.
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
@@ -149,6 +152,19 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(TARGET Qt6::Core)
   set(CMAKE_CXX_STANDARD 17)
+endif()
+
+if(NOT DEFINED CMAKE_MACOSX_RPATH)
+  set(CMAKE_MACOSX_RPATH TRUE)
+endif()
+if(NOT DEFINED CMAKE_INSTALL_RPATH_USE_LINK_PATH)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+endif()
+
+if(WIN32)
+  # Needed for qmake-integration because qmake's QT modules import mechanism does assume
+  # debug libraries at windows always have a d suffix.
+  set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "debug library postfix, usually d on windows")
 endif()
 
 set(BIN_INSTALL_DIR ${CMAKE_INSTALL_BINDIR})
@@ -161,8 +177,6 @@ endif()
 set(INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_ROOT}/${CMAKE_PROJECT_NAME})
 set(XDG_DATA_INSTALL_DIR ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME})
 set(QCH_INSTALL_DIR ${CMAKE_INSTALL_DOCDIR}${KDSME_LIBRARY_QTID} CACHE STRING "Install location of Qt Assistant help files.")
-
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
@@ -333,7 +347,19 @@ if(CMAKE_SYSTEM_NAME MATCHES Linux OR CMAKE_SYSTEM_NAME STREQUAL GNU)
   endif()
 endif()
 
-if(NOT CMAKE_CROSSCOMPILING)
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+  set(${PROJECT_NAME}_IS_ROOT_PROJECT TRUE)
+
+  message(STATUS "Building ${PROJECT_NAME} ${KDSME_VERSION} in ${CMAKE_BUILD_TYPE} mode. Installing to ${CMAKE_INSTALL_PREFIX}")
+else()
+  #Always disable tests, examples, docs when used as a submodule
+  set(${PROJECT_NAME}_IS_ROOT_PROJECT FALSE)
+  set(BUILD_TESTS FALSE)
+  set(BUILD_EXAMPLES FALSE)
+  set(BUILD_DOCS FALSE)
+endif()
+
+if(BUILD_TESTS AND NOT CMAKE_CROSSCOMPILING)
   enable_testing()
 endif()
 
@@ -386,31 +412,33 @@ install(
     Devel
 )
 
-feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+if(${PROJECT_NAME}_IS_ROOT_PROJECT)
+  set(LICENSE_FILE "LGPL-2.1-only.txt")
+  set(README_FILE "README.txt")
 
-set(LICENSE_FILE "LGPL-2.1-only.txt")
-set(README_FILE "README.txt")
+  #CPACK
+  set(CPACK_PACKAGE_VERSION_MAJOR "${KDSME_VERSION_MAJOR}")
+  set(CPACK_PACKAGE_VERSION_MINOR "${KDSME_VERSION_MINOR}")
+  set(CPACK_PACKAGE_VERSION_PATCH "${KDSME_VERSION_PATCH}")
+  set(CPACK_PACKAGE_VERSION "${KDSME_VERSION}")
+  set(CPACK_PACKAGE_VENDOR "KDAB")
+  set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/${README_FILE}")
+  if(WIN32)
+    set(CPACK_GENERATOR "NSIS")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "KDStateMachineEditor")
+    set(CPACK_PACKAGE_FILE_NAME "KDStateMachineEditor-${KDSME_VERSION}")
+    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSES/${LICENSE_FILE}")
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY "${BIN_INSTALL_DIR}")
+    set(CPACK_NSIS_URL_INFO_ABOUT "https://www.kdab.com/")
+    set(CPACK_NSIS_MENU_LINKS
+      "${LICENSE_FILE}" "License"
+      "${README_FILE}" "Readme"
+    )
+  endif()
+  include(CPack)
 
-#CPACK
-set(CPACK_PACKAGE_VERSION_MAJOR "${KDSME_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${KDSME_VERSION_MINOR}")
-set(CPACK_PACKAGE_VERSION_PATCH "${KDSME_VERSION_PATCH}")
-set(CPACK_PACKAGE_VERSION "${KDSME_VERSION}")
-set(CPACK_PACKAGE_VENDOR "KDAB")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/${README_FILE}")
-if(WIN32)
-  set(CPACK_GENERATOR "NSIS")
-  set(CPACK_PACKAGE_INSTALL_DIRECTORY "KDStateMachineEditor")
-  set(CPACK_PACKAGE_FILE_NAME "KDStateMachineEditor-${KDSME_VERSION}")
-  set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSES/${LICENSE_FILE}")
-  set(CPACK_NSIS_EXECUTABLES_DIRECTORY "${BIN_INSTALL_DIR}")
-  set(CPACK_NSIS_URL_INFO_ABOUT "https://www.kdab.com/")
-  set(CPACK_NSIS_MENU_LINKS
-    "${LICENSE_FILE}" "License"
-    "${README_FILE}" "Readme"
-  )
+  # Add uninstall target
+  include(ECMUninstallTarget)
 endif()
-include(CPack)
 
-# Add uninstall target
-include(ECMUninstallTarget)
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
