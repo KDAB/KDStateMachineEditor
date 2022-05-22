@@ -17,7 +17,7 @@ BuildRequires: libqt5-qtdeclarative-devel libqt5-qtdeclarative-private-headers-d
 %endif
 
 %if %{defined fedora}
-BuildRequires: qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtxmlpatterns-devel
+BuildRequires: qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtxmlpatterns-devel util-linux
 %if 0%{?fedora} > 23
 BuildRequires: ghostscript
 %endif
@@ -63,7 +63,7 @@ make install DESTDIR=%{buildroot} %{?_smp_mflags}
 %files
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
-%doc README* LICENSE*
+%doc ReadMe* LICENSE*
 
 %files devel
 %defattr(-,root,root)
