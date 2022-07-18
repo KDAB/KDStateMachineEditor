@@ -19,7 +19,7 @@ SKIP /examples/
 SKIP /codeeditor.cpp|/codeeditor_p.h
 SKIP /qopengl2pexvertexarray.cpp|/qopengl2pexvertexarray_p.h
 #skip the borrowed code in the cmake subdir
-SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/Toolchain-QNX6|/cmake/Toolchain-android.cmake
+SKIP /cmake/Toolchain-
 
 #if you have a build subdir, skip it
 SKIP /build-

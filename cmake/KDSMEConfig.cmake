@@ -13,10 +13,8 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-include("${CMAKE_CURRENT_LIST_DIR}/KDSMEFindDependencyMacro.cmake")
-
-kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@Widgets)
-kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@Quick)
-kdsme_find_dependency(Qt@Qt_VERSION_MAJOR@QuickWidgets)
+find_dependency(Qt@Qt_VERSION_MAJOR@Widgets)
+find_dependency(Qt@Qt_VERSION_MAJOR@Quick)
+find_dependency(Qt@Qt_VERSION_MAJOR@QuickWidgets)
 
 include("${CMAKE_CURRENT_LIST_DIR}/KDSME@KDSME_LIBRARY_QTID@Targets.cmake")

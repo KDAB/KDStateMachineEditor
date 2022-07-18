@@ -457,7 +457,6 @@ install(
 
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSME${KDSME_LIBRARY_QTID}Config.cmake"
-          cmake/KDSMEFindDependencyMacro.cmake
           "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_DIR}/KDSME${KDSME_LIBRARY_QTID}ConfigVersion.cmake"
     DESTINATION ${CMAKECONFIG_INSTALL_DIR}
     COMPONENT Devel
