@@ -29,127 +29,134 @@
 # SPDX-FileCopyrightText: 2009 Sebastian Trueg, <trueg@kde.org>
 # SPDX-License-Identifier: BSD-3-Clause
 
-IF (NOT _macroLogFeatureAlreadyIncluded)
-   SET(_file ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
-   IF (EXISTS ${_file})
-      FILE(REMOVE ${_file})
-   ENDIF (EXISTS ${_file})
+if(NOT _macroLogFeatureAlreadyIncluded)
+    set(_file ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
+    if(EXISTS ${_file})
+        file(REMOVE ${_file})
+    endif(EXISTS ${_file})
 
-   SET(_file ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
-   IF (EXISTS ${_file})
-      FILE(REMOVE ${_file})
-   ENDIF (EXISTS ${_file})
+    set(_file ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
+    if(EXISTS ${_file})
+        file(REMOVE ${_file})
+    endif(EXISTS ${_file})
 
-   SET(_file ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
-   IF (EXISTS ${_file})
-      FILE(REMOVE ${_file})
-  ENDIF (EXISTS ${_file})
+    set(_file ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
+    if(EXISTS ${_file})
+        file(REMOVE ${_file})
+    endif(EXISTS ${_file})
 
-  SET(_macroLogFeatureAlreadyIncluded TRUE)
+    set(_macroLogFeatureAlreadyIncluded TRUE)
 
-  INCLUDE(FeatureSummary)
+    include(FeatureSummary)
 
-ENDIF (NOT _macroLogFeatureAlreadyIncluded)
+endif(NOT _macroLogFeatureAlreadyIncluded)
 
+macro(MACRO_LOG_FEATURE _var _package _description _url) # _required _minvers _comments)
 
-MACRO(MACRO_LOG_FEATURE _var _package _description _url ) # _required _minvers _comments)
+    string(TOUPPER "${ARGV4}" _required)
+    set(_minvers "${ARGV5}")
+    set(_comments "${ARGV6}")
 
-   STRING(TOUPPER "${ARGV4}" _required)
-   SET(_minvers "${ARGV5}")
-   SET(_comments "${ARGV6}")
+    if(${_var})
+        set(_LOGFILENAME ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
+    else(${_var})
+        if("${_required}" STREQUAL "TRUE")
+            set(_LOGFILENAME ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
+        else("${_required}" STREQUAL "TRUE")
+            set(_LOGFILENAME ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
+        endif("${_required}" STREQUAL "TRUE")
+    endif(${_var})
 
-   IF (${_var})
-     SET(_LOGFILENAME ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
-   ELSE (${_var})
-     IF ("${_required}" STREQUAL "TRUE")
-       SET(_LOGFILENAME ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
-     ELSE ("${_required}" STREQUAL "TRUE")
-       SET(_LOGFILENAME ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
-     ENDIF ("${_required}" STREQUAL "TRUE")
-   ENDIF (${_var})
+    set(_logtext "   * ${_package}")
 
-   SET(_logtext "   * ${_package}")
+    if(NOT ${_var})
+        if(${_minvers} MATCHES ".*")
+            set(_logtext "${_logtext} (${_minvers} or higher)")
+        endif(${_minvers} MATCHES ".*")
+        set(_logtext "${_logtext}  <${_url}>\n     ")
+    else(NOT ${_var})
+        set(_logtext "${_logtext} - ")
+    endif(NOT ${_var})
 
-   IF (NOT ${_var})
-      IF (${_minvers} MATCHES ".*")
-        SET(_logtext "${_logtext} (${_minvers} or higher)")
-      ENDIF (${_minvers} MATCHES ".*")
-      SET(_logtext "${_logtext}  <${_url}>\n     ")
-   ELSE (NOT ${_var})
-     SET(_logtext "${_logtext} - ")
-   ENDIF (NOT ${_var})
+    set(_logtext "${_logtext}${_description}")
 
-   SET(_logtext "${_logtext}${_description}")
+    if(NOT ${_var})
+        if(${_comments} MATCHES ".*")
+            set(_logtext "${_logtext}\n     ${_comments}")
+        endif(${_comments} MATCHES ".*")
+        #      SET(_logtext "${_logtext}\n") #double-space missing features?
+    endif(NOT ${_var})
 
-   IF (NOT ${_var})
-      IF (${_comments} MATCHES ".*")
-        SET(_logtext "${_logtext}\n     ${_comments}")
-      ENDIF (${_comments} MATCHES ".*")
-#      SET(_logtext "${_logtext}\n") #double-space missing features?
-   ENDIF (NOT ${_var})
+    file(APPEND "${_LOGFILENAME}" "${_logtext}\n")
 
-   FILE(APPEND "${_LOGFILENAME}" "${_logtext}\n")
+    if(COMMAND SET_PACKAGE_INFO) # in FeatureSummary.cmake since CMake 2.8.3
+        set_package_info("${_package}" "\"${_description}\"" "${_url}" "\"${_comments}\"")
+    endif(COMMAND SET_PACKAGE_INFO)
 
-   IF(COMMAND SET_PACKAGE_INFO)  # in FeatureSummary.cmake since CMake 2.8.3
-     SET_PACKAGE_INFO("${_package}" "\"${_description}\"" "${_url}" "\"${_comments}\"")
-   ENDIF(COMMAND SET_PACKAGE_INFO)
+endmacro(MACRO_LOG_FEATURE)
 
-ENDMACRO(MACRO_LOG_FEATURE)
+macro(MACRO_DISPLAY_FEATURE_LOG)
+    if(COMMAND FEATURE_SUMMARY) # in FeatureSummary.cmake since CMake 2.8.3
+        feature_summary(FILENAME ${CMAKE_CURRENT_BINARY_DIR}/FindPackageLog.txt WHAT ALL)
+    endif(COMMAND FEATURE_SUMMARY)
 
+    set(_missingFile ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
+    set(_enabledFile ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
+    set(_disabledFile ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
 
-MACRO(MACRO_DISPLAY_FEATURE_LOG)
-   IF(COMMAND FEATURE_SUMMARY) # in FeatureSummary.cmake since CMake 2.8.3
-      FEATURE_SUMMARY(FILENAME ${CMAKE_CURRENT_BINARY_DIR}/FindPackageLog.txt
-                      WHAT ALL)
-   ENDIF(COMMAND FEATURE_SUMMARY)
+    if(EXISTS ${_missingFile}
+       OR EXISTS ${_enabledFile}
+       OR EXISTS ${_disabledFile}
+    )
+        set(_printSummary TRUE)
+    endif(
+        EXISTS ${_missingFile}
+        OR EXISTS ${_enabledFile}
+        OR EXISTS ${_disabledFile}
+    )
 
-   SET(_missingFile ${CMAKE_BINARY_DIR}/MissingRequirements.txt)
-   SET(_enabledFile ${CMAKE_BINARY_DIR}/EnabledFeatures.txt)
-   SET(_disabledFile ${CMAKE_BINARY_DIR}/DisabledFeatures.txt)
+    if(_printSummary)
+        set(_missingDeps 0)
+        if(EXISTS ${_enabledFile})
+            file(READ ${_enabledFile} _enabled)
+            file(REMOVE ${_enabledFile})
+            set(_summary
+                "${_summary}\n-----------------------------------------------------------------------------\n-- The following external packages were located on your system.\n-- This installation will have the extra features provided by these packages.\n-----------------------------------------------------------------------------\n${_enabled}"
+            )
+        endif(EXISTS ${_enabledFile})
 
-   IF (EXISTS ${_missingFile} OR EXISTS ${_enabledFile} OR EXISTS ${_disabledFile})
-     SET(_printSummary TRUE)
-   ENDIF (EXISTS ${_missingFile} OR EXISTS ${_enabledFile} OR EXISTS ${_disabledFile})
+        if(EXISTS ${_disabledFile})
+            set(_missingDeps 1)
+            file(READ ${_disabledFile} _disabled)
+            file(REMOVE ${_disabledFile})
+            set(_summary
+                "${_summary}\n-----------------------------------------------------------------------------\n-- The following OPTIONAL packages could NOT be located on your system.\n-- Consider installing them to enable more features from this software.\n-----------------------------------------------------------------------------\n${_disabled}"
+            )
+        endif(EXISTS ${_disabledFile})
 
-   IF(_printSummary)
-     SET(_missingDeps 0)
-     IF (EXISTS ${_enabledFile})
-       FILE(READ ${_enabledFile} _enabled)
-       FILE(REMOVE ${_enabledFile})
-       SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following external packages were located on your system.\n-- This installation will have the extra features provided by these packages.\n-----------------------------------------------------------------------------\n${_enabled}")
-     ENDIF (EXISTS ${_enabledFile})
+        if(EXISTS ${_missingFile})
+            set(_missingDeps 1)
+            file(READ ${_missingFile} _requirements)
+            set(_summary
+                "${_summary}\n-----------------------------------------------------------------------------\n-- The following REQUIRED packages could NOT be located on your system.\n-- You must install these packages before continuing.\n-----------------------------------------------------------------------------\n${_requirements}"
+            )
+            file(REMOVE ${_missingFile})
+            set(_haveMissingReq 1)
+        endif(EXISTS ${_missingFile})
 
+        if(NOT ${_missingDeps})
+            set(_summary
+                "${_summary}\n-----------------------------------------------------------------------------\n-- Congratulations! All external packages have been found."
+            )
+        endif(NOT ${_missingDeps})
 
-     IF (EXISTS ${_disabledFile})
-       SET(_missingDeps 1)
-       FILE(READ ${_disabledFile} _disabled)
-       FILE(REMOVE ${_disabledFile})
-       SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following OPTIONAL packages could NOT be located on your system.\n-- Consider installing them to enable more features from this software.\n-----------------------------------------------------------------------------\n${_disabled}")
-     ENDIF (EXISTS ${_disabledFile})
+        message(${_summary})
+        message("-----------------------------------------------------------------------------\n")
 
+        if(_haveMissingReq)
+            message(FATAL_ERROR "Exiting: Missing Requirements")
+        endif(_haveMissingReq)
 
-     IF (EXISTS ${_missingFile})
-       SET(_missingDeps 1)
-       FILE(READ ${_missingFile} _requirements)
-       SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- The following REQUIRED packages could NOT be located on your system.\n-- You must install these packages before continuing.\n-----------------------------------------------------------------------------\n${_requirements}")
-       FILE(REMOVE ${_missingFile})
-       SET(_haveMissingReq 1)
-     ENDIF (EXISTS ${_missingFile})
+    endif(_printSummary)
 
-
-     IF (NOT ${_missingDeps})
-       SET(_summary "${_summary}\n-----------------------------------------------------------------------------\n-- Congratulations! All external packages have been found.")
-     ENDIF (NOT ${_missingDeps})
-
-
-     MESSAGE(${_summary})
-     MESSAGE("-----------------------------------------------------------------------------\n")
-
-
-     IF(_haveMissingReq)
-       MESSAGE(FATAL_ERROR "Exiting: Missing Requirements")
-     ENDIF(_haveMissingReq)
-
-   ENDIF(_printSummary)
-
-ENDMACRO(MACRO_DISPLAY_FEATURE_LOG)
+endmacro(MACRO_DISPLAY_FEATURE_LOG)

@@ -13,83 +13,90 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-set(QSMDEBUGINTERFACESOURCE_SRCS
-  qsmdebuginterfacesource.cpp
-  qsmwatcher.cpp
-
-  ../../core/util/objecthelper.cpp
-)
+set(QSMDEBUGINTERFACESOURCE_SRCS qsmdebuginterfacesource.cpp qsmwatcher.cpp ../../core/util/objecthelper.cpp)
 
 if(Qt${Qt_VERSION_MAJOR}Scxml_FOUND)
-  list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
+    list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
 endif()
 
-if (NOT BUILD_QT6)
-  qt5_generate_repc(QSMDEBUGINTERFACESOURCE_SRCS ../debuginterface.rep SOURCE)
+if(NOT BUILD_QT6)
+    qt5_generate_repc(QSMDEBUGINTERFACESOURCE_SRCS ../debuginterface.rep SOURCE)
 endif()
 
 add_library(kdstatemachineeditor_debuginterfacesource STATIC ${QSMDEBUGINTERFACESOURCE_SRCS})
 
-if (BUILD_QT6)
-  qt6_add_repc_sources(kdstatemachineeditor_debuginterfacesource ../debuginterface.rep)
-  target_link_libraries(kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt6::StateMachine)
+if(BUILD_QT6)
+    qt6_add_repc_sources(kdstatemachineeditor_debuginterfacesource ../debuginterface.rep)
+    target_link_libraries(kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt6::StateMachine)
 endif()
 
 add_library(KDSME::DebugInterfaceSource ALIAS kdstatemachineeditor_debuginterfacesource)
-target_link_libraries(kdstatemachineeditor_debuginterfacesource
-  LINK_PRIVATE
-    Qt${Qt_VERSION_MAJOR}::RemoteObjects
-    kdstatemachineeditor_core
-  LINK_PUBLIC
-    Qt${Qt_VERSION_MAJOR}::Core
+target_link_libraries(
+    kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::RemoteObjects
+    kdstatemachineeditor_core LINK_PUBLIC Qt${Qt_VERSION_MAJOR}::Core
 )
 if(Qt${Qt_VERSION_MAJOR}Scxml_FOUND)
-  target_link_libraries(kdstatemachineeditor_debuginterfacesource
-    LINK_PRIVATE
-      Qt${Qt_VERSION_MAJOR}::ScxmlPrivate
-    LINK_PUBLIC
-      Qt${Qt_VERSION_MAJOR}::Scxml
-  )
+    target_link_libraries(
+        kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::ScxmlPrivate LINK_PUBLIC
+        Qt${Qt_VERSION_MAJOR}::Scxml
+    )
 endif()
-set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES
-  SOVERSION ${KDSME_SOVERSION}
-  VERSION ${KDSME_SOVERSION}
-  EXPORT_NAME DebugInterfaceSource
-  INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+set_target_properties(
+    kdstatemachineeditor_debuginterfacesource
+    PROPERTIES SOVERSION ${KDSME_SOVERSION}
+               VERSION ${KDSME_SOVERSION}
+               EXPORT_NAME DebugInterfaceSource
+               INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
 )
 #version libraries on Windows
 if(WIN32)
-  set(postfix ${KDSME_SOVERSION})
-  string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
-  if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
-    string(CONCAT postfix ${postfix} "d")
-    set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES DEBUG_POSTFIX ${postfix})
-  else()
-    set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix})
-  endif()
+    set(postfix ${KDSME_SOVERSION})
+    string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
+    if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
+        string(CONCAT postfix ${postfix} "d")
+        set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES DEBUG_POSTFIX ${postfix})
+    else()
+        set_target_properties(
+            kdstatemachineeditor_debuginterfacesource PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix}
+        )
+    endif()
 endif()
 
 target_compile_definitions(kdstatemachineeditor_debuginterfacesource PRIVATE -Dkdstatemachineeditor_core_EXPORTS)
-generate_export_header(kdstatemachineeditor_debuginterfacesource EXPORT_FILE_NAME kdsme_debuginterfacesource_export.h BASE_NAME KDSME_DEBUGINTERFACESOURCE)
-target_include_directories(kdstatemachineeditor_debuginterfacesource
-  PUBLIC
-    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
-  PRIVATE
-    ../
+generate_export_header(
+    kdstatemachineeditor_debuginterfacesource EXPORT_FILE_NAME kdsme_debuginterfacesource_export.h BASE_NAME
+    KDSME_DEBUGINTERFACESOURCE
 )
-if (NOT BUILD_QT6)
-  ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceSource
-                        LIB_NAME kdstatemachineeditor_debuginterfacesource
-                        DEPS ""
-                        FILENAME_VAR PRI_FILENAME
-                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfacesource
-  )
-  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+target_include_directories(
+    kdstatemachineeditor_debuginterfacesource
+    PUBLIC $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
+    PRIVATE ../
+)
+if(NOT BUILD_QT6)
+    ecm_generate_pri_file(
+        BASE_NAME
+        KDSMEDebugInterfaceSource
+        LIB_NAME
+        kdstatemachineeditor_debuginterfacesource
+        DEPS
+        ""
+        FILENAME_VAR
+        PRI_FILENAME
+        INCLUDE_INSTALL_DIR
+        ${INCLUDE_INSTALL_DIR}/debuginterfacesource
+    )
+    install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 endif()
-set_target_properties(kdstatemachineeditor_debuginterfacesource PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfacesource${KDSME_LIBRARY_QTID}")
-install(TARGETS kdstatemachineeditor_debuginterfacesource EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
+set_target_properties(
+    kdstatemachineeditor_debuginterfacesource
+    PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfacesource${KDSME_LIBRARY_QTID}"
+)
+install(
+    TARGETS kdstatemachineeditor_debuginterfacesource
+    EXPORT KDSME_TARGETS
+    ${INSTALL_TARGETS_DEFAULT_ARGS}
+)
 # No need to install PDB, since there's no PDB generated, it's a static library.
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfacesource_export.h
-    qsmdebuginterfacesource.h
-    DESTINATION ${INCLUDE_INSTALL_DIR}/debuginterfacesource)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfacesource_export.h qsmdebuginterfacesource.h
+        DESTINATION ${INCLUDE_INSTALL_DIR}/debuginterfacesource
+)

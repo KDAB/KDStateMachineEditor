@@ -14,7 +14,4 @@
 #
 
 add_executable(layoutexport main.cpp)
-target_link_libraries(layoutexport
-  KDSME::Core
-  Qt${Qt_VERSION_MAJOR}::Gui
-)
+target_link_libraries(layoutexport KDSME::Core Qt${Qt_VERSION_MAJOR}::Gui)

@@ -13,70 +13,85 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-set(DEBUGINTERFACECLIENT_SRCS
-  debuginterfaceclient.cpp
-)
-if (NOT BUILD_QT6)
-  qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
+set(DEBUGINTERFACECLIENT_SRCS debuginterfaceclient.cpp)
+if(NOT BUILD_QT6)
+    qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
 endif()
 
 add_library(kdstatemachineeditor_debuginterfaceclient SHARED ${DEBUGINTERFACECLIENT_SRCS})
 
-if (BUILD_QT6)
-  qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
+if(BUILD_QT6)
+    qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
 endif()
 
 add_library(KDSME::DebugInterfaceClient ALIAS kdstatemachineeditor_debuginterfaceclient)
-target_link_libraries(kdstatemachineeditor_debuginterfaceclient
-  LINK_PRIVATE
-    Qt${Qt_VERSION_MAJOR}::RemoteObjects
-  LINK_PUBLIC
-    KDSME::Core
+target_link_libraries(
+    kdstatemachineeditor_debuginterfaceclient LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::RemoteObjects LINK_PUBLIC KDSME::Core
     Qt${Qt_VERSION_MAJOR}::Core
 )
-set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES
-  SOVERSION ${KDSME_SOVERSION}
-  VERSION ${KDSME_SOVERSION}
-  EXPORT_NAME DebugInterfaceClient
-  INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+set_target_properties(
+    kdstatemachineeditor_debuginterfaceclient
+    PROPERTIES SOVERSION ${KDSME_SOVERSION}
+               VERSION ${KDSME_SOVERSION}
+               EXPORT_NAME DebugInterfaceClient
+               INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
 )
 #version libraries on Windows
 if(WIN32)
-  set(postfix ${KDSME_SOVERSION})
-  string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
-  if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
-    string(CONCAT postfix ${postfix} "d")
-    set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES DEBUG_POSTFIX ${postfix})
-  else()
-    set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix})
-  endif()
+    set(postfix ${KDSME_SOVERSION})
+    string(TOUPPER ${CMAKE_BUILD_TYPE} UPPER_BUILD_TYPE)
+    if(${UPPER_BUILD_TYPE} MATCHES "^DEBUG")
+        string(CONCAT postfix ${postfix} "d")
+        set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES DEBUG_POSTFIX ${postfix})
+    else()
+        set_target_properties(
+            kdstatemachineeditor_debuginterfaceclient PROPERTIES ${UPPER_BUILD_TYPE}_POSTFIX ${postfix}
+        )
+    endif()
 endif()
 
-generate_export_header(kdstatemachineeditor_debuginterfaceclient EXPORT_FILE_NAME kdsme_debuginterfaceclient_export.h BASE_NAME KDSME_DEBUGINTERFACECLIENT)
-set(build_iface_dirs
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/../
+generate_export_header(
+    kdstatemachineeditor_debuginterfaceclient EXPORT_FILE_NAME kdsme_debuginterfaceclient_export.h BASE_NAME
+    KDSME_DEBUGINTERFACECLIENT
 )
-target_include_directories(kdstatemachineeditor_debuginterfaceclient
-  PUBLIC
-    "$<BUILD_INTERFACE:${build_iface_dirs}>"
-    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
+set(build_iface_dirs ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../)
+target_include_directories(
+    kdstatemachineeditor_debuginterfaceclient PUBLIC "$<BUILD_INTERFACE:${build_iface_dirs}>"
+                                                     $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
-if (NOT BUILD_QT6)
-  ecm_generate_pri_file(BASE_NAME KDSMEDebugInterfaceClient
-                        LIB_NAME kdstatemachineeditor_debuginterfaceclient
-                        DEPS ""
-                        FILENAME_VAR PRI_FILENAME
-                        INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
-  )
-  install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
+if(NOT BUILD_QT6)
+    ecm_generate_pri_file(
+        BASE_NAME
+        KDSMEDebugInterfaceClient
+        LIB_NAME
+        kdstatemachineeditor_debuginterfaceclient
+        DEPS
+        ""
+        FILENAME_VAR
+        PRI_FILENAME
+        INCLUDE_INSTALL_DIR
+        ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
+    )
+    install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 endif()
-set_target_properties(kdstatemachineeditor_debuginterfaceclient PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfaceclient${KDSME_LIBRARY_QTID}")
-install(TARGETS kdstatemachineeditor_debuginterfaceclient EXPORT KDSME_TARGETS ${INSTALL_TARGETS_DEFAULT_ARGS})
+set_target_properties(
+    kdstatemachineeditor_debuginterfaceclient
+    PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfaceclient${KDSME_LIBRARY_QTID}"
+)
+install(
+    TARGETS kdstatemachineeditor_debuginterfaceclient
+    EXPORT KDSME_TARGETS
+    ${INSTALL_TARGETS_DEFAULT_ARGS}
+)
 if(MSVC)
-  install(FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>" DESTINATION ${LIB_INSTALL_DIR} CONFIGURATIONS Debug RelWithDebInfo)
+    # cmake-lint: disable=C0301
+    install(
+        FILES
+            "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_debuginterfaceclient>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_debuginterfaceclient>"
+        DESTINATION ${LIB_INSTALL_DIR}
+        CONFIGURATIONS Debug RelWithDebInfo
+    )
 endif()
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfaceclient_export.h
-    debuginterfaceclient.h
-    DESTINATION ${INCLUDE_INSTALL_DIR}/debuginterfaceclient)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kdsme_debuginterfaceclient_export.h debuginterfaceclient.h
+        DESTINATION ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
+)

@@ -14,8 +14,4 @@
 #
 
 add_executable(simplestatemachine main.cpp)
-target_link_libraries(simplestatemachine
-  KDSME::Core
-  KDSME::View
-  Qt${Qt_VERSION_MAJOR}::Gui
-)
+target_link_libraries(simplestatemachine KDSME::Core KDSME::View Qt${Qt_VERSION_MAJOR}::Gui)

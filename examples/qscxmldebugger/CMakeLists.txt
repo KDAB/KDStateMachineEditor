@@ -15,21 +15,22 @@
 
 set(SRCS trafficlight.cpp main.cpp)
 # Copy the .rep file to your project
-if (NOT BUILD_QT6)
-  qt5_generate_repc(SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
-  qt5_add_statecharts(SRCS statemachine.scxml)
+if(NOT BUILD_QT6)
+    qt5_generate_repc(SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
+    qt5_add_statecharts(SRCS statemachine.scxml)
 endif()
 add_executable(qscxmldebugger ${SRCS} trafficlight-widgets-static.qrc)
-if (BUILD_QT6)
-  qt6_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
-  qt6_add_statecharts(qscxmldebugger statemachine.scxml)
+if(BUILD_QT6)
+    qt6_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
+    qt6_add_statecharts(qscxmldebugger statemachine.scxml)
 endif()
-target_link_libraries(qscxmldebugger
-  KDSME::Core
-  KDSME::View
-  KDSME::DebugInterfaceClient
-  KDSME::DebugInterfaceSource
-  Qt${Qt_VERSION_MAJOR}::Widgets
-  Qt${Qt_VERSION_MAJOR}::RemoteObjects
-  Qt${Qt_VERSION_MAJOR}::Scxml
+target_link_libraries(
+    qscxmldebugger
+    KDSME::Core
+    KDSME::View
+    KDSME::DebugInterfaceClient
+    KDSME::DebugInterfaceSource
+    Qt${Qt_VERSION_MAJOR}::Widgets
+    Qt${Qt_VERSION_MAJOR}::RemoteObjects
+    Qt${Qt_VERSION_MAJOR}::Scxml
 )

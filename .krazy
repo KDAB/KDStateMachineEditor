@@ -25,5 +25,6 @@ SKIP /cmake/KDSMEFindDependencyMacro.cmake|/cmake/MacroLogFeature.cmake|/cmake/T
 SKIP /build-
 #skip other cmake
 SKIP Doxyfile.cmake
+SKIP \.cmake-format\.py
 #skip the borrowed code in the cmake subdir
 SKIP /cmake/InstallLocation.cmake|/cmake/ECM/|/cmake/KDAB/

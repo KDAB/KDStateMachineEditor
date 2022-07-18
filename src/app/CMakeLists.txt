@@ -15,18 +15,11 @@
 
 set(KDSME_APPBIN ${CMAKE_PROJECT_NAME})
 
-set(BIN_SRCS
-  mainwindow.cpp
-  main.cpp
-)
-set(BIN_UIS
-  mainwindow.ui
-)
+set(BIN_SRCS mainwindow.cpp main.cpp)
+set(BIN_UIS mainwindow.ui)
 
 add_executable(${KDSME_APPBIN} WIN32 ${BIN_SRCS} ${BIN_UIS})
-target_link_libraries(${KDSME_APPBIN}
-  Qt${Qt_VERSION_MAJOR}::QuickWidgets
-  kdstatemachineeditor_core
-  kdstatemachineeditor_view
-  kdsme_testhelper
+target_link_libraries(
+    ${KDSME_APPBIN} Qt${Qt_VERSION_MAJOR}::QuickWidgets kdstatemachineeditor_core kdstatemachineeditor_view
+    kdsme_testhelper
 )

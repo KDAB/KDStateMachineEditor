@@ -13,14 +13,9 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-include_directories(
-  ${CMAKE_CURRENT_BINARY_DIR}
-)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/config-examples.h.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/config-examples.h
-)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-examples.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-examples.h)
 
 add_subdirectory(layoutexport)
 add_subdirectory(export)
