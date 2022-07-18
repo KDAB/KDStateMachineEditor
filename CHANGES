@@ -1,7 +1,7 @@
 Version 2.0.0: (unreleased):
 --------------
  * Supports Qt6 in addition to Qt5 (co-installable)
- * Buildsystem - increase CMake min version to 3.3.0
+ * Buildsystem - increase CMake min version to 3.16.0
  * Buildsystem - add uninstall target
  * Buildsystem: generate and install kdsme-version.h
  * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True

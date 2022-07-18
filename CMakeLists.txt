@@ -41,16 +41,13 @@
 #  Default=True
 #
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.16)
 
-if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
-  project(kdstatemachineeditor LANGUAGES CXX C)
-else()
-  project(kdstatemachineeditor
-          DESCRIPTION "A framework for creating Qt State Machine metacode using a graphical user interface"
-          HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
-          LANGUAGES CXX C)
-endif()
+project(kdstatemachineeditor
+        DESCRIPTION "A framework for creating Qt State Machine metacode using a graphical user interface"
+        HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
+        LANGUAGES CXX C
+)
 
 set(KDSME_VERSION_MAJOR "1")
 set(KDSME_VERSION_MINOR "99")
