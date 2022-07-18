@@ -38,7 +38,6 @@ add_custom_command(
   #copy some files by-hand that are referred to by the markdown README
   COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/LICENSES/LGPL-2.1-only.txt ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/LICENSES/GPL-3.0-or-later.txt ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/LICENSES/LicenseRef-KDAB-KDStateMachineEditor.txt ${DOXYGEN_OUTPUT_DIR}/html/LICENSES
   COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/docs
   COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf ${DOXYGEN_OUTPUT_DIR}/html/docs
