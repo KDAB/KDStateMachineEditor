@@ -146,7 +146,6 @@ include(CTest)
 include(GenerateExportHeader)
 include(GNUInstallDirs)
 include(ExternalProject)
-include(MacroLogFeature)
 include(ECMAddTests)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

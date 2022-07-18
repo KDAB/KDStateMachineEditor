@@ -28,9 +28,9 @@ repos:
   rev: v0.6.13
   hooks:
   - id: cmake-lint
-    exclude: (.py.cmake|.h.cmake|Doxyfile.cmake|cmake/Toolchain|cmake/MacroLogFeature.cmake|cmake/KDSMEFindDependencyMacro.cmake|cmake/FindGraphviz.cmake)
+    exclude: (.py.cmake|.h.cmake|Doxyfile.cmake|cmake/Toolchain|cmake/KDSMEFindDependencyMacro.cmake|cmake/FindGraphviz.cmake)
   - id: cmake-format
-    exclude: (.py.cmake|.h.cmake|Doxyfile.cmake|cmake/Toolchain|cmake/MacroLogFeature.cmake|cmake/KDSMEFindDependencyMacro.cmake|cmake/FindGraphviz.cmake)
+    exclude: (.py.cmake|.h.cmake|Doxyfile.cmake|cmake/Toolchain|cmake/KDSMEFindDependencyMacro.cmake|cmake/FindGraphviz.cmake)
 - repo: https://github.com/fsfe/reuse-tool
   rev: v1.0.0
   hooks:
