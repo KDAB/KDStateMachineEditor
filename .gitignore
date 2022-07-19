@@ -4,7 +4,7 @@
 *.rej
 *.orig
 *.out
-CMakeLists.txt.user
+CMakeLists.txt.user*
 
 # from kdiff3
 *.BACKUP.*
