@@ -262,7 +262,6 @@ void QsmDebugInterfaceSource::Private::addState(QAbstractState *state)
         type = StateMachineState;
     }
 
-    qDebug() << makeStateId(state) << makeStateId(parentState) << type;
     emit stateAdded(makeStateId(state), makeStateId(parentState),
                     hasChildren, label, type, connectToInitial);
 
