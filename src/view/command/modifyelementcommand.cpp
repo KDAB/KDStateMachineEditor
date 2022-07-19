@@ -112,7 +112,7 @@ bool ModifyElementCommand::mergeWith(const QUndoCommand* other)
 
 void KDSME::ModifyElementCommand::updateText()
 {
-    const QString itemLabel = m_item && m_item ? m_item->label() : tr("<Unknown>");
+    const QString itemLabel = m_item ? m_item->label() : tr("<Unknown>");
 
     switch (m_operation) {
     case MoveOperation:
