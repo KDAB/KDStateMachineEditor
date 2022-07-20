@@ -9,7 +9,7 @@ Copyright: 2014-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@k
 License: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
 
 #misc documentation
-Files: CHANGES INSTALL.txt README.txt README.md conan/README.txt data/scxml/README.txt docs/api/footer.html docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf
+Files: CHANGES INSTALL.txt README.md conan/README.txt data/scxml/README.txt docs/api/footer.html docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf
 Copyright: 2014-2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
 

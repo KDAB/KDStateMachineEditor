@@ -463,7 +463,7 @@ install(
 
 if(${PROJECT_NAME}_IS_ROOT_PROJECT)
     set(LICENSE_FILE "LGPL-2.1-only.txt")
-    set(README_FILE "README.txt")
+    set(README_FILE "README.md")
 
     #CPACK
     set(CPACK_PACKAGE_VERSION_MAJOR "${KDSME_VERSION_MAJOR}")
