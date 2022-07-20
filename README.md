@@ -8,14 +8,14 @@ and tools.  Output from such applications is in metacode or QML that can
 then be used in larger Qt or QtQuick projects.
 
 For a full description of the KDAB State Machine Editor Library, read our
-wiki on GitHub, https://github.com/KDAB/KDStateMachineEditor/wiki.
+wiki on GitHub, <https://github.com/KDAB/KDStateMachineEditor/wiki>.
 
 ## Screenshots
 
 The main feature of KDStateMachineEditor is visualizing and editing state charts.
 
-Note: A proof-of-concept application called `kdstatemachineditor` executable is part of this repository and will be built automatically.
-It can be run from the bin/ directory once the project built.
+Note: A proof-of-concept application called `kdstatemachineditor` executable is part of this repository
+and will be built automatically.  It can be run from the bin/ directory once the project built.
 
 ### KDSME visualizing microwave_parallel.scxml
 
@@ -47,52 +47,67 @@ It can be run from the bin/ directory once the project built.
   * Editing: Drag & drop support, move support, etc.
   * Editing: Undo stack implementation, redo/undo actions for all operations
 * Abstract interface to layout state charts
-  * [GraphViz's cgraph](https://www.graphviz.org/pdf/libguide.pdf) is one of the implemented layouting backends (part of this repository)
+  * [GraphViz's cgraph](https://www.graphviz.org/pdf/libguide.pdf) is one of the implemented
+    layouting backends (part of this repository)
 * Import/Export capabilities
   * Allows to import/export .scxml files
   * Allows to export .svg files
-  * Allows to export .qml files (in [QtQml.StateMachine](https://doc.qt.io/qt-5/qmlstatemachine.html) syntax)
+  * Allows to export .qml files
+    (in [QtQml.StateMachine](https://doc.qt.io/qt-5/qmlstatemachine.html) syntax)
 * Allows to inspect running state machine instances
   * Both supports visualizing `QStateMachine` or `QScxmlStateMachine`
   * Can inspect remote applications (i.e. processes living on another machine)
   * Using [QtRemoteObjects](https://doc.qt.io/qt-5/qtremoteobjects-index.html) for communication
-    * Requires the target application to be "instrumented", cf. the [qsmdebugger](examples/qsmdebugger/] example
+    * Requires the target application to be "instrumented",
+      cf. the [qsmdebugger](examples/qsmdebugger/] example
 * Theming support (cf. screenshots above) -- currently available are:
   * DarkTheme
   * SystemTheme
 
+### GammaRay
+
+KDStateMachineEditor's main user is KDAB's [GammaRay](https://github.com/KDAB/GammaRay), a tool
+for introspecting Qt application.  GammaRay has the capability to display the state chart of
+a `QStateMachine` embedded in the application, making it possible to inspect the live
+configuration changes of the state machine, as well as zooming into child state (machines).
+
 ## Building and running
 
-We strongly recommend installing Graphviz (https://graphviz.org):
+We strongly recommend installing [Graphviz](https://graphviz.org):
 
-    (Ubuntu) $ sudo apt-get graphviz graphviz-dev
-    (Mac) $ brew install graphviz
-    (Windows) $ choco install graphviz
+```bash
+    (Ubuntu) sudo apt-get graphviz graphviz-dev
+    (Fedora) dnf install graphviz graphviz-devel
+    (Mac) brew install graphviz
+    (Windows) choco install graphviz
+```
 
 of course you need a Qt5 or Qt6 installation and CMake too.
 
-Build:
+### Build
 
-    Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
-    $ mkdir build
-    $ cd build
-    $ cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/path/where/to/install ..
-    $ cmake --build
-    $ cmake --build . --target install
+Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
 
-Start the test app:
+```bash
+    mkdir build
+    cd build
+    cmake -G Ninja -DCMAKE_INSTALL_PREFIX=/path/where/to/install ..
+    cmake --build
+    cmake --build . --target install
+```
 
-    $ ./bin/kdstatemachineeditor
+### Start the test app
 
-See INSTALL.txt for more information.
+```bash
+    ./bin/kdstatemachineeditor
+```
+
+See [INSTALL.txt](INSTALL.txt) for more information.
 
 ## Known Issues
 
-The editor part of the library still is somewhat "rough"; not a lot of development time has been spend on streamlining this feature.
-KDStateMachineEditor's main user is KDAB's [GammaRay](https://github.com/KDAB/GammaRay), a tool for introspecting Qt application.
-GammaRay has the capability to display the state chart of a `QStateMachine` embedded in the application.
-It's also possible to inspect the live configuration changes of the state machine.
-Zooming into child state (machines) is another feature; all backed by KDStateMachineEditor.
+The editor part of the library still is somewhat "rough"; not a lot of development time has been
+spent on streamlining this feature.
 
 ## Contributing
 
@@ -102,9 +117,10 @@ KDAB will happily accept external contributions, but substantial contributions r
 Contact info@kdab.com for more information about the Copyright Assignment Agreement.
 
 Please submit your contributions or issue reports from our GitHub space at
-https://github.com/KDAB/KDStateMachineEditor
+<https://github.com/KDAB/KDStateMachineEditor>
 
 ## Licensing
+
 The KDAB State Machine Editor Library is (C) 2014-2022 Klarälvdalens Datakonsult AB (KDAB), and
 is licensed according to the terms of the [LGPL 2.1](LICENSES/LGPL-2.1-only.txt).
 
@@ -127,7 +143,7 @@ We continue to help develop parts of Qt and are one of the major contributors
 to the Qt Project. We can give advanced or standard trainings anywhere
 around the globe on Qt as well as C++, OpenGL, 3D and more.
 
-Please visit https://www.kdab.com to meet the people who write code like this.
+Please visit <https://www.kdab.com> to meet the people who write code like this.
 
 Stay up-to-date with KDAB product announcements:
 
