@@ -53,4 +53,9 @@ add_custom_target(
     COMMENT "Target to generate the documentation"
 )
 
+set(QCH_INSTALL_DIR
+    ${CMAKE_INSTALL_DOCDIR}${KDSME_LIBRARY_QTID}
+    CACHE STRING "Install location of Qt Assistant help files."
+)
 install(FILES ${DOXYGEN_OUTPUT_DIR}/qch/kdstatemachineeditor-api.qch DESTINATION ${QCH_INSTALL_DIR})
+install(FILES ${DOXYGEN_OUTPUT_DIR}/kdstatemachineeditor.tags DESTINATION ${CMAKE_INSTALL_DOCDIR})
