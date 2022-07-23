@@ -26,7 +26,7 @@ class State;
 class HistoryState;
 
 /**
- * @brief Modifies the default state of a @ref KDSME::HistoryState1.
+ * @brief Modifies the default state of a @ref KDSME::HistoryState
  *
  * On undo, the previous default state is restored.
  */

@@ -75,6 +75,7 @@ public:
     /**
      * Render the current context to file at @p filePath
      *
+     * @param filePath the file path
      * @param format 'format' argument to gvRenderFilename (e.g. "png" or "dot")
      *
      * @note Context must be open

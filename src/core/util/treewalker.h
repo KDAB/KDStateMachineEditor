@@ -60,6 +60,7 @@ public:
      *
      * @return True in case we walked through all items, false otherwise
      *
+     * @param item the start item
      * @param visit Function called each time a LayoutItem instance is encountered
      */
     bool walkItems(T item, const VisitFunction& visit)

@@ -917,7 +917,6 @@ EXCLUDE_PATTERNS       = */.svn/* \
                          *unload.* \
                          */test/* \
                          */tests/* \
-                         *_p.h \
                          *_export.h \
                          "@CMAKE_CURRENT_SOURCE_DIR@/src/app/*"
 
