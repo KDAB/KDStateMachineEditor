@@ -24,25 +24,25 @@ namespace KDSME {
 
 struct StateMachineScene::Private
 {
-    Private(StateMachineScene* view);
+    Private(StateMachineScene *view);
 
-    State* importState(State* state);
+    State *importState(State *state);
 
     void zoomByInternal(qreal scale);
 
     void updateItemVisibilities();
-    void updateChildItemVisibility(State* state, bool expand);
+    void updateChildItemVisibility(State *state, bool expand);
 
-    void setRootElement(State* root);
+    void setRootElement(State *root);
 
-    void importTransitions(State* state);
-    Transition* importTransition(Transition* transition);
+    void importTransitions(State *state);
+    Transition *importTransition(Transition *transition);
 
-    StateMachineScene* q;
+    StateMachineScene *q;
 
-    State* m_rootState;
-    Layouter* m_layouter;
-    LayoutProperties* m_properties;
+    State *m_rootState;
+    Layouter *m_layouter;
+    LayoutProperties *m_properties;
     qreal m_zoom;
     int m_maximumDepth;
 };

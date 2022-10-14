@@ -36,39 +36,40 @@ using namespace KDSME;
 
 struct PropertyEditor::Private
 {
-    Private(PropertyEditor* q);
+    Private(PropertyEditor *q);
 
-    template <typename T> inline T* current() const
+    template<typename T>
+    inline T *current() const
     {
-        return qobject_cast<T*>(m_currentElement);
+        return qobject_cast<T *>(m_currentElement);
     }
 
-    void setCurrentElement(KDSME::Element* element);
+    void setCurrentElement(KDSME::Element *element);
 
     // slots
     void updateSimpleProperty();
-    void setInitalState(const QString& label);
-    void setDefaultState(const QString& label);
-    void setSourceState(const QString& label);
-    void setTargetState(const QString& label);
+    void setInitalState(const QString &label);
+    void setDefaultState(const QString &label);
+    void setSourceState(const QString &label);
+    void setTargetState(const QString &label);
     void childModeChanged();
     void currentChanged(const QModelIndex &current, const QModelIndex &previous);
     void modelAboutToBeReset();
     void loadFromCurrentElement();
 
-    PropertyEditor* q;
-    QItemSelectionModel* m_selectionModel;
+    PropertyEditor *q;
+    QItemSelectionModel *m_selectionModel;
     CommandController *m_commandController;
     KDSME::StateModel *m_stateModel;
     QPointer<KDSME::Element> m_currentElement;
-    Ui::StatePropertyEditor* m_stateWidget;
-    Ui::TransitionPropertyEditor* m_transitionWidget;
+    Ui::StatePropertyEditor *m_stateWidget;
+    Ui::TransitionPropertyEditor *m_transitionWidget;
     int m_noWidgetIndex, m_stateWidgetIndex, m_transitionWidgetIndex;
 
-    QHash<QObject*, QString> m_widgetToPropertyMap;
+    QHash<QObject *, QString> m_widgetToPropertyMap;
 };
 
-PropertyEditor::Private::Private(PropertyEditor* q)
+PropertyEditor::Private::Private(PropertyEditor *q)
     : q(q)
     , m_selectionModel(nullptr)
     , m_commandController(nullptr)
@@ -89,7 +90,7 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     d->m_transitionWidget = new Ui::TransitionPropertyEditor;
     d->m_noWidgetIndex = addWidget(new QWidget(this));
 
-    QWidget* w = new QWidget(this);
+    QWidget *w = new QWidget(this);
     d->m_stateWidget->setupUi(w);
     d->m_stateWidgetIndex = addWidget(w);
     w = new QWidget(this);
@@ -144,22 +145,21 @@ PropertyEditor::~PropertyEditor()
 void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     if (d->m_selectionModel) {
-        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged(QModelIndex,QModelIndex)));
+        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
         disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
                    this, SLOT(modelAboutToBeReset()));
-
     }
 
     d->m_selectionModel = selectionModel;
 
     if (d->m_selectionModel) {
-        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)), SLOT(currentChanged(QModelIndex, QModelIndex)));
         connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
                 this, SLOT(modelAboutToBeReset()));
     }
 }
 
-void PropertyEditor::setCommandController(CommandController* cmdController)
+void PropertyEditor::setCommandController(CommandController *cmdController)
 {
     d->m_commandController = cmdController;
 }
@@ -169,7 +169,7 @@ void PropertyEditor::setStateModel(StateModel *selectionModel)
     d->m_stateModel = selectionModel;
 }
 
-static QStringList allStates(const State * state)
+static QStringList allStates(const State *state)
 {
     QStringList ret;
     if (!state)
@@ -177,20 +177,20 @@ static QStringList allStates(const State * state)
 
     if (!state->label().isEmpty())
         ret << state->label();
-    foreach (const State * st, state->childStates())
+    foreach (const State *st, state->childStates())
         ret << allStates(st);
     ret.removeDuplicates();
     return ret;
 }
 
-static QStringList childStates(const State * state)
+static QStringList childStates(const State *state)
 {
     QStringList ret;
     ret << QString();
     if (!state)
         return ret;
 
-    foreach (const State * st, state->childStates())
+    foreach (const State *st, state->childStates())
         if (!st->label().isEmpty())
             ret << st->label();
 
@@ -202,7 +202,7 @@ static QStringList childStates(const State * state)
 void PropertyEditor::Private::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    KDSME::Element* currentElement = current.data(StateModel::ElementRole).value<Element*>();
+    KDSME::Element *currentElement = current.data(StateModel::ElementRole).value<Element *>();
     setCurrentElement(currentElement);
 }
 
@@ -211,7 +211,7 @@ void PropertyEditor::Private::modelAboutToBeReset()
     setCurrentElement(nullptr);
 }
 
-void PropertyEditor::Private::setCurrentElement(KDSME::Element* element)
+void PropertyEditor::Private::setCurrentElement(KDSME::Element *element)
 {
     if (m_currentElement == element) {
         return;
@@ -228,7 +228,7 @@ void PropertyEditor::Private::setCurrentElement(KDSME::Element* element)
             const QMetaProperty prop = m_currentElement->metaObject()->property(i);
             if (!prop.hasNotifySignal())
                 continue;
-            q->connect(m_currentElement, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); //krazy:exclude=doublequote_chars
+            q->connect(m_currentElement, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); // krazy:exclude=doublequote_chars
         }
     }
     loadFromCurrentElement();
@@ -251,7 +251,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
 
         if (state->isComposite()) {
             m_stateWidget->initialStateComboBox->addItems(childStates(state));
-            State* initialState = ElementUtil::findInitialState(state);
+            State *initialState = ElementUtil::findInitialState(state);
             if (initialState)
                 m_stateWidget->initialStateComboBox->setCurrentText(initialState->label());
             else
@@ -262,7 +262,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
 
         if (state->type() == Element::HistoryStateType) {
             m_stateWidget->defaultStateComboBox->addItems(allStates(state->machine()));
-            State *defaultState = qobject_cast<HistoryState*>(state)->defaultState();
+            State *defaultState = qobject_cast<HistoryState *>(state)->defaultState();
             m_stateWidget->defaultStateComboBox->setCurrentText(defaultState ? defaultState->label() : "");
         }
 
@@ -281,7 +281,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
         m_transitionWidget->labelLineEdit->setText(transition->label());
 
         m_transitionWidget->sourceStateComboBox->clear();
-        State* sourceState = transition->sourceState();
+        State *sourceState = transition->sourceState();
         Q_ASSERT(sourceState);
         if (sourceState) {
             m_transitionWidget->sourceStateComboBox->addItems(allStates(sourceState->machine()));
@@ -290,7 +290,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
             m_transitionWidget->sourceStateComboBox->setCurrentText(QString());
         }
         m_transitionWidget->targetStateComboBox->clear();
-        State* targetState = transition->targetState();
+        State *targetState = transition->targetState();
         if (sourceState) {
             m_transitionWidget->targetStateComboBox->addItems(allStates(sourceState->machine()));
         } else {
@@ -323,7 +323,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
 
 void PropertyEditor::Private::updateSimpleProperty()
 {
-    QObject* object = q->sender();
+    QObject *object = q->sender();
     if (!object || !m_currentElement || !object->metaObject()->userProperty().isValid())
         return;
 
@@ -333,7 +333,7 @@ void PropertyEditor::Private::updateSimpleProperty()
     const QVariant currentValue = m_currentElement->property(propertyName.toUtf8());
 
     QVariant newValue;
-    QComboBox *comboBox = qobject_cast<QComboBox*>(object);
+    QComboBox *comboBox = qobject_cast<QComboBox *>(object);
     if (comboBox && currentValue.type() != QVariant::String) { // the user property on QComboBox is currentString, not always what we want
         newValue = comboBox->currentIndex();
     } else {
@@ -349,11 +349,11 @@ void PropertyEditor::Private::updateSimpleProperty()
 
 void PropertyEditor::Private::setInitalState(const QString &label)
 {
-    State* state = current<State>();
+    State *state = current<State>();
     Q_ASSERT(state);
     if (state) {
         State *currentInitialState = ElementUtil::findInitialState(state);
-        State* initialState = ElementUtil::findState(state, label);
+        State *initialState = ElementUtil::findState(state, label);
         if (currentInitialState != initialState) {
             ModifyInitialStateCommand *command = new ModifyInitialStateCommand(state, initialState);
             m_commandController->undoStack()->push(command);
@@ -361,12 +361,12 @@ void PropertyEditor::Private::setInitalState(const QString &label)
     }
 }
 
-void PropertyEditor::Private::setDefaultState(const QString& label)
+void PropertyEditor::Private::setDefaultState(const QString &label)
 {
-    HistoryState* state = current<HistoryState>();
+    HistoryState *state = current<HistoryState>();
     Q_ASSERT(state);
     if (state) {
-        State* defaultState = ElementUtil::findState(state->machine(), label);
+        State *defaultState = ElementUtil::findState(state->machine(), label);
         if (state->defaultState() != defaultState) {
             ModifyDefaultStateCommand *command = new ModifyDefaultStateCommand(state, defaultState);
             m_commandController->undoStack()->push(command);
@@ -376,7 +376,7 @@ void PropertyEditor::Private::setDefaultState(const QString& label)
 
 void PropertyEditor::Private::setSourceState(const QString &label)
 {
-    Transition* transition = current<Transition>();
+    Transition *transition = current<Transition>();
     if (transition) {
         State *sourceState = ElementUtil::findState(transition->sourceState()->machine(), label);
         if (transition->sourceState() != sourceState) {
@@ -389,7 +389,7 @@ void PropertyEditor::Private::setSourceState(const QString &label)
 
 void PropertyEditor::Private::setTargetState(const QString &label)
 {
-    Transition* transition = current<Transition>();
+    Transition *transition = current<Transition>();
     if (transition) {
         State *targetState = ElementUtil::findState(transition->sourceState()->machine(), label);
         if (transition->targetState() != targetState) {

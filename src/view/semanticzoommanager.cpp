@@ -23,7 +23,7 @@
 
 using namespace KDSME;
 
-SemanticZoomManager::SemanticZoomManager(QObject* parent)
+SemanticZoomManager::SemanticZoomManager(QObject *parent)
     : QObject(parent)
     , m_scene(nullptr)
     , m_runtimeController(nullptr)
@@ -31,12 +31,12 @@ SemanticZoomManager::SemanticZoomManager(QObject* parent)
 {
 }
 
-StateMachineScene* SemanticZoomManager::scene() const
+StateMachineScene *SemanticZoomManager::scene() const
 {
     return m_scene;
 }
 
-void SemanticZoomManager::setScene(StateMachineScene* scene)
+void SemanticZoomManager::setScene(StateMachineScene *scene)
 {
     if (m_scene == scene)
         return;
@@ -54,12 +54,12 @@ void SemanticZoomManager::setScene(StateMachineScene* scene)
     emit sceneChanged(m_scene);
 }
 
-RuntimeController* SemanticZoomManager::runtimeController() const
+RuntimeController *SemanticZoomManager::runtimeController() const
 {
     return m_runtimeController;
 }
 
-void SemanticZoomManager::setRuntimeController(RuntimeController* controller)
+void SemanticZoomManager::setRuntimeController(RuntimeController *controller)
 {
     if (m_runtimeController == controller)
         return;
@@ -89,15 +89,15 @@ void SemanticZoomManager::setEnabled(bool enabled)
     emit enabledChanged(m_enabled);
 }
 
-void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State*>& configuration)
+void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State *> &configuration)
 {
     if (!m_enabled)
         return;
 
     auto root = m_scene->rootState();
     ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkChildren(root, [&](Element* i) -> ElementWalker::VisitResult {
-        auto state = qobject_cast<State*>(i);
+    walker.walkChildren(root, [&](Element *i) -> ElementWalker::VisitResult {
+        auto state = qobject_cast<State *>(i);
         if (!state) {
             return ElementWalker::RecursiveWalk;
         }

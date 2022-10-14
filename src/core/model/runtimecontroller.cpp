@@ -22,29 +22,30 @@ using namespace KDSME;
 namespace {
 
 template<typename ContainerType, typename ItemType>
-inline qreal relativePosition(const ContainerType& list, const ItemType& t)
+inline qreal relativePosition(const ContainerType &list, const ItemType &t)
 {
     const int index = list.indexOf(t);
-    return (index+1.0) / list.size();
+    return (index + 1.0) / list.size();
 }
 
 }
 
 struct RuntimeController::Private
 {
-    Private(RuntimeController* qq)
+    Private(RuntimeController *qq)
         : q(qq)
         , m_lastConfigurations(5)
         , m_lastTransitions(5)
         , m_isRunning(false)
-    {}
+    {
+    }
 
     void updateActiveRegion();
 
-    RuntimeController* q;
+    RuntimeController *q;
 
     RingBuffer<Configuration> m_lastConfigurations;
-    RingBuffer<Transition*> m_lastTransitions;
+    RingBuffer<Transition *> m_lastTransitions;
     bool m_isRunning;
     QRectF m_activeRegion;
 };
@@ -55,18 +56,18 @@ void RuntimeController::Private::updateActiveRegion()
 
     // Calculate the bounding rect of all states in that are currently active
     QRectF activeRegion;
-    foreach (State* state, configuration) {
+    foreach (State *state, configuration) {
         activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;
     emit q->activeRegionChanged(m_activeRegion);
 }
 
-RuntimeController::RuntimeController(QObject* parent)
+RuntimeController::RuntimeController(QObject *parent)
     : QObject(parent)
     , d(new Private(this))
 {
-    qRegisterMetaType<QSet<State*>>();
+    qRegisterMetaType<QSet<State *>>();
 }
 
 RuntimeController::~RuntimeController()
@@ -105,7 +106,7 @@ QList<RuntimeController::Configuration> RuntimeController::lastConfigurations() 
     return d->m_lastConfigurations.entries();
 }
 
-void RuntimeController::setActiveConfiguration(const RuntimeController::Configuration& configuration)
+void RuntimeController::setActiveConfiguration(const RuntimeController::Configuration &configuration)
 {
     if (d->m_lastConfigurations.size() > 0 && d->m_lastConfigurations.last() == configuration)
         return;
@@ -115,17 +116,17 @@ void RuntimeController::setActiveConfiguration(const RuntimeController::Configur
     d->updateActiveRegion();
 }
 
-QList<Transition*> RuntimeController::lastTransitions() const
+QList<Transition *> RuntimeController::lastTransitions() const
 {
     return d->m_lastTransitions.entries();
 }
 
-Transition* RuntimeController::lastTransition() const
+Transition *RuntimeController::lastTransition() const
 {
     return (d->m_lastTransitions.size() > 0 ? d->m_lastTransitions.last() : nullptr);
 }
 
-void RuntimeController::setLastTransition(Transition* transition)
+void RuntimeController::setLastTransition(Transition *transition)
 {
     if (!transition)
         return;
@@ -147,18 +148,18 @@ void RuntimeController::setIsRunning(bool isRunning)
     emit isRunningChanged(d->m_isRunning);
 }
 
-float RuntimeController::activenessForState(State* state) const
+float RuntimeController::activenessForState(State *state) const
 {
     const int count = d->m_lastConfigurations.size();
-    for (int i = d->m_lastConfigurations.size()-1; i >= 0; --i) {
+    for (int i = d->m_lastConfigurations.size() - 1; i >= 0; --i) {
         if (d->m_lastConfigurations.at(i).contains(state)) {
-            return (i+1.)/count;
+            return (i + 1.) / count;
         }
     }
     return 0.;
 }
 
-float RuntimeController::activenessForTransition(Transition* transition)
+float RuntimeController::activenessForTransition(Transition *transition)
 {
-    return relativePosition<QList<Transition*>>(d->m_lastTransitions.entries(), transition);
+    return relativePosition<QList<Transition *>>(d->m_lastTransitions.entries(), transition);
 }

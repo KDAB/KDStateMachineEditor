@@ -28,15 +28,16 @@ struct Transition::Private
 {
     Private()
         : m_targetState(nullptr)
-    {}
+    {
+    }
 
-    State* m_targetState;
+    State *m_targetState;
     QString m_guard;
     QPainterPath m_shape;
     QRectF m_labelBoundingRect;
 };
 
-Transition::Transition(State* sourceState)
+Transition::Transition(State *sourceState)
     : Element(sourceState)
     , d(new Private)
 {
@@ -46,19 +47,19 @@ Transition::~Transition()
 {
 }
 
-StateMachine* Transition::machine() const
+StateMachine *Transition::machine() const
 {
     StateMachine *m = ElementUtil::findStateMachine(this);
     QQmlEngine::setObjectOwnership(m, QQmlEngine::CppOwnership);
     return m;
 }
 
-State* Transition::sourceState() const
+State *Transition::sourceState() const
 {
-    return qobject_cast<State*>(parent());
+    return qobject_cast<State *>(parent());
 }
 
-void Transition::setSourceState(State* sourceState)
+void Transition::setSourceState(State *sourceState)
 {
     if (parent() == sourceState) {
         return;
@@ -68,12 +69,12 @@ void Transition::setSourceState(State* sourceState)
     emit sourceStateChanged(sourceState);
 }
 
-State* Transition::targetState() const
+State *Transition::targetState() const
 {
     return d->m_targetState;
 }
 
-void Transition::setTargetState(State* targetState)
+void Transition::setTargetState(State *targetState)
 {
     if (d->m_targetState == targetState)
         return;
@@ -92,7 +93,7 @@ QString Transition::guard() const
     return d->m_guard;
 }
 
-void Transition::setGuard(const QString& guard)
+void Transition::setGuard(const QString &guard)
 {
     if (d->m_guard == guard)
         return;
@@ -106,7 +107,7 @@ QPainterPath Transition::shape() const
     return d->m_shape;
 }
 
-void Transition::setShape(const QPainterPath& shape)
+void Transition::setShape(const QPainterPath &shape)
 {
     if (d->m_shape == shape)
         return;
@@ -120,7 +121,7 @@ QRectF Transition::labelBoundingRect() const
     return d->m_labelBoundingRect;
 }
 
-void Transition::setLabelBoundingRect(const QRectF& rect)
+void Transition::setLabelBoundingRect(const QRectF &rect)
 {
     if (d->m_labelBoundingRect == rect)
         return;
@@ -134,7 +135,7 @@ struct SignalTransition::Private
     QString m_signal;
 };
 
-SignalTransition::SignalTransition(State* sourceState)
+SignalTransition::SignalTransition(State *sourceState)
     : Transition(sourceState)
     , d(new Private)
 {
@@ -154,7 +155,7 @@ QString SignalTransition::signal() const
     return d->m_signal;
 }
 
-void SignalTransition::setSignal(const QString& signal)
+void SignalTransition::setSignal(const QString &signal)
 {
     if (d->m_signal == signal)
         return;
@@ -167,12 +168,13 @@ struct TimeoutTransition::Private
 {
     Private()
         : m_timeout(0)
-    {}
+    {
+    }
 
     int m_timeout;
 };
 
-TimeoutTransition::TimeoutTransition(State* sourceState)
+TimeoutTransition::TimeoutTransition(State *sourceState)
     : Transition(sourceState)
     , d(new Private)
 {
@@ -201,16 +203,16 @@ void TimeoutTransition::setTimeout(int timeout)
     emit timeoutChanged(d->m_timeout);
 }
 
-QDebug KDSME::operator<<(QDebug dbg, const Transition* transition)
+QDebug KDSME::operator<<(QDebug dbg, const Transition *transition)
 {
     if (!transition) {
-        return dbg << static_cast<QObject*>(nullptr);
+        return dbg << static_cast<QObject *>(nullptr);
     }
     dbg.nospace() << "Transition["
-        << "this=" << (const void*)transition
-        << ", source=" << transition->sourceState()
-        << ", target=" << transition->targetState()
-        << "]";
+                  << "this=" << ( const void * )transition
+                  << ", source=" << transition->sourceState()
+                  << ", target=" << transition->targetState()
+                  << "]";
     return dbg.space();
 }
 

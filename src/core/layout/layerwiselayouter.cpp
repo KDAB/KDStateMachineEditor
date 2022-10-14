@@ -37,7 +37,7 @@ using namespace KDSME;
 
 namespace {
 
-QRectF boundingRectForCollapsedRegion(State* state, const LayoutProperties* prop)
+QRectF boundingRectForCollapsedRegion(State *state, const LayoutProperties *prop)
 {
     static const QRectF minimumSize(0, 0, 100, 20);
 
@@ -55,17 +55,17 @@ QRectF boundingRectForCollapsedRegion(State* state, const LayoutProperties* prop
 #endif
     const qreal height = fm.height();
     const qreal margin = prop->regionLabelMargins();
-    return QRectF(0, 0, width + prop->regionLabelButtonBoxSize().width() + 2*margin, height + 2*margin);
+    return QRectF(0, 0, width + prop->regionLabelButtonBoxSize().width() + 2 * margin, height + 2 * margin);
 }
 
 }
 
-RegionLayouter::RegionLayouter(QObject* parent)
+RegionLayouter::RegionLayouter(QObject *parent)
     : QObject(parent)
 {
 }
 
-void RegionLayouter::layoutRegion(State* state, const QRectF& boundingRectHint, const LayoutProperties* properties)
+void RegionLayouter::layoutRegion(State *state, const QRectF &boundingRectHint, const LayoutProperties *properties)
 {
     Q_ASSERT(state);
     if (state->childStates().isEmpty()) {
@@ -82,12 +82,12 @@ void RegionLayouter::layoutRegion(State* state, const QRectF& boundingRectHint, 
     const qreal innerMargin = properties->regionMargins();
 
     const QPointF offset = QPointF(innerMargin, innerMargin + regionLabelHeight);
-    state->setWidth(boundingRect.width() + 2*innerMargin);
-    state->setHeight(boundingRect.height() + 2*innerMargin + regionLabelHeight);
+    state->setWidth(boundingRect.width() + 2 * innerMargin);
+    state->setHeight(boundingRect.height() + 2 * innerMargin + regionLabelHeight);
     LayoutUtils::moveInner(state, offset);
 }
 
-LayerwiseLayouter::LayerwiseLayouter(QObject* parent)
+LayerwiseLayouter::LayerwiseLayouter(QObject *parent)
     : Layouter(parent)
 #if HAVE_GRAPHVIZ
     , m_layerLayouter(new GraphvizLayerLayouter(this))
@@ -100,20 +100,20 @@ LayerwiseLayouter::LayerwiseLayouter(QObject* parent)
     qCDebug(KDSME_CORE) << "Using" << m_layerLayouter << "as layouter";
 }
 
-QRectF LayerwiseLayouter::layout(State* state, const LayoutProperties* properties)
+QRectF LayerwiseLayouter::layout(State *state, const LayoutProperties *properties)
 {
     Q_ASSERT(state);
     m_properties = properties;
 
     ElementWalker walker(ElementWalker::PostOrderTraversal);
-    walker.walkItems(state, [&](Element* element) { return layoutState(element); });
+    walker.walkItems(state, [&](Element *element) { return layoutState(element); });
 
     return QRect();
 }
 
-ElementWalker::VisitResult LayerwiseLayouter::layoutState(Element* element)
+ElementWalker::VisitResult LayerwiseLayouter::layoutState(Element *element)
 {
-    State* state = qobject_cast<State*>(element);
+    State *state = qobject_cast<State *>(element);
     if (!state || state->childStates().isEmpty()) {
         return ElementWalker::RecursiveWalk;
     }

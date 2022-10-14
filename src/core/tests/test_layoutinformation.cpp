@@ -25,7 +25,7 @@
 #include <QTest>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    #include <QBinaryJson>
+#include <QBinaryJson>
 #endif
 
 using namespace KDSME;
@@ -48,14 +48,14 @@ void compare(const State *state1, const State *state2)
 
     auto copyChildren = state2->childStates();
     foreach (const State *child, state1->childStates()) {
-        auto copyChild = std::find_if(copyChildren.begin(), copyChildren.end(), [&child](State *state)->bool{return state->label() == child->label();});
+        auto copyChild = std::find_if(copyChildren.begin(), copyChildren.end(), [&child](State *state) -> bool { return state->label() == child->label(); });
         if (copyChild != copyChildren.end())
             compare(child, *copyChild);
     }
 
     auto copyTransitions = state2->transitions();
     foreach (const Transition *item, state1->transitions()) {
-        auto copyTransition = std::find_if(copyTransitions.begin(), copyTransitions.end(), [&item](Transition *state)->bool{return state->label() == item->label();});
+        auto copyTransition = std::find_if(copyTransitions.begin(), copyTransitions.end(), [&item](Transition *state) -> bool { return state->label() == item->label(); });
         if (copyTransition != copyTransitions.end()) {
             compare(item, *copyTransition);
         }
@@ -65,7 +65,7 @@ void compare(const State *state1, const State *state2)
 QPainterPath createPath(const QPointF &start)
 {
     QPainterPath path(start);
-    for (int i = 0; i < 3; ++i ) {
+    for (int i = 0; i < 3; ++i) {
         switch (i) {
         case 0:
             path.lineTo(10 + i * 10, 10 + i * 10);
@@ -99,12 +99,12 @@ void LayoutInformationTest::testLayoutInformation()
     State rootState, copyState;
     rootState.setLabel("root");
     copyState.setLabel("root");
-    rootState.setPos(QPointF(123,456));
+    rootState.setPos(QPointF(123, 456));
     rootState.setWidth(1.2);
     rootState.setHeight(3.4);
     State *lastState = nullptr;
     State *lastCopyState = nullptr;
-    for (int i = 0; i < 3 ; ++i) {
+    for (int i = 0; i < 3; ++i) {
         State *state = new State();
         state->setLabel(QString("state %1").arg(i));
         state->setPos(QPointF(i, 10 * i));
@@ -113,7 +113,7 @@ void LayoutInformationTest::testLayoutInformation()
         if (lastState) {
             Transition *transition = new Transition(lastState);
             transition->setLabel(QString("trans %1").arg(i));
-            transition->setTargetState(static_cast<State*>(state));
+            transition->setTargetState(static_cast<State *>(state));
             transition->setTargetState(state);
             transition->setPos(QPointF(i * 10, i * 10));
             transition->setLabelBoundingRect(QRectF(10 + i, 10 + i * 10, 10 + i, 10 + i));
@@ -126,7 +126,7 @@ void LayoutInformationTest::testLayoutInformation()
         if (lastCopyState) {
             Transition *transition = new Transition(lastCopyState);
             transition->setLabel(QString("trans %1").arg(i));
-            transition->setTargetState(static_cast<State*>(state));
+            transition->setTargetState(static_cast<State *>(state));
             transition->setTargetState(state);
         }
         lastCopyState = state;

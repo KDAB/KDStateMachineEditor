@@ -36,15 +36,22 @@ const char KDSME_QML_MODULE_VERSION[] = "1.0";
 class LevelIncrementer
 {
 public:
-    LevelIncrementer(int *level) : m_level(level) { ++(*m_level); }
-    ~LevelIncrementer() { --(*m_level); }
+    LevelIncrementer(int *level)
+        : m_level(level)
+    {
+        ++(*m_level);
+    }
+    ~LevelIncrementer()
+    {
+        --(*m_level);
+    }
 
 private:
     int *m_level;
 };
 
 /// Maps the type of @p element to the QML Component ID
-QString elementToComponent(Element* element)
+QString elementToComponent(Element *element)
 {
     const QString customType = element->property("com.kdab.KDSME.DSMExporter.customType").toString();
     if (!customType.isEmpty())
@@ -75,17 +82,18 @@ QString elementToComponent(Element* element)
 }
 
 /// Turn input @p input into a usable QML ID (remove invalid chars)
-QString toQmlId(const QString& input)
+QString toQmlId(const QString &input)
 {
     if (input.isEmpty())
         return input;
 
     QString out = input;
-    std::replace_if(out.begin(), out.end(),
-        [](const QChar& c) -> bool {
+    std::replace_if(
+        out.begin(), out.end(),
+        [](const QChar &c) -> bool {
             return !(c.isLetterOrNumber() || c == '_');
-        }, QChar('_')
-    );
+        },
+        QChar('_'));
 
     out[0] = out.at(0).toLower();
     return out;
@@ -95,14 +103,14 @@ QString toQmlId(const QString& input)
 
 struct QmlExporter::Private
 {
-    Private(QByteArray* array);
-    Private(QIODevice* device);
+    Private(QByteArray *array);
+    Private(QIODevice *device);
 
-    bool writeStateMachine(StateMachine* machine);
-    bool writeState(State* state);
-    bool writeStateInner(State* state);
-    bool writeTransition(Transition* transition);
-    void writeAttribute(Element* element, const QString &name, const QString &value);
+    bool writeStateMachine(StateMachine *machine);
+    bool writeState(State *state);
+    bool writeStateInner(State *state);
+    bool writeTransition(Transition *transition);
+    void writeAttribute(Element *element, const QString &name, const QString &value);
 
     QString indention() const;
 
@@ -110,27 +118,27 @@ struct QmlExporter::Private
     int m_indent, m_level;
 };
 
-QmlExporter::Private::Private(QByteArray* array)
+QmlExporter::Private::Private(QByteArray *array)
     : m_out(array)
     , m_indent(4)
     , m_level(0)
 {
 }
 
-QmlExporter::Private::Private(QIODevice* device)
+QmlExporter::Private::Private(QIODevice *device)
     : m_out(device)
     , m_indent(4)
     , m_level(0)
 {
 }
 
-QmlExporter::QmlExporter(QByteArray* array)
+QmlExporter::QmlExporter(QByteArray *array)
     : d(new Private(array))
 {
     Q_ASSERT(array);
 }
 
-QmlExporter::QmlExporter(QIODevice* device)
+QmlExporter::QmlExporter(QIODevice *device)
     : d(new Private(device))
 {
     Q_ASSERT(device);
@@ -150,7 +158,7 @@ void QmlExporter::setIndent(int indent)
     d->m_indent = indent;
 }
 
-bool QmlExporter::exportMachine(StateMachine* machine)
+bool QmlExporter::exportMachine(StateMachine *machine)
 {
     setErrorString(QString());
     d->m_level = 0;
@@ -170,7 +178,7 @@ bool QmlExporter::exportMachine(StateMachine* machine)
     return success;
 }
 
-bool QmlExporter::Private::writeStateMachine(StateMachine* machine)
+bool QmlExporter::Private::writeStateMachine(StateMachine *machine)
 {
     Q_ASSERT(machine);
 
@@ -190,11 +198,11 @@ bool QmlExporter::Private::writeStateMachine(StateMachine* machine)
     return true;
 }
 
-bool QmlExporter::Private::writeState(State* state)
+bool QmlExporter::Private::writeState(State *state)
 {
     Q_ASSERT(state);
 
-    if (qobject_cast<PseudoState*>(state))
+    if (qobject_cast<PseudoState *>(state))
         return true; // pseudo states are ignored
 
     if (!state->property("com.kdab.KDSME.DSMExporter.externalSource").isNull())
@@ -208,7 +216,7 @@ bool QmlExporter::Private::writeState(State* state)
     return true;
 }
 
-void QmlExporter::Private::writeAttribute(Element* element, const QString &name, const QString &value)
+void QmlExporter::Private::writeAttribute(Element *element, const QString &name, const QString &value)
 {
     if (value.isEmpty())
         return;
@@ -224,7 +232,7 @@ void QmlExporter::Private::writeAttribute(Element* element, const QString &name,
     m_out << indention() << QString("%1: %2\n").arg(name).arg(value);
 }
 
-bool QmlExporter::Private::writeStateInner(State* state)
+bool QmlExporter::Private::writeStateInner(State *state)
 {
     Q_ASSERT(state);
 
@@ -233,7 +241,7 @@ bool QmlExporter::Private::writeStateInner(State* state)
 
     writeAttribute(state, "id", toQmlId(state->label()));
 
-    if (StateMachine *stateMachine = qobject_cast<StateMachine*>(state)) {
+    if (StateMachine *stateMachine = qobject_cast<StateMachine *>(state)) {
         const QString running = stateMachine->property("com.kdab.KDSME.DSMExporter.running").toString();
         writeAttribute(state, "running", running);
     }
@@ -242,11 +250,11 @@ bool QmlExporter::Private::writeStateInner(State* state)
         writeAttribute(state, "childMode", "State.ParallelStates");
     }
 
-    if (State* initial = ElementUtil::findInitialState(state)) {
+    if (State *initial = ElementUtil::findInitialState(state)) {
         writeAttribute(state, "initialState", toQmlId(initial->label()));
     }
 
-    if (HistoryState *historyState = qobject_cast<HistoryState*>(state)) {
+    if (HistoryState *historyState = qobject_cast<HistoryState *>(state)) {
         if (State *defaultState = historyState->defaultState())
             writeAttribute(state, "defaultState", toQmlId(defaultState->label()));
         if (historyState->historyType() == HistoryState::DeepHistory)
@@ -256,12 +264,12 @@ bool QmlExporter::Private::writeStateInner(State* state)
     writeAttribute(state, "onEntered", state->onEntry());
     writeAttribute(state, "onExited", state->onExit());
 
-    foreach (State* child, state->childStates()) {
+    foreach (State *child, state->childStates()) {
         if (!writeState(child))
             return false;
     }
 
-    foreach (Transition* transition, state->transitions()) {
+    foreach (Transition *transition, state->transitions()) {
         if (!writeTransition(transition))
             return false;
     }
@@ -269,7 +277,7 @@ bool QmlExporter::Private::writeStateInner(State* state)
     return true;
 }
 
-bool QmlExporter::Private::writeTransition(Transition* transition)
+bool QmlExporter::Private::writeTransition(Transition *transition)
 {
     Q_ASSERT(transition);
     m_out << indention() << QString("%1 {\n").arg(elementToComponent(transition));
@@ -284,12 +292,12 @@ bool QmlExporter::Private::writeTransition(Transition* transition)
         }
 
         if (transition->type() == Element::SignalTransitionType) {
-            auto t = qobject_cast<SignalTransition*>(transition);
+            auto t = qobject_cast<SignalTransition *>(transition);
             writeAttribute(transition, "signal", t->signal());
         }
 
         if (transition->type() == Element::TimeoutTransitionType) {
-            auto t = qobject_cast<TimeoutTransition*>(transition);
+            auto t = qobject_cast<TimeoutTransition *>(transition);
             if (t->timeout() != -1) {
                 writeAttribute(transition, "timeout", QString::number(t->timeout()));
             }
@@ -303,5 +311,5 @@ bool QmlExporter::Private::writeTransition(Transition* transition)
 
 QString QmlExporter::Private::indention() const
 {
-    return QString().fill(QChar(' '), m_indent*m_level);
+    return QString().fill(QChar(' '), m_indent * m_level);
 }

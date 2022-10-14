@@ -27,7 +27,7 @@
 
 using namespace KDSME;
 
-Element::Element(QObject* parent)
+Element::Element(QObject *parent)
     : QObject(parent)
     , d(new Private)
 {
@@ -60,7 +60,7 @@ QString Element::label() const
     return d->m_label;
 }
 
-void Element::setLabel(const QString& label)
+void Element::setLabel(const QString &label)
 {
     if (d->m_label == label)
         return;
@@ -79,12 +79,12 @@ void Element::setInternalId(quintptr id)
     d->m_id = id;
 }
 
-void* Element::internalPointer() const
+void *Element::internalPointer() const
 {
-    return reinterpret_cast<void*>(d->m_id);
+    return reinterpret_cast<void *>(d->m_id);
 }
 
-void Element::setInternalPointer(void* ptr)
+void Element::setInternalPointer(void *ptr)
 {
     d->m_id = reinterpret_cast<quintptr>(ptr);
 }
@@ -94,7 +94,7 @@ QPointF Element::pos() const
     return d->m_pos;
 }
 
-void Element::setPos(const QPointF& pos)
+void Element::setPos(const QPointF &pos)
 {
     if (d->m_pos == pos)
         return;
@@ -134,7 +134,7 @@ void Element::setHeight(qreal height)
 QPointF Element::absolutePos() const
 {
     QPointF point;
-    const Element* current = this;
+    const Element *current = this;
     do {
         point += current->pos();
         current = current->parentElement();
@@ -173,8 +173,7 @@ void Element::setSelected(bool selected)
 QSizeF Element::preferredSize() const
 {
     QSizeF size;
-    switch (type())
-    {
+    switch (type()) {
     case Element::HistoryStateType:
         size = QSizeF(32, 32);
         break;
@@ -203,19 +202,19 @@ QRectF Element::boundingRect() const
     return rect;
 }
 
-Element* Element::parentElement() const
+Element *Element::parentElement() const
 {
-    return qobject_cast<Element*>(parent());
+    return qobject_cast<Element *>(parent());
 }
 
-void Element::setParentElement(Element* parent)
+void Element::setParentElement(Element *parent)
 {
-    setParent(static_cast<QObject*>(parent));
+    setParent(static_cast<QObject *>(parent));
 }
 
-QList<Element*> Element::childElements() const
+QList<Element *> Element::childElements() const
 {
-    return ObjectHelper::copy_if_type<Element*>(children());
+    return ObjectHelper::copy_if_type<Element *>(children());
 }
 
 QString Element::toDisplayString() const
@@ -227,21 +226,21 @@ QString Element::toDisplayString() const
     return QString("%1 [Label: %2]").arg(str).arg(label());
 }
 
-const char* Element::typeToString(Element::Type type)
+const char *Element::typeToString(Element::Type type)
 {
     return ObjectHelper::enumToString(&staticMetaObject, "Type", type);
 }
 
-Element::Type Element::stringToType(const char* type)
+Element::Type Element::stringToType(const char *type)
 {
     const int value = ObjectHelper::stringToEnum(&staticMetaObject, "Type", type);
     return static_cast<Element::Type>(value);
 }
 
-void Element::setParent(QObject* object)
+void Element::setParent(QObject *object)
 {
     const auto oldElementParent = parentElement();
-    const auto newElementParent = qobject_cast<Element*>(object);
+    const auto newElementParent = qobject_cast<Element *>(object);
     if (oldElementParent != newElementParent) {
         emit parentChanged(newElementParent);
     }

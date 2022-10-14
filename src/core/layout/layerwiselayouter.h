@@ -33,9 +33,9 @@ class KDSME_CORE_EXPORT RegionLayouter : public QObject
     Q_OBJECT
 
 public:
-    explicit RegionLayouter(QObject* parent = nullptr);
+    explicit RegionLayouter(QObject *parent = nullptr);
 
-    void layoutRegion(State* state, const QRectF& boundingRectHint, const LayoutProperties* properties);
+    void layoutRegion(State *state, const QRectF &boundingRectHint, const LayoutProperties *properties);
 };
 
 class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
@@ -43,16 +43,16 @@ class KDSME_CORE_EXPORT LayerwiseLayouter : public Layouter
     Q_OBJECT
 
 public:
-    explicit LayerwiseLayouter(QObject* parent = nullptr);
+    explicit LayerwiseLayouter(QObject *parent = nullptr);
 
-    QRectF layout(State* state, const LayoutProperties* properties) override;
+    QRectF layout(State *state, const LayoutProperties *properties) override;
 
 private:
-    ElementWalker::VisitResult layoutState(Element* element);
+    ElementWalker::VisitResult layoutState(Element *element);
 
-    GraphvizLayerLayouter* m_layerLayouter;
-    RegionLayouter* m_regionLayouter;
-    const LayoutProperties* m_properties;
+    GraphvizLayerLayouter *m_layerLayouter;
+    RegionLayouter *m_regionLayouter;
+    const LayoutProperties *m_properties;
 };
 
 }

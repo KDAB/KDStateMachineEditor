@@ -37,21 +37,25 @@ class KDSME_VIEW_EXPORT ModifyElementCommand : public Command
     Q_OBJECT
 
 public:
-    explicit ModifyElementCommand(Element* item, QUndoCommand* parent = nullptr);
+    explicit ModifyElementCommand(Element *item, QUndoCommand *parent = nullptr);
 
-    Element* item() const;
+    Element *item() const;
 
-    int id() const override { return ModifyElement; }
+    int id() const override
+    {
+        return ModifyElement;
+    }
 
     Q_INVOKABLE void moveBy(qreal dx, qreal dy);
-    Q_INVOKABLE void setGeometry(const QRectF& geometry);
+    Q_INVOKABLE void setGeometry(const QRectF &geometry);
 
     void redo() override;
     void undo() override;
-    bool mergeWith(const QUndoCommand* other) override;
+    bool mergeWith(const QUndoCommand *other) override;
 
 protected:
-    enum Operation {
+    enum Operation
+    {
         NoOperation,
         MoveOperation,
         SetGeometryOperation,

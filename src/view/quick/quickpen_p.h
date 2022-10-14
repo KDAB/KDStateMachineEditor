@@ -37,19 +37,19 @@ class QuickPen : public QObject
     Q_PROPERTY(Qt::PenStyle style READ style WRITE setStyle NOTIFY penChanged)
 
 public:
-    explicit QuickPen(QObject* parent = nullptr);
+    explicit QuickPen(QObject *parent = nullptr);
 
     qreal width() const;
     void setWidth(qreal width);
 
     QColor color() const;
-    void setColor(const QColor& color);
+    void setColor(const QColor &color);
 
     Qt::PenStyle style() const;
     void setStyle(Qt::PenStyle style);
 
     QPen toQPen() const;
-    void modifyPen(QPen* pen) const;
+    void modifyPen(QPen *pen) const;
 
 Q_SIGNALS:
     void penChanged();

@@ -34,28 +34,31 @@ class PaletteModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    enum Role {
+    enum Role
+    {
         ElementTypeRole = Qt::UserRole + 1
     };
 
-    explicit PaletteModel(QObject* parent = nullptr);
+    explicit PaletteModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    QMimeData* mimeData(const QModelIndexList& indexes) const override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
     struct Entry
     {
-        Entry(Element::Type type_, const QString& iconName_, const QString& name_)
+        Entry(Element::Type type_, const QString &iconName_, const QString &name_)
             : type(type_)
             , iconName(iconName_)
             , name(name_)
-        {}
+        {
+        }
         Entry()
             : type(Element::ElementType)
-        {}
+        {
+        }
 
         Element::Type type;
         QString iconName;
@@ -67,7 +70,7 @@ private:
 
 }
 
-PaletteModel::PaletteModel(QObject* parent)
+PaletteModel::PaletteModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     m_entries << Entry(Element::StateMachineType, ":/kdsme/icons/state_machine.png", tr("State Machine"));
@@ -79,7 +82,7 @@ PaletteModel::PaletteModel(QObject* parent)
     m_entries << Entry(Element::TimeoutTransitionType, ":/kdsme/icons/transition.png", tr("Timeout Transition"));
 }
 
-int PaletteModel::rowCount(const QModelIndex& parent) const
+int PaletteModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return 0;
@@ -87,14 +90,13 @@ int PaletteModel::rowCount(const QModelIndex& parent) const
     return m_entries.count();
 }
 
-QVariant PaletteModel::data(const QModelIndex& index, int role) const
+QVariant PaletteModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() < 0 || index.row() >= m_entries.size())
         return QVariant();
 
-    const Entry& entry = m_entries.at(index.row());
-    switch (role)
-    {
+    const Entry &entry = m_entries.at(index.row());
+    switch (role) {
     case Qt::DisplayRole:
         return entry.name;
     case Qt::DecorationRole: {
@@ -107,7 +109,7 @@ QVariant PaletteModel::data(const QModelIndex& index, int role) const
     }
 }
 
-QMimeData* PaletteModel::mimeData(const QModelIndexList& indexes) const
+QMimeData *PaletteModel::mimeData(const QModelIndexList &indexes) const
 {
     Q_ASSERT(indexes.size() == 1); // we only allow single selection
 
@@ -115,7 +117,7 @@ QMimeData* PaletteModel::mimeData(const QModelIndexList& indexes) const
     auto type = index.data(ElementTypeRole).value<Element::Type>();
     const QString typeString = Element::typeToString(type);
 
-    QMimeData* mimeData = new QMimeData;
+    QMimeData *mimeData = new QMimeData;
 
     mimeData->setUrls(QList<QUrl>() << QUrl(QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, typeString)));
 
@@ -134,7 +136,7 @@ QMimeData* PaletteModel::mimeData(const QModelIndexList& indexes) const
     return mimeData;
 }
 
-Qt::ItemFlags PaletteModel::flags(const QModelIndex& index) const
+Qt::ItemFlags PaletteModel::flags(const QModelIndex &index) const
 {
     auto flags = QAbstractListModel::flags(index);
     return Qt::ItemIsDragEnabled | flags;
@@ -144,14 +146,14 @@ struct StateMachinePaletteWidget::Private
 {
 };
 
-StateMachinePaletteWidget::StateMachinePaletteWidget(QWidget* parent)
+StateMachinePaletteWidget::StateMachinePaletteWidget(QWidget *parent)
     : QWidget(parent)
     , d(new Private)
 {
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QListView* view = new QListView(this);
+    QListView *view = new QListView(this);
     view->setDragEnabled(true);
     view->setViewMode(QListView::IconMode);
     view->setFlow(QListView::LeftToRight);

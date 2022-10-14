@@ -30,8 +30,11 @@
 #include <QFile>
 #include <QFileInfo>
 
-#define QVERIFY_RETURN(statement, retval) \
-    do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
+#define QVERIFY_RETURN(statement, retval)                                     \
+    do {                                                                      \
+        if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) \
+            return retval;                                                    \
+    } while (0)
 
 using namespace KDSME;
 using namespace ObjectHelper;
@@ -45,34 +48,34 @@ private Q_SLOTS:
     void testParallelState();
 
 private:
-    static void assertStatesHorizontallyAligned(const QList<State*>& states, qreal epsilonY = 1.0)
+    static void assertStatesHorizontallyAligned(const QList<State *> &states, qreal epsilonY = 1.0)
     {
         QVERIFY(!states.isEmpty());
-        const State* reference = states[0];
+        const State *reference = states[0];
 
-        const qreal referenceCenterY = reference->pos().y() + reference->height()/2;
-        foreach (State* item, states) {
-            const qreal centerY = item->pos().y() + item->height()/2;
+        const qreal referenceCenterY = reference->pos().y() + reference->height() / 2;
+        foreach (State *item, states) {
+            const qreal centerY = item->pos().y() + item->height() / 2;
             QVERIFY2(qAbs(centerY - referenceCenterY) < epsilonY, "Not horizontally aligned");
         }
     }
 
-    static void assertStatesVerticallyAligned(const QList<State*>& states, qreal epsilonX = 1.0)
+    static void assertStatesVerticallyAligned(const QList<State *> &states, qreal epsilonX = 1.0)
     {
         QVERIFY(!states.isEmpty());
-        const State* reference = states[0];
+        const State *reference = states[0];
 
-        const qreal referenceCenterX = reference->pos().x() + reference->width()/2;
-        foreach (State* state, states) {
-            const qreal centerX = state->pos().x() + state->width()/2;
+        const qreal referenceCenterX = reference->pos().x() + reference->width() / 2;
+        foreach (State *state, states) {
+            const qreal centerX = state->pos().x() + state->width() / 2;
             QVERIFY2(qAbs(centerX - referenceCenterX) < epsilonX, "Not vertically aligned");
         }
     }
 
-    static void assertRegionContainsStates(State* region, const QList<State*> states)
+    static void assertRegionContainsStates(State *region, const QList<State *> states)
     {
         const QRectF rect = region->boundingRect();
-        foreach (State* item, states) {
+        foreach (State *item, states) {
             QVERIFY(rect.contains(item->boundingRect()));
         }
     }
@@ -87,11 +90,11 @@ void LayouterTest::testBasicState()
     ScxmlImporter importer(ParseHelper::readFile(TEST_DATA_DIR "/scxml/basicstate.scxml"));
     QScopedPointer<StateMachine> machine(importer.import());
 
-    auto elements = machine->findChildren<Element*>();
-    auto states = copy_if_type<State*>(elements);
-    //auto transitions = copy_if_type<Transition*>(elements);
+    auto elements = machine->findChildren<Element *>();
+    auto states = copy_if_type<State *>(elements);
+    // auto transitions = copy_if_type<Transition*>(elements);
     QCOMPARE(states.size(), 4);
-    //QCOMPARE(transitions.size(), 3);
+    // QCOMPARE(transitions.size(), 3);
 }
 
 void LayouterTest::testParallelState()
@@ -102,7 +105,7 @@ void LayouterTest::testParallelState()
                 S1: (I) -> (S11) -> (S1Final)
                 S2: (I) -> (S21) -> (S2Final)
     */
-    ScxmlImporter importer(ParseHelper::readFile(TEST_DATA_DIR  "/scxml/parallelstate.scxml"));
+    ScxmlImporter importer(ParseHelper::readFile(TEST_DATA_DIR "/scxml/parallelstate.scxml"));
     QScopedPointer<StateMachine> machine(importer.import());
     QVERIFY(machine);
 
@@ -110,12 +113,12 @@ void LayouterTest::testParallelState()
     LayerwiseLayouter layouter;
     layouter.layout(machine.data(), &properties);
 
-    auto elements = machine->findChildren<Element*>();
-    auto states = copy_if_type<State*>(elements);
-    auto transitions = copy_if_type<Transition*>(elements);
+    auto elements = machine->findChildren<Element *>();
+    auto states = copy_if_type<State *>(elements);
+    auto transitions = copy_if_type<Transition *>(elements);
     QCOMPARE(states.size(), 10);
     QCOMPARE(transitions.size(), 5);
-    auto pureStateItems = filter(states, [](const State* state) { return state->isComposite(); });
+    auto pureStateItems = filter(states, [](const State *state) { return state->isComposite(); });
 
     assertRegionContainsStates(machine.data(), pureStateItems);
 }

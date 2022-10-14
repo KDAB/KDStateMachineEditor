@@ -20,7 +20,7 @@
 #include <QSignalSpy>
 #include <QTimer>
 
-bool TestUtil::waitForSignal(QObject* obj, const char* signal, int timeout)
+bool TestUtil::waitForSignal(QObject *obj, const char *signal, int timeout)
 {
     QEventLoop loop;
     QObject::connect(obj, signal, &loop, SLOT(quit()));
@@ -34,4 +34,3 @@ bool TestUtil::waitForSignal(QObject* obj, const char* signal, int timeout)
     loop.exec();
     return timeoutSpy.isEmpty();
 }
-

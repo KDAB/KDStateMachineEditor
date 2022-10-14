@@ -19,10 +19,16 @@ class LightWidget : public QWidget
     Q_PROPERTY(bool on READ isOn WRITE setOn)
 public:
     LightWidget(const QColor &color, QWidget *parent = nullptr)
-        : QWidget(parent), m_color(color), m_on(false) {}
+        : QWidget(parent)
+        , m_color(color)
+        , m_on(false)
+    {
+    }
 
     bool isOn() const
-        { return m_on; }
+    {
+        return m_on;
+    }
     void setOn(bool on)
     {
         if (on == m_on)
@@ -32,8 +38,14 @@ public:
     }
 
 public slots:
-    void turnOff() { setOn(false); }
-    void turnOn() { setOn(true); }
+    void turnOff()
+    {
+        setOn(false);
+    }
+    void turnOn()
+    {
+        setOn(true);
+    }
 
 protected:
     void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE
@@ -75,11 +87,17 @@ public:
     }
 
     LightWidget *redLight() const
-        { return m_red; }
+    {
+        return m_red;
+    }
     LightWidget *yellowLight() const
-        { return m_yellow; }
+    {
+        return m_yellow;
+    }
     LightWidget *greenLight() const
-        { return m_green; }
+    {
+        return m_green;
+    }
 
 private:
     LightWidget *m_red;
@@ -135,7 +153,7 @@ TrafficLight::TrafficLight(QWidget *parent)
     m_machine = machine;
 }
 
-QStateMachine* TrafficLight::machine() const
+QStateMachine *TrafficLight::machine() const
 {
     return m_machine;
 }

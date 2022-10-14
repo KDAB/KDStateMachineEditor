@@ -23,7 +23,7 @@
 
 using namespace KDSME;
 
-CreateElementCommand::CreateElementCommand(StateModel* model, const Element::Type type, QUndoCommand* parent)
+CreateElementCommand::CreateElementCommand(StateModel *model, const Element::Type type, QUndoCommand *parent)
     : Command(model, parent)
     , m_parentElement(nullptr)
     , m_type(type)
@@ -38,12 +38,12 @@ CreateElementCommand::~CreateElementCommand()
         delete m_createdElement;
 }
 
-Element* CreateElementCommand::parentElement() const
+Element *CreateElementCommand::parentElement() const
 {
     return m_parentElement;
 }
 
-void CreateElementCommand::setParentElement(Element* parentElement)
+void CreateElementCommand::setParentElement(Element *parentElement)
 {
     if (m_parentElement == parentElement)
         return;
@@ -66,7 +66,7 @@ void CreateElementCommand::setType(Element::Type type)
     emit typeChanged(m_type);
 }
 
-Element* CreateElementCommand::createdElement() const
+Element *CreateElementCommand::createdElement() const
 {
     return m_createdElement;
 }
@@ -80,12 +80,12 @@ void CreateElementCommand::redo()
         return;
     }
 
-    Element* parentElement = m_parentElement ? m_parentElement : model()->state();
+    Element *parentElement = m_parentElement ? m_parentElement : model()->state();
     StateModel::AppendOperation append(model(), parentElement);
     if (m_createdElement) {
         m_createdElement->setParent(parentElement);
     } else {
-        Element* element = factory.create(m_type);
+        Element *element = factory.create(m_type);
         if (!element) {
             qCDebug(KDSME_VIEW) << "Element could not be instantiated, type:" << m_type;
             return;

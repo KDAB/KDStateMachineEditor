@@ -30,8 +30,8 @@ class StateMachine;
 class KDSME_CORE_EXPORT ScxmlExporter : public AbstractExporter
 {
 public:
-    explicit ScxmlExporter(QByteArray* array);
-    explicit ScxmlExporter(QIODevice* device);
+    explicit ScxmlExporter(QByteArray *array);
+    explicit ScxmlExporter(QIODevice *device);
     virtual ~ScxmlExporter();
 
     /**
@@ -39,7 +39,7 @@ public:
      *
      * @note For exporting to work, *all* states must-have unique labels set
      */
-    virtual bool exportMachine(StateMachine* machine) override;
+    virtual bool exportMachine(StateMachine *machine) override;
 
 private:
     struct Private;

@@ -26,7 +26,7 @@ struct CommandController::Private
 {
     Private();
 
-    QUndoStack* m_undoStack;
+    QUndoStack *m_undoStack;
 };
 
 CommandController::Private::Private()
@@ -34,26 +34,26 @@ CommandController::Private::Private()
 {
 }
 
-CommandController::CommandController(QUndoStack* undoStack, StateMachineView* parent)
+CommandController::CommandController(QUndoStack *undoStack, StateMachineView *parent)
     : AbstractController(parent)
     , d(new Private)
 {
     d->m_undoStack = undoStack;
     Q_ASSERT(d->m_undoStack);
 
-    qRegisterMetaType<Command*>();
+    qRegisterMetaType<Command *>();
 }
 
 CommandController::~CommandController()
 {
 }
 
-QUndoStack* CommandController::undoStack() const
+QUndoStack *CommandController::undoStack() const
 {
     return d->m_undoStack;
 }
 
-void CommandController::push(KDSME::Command* command)
+void CommandController::push(KDSME::Command *command)
 {
     Q_ASSERT(command);
     QQmlEngine::setObjectOwnership(command, QQmlEngine::CppOwnership); // transfer ownership

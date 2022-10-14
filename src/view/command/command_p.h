@@ -28,7 +28,8 @@ class KDSME_VIEW_EXPORT Command : public QObject, public QUndoCommand
     Q_OBJECT
 
 public:
-    enum Id {
+    enum Id
+    {
         CreateElement = 0,
         DeleteElement,
         ReparentElement,
@@ -41,17 +42,17 @@ public:
         ChangeStateMachine
     };
 
-    explicit Command(StateModel* model, QUndoCommand* parent = nullptr);
-    explicit Command(const QString& text = QString(), QUndoCommand* parent = nullptr);
+    explicit Command(StateModel *model, QUndoCommand *parent = nullptr);
+    explicit Command(const QString &text = QString(), QUndoCommand *parent = nullptr);
 
-    StateModel* model() const;
+    StateModel *model() const;
 
 private:
-    StateModel* m_model;
+    StateModel *m_model;
 };
 
 }
 
-Q_DECLARE_METATYPE(KDSME::Command*)
+Q_DECLARE_METATYPE(KDSME::Command *)
 
 #endif // COMMAND_P_H

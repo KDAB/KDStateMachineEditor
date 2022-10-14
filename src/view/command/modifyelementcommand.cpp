@@ -23,7 +23,7 @@ using namespace KDSME;
 
 namespace {
 
-void setElementGeometry(Element* item, const QRectF& geometry)
+void setElementGeometry(Element *item, const QRectF &geometry)
 {
     item->setPos(geometry.topLeft());
     item->setWidth(geometry.width());
@@ -32,7 +32,7 @@ void setElementGeometry(Element* item, const QRectF& geometry)
 
 }
 
-KDSME::ModifyElementCommand::ModifyElementCommand(Element* item, QUndoCommand* parent)
+KDSME::ModifyElementCommand::ModifyElementCommand(Element *item, QUndoCommand *parent)
     : Command(QString(), parent)
     , m_operation(NoOperation)
     , m_item(item)
@@ -40,7 +40,7 @@ KDSME::ModifyElementCommand::ModifyElementCommand(Element* item, QUndoCommand* p
     Q_ASSERT(item);
 }
 
-Element* KDSME::ModifyElementCommand::item() const
+Element *KDSME::ModifyElementCommand::item() const
 {
     return m_item;
 }
@@ -52,7 +52,7 @@ void KDSME::ModifyElementCommand::moveBy(qreal dx, qreal dy)
     updateText();
 }
 
-void ModifyElementCommand::setGeometry(const QRectF& geometry)
+void ModifyElementCommand::setGeometry(const QRectF &geometry)
 {
     m_newGeometry = geometry;
     m_operation = SetGeometryOperation;
@@ -94,13 +94,13 @@ void KDSME::ModifyElementCommand::undo()
     }
 }
 
-bool ModifyElementCommand::mergeWith(const QUndoCommand* other)
+bool ModifyElementCommand::mergeWith(const QUndoCommand *other)
 {
     if (other->id() != id()) {
         return false;
     }
 
-    auto cmd = static_cast<const ModifyElementCommand*>(other);
+    auto cmd = static_cast<const ModifyElementCommand *>(other);
     if (cmd->m_item != m_item || cmd->m_operation != m_operation) {
         return false;
     }

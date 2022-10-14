@@ -29,18 +29,18 @@ class ObjectTreeModelPrivate
     }
 
     Q_DECLARE_PUBLIC(ObjectTreeModel)
-    ObjectTreeModel * const q_ptr;
-    QList<QObject*> m_rootObjects;
+    ObjectTreeModel *const q_ptr;
+    QList<QObject *> m_rootObjects;
 
-    QList<QObject*> children(QObject *parent) const;
+    QList<QObject *> children(QObject *parent) const;
 
-    QObject *mapModelIndex2QObject(const QModelIndex& index) const;
+    QObject *mapModelIndex2QObject(const QModelIndex &index) const;
     QModelIndex indexForObject(QObject *object) const;
 };
 
 }
 
-QList<QObject*> ObjectTreeModelPrivate::children(QObject *parent) const
+QList<QObject *> ObjectTreeModelPrivate::children(QObject *parent) const
 {
     if (!parent) {
         return m_rootObjects;
@@ -54,7 +54,7 @@ QObject *ObjectTreeModelPrivate::mapModelIndex2QObject(const QModelIndex &index)
         return nullptr;
     }
 
-    QObject* parent = reinterpret_cast<QObject*>(index.internalPointer());
+    QObject *parent = reinterpret_cast<QObject *>(index.internalPointer());
     if (!parent) {
         return m_rootObjects[index.row()];
     }
@@ -62,7 +62,7 @@ QObject *ObjectTreeModelPrivate::mapModelIndex2QObject(const QModelIndex &index)
     return c[index.row()];
 }
 
-QModelIndex ObjectTreeModelPrivate::indexForObject(QObject* object) const
+QModelIndex ObjectTreeModelPrivate::indexForObject(QObject *object) const
 {
     if (!object) {
         return QModelIndex();
@@ -81,14 +81,14 @@ QModelIndex ObjectTreeModelPrivate::indexForObject(QObject* object) const
     return q->index(row, 0, indexForObject(object->parent()));
 }
 
-ObjectTreeModel::AppendOperation::AppendOperation(ObjectTreeModel* model, QObject* parent, int count, int index)
+ObjectTreeModel::AppendOperation::AppendOperation(ObjectTreeModel *model, QObject *parent, int count, int index)
     : m_model(model)
 {
     Q_ASSERT(m_model);
     const QModelIndex parentIndex = m_model->indexForObject(parent);
     Q_ASSERT(parentIndex.isValid());
     int first = index >= 0 ? index : m_model->rowCount(parentIndex);
-    int last = first + count-1;
+    int last = first + count - 1;
     Q_ASSERT(first >= 0 && last >= 0);
     Q_ASSERT(first <= last);
 
@@ -100,7 +100,7 @@ ObjectTreeModel::AppendOperation::~AppendOperation()
     m_model->endInsertRows();
 }
 
-ObjectTreeModel::RemoveOperation::RemoveOperation(ObjectTreeModel* model, QObject* object)
+ObjectTreeModel::RemoveOperation::RemoveOperation(ObjectTreeModel *model, QObject *object)
     : m_model(model)
 {
     Q_ASSERT(m_model);
@@ -117,7 +117,7 @@ ObjectTreeModel::RemoveOperation::~RemoveOperation()
     m_model->endRemoveRows();
 }
 
-ObjectTreeModel::ResetOperation::ResetOperation(ObjectTreeModel* model)
+ObjectTreeModel::ResetOperation::ResetOperation(ObjectTreeModel *model)
     : m_model(model)
 {
     if (m_model) {
@@ -132,7 +132,7 @@ ObjectTreeModel::ResetOperation::~ResetOperation()
     }
 }
 
-ObjectTreeModel::ReparentOperation::ReparentOperation(ObjectTreeModel* model, QObject* object, QObject* newParent)
+ObjectTreeModel::ReparentOperation::ReparentOperation(ObjectTreeModel *model, QObject *object, QObject *newParent)
     : m_model(model)
 {
     // some sanity checks
@@ -142,12 +142,13 @@ ObjectTreeModel::ReparentOperation::ReparentOperation(ObjectTreeModel* model, QO
 
     if (m_model) {
         const QModelIndex index = m_model->indexForObject(object);
-        QObject* parent = object->parent();
+        QObject *parent = object->parent();
         const QModelIndex parentIndex = m_model->indexForObject(parent);
         const QModelIndex destinationParentIndex = m_model->indexForObject(newParent);
         Q_ASSERT(destinationParentIndex.isValid());
         bool success = m_model->beginMoveRows(parentIndex, index.row(), index.row(), destinationParentIndex, m_model->rowCount(destinationParentIndex));
-        Q_ASSERT(success); Q_UNUSED(success);
+        Q_ASSERT(success);
+        Q_UNUSED(success);
     }
 }
 
@@ -169,7 +170,7 @@ ObjectTreeModel::~ObjectTreeModel()
     delete d_ptr;
 }
 
-QHash< int, QByteArray > ObjectTreeModel::roleNames() const
+QHash<int, QByteArray> ObjectTreeModel::roleNames() const
 {
     QHash<int, QByteArray> roleNames = QAbstractItemModel::roleNames();
     roleNames.insert(ObjectRole, "object");
@@ -177,7 +178,7 @@ QHash< int, QByteArray > ObjectTreeModel::roleNames() const
     return roleNames;
 }
 
-void ObjectTreeModel::appendRootObject(QObject* object)
+void ObjectTreeModel::appendRootObject(QObject *object)
 {
     Q_D(ObjectTreeModel);
     if (!object || d->m_rootObjects.contains(object)) {
@@ -190,23 +191,23 @@ void ObjectTreeModel::appendRootObject(QObject* object)
     endInsertRows();
 }
 
-QList<QObject*> ObjectTreeModel::rootObjects() const
+QList<QObject *> ObjectTreeModel::rootObjects() const
 {
     Q_D(const ObjectTreeModel);
     return d->m_rootObjects;
 }
 
-void ObjectTreeModel::setRootObject(QObject* rootObject)
+void ObjectTreeModel::setRootObject(QObject *rootObject)
 {
-    setRootObjects(QList<QObject*>() << rootObject);
+    setRootObjects(QList<QObject *>() << rootObject);
 }
 
-void ObjectTreeModel::setRootObjects(const QList<QObject*>& rootObjects)
+void ObjectTreeModel::setRootObjects(const QList<QObject *> &rootObjects)
 {
     Q_D(ObjectTreeModel);
     beginResetModel();
     d->m_rootObjects.clear();
-    foreach (QObject* object, rootObjects) {
+    foreach (QObject *object, rootObjects) {
         if (object)
             d->m_rootObjects << object;
     }
@@ -238,10 +239,9 @@ QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
         return reinterpret_cast<quint64>(obj);
     }
     return QVariant();
-
 }
 
-int ObjectTreeModel::columnCount(const QModelIndex& parent) const
+int ObjectTreeModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return 1;
@@ -249,8 +249,8 @@ int ObjectTreeModel::columnCount(const QModelIndex& parent) const
 
 int ObjectTreeModel::rowCount(const QModelIndex &parent) const
 {
-  Q_D(const ObjectTreeModel);
-  return d->children(d->mapModelIndex2QObject(parent)).count();
+    Q_D(const ObjectTreeModel);
+    return d->children(d->mapModelIndex2QObject(parent)).count();
 }
 
 QModelIndex ObjectTreeModel::index(int row, int column, const QModelIndex &parent) const
@@ -261,10 +261,10 @@ QModelIndex ObjectTreeModel::index(int row, int column, const QModelIndex &paren
     }
 
     if (!parent.isValid() && row < rowCount()) {
-        return createIndex(row,  column, nullptr);
+        return createIndex(row, column, nullptr);
     }
 
-    QObject* parentObject = d->mapModelIndex2QObject(parent);
+    QObject *parentObject = d->mapModelIndex2QObject(parent);
     if (!parentObject)
         return QModelIndex();
     QObjectList c = d->children(parentObject);
@@ -275,7 +275,7 @@ QModelIndex ObjectTreeModel::index(int row, int column, const QModelIndex &paren
     return createIndex(row, column, parentObject);
 }
 
-QModelIndex ObjectTreeModel::indexForObject(QObject* object) const
+QModelIndex ObjectTreeModel::indexForObject(QObject *object) const
 {
     Q_D(const ObjectTreeModel);
     return d->indexForObject(object);

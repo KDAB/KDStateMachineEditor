@@ -29,9 +29,8 @@ QT_END_NAMESPACE
 
 #include <QtCore/qglobal.h>
 
-namespace ParseHelper
-{
-    QByteArray readFile(const QString& fileName);
+namespace ParseHelper {
+QByteArray readFile(const QString &fileName);
 }
 
 #endif

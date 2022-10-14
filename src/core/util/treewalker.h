@@ -27,7 +27,11 @@ namespace KDSME {
 template<typename T>
 struct TreeWalkerTrait
 {
-    static QList<T> children(T item) { Q_UNUSED(item); return QList<T>(); }
+    static QList<T> children(T item)
+    {
+        Q_UNUSED(item);
+        return QList<T>();
+    }
 };
 
 /**
@@ -39,13 +43,15 @@ template<typename T>
 class TreeWalker
 {
 public:
-    enum VisitResult {
+    enum VisitResult
+    {
         ContinueWalk, ///< Continues traversal with the next sibling of the item just visited, without visiting its children
         RecursiveWalk, ///< Traverse the children of this item
         StopWalk ///< Terminate the traversal
     };
 
-    enum TraversalType {
+    enum TraversalType
+    {
         PreOrderTraversal,
         PostOrderTraversal,
     };
@@ -53,7 +59,9 @@ public:
     typedef std::function<VisitResult(T)> VisitFunction;
 
     explicit TreeWalker(TraversalType type = PreOrderTraversal)
-        : m_traversalType(type) {}
+        : m_traversalType(type)
+    {
+    }
 
     /**
      * Walk through all items including the start item itself
@@ -63,7 +71,7 @@ public:
      * @param item the start item
      * @param visit Function called each time a LayoutItem instance is encountered
      */
-    bool walkItems(T item, const VisitFunction& visit)
+    bool walkItems(T item, const VisitFunction &visit)
     {
         if (!item)
             return false;
@@ -88,7 +96,7 @@ public:
      *
      * @sa walk()
      */
-    bool walkChildren(T item, const VisitFunction& visit)
+    bool walkChildren(T item, const VisitFunction &visit)
     {
         if (!item)
             return false;

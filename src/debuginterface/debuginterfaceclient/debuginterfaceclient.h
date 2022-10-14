@@ -32,14 +32,14 @@ class KDSME_DEBUGINTERFACECLIENT_EXPORT DebugInterfaceClient : public RuntimeCon
     Q_OBJECT
 
 public:
-    explicit DebugInterfaceClient(QObject* parent = nullptr);
+    explicit DebugInterfaceClient(QObject *parent = nullptr);
     ~DebugInterfaceClient();
 
 public:
-    DebugInterfaceReplica* debugInterface() const;
-    void setDebugInterface(DebugInterfaceReplica* debugInterface);
+    DebugInterfaceReplica *debugInterface() const;
+    void setDebugInterface(DebugInterfaceReplica *debugInterface);
 
-    KDSME::StateMachine* machine() const;
+    KDSME::StateMachine *machine() const;
 
 Q_SIGNALS:
     void repopulateView();

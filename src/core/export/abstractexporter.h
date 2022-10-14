@@ -37,7 +37,7 @@ public:
      * @return True on success, otherwise false
      * @sa errorString()
      */
-    virtual bool exportMachine(StateMachine* machine) = 0;
+    virtual bool exportMachine(StateMachine *machine) = 0;
 
     /**
      * Returns a human readable description of the last error that occurred.
@@ -48,7 +48,7 @@ protected:
     /**
      * Sets the human readable description of the last device error that occurred to @p errorString
      */
-    void setErrorString(const QString& errorString);
+    void setErrorString(const QString &errorString);
 
 private:
     struct Private;

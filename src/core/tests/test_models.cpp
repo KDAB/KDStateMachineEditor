@@ -33,13 +33,13 @@ namespace {
  *   - o2
  * </pre>
  */
-QObject* createQObjectTreeSample()
+QObject *createQObjectTreeSample()
 {
-    QObject* o1 = new QObject;
+    QObject *o1 = new QObject;
     o1->setObjectName("root");
-    QObject* o11 = new QObject(o1);
+    QObject *o11 = new QObject(o1);
     o11->setObjectName("o1");
-    QObject* o12 = new QObject(o1);
+    QObject *o12 = new QObject(o1);
     o12->setObjectName("o2");
     return o1;
 }
@@ -70,13 +70,13 @@ void ModelsTest::testObjectTreeModel()
     QCOMPARE(model.rowCount(), 1);
     QModelIndex rootIndex = model.index(0, 0);
     QCOMPARE(model.rowCount(rootIndex), 2);
-    QCOMPARE(rootIndex.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  root.data());
+    QCOMPARE(rootIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
     QModelIndex index = model.index(0, 0, rootIndex);
     QCOMPARE(model.rowCount(index), 0);
-    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  root->children()[0]);
+    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root->children()[0]);
     index = model.index(1, 0, rootIndex);
     QCOMPARE(model.rowCount(index), 0);
-    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject*>(),  root->children()[1]);
+    QCOMPARE(index.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root->children()[1]);
 }
 
 
@@ -86,8 +86,8 @@ void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
-    QObject* appendedObject;
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    QObject *appendedObject;
     {
         ObjectTreeModel::AppendOperation insert(&model, root.data());
         appendedObject = new QObject(root.data());
@@ -99,11 +99,11 @@ void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
     const QModelIndex parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
-    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject*>(), root.data());
+    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
     QCOMPARE(first, 2);
     QCOMPARE(last, 2);
 
-    QCOMPARE(model.index(first, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject*>(), appendedObject);
+    QCOMPARE(model.index(first, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject *>(), appendedObject);
 }
 
 void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
@@ -112,8 +112,8 @@ void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
-    QList<QObject*> appendedObjects;
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    QList<QObject *> appendedObjects;
     {
         ObjectTreeModel::AppendOperation insert(&model, root.data(), 3);
         appendedObjects << new QObject(root.data());
@@ -126,13 +126,13 @@ void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
     const QModelIndex parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
-    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject*>(), root.data());
+    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
     QCOMPARE(first, 2);
     QCOMPARE(last, 4);
 
-    QCOMPARE(model.index(first, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject*>(), appendedObjects[0]);
-    QCOMPARE(model.index(first+1, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject*>(), appendedObjects[1]);
-    QCOMPARE(model.index(first+2, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject*>(), appendedObjects[2]);
+    QCOMPARE(model.index(first, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject *>(), appendedObjects[0]);
+    QCOMPARE(model.index(first + 1, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject *>(), appendedObjects[1]);
+    QCOMPARE(model.index(first + 2, 0, parentIndex).data(ObjectTreeModel::ObjectRole).value<QObject *>(), appendedObjects[2]);
 }
 
 void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
@@ -141,9 +141,9 @@ void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex, int, int)));
     {
-        QObject* object = root.data()->children()[0];
+        QObject *object = root.data()->children()[0];
         ObjectTreeModel::RemoveOperation remove(&model, object);
         delete object;
     }
@@ -153,7 +153,7 @@ void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
     const QModelIndex parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
-    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject*>(), root.data());
+    QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
     QCOMPARE(first, 0);
     QCOMPARE(last, 0);
 }
@@ -167,7 +167,7 @@ void ModelsTest::testObjectTreeModel_ResetOperation_SingleObject()
     QSignalSpy spy1(&model, SIGNAL(modelAboutToBeReset()));
     QSignalSpy spy2(&model, SIGNAL(modelAboutToBeReset()));
     {
-        QObject* object = root.data()->children()[0];
+        QObject *object = root.data()->children()[0];
         ObjectTreeModel::ResetOperation reset(&model);
         QCOMPARE(spy1.count(), 1);
         delete object;
@@ -181,14 +181,14 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QObject* o1 = root.data()->children()[0];
+    QObject *o1 = root.data()->children()[0];
     QVERIFY(o1);
-    QObject* o2 = root.data()->children()[1];
+    QObject *o2 = root.data()->children()[1];
     QVERIFY(o2);
 
     // Want to set parent of o2 to o1
-    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-    QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
+    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+    QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
     {
         ObjectTreeModel::ReparentOperation reparent(&model, o2, o1);
         QCOMPARE(spy1.count(), 1);
@@ -213,8 +213,8 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
     const QModelIndex rootIndex = model.index(0, 0);
     const QModelIndex o1Index = model.index(0, 0, rootIndex);
     const QModelIndex o2Index = model.index(0, 0, o1Index);
-    QCOMPARE(o1Index.data(ObjectTreeModel::ObjectRole).value<QObject*>(), o1);
-    QCOMPARE(o2Index.data(ObjectTreeModel::ObjectRole).value<QObject*>(), o2);
+    QCOMPARE(o1Index.data(ObjectTreeModel::ObjectRole).value<QObject *>(), o1);
+    QCOMPARE(o2Index.data(ObjectTreeModel::ObjectRole).value<QObject *>(), o2);
 }
 
 void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
@@ -223,14 +223,14 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QObject* o1 = root.data()->children()[0];
+    QObject *o1 = root.data()->children()[0];
     QVERIFY(o1);
-    QObject* o2 = root.data()->children()[1];
+    QObject *o2 = root.data()->children()[1];
     QVERIFY(o2);
 
     {
         // Want to set parent of o1 to root (root is already parent of o1!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
         {
             ObjectTreeModel::ReparentOperation reparent(&model, o1, root.data());
             QCOMPARE(spy1.count(), 0);
@@ -240,7 +240,7 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 
     {
         // Want to set parent of o1 to o1 (circular link!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
         {
             ObjectTreeModel::ReparentOperation reparent(&model, o1, o1);
             QCOMPARE(spy1.count(), 0);

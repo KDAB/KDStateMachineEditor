@@ -34,9 +34,9 @@ private Q_SLOTS:
 void UtilTest::testElementWalker()
 {
     // returns list of walked states
-    auto walkAllStates = [](ElementWalker&& walker, Element* item) -> QVector<Element*> {
-        QVector<Element*> walkedStates;
-        walker.walkItems(item, [&](Element* state) -> ElementWalker::VisitResult {
+    auto walkAllStates = [](ElementWalker &&walker, Element *item) -> QVector<Element *> {
+        QVector<Element *> walkedStates;
+        walker.walkItems(item, [&](Element *state) -> ElementWalker::VisitResult {
             walkedStates << state;
             return ElementWalker::RecursiveWalk;
         });
@@ -44,9 +44,9 @@ void UtilTest::testElementWalker()
     };
 
     // returns number of calls to our visit-lambda
-    auto walkOneState = [](ElementWalker&& walker, Element* item) -> int {
+    auto walkOneState = [](ElementWalker &&walker, Element *item) -> int {
         int counter = -1;
-        walker.walkItems(item, [&](Element*) -> ElementWalker::VisitResult {
+        walker.walkItems(item, [&](Element *) -> ElementWalker::VisitResult {
             ++counter;
             if (counter == 1)
                 return ElementWalker::StopWalk;
@@ -60,15 +60,15 @@ void UtilTest::testElementWalker()
     State s2(&root);
 
     // test pre-order traversal
-    QVector<Element*> seenStates = walkAllStates(ElementWalker(), &root);
-    QCOMPARE(seenStates, QVector<Element*>() << &root << &s1 << &s2);
+    QVector<Element *> seenStates = walkAllStates(ElementWalker(), &root);
+    QCOMPARE(seenStates, QVector<Element *>() << &root << &s1 << &s2);
     // check if walker aborts if requested
     int count = walkOneState(ElementWalker(), &root);
     QCOMPARE(count, 1);
 
     // test post-order traversal
     seenStates = walkAllStates(ElementWalker(ElementWalker::PostOrderTraversal), &root);
-    QCOMPARE(seenStates, QVector<Element*>() << &s1 << &s2 << &root);
+    QCOMPARE(seenStates, QVector<Element *>() << &s1 << &s2 << &root);
     // check if walker aborts if requested
     count = walkOneState(ElementWalker(ElementWalker::PostOrderTraversal), &root);
     QCOMPARE(count, 1);

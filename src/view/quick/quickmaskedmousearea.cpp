@@ -19,12 +19,12 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
-AbstractMask::AbstractMask(QObject* parent)
+AbstractMask::AbstractMask(QObject *parent)
     : QObject(parent)
 {
 }
 
-PainterPathMask::PainterPathMask(QObject* parent)
+PainterPathMask::PainterPathMask(QObject *parent)
     : AbstractMask(parent)
 {
 }
@@ -34,7 +34,7 @@ QPainterPath PainterPathMask::path() const
     return m_path;
 }
 
-void PainterPathMask::setPath(const QPainterPath& path)
+void PainterPathMask::setPath(const QPainterPath &path)
 {
     if (m_path == path)
         return;
@@ -43,17 +43,17 @@ void PainterPathMask::setPath(const QPainterPath& path)
     emit pathChanged(m_path);
 }
 
-bool PainterPathMask::contains(const QPointF& point) const
+bool PainterPathMask::contains(const QPointF &point) const
 {
     return m_path.contains(point);
 }
 
-bool PainterPathMask::intersects(const QRectF& rect) const
+bool PainterPathMask::intersects(const QRectF &rect) const
 {
     return m_path.intersects(rect);
 }
 
-QuickMaskedMouseArea::QuickMaskedMouseArea(QQuickItem* parent)
+QuickMaskedMouseArea::QuickMaskedMouseArea(QQuickItem *parent)
     : QQuickItem(parent)
     , m_pressed(false)
     , m_containsMouse(false)
@@ -82,12 +82,12 @@ void QuickMaskedMouseArea::setContainsMouse(bool containsMouse)
     emit containsMouseChanged(m_containsMouse);
 }
 
-AbstractMask* QuickMaskedMouseArea::mask() const
+AbstractMask *QuickMaskedMouseArea::mask() const
 {
     return m_mask;
 }
 
-void QuickMaskedMouseArea::setMask(AbstractMask* mask)
+void QuickMaskedMouseArea::setMask(AbstractMask *mask)
 {
     if (m_mask == mask)
         return;
@@ -111,7 +111,7 @@ void QuickMaskedMouseArea::setTolerance(qreal tolerance)
     emit toleranceChanged(m_tolerance);
 }
 
-bool QuickMaskedMouseArea::contains(const QPointF& point) const
+bool QuickMaskedMouseArea::contains(const QPointF &point) const
 {
     if (!m_mask) {
         return QQuickItem::contains(point);
@@ -121,7 +121,7 @@ bool QuickMaskedMouseArea::contains(const QPointF& point) const
     const bool ignoreBoundingRect = rect.isEmpty();
     if (m_tolerance > 0.) {
         const QRectF fuzzyClickRect(point.x() - m_tolerance, point.y() - m_tolerance,
-                                    2*m_tolerance, 2*m_tolerance);
+                                    2 * m_tolerance, 2 * m_tolerance);
         if (!ignoreBoundingRect && !rect.intersects(fuzzyClickRect)) {
             return false;
         }
@@ -149,8 +149,7 @@ void QuickMaskedMouseArea::mouseReleaseEvent(QMouseEvent *event)
 
 
     const int threshold = qApp->styleHints()->startDragDistance();
-    const bool isClick = (threshold >= qAbs(event->x() - m_pressPoint.x()) &&
-                          threshold >= qAbs(event->y() - m_pressPoint.y()));
+    const bool isClick = (threshold >= qAbs(event->x() - m_pressPoint.x()) && threshold >= qAbs(event->y() - m_pressPoint.y()));
 
     if (isClick)
         emit clicked();

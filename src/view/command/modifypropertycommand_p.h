@@ -42,10 +42,13 @@ class KDSME_VIEW_EXPORT ModifyPropertyCommand : public KDSME::Command
     Q_OBJECT
 
 public:
-    ModifyPropertyCommand(QObject* object, const char* property, const QVariant& value, const QString& text = QString(), QUndoCommand* parent = nullptr);
-    ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap, const QString& text = QString(), QUndoCommand* parent = nullptr);
+    ModifyPropertyCommand(QObject *object, const char *property, const QVariant &value, const QString &text = QString(), QUndoCommand *parent = nullptr);
+    ModifyPropertyCommand(QObject *object, const QJsonObject &propertyMap, const QString &text = QString(), QUndoCommand *parent = nullptr);
 
-    int id() const override { return ModifyProperty; }
+    int id() const override
+    {
+        return ModifyProperty;
+    }
 
     void redo() override;
     void undo() override;

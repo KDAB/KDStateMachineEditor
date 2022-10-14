@@ -39,31 +39,31 @@ class StateMachineScene;
 class CommandFactory : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::StateModel* model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(KDSME::StateModel *model READ model WRITE setModel NOTIFY modelChanged)
 
 public:
-    explicit CommandFactory(QObject* parent = nullptr);
+    explicit CommandFactory(QObject *parent = nullptr);
 
-    KDSME::StateModel* model() const;
-    void setModel(KDSME::StateModel* model);
+    KDSME::StateModel *model() const;
+    void setModel(KDSME::StateModel *model);
 
-    Q_INVOKABLE KDSME::CreateElementCommand* createElement(KDSME::StateModel* model, KDSME::Element::Type type, KDSME::Element* parentElement = nullptr) const;
-    Q_INVOKABLE KDSME::DeleteElementCommand* deleteElement(KDSME::StateMachineScene* view, KDSME::Element* element) const;
-    Q_INVOKABLE KDSME::LayoutSnapshotCommand* layoutSnapshot(KDSME::StateMachineScene* view, const QString& text = QString()) const;
-    Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text = QString());
-    Q_INVOKABLE KDSME::ModifyPropertyCommand* modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text = QString());
-    Q_INVOKABLE KDSME::ModifyElementCommand* modifyElement(KDSME::Element* item);
-    Q_INVOKABLE KDSME::ModifyTransitionCommand* modifyTransition(KDSME::Transition* transition, KDSME::StateModel *model);
-    Q_INVOKABLE KDSME::ReparentElementCommand* reparentElement(KDSME::StateMachineScene* view, KDSME::Element* element);
-    Q_INVOKABLE KDSME::ChangeStateMachineCommand* changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine);
+    Q_INVOKABLE KDSME::CreateElementCommand *createElement(KDSME::StateModel *model, KDSME::Element::Type type, KDSME::Element *parentElement = nullptr) const;
+    Q_INVOKABLE KDSME::DeleteElementCommand *deleteElement(KDSME::StateMachineScene *view, KDSME::Element *element) const;
+    Q_INVOKABLE KDSME::LayoutSnapshotCommand *layoutSnapshot(KDSME::StateMachineScene *view, const QString &text = QString()) const;
+    Q_INVOKABLE KDSME::ModifyPropertyCommand *modifyProperty(QObject *object, const char *property, const QVariant &value, const QString &text = QString());
+    Q_INVOKABLE KDSME::ModifyPropertyCommand *modifyProperty(QObject *object, const QJsonObject &propertyMap, const QString &text = QString());
+    Q_INVOKABLE KDSME::ModifyElementCommand *modifyElement(KDSME::Element *item);
+    Q_INVOKABLE KDSME::ModifyTransitionCommand *modifyTransition(KDSME::Transition *transition, KDSME::StateModel *model);
+    Q_INVOKABLE KDSME::ReparentElementCommand *reparentElement(KDSME::StateMachineScene *view, KDSME::Element *element);
+    Q_INVOKABLE KDSME::ChangeStateMachineCommand *changeStateMachineElement(KDSME::StateMachineScene *view, KDSME::StateMachine *statemachine);
 
 Q_SIGNALS:
-    void modelChanged(KDSME::StateModel* model);
+    void modelChanged(KDSME::StateModel *model);
 
 private:
-    KDSME::StateModel* m_model;
+    KDSME::StateModel *m_model;
 };
 
-Q_DECLARE_METATYPE(CommandFactory*)
+Q_DECLARE_METATYPE(CommandFactory *)
 
 #endif

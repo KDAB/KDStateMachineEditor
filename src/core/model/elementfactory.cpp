@@ -24,7 +24,7 @@ ElementFactory::ElementFactory()
 {
 }
 
-Element* ElementFactory::create(Element::Type type) const
+Element *ElementFactory::create(Element::Type type) const
 {
     switch (type) {
     case Element::SignalTransitionType:

@@ -49,17 +49,17 @@ void StateMachineTest::testParentChildRelationship()
     State s11(&s1);
     Transition t11(&s11);
 
-    QCOMPARE(machine.childStates(), QList<State*>() << &s1);
+    QCOMPARE(machine.childStates(), QList<State *>() << &s1);
     QVERIFY(machine.transitions().isEmpty());
 
     QCOMPARE(s1.machine(), &machine);
-    QCOMPARE(s1.childStates(),  QList<State*>() << &s11);
-    QCOMPARE(s1.transitions(), QList<Transition*>() << &t1);
-    QCOMPARE(t1.sourceState(),  &s1);
+    QCOMPARE(s1.childStates(), QList<State *>() << &s11);
+    QCOMPARE(s1.transitions(), QList<Transition *>() << &t1);
+    QCOMPARE(t1.sourceState(), &s1);
 
     QCOMPARE(s11.machine(), &machine);
     QVERIFY(s11.childStates().isEmpty());
-    QCOMPARE(s11.transitions(), QList<Transition*>() << &t11);
+    QCOMPARE(s11.transitions(), QList<Transition *>() << &t11);
     QCOMPARE(t11.sourceState(), &s11);
 }
 

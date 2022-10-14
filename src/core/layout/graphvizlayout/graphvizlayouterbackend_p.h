@@ -33,7 +33,8 @@ class StateMachineScene;
 class GraphvizLayouterBackend
 {
 public:
-    enum LayoutMode {
+    enum LayoutMode
+    {
         RecursiveMode, ///< Performs a recursive import of all state machine elements, @sa buildState and @sa buildTransitions
         NonRecursiveMode ///< Only a direct import of state machine elements
     };
@@ -49,7 +50,7 @@ public:
     LayoutMode layoutMode() const;
     void setLayoutMode(LayoutMode mode);
 
-    void openLayout(KDSME::State* state, const KDSME::LayoutProperties* properties);
+    void openLayout(KDSME::State *state, const KDSME::LayoutProperties *properties);
     void closeLayout();
 
     /**
@@ -57,15 +58,15 @@ public:
      *
      * @note If RecursiveMode is selected, all descendants of @p state will get imported as well
      */
-    void buildState(KDSME::State* state);
+    void buildState(KDSME::State *state);
     /**
      * Fill Graphviz with edges based on attributes of the transitions of @p state
      *
      * @note If RecursiveMode is selected, transitions of descendants of @p state will get imported as well
      */
-    void buildTransitions(KDSME::State* state);
+    void buildTransitions(KDSME::State *state);
 
-    void buildTransition(KDSME::Transition* transition);
+    void buildTransition(KDSME::Transition *transition);
 
     void layout();
     void import();
@@ -80,11 +81,11 @@ public:
      *
      * @note Context must be open
      */
-    void saveToFile(const QString& filePath, const QString& format = "png");
+    void saveToFile(const QString &filePath, const QString &format = "png");
 
 private:
     struct Private;
-    Private* const d;
+    Private *const d;
 };
 
 /**
@@ -111,7 +112,7 @@ public:
     }
 
 private:
-    const char* m_oldlocale;
+    const char *m_oldlocale;
 };
 
 #endif

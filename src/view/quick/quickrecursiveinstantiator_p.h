@@ -29,42 +29,42 @@ QT_END_NAMESPACE
 class QuickRecursiveInstantiator : public QQuickItem, public InstantiatorInterface
 {
     Q_OBJECT
-    Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(QAbstractItemModel *model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate NOTIFY delegateChanged)
     Q_CLASSINFO("DefaultProperty", "delegate")
 
 public:
-    explicit QuickRecursiveInstantiator(QQuickItem* parent = nullptr);
+    explicit QuickRecursiveInstantiator(QQuickItem *parent = nullptr);
 
-    QAbstractItemModel* model() const;
-    virtual void setModel(QAbstractItemModel* model);
+    QAbstractItemModel *model() const;
+    virtual void setModel(QAbstractItemModel *model);
 
-    QQmlComponent* delegate() const;
-    void setDelegate(QQmlComponent* delegate);
+    QQmlComponent *delegate() const;
+    void setDelegate(QQmlComponent *delegate);
 
-    QObject* itemForIndex(const QModelIndex& index) const override;
+    QObject *itemForIndex(const QModelIndex &index) const override;
 
-    QList<QObject*> rootItems() const;
+    QList<QObject *> rootItems() const;
 
 private Q_SLOTS:
     void modelReset();
     void modelDestroyed();
-    void rowsInserted(const QModelIndex& parent, int first, int last);
-    void rowsAboutToBeRemoved(const QModelIndex& parent, int first, int last);
+    void rowsInserted(const QModelIndex &parent, int first, int last);
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int first, int last);
 
 Q_SIGNALS:
-    void modelChanged(QAbstractItemModel* model);
-    void delegateChanged(QQmlComponent* delegate);
+    void modelChanged(QAbstractItemModel *model);
+    void delegateChanged(QQmlComponent *delegate);
 
 private:
-    QObject* createItems(const QModelIndex& index, QObject* parent);
-    void removeItems(const QModelIndex& index, QObject* parent);
+    QObject *createItems(const QModelIndex &index, QObject *parent);
+    void removeItems(const QModelIndex &index, QObject *parent);
 
-    QAbstractItemModel* m_model;
-    QQmlComponent* m_delegate;
-    QHash<QPersistentModelIndex, QObject*> m_createdItems;
+    QAbstractItemModel *m_model;
+    QQmlComponent *m_delegate;
+    QHash<QPersistentModelIndex, QObject *> m_createdItems;
 
-    QList<QObject*> m_rootItems;
+    QList<QObject *> m_rootItems;
 };
 
 #endif // KDSME_QUICK_QUICKRECURSIVEINSTANTIATOR_P_H

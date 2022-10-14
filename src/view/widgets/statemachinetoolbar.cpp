@@ -41,7 +41,7 @@ QStringList availableThemeNames()
 {
     QDir dir(":/kdsme/qml/themes");
     auto entries = dir.entryList();
-    std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString& x) {
+    std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString &x) {
         return QString(x).remove(".qml");
     });
     return entries;
@@ -51,29 +51,29 @@ QStringList availableThemeNames()
 
 struct StateMachineToolBar::Private
 {
-    Private(StateMachineToolBar* q);
+    Private(StateMachineToolBar *q);
 
     // slots
     void handleExport();
 
     void init();
 
-    void exportToFile(StateMachine* machine, const QString& fileName);
+    void exportToFile(StateMachine *machine, const QString &fileName);
 
-    StateMachineToolBar* q;
-    StateMachineView* m_view;
+    StateMachineToolBar *q;
+    StateMachineView *m_view;
 
-    QAction* m_exportAction;
+    QAction *m_exportAction;
 };
 
-StateMachineToolBar::Private::Private(StateMachineToolBar* q)
+StateMachineToolBar::Private::Private(StateMachineToolBar *q)
     : q(q)
     , m_view(nullptr)
     , m_exportAction(nullptr)
 {
 }
 
-StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent)
+StateMachineToolBar::StateMachineToolBar(StateMachineView *view, QWidget *parent)
     : QToolBar(parent)
     , d(new Private(this))
 {
@@ -86,11 +86,11 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView* view, QWidget* parent
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
     addAction(d->m_exportAction);
 
-    QToolButton* themeSelectionButton = new QToolButton(this);
+    QToolButton *themeSelectionButton = new QToolButton(this);
     themeSelectionButton->setText(tr("Theme"));
     themeSelectionButton->setPopupMode(QToolButton::InstantPopup);
-    QMenu* themeSelectionMenu = new QMenu(themeSelectionButton);
-    foreach (const QString& themeName, availableThemeNames()) {
+    QMenu *themeSelectionMenu = new QMenu(themeSelectionButton);
+    foreach (const QString &themeName, availableThemeNames()) {
         auto action = new QAction(themeName, this);
         action->setObjectName(QStringLiteral("action%1").arg(themeName));
         connect(action, &QAction::triggered, this, [this, themeName]() {
@@ -118,7 +118,7 @@ void StateMachineToolBar::Private::handleExport()
     exportToFile(stateMachine, fileName);
 }
 
-void StateMachineToolBar::Private::exportToFile(StateMachine* machine, const QString& fileName)
+void StateMachineToolBar::Private::exportToFile(StateMachine *machine, const QString &fileName)
 {
     if (!machine || fileName.isEmpty())
         return;
@@ -131,7 +131,7 @@ void StateMachineToolBar::Private::exportToFile(StateMachine* machine, const QSt
     }
 
     const QString suffix = QFileInfo(fileName).suffix();
-    AbstractExporter* exporter;
+    AbstractExporter *exporter;
     if (suffix == "qml") {
         exporter = new QmlExporter(&file);
     } else if (suffix == "svg") {

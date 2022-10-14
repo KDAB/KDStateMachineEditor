@@ -39,26 +39,26 @@ class Element;
 class KDSME_VIEW_EXPORT StateMachineView : public QQuickWidget
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::StateMachineScene* scene READ scene WRITE setScene NOTIFY sceneChanged)
-    Q_PROPERTY(KDSME::CommandController* commandController READ commandController CONSTANT)
-    Q_PROPERTY(KDSME::EditController* editController READ editController CONSTANT)
+    Q_PROPERTY(KDSME::StateMachineScene *scene READ scene WRITE setScene NOTIFY sceneChanged)
+    Q_PROPERTY(KDSME::CommandController *commandController READ commandController CONSTANT)
+    Q_PROPERTY(KDSME::EditController *editController READ editController CONSTANT)
 
     Q_PROPERTY(QString themeName READ themeName WRITE setThemeName NOTIFY themeNameChanged)
 
 public:
-    explicit StateMachineView(QWidget* parent = nullptr);
+    explicit StateMachineView(QWidget *parent = nullptr);
     ~StateMachineView();
 
-    StateMachineScene* scene() const;
+    StateMachineScene *scene() const;
 
-    CommandController* commandController() const;
-    EditController* editController() const;
+    CommandController *commandController() const;
+    EditController *editController() const;
 
     QString defaultThemeName() const;
     QString themeName() const;
-    void setThemeName(const QString& themeName);
+    void setThemeName(const QString &themeName);
 
-    Q_INVOKABLE void sendCommand(KDSME::Command* cmd);
+    Q_INVOKABLE void sendCommand(KDSME::Command *cmd);
 
     Q_INVOKABLE void fitInView();
 
@@ -66,20 +66,20 @@ public:
     Q_INVOKABLE void deleteElement(KDSME::Element *element);
 
 protected:
-    QQuickItem* viewPortObject() const;
-    QQuickItem* sceneObject() const;
+    QQuickItem *viewPortObject() const;
+    QQuickItem *sceneObject() const;
 
 Q_SIGNALS:
-    void sceneChanged(KDSME::StateMachineScene* scene);
-    void themeNameChanged(const QString& themeName);
+    void sceneChanged(KDSME::StateMachineScene *scene);
+    void themeNameChanged(const QString &themeName);
 
 private:
     struct Private;
     QScopedPointer<Private> d;
 
-    void setScene(StateMachineScene* scene);
+    void setScene(StateMachineScene *scene);
 
-    Q_PRIVATE_SLOT(d, void onStateMachineChanged(KDSME::StateMachine*))
+    Q_PRIVATE_SLOT(d, void onStateMachineChanged(KDSME::StateMachine *))
 };
 
 }

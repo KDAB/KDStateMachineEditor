@@ -35,12 +35,12 @@ class KDSME_CORE_EXPORT TransitionModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    explicit TransitionModel(QObject* parent = nullptr);
+    explicit TransitionModel(QObject *parent = nullptr);
     ~TransitionModel();
 
-    void setSourceModel(QAbstractItemModel* sourceModel) override;
+    void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     struct Private;
@@ -50,31 +50,33 @@ private:
 class KDSME_CORE_EXPORT TransitionListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State* state READ state WRITE setState)
+    Q_PROPERTY(KDSME::State *state READ state WRITE setState)
 
 public:
-    enum Role {
+    enum Role
+    {
         ObjectRole = Qt::UserRole + 1,
     };
 
-    enum Column {
+    enum Column
+    {
         NameColumn,
         SourceStateColumn,
         TargetStateColumn,
         _LastColumn
     };
 
-    explicit TransitionListModel(QObject* parent = nullptr);
+    explicit TransitionListModel(QObject *parent = nullptr);
     ~TransitionListModel();
 
-    State* state() const;
-    void setState(State* state);
+    State *state() const;
+    void setState(State *state);
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex& parent) const override;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    QHash< int, QByteArray > roleNames() const override;
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     struct Private;
@@ -84,23 +86,24 @@ private:
 class KDSME_CORE_EXPORT StateModel : public ObjectTreeModel
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State* state READ state WRITE setState)
+    Q_PROPERTY(KDSME::State *state READ state WRITE setState)
 
 public:
-    enum Role {
+    enum Role
+    {
         ElementRole = ObjectTreeModel::UserRole + 1, ///< return Element*
-        InternalIdRole,                              ///< return quint64
+        InternalIdRole, ///< return quint64
     };
 
-    explicit StateModel(QObject* parent = nullptr);
+    explicit StateModel(QObject *parent = nullptr);
     ~StateModel();
 
-    State* state() const;
-    void setState(State* state);
+    State *state() const;
+    void setState(State *state);
 
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
     struct Private;
@@ -109,7 +112,7 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::TransitionModel*)
-Q_DECLARE_METATYPE(KDSME::StateModel*)
+Q_DECLARE_METATYPE(KDSME::TransitionModel *)
+Q_DECLARE_METATYPE(KDSME::StateModel *)
 
 #endif

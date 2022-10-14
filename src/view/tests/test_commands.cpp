@@ -84,12 +84,12 @@ void CommandsTest::testAddTransition()
     QCOMPARE(harness.machine.childStates().size(), 0);
 
     // add state
-    CreateElementCommand* cmd = new CreateElementCommand(&harness.model, Element::StateType);
+    CreateElementCommand *cmd = new CreateElementCommand(&harness.model, Element::StateType);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
 
     // add transition to state
-    State* state = harness.machine.childStates()[0];
+    State *state = harness.machine.childStates()[0];
     cmd = new CreateElementCommand(&harness.model, Element::SignalTransitionType);
     cmd->setParentElement(state);
     harness.undoStack.push(cmd);

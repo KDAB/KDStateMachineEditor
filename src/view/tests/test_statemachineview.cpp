@@ -34,7 +34,7 @@ void StateMachineViewTest::testEmpty()
     // because of https://bugreports.qt.io/browse/QTBUG-40745
     // TODO: If the issue keeps being considered an "invalid" use-case,
     // we'll have to refactor StateMachineView and get rid off the self reference as context property.
-    //StateMachineView view;
+    // StateMachineView view;
 }
 
 QTEST_MAIN(StateMachineViewTest)

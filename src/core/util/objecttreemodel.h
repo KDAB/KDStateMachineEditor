@@ -29,77 +29,78 @@ class KDSME_CORE_EXPORT ObjectTreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    class KDSME_CORE_EXPORT AppendOperation //krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT AppendOperation // krazy:exclude=dpointer
     {
     public:
-        AppendOperation(ObjectTreeModel* model, QObject* parent, int count = 1, int index = -1);
+        AppendOperation(ObjectTreeModel *model, QObject *parent, int count = 1, int index = -1);
         ~AppendOperation();
 
     private:
-        ObjectTreeModel* m_model;
+        ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT RemoveOperation //krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT RemoveOperation // krazy:exclude=dpointer
     {
     public:
-        RemoveOperation(ObjectTreeModel* model, QObject* object);
+        RemoveOperation(ObjectTreeModel *model, QObject *object);
         ~RemoveOperation();
 
     private:
-        ObjectTreeModel* m_model;
+        ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT ResetOperation //krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT ResetOperation // krazy:exclude=dpointer
     {
     public:
-        explicit ResetOperation(ObjectTreeModel* model);
+        explicit ResetOperation(ObjectTreeModel *model);
         ~ResetOperation();
 
     private:
-        ObjectTreeModel* m_model;
+        ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT ReparentOperation //krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT ReparentOperation // krazy:exclude=dpointer
     {
     public:
-        ReparentOperation(ObjectTreeModel* model, QObject* object, QObject* newParent);
+        ReparentOperation(ObjectTreeModel *model, QObject *object, QObject *newParent);
         ~ReparentOperation();
 
     private:
-        ObjectTreeModel* m_model;
+        ObjectTreeModel *m_model;
     };
 
-    enum Roles {
+    enum Roles
+    {
         ObjectRole = Qt::UserRole + 1, ///< return QObject*
-        ObjectIdRole,                  ///< return quint64
+        ObjectIdRole, ///< return quint64
         UserRole = Qt::UserRole + 100
     };
 
     explicit ObjectTreeModel(QObject *parent = nullptr);
     ~ObjectTreeModel();
 
-    void appendRootObject(QObject* object);
-    QList<QObject*> rootObjects() const;
-    void setRootObject(QObject* rootObject);
-    void setRootObjects(const QList<QObject*>& rootObjects);
+    void appendRootObject(QObject *object);
+    QList<QObject *> rootObjects() const;
+    void setRootObject(QObject *rootObject);
+    void setRootObjects(const QList<QObject *> &rootObjects);
     void clear();
 
-    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &index) const override;
-    QHash< int, QByteArray > roleNames() const override;
+    QHash<int, QByteArray> roleNames() const override;
 
-    QModelIndex indexForObject(QObject* object) const;
+    QModelIndex indexForObject(QObject *object) const;
 
-  protected:
+protected:
     Q_DECLARE_PRIVATE(ObjectTreeModel)
-    ObjectTreeModelPrivate * const d_ptr;
+    ObjectTreeModelPrivate *const d_ptr;
 };
 
 }
 
-Q_DECLARE_METATYPE(KDSME::ObjectTreeModel*)
+Q_DECLARE_METATYPE(KDSME::ObjectTreeModel *)
 
 #endif

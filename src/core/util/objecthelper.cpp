@@ -24,7 +24,7 @@ using namespace KDSME;
 
 namespace {
 
-QString stripNameSpace(const QString& className)
+QString stripNameSpace(const QString &className)
 {
     const int pos = className.lastIndexOf("::");
     if (pos != -1)
@@ -33,59 +33,56 @@ QString stripNameSpace(const QString& className)
 }
 }
 
-QString ObjectHelper::addressToString(const void* p)
+QString ObjectHelper::addressToString(const void *p)
 {
     return (QLatin1String("0x") + QString::number(reinterpret_cast<quint64>(p), 16));
 }
 
-QString ObjectHelper::className(const QObject* object, ObjectHelper::DisplayOption option)
+QString ObjectHelper::className(const QObject *object, ObjectHelper::DisplayOption option)
 {
-    return (option == StripNameSpace ?
-            stripNameSpace(object->metaObject()->className()) : object->metaObject()->className());
+    return (option == StripNameSpace ? stripNameSpace(object->metaObject()->className()) : object->metaObject()->className());
 }
 
-QString ObjectHelper::displayString(const QObject* object, DisplayOption option)
+QString ObjectHelper::displayString(const QObject *object, DisplayOption option)
 {
     if (!object) {
         return "QObject(0x0)";
     }
     if (object->objectName().isEmpty()) {
-        return QString::fromLatin1("%1 (%2)").
-            arg(addressToString(object)).
-            arg(className(object, option));
+        return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option));
     }
     return object->objectName();
 }
 
-const char* ObjectHelper::enumToString(const QMetaObject* metaObject, const char* name, int value)
+const char *ObjectHelper::enumToString(const QMetaObject *metaObject, const char *name, int value)
 {
     const int index = metaObject->indexOfEnumerator(name);
     const QMetaEnum metaEnum = metaObject->enumerator(index);
     return metaEnum.valueToKey(value);
 }
 
-int ObjectHelper::stringToEnum(const QMetaObject* metaObject, const char* name, const char* key)
+int ObjectHelper::stringToEnum(const QMetaObject *metaObject, const char *name, const char *key)
 {
     const int index = metaObject->indexOfEnumerator(name);
     const QMetaEnum metaEnum = metaObject->enumerator(index);
     return metaEnum.keyToValue(key);
 }
 
-QString ObjectHelper::toString(const QPointF& point)
+QString ObjectHelper::toString(const QPointF &point)
 {
     return QString("(%1,%2)").arg(point.x()).arg(point.y());
 }
 
-QString ObjectHelper::toString(const QSizeF& size)
+QString ObjectHelper::toString(const QSizeF &size)
 {
     return QString("(%1,%2)").arg(size.width()).arg(size.height());
 }
 
-QString ObjectHelper::toString(const QRectF& rect)
+QString ObjectHelper::toString(const QRectF &rect)
 {
     return QString("(pos=%1,size=%2)")
-            .arg(toString(rect.topLeft()))
-            .arg(toString(rect.size()));
+        .arg(toString(rect.topLeft()))
+        .arg(toString(rect.size()));
 }
 
 bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *object)
@@ -100,13 +97,13 @@ bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *object)
     return descendantOf(ascendant, parent);
 }
 
-int ObjectHelper::depth(const QObject* root, const QObject* object)
+int ObjectHelper::depth(const QObject *root, const QObject *object)
 {
     if (!object)
         return -1;
 
     int depth = 0;
-    const QObject* current = object;
+    const QObject *current = object;
     while (current && current != root) {
         ++depth;
         current = current->parent();

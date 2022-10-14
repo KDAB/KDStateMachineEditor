@@ -26,9 +26,11 @@ QT_END_NAMESPACE
 class InstantiatorInterface
 {
 public:
-    virtual ~InstantiatorInterface() {}
+    virtual ~InstantiatorInterface()
+    {
+    }
 
-    virtual QObject* itemForIndex(const QModelIndex& index) const = 0;
+    virtual QObject *itemForIndex(const QModelIndex &index) const = 0;
 };
 
 #endif

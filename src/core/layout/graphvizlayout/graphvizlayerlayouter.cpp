@@ -26,7 +26,7 @@
 
 using namespace KDSME;
 
-GraphvizLayerLayouter::GraphvizLayerLayouter(QObject* parent)
+GraphvizLayerLayouter::GraphvizLayerLayouter(QObject *parent)
     : Layouter(parent)
     , m_backend(new GraphvizLayouterBackend)
 {
@@ -38,20 +38,20 @@ GraphvizLayerLayouter::~GraphvizLayerLayouter()
     delete m_backend;
 }
 
-QRectF GraphvizLayerLayouter::layout(State* state, const LayoutProperties* properties)
+QRectF GraphvizLayerLayouter::layout(State *state, const LayoutProperties *properties)
 {
     m_backend->openLayout(state, properties);
 
-    const QList<State*> childStates = state->childStates();
+    const QList<State *> childStates = state->childStates();
 
     // Step 1: Create Graphviz structures out of the State/Transition tree
     // Step 1.1: build nodes
-    foreach (State* state, childStates) {
+    foreach (State *state, childStates) {
         m_backend->buildState(state);
     }
     // Step 1.2: build edges
-    foreach (State* state, childStates) {
-        foreach (Transition* transition, state->transitions()) {
+    foreach (State *state, childStates) {
+        foreach (Transition *transition, state->transitions()) {
             // TODO: What to do with transitions crossing hierarchies?
             if (!childStates.contains(transition->targetState())) {
                 continue; // ignore for now

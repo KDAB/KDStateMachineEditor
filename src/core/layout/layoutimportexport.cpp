@@ -32,7 +32,7 @@ using namespace KDSME;
 
 namespace {
 
-QJsonObject stateLayoutToJson(const State* state)
+QJsonObject stateLayoutToJson(const State *state)
 {
     QJsonObject res;
     res["label"] = state->label();
@@ -43,7 +43,7 @@ QJsonObject stateLayoutToJson(const State* state)
     return res;
 }
 
-QJsonObject transitionLayoutToJson(const Transition* transition)
+QJsonObject transitionLayoutToJson(const Transition *transition)
 {
     QJsonObject res;
     res["label"] = transition->label();
@@ -63,7 +63,7 @@ QJsonObject transitionLayoutToJson(const Transition* transition)
     return res;
 }
 
-void importStateLayout(const QJsonObject& data, State* state)
+void importStateLayout(const QJsonObject &data, State *state)
 {
     QJsonObject::const_iterator x = data.find("x");
     if (x == data.end())
@@ -86,27 +86,17 @@ void importStateLayout(const QJsonObject& data, State* state)
     state->setHeight((*height).toDouble());
 }
 
-bool isValidState(const QJsonObject& data, State *state)
+bool isValidState(const QJsonObject &data, State *state)
 {
-    return
-        data.value("label") == state->label() &&
-        data.contains("x") &&
-        data.contains("y") &&
-        data.contains("width") &&
-        data.contains("height");
+    return data.value("label") == state->label() && data.contains("x") && data.contains("y") && data.contains("width") && data.contains("height");
 }
 
-bool isValidTransition(const QJsonObject& data, Transition *state)
+bool isValidTransition(const QJsonObject &data, Transition *state)
 {
-    return
-        data.value("label") == state->label() &&
-        data.contains("x") &&
-        data.contains("y") &&
-        data.contains("labelBoundingRect") &&
-        data.contains("shape");
+    return data.value("label") == state->label() && data.contains("x") && data.contains("y") && data.contains("labelBoundingRect") && data.contains("shape");
 }
 
-void importTransitionLayout(const QJsonObject& data, Transition* transition)
+void importTransitionLayout(const QJsonObject &data, Transition *transition)
 {
     QJsonObject::const_iterator x = data.find("x");
     if (x == data.end())
@@ -127,9 +117,9 @@ void importTransitionLayout(const QJsonObject& data, Transition* transition)
     transition->setPos(QPointF((*x).toDouble(), (*y).toDouble()));
     QJsonObject lbr = (*lbrIt).toObject();
     transition->setLabelBoundingRect(QRectF(lbr["x"].toDouble(),
-                                 lbr["y"].toDouble(),
-                                 lbr["width"].toDouble(),
-                                 lbr["height"].toDouble()));
+                                            lbr["y"].toDouble(),
+                                            lbr["width"].toDouble(),
+                                            lbr["height"].toDouble()));
     QByteArray shapeData = QByteArray::fromBase64((*shape).toString().toLatin1());
     QPainterPath shapePath;
     QDataStream ds(&shapeData, QIODevice::ReadOnly);
@@ -173,7 +163,7 @@ QJsonObject LayoutImportExport::exportLayout(const State *state)
     return res;
 }
 
-bool LayoutImportExport::matches(const QJsonObject& data, State* state)
+bool LayoutImportExport::matches(const QJsonObject &data, State *state)
 {
     if (!isValidState(data, state))
         return false;

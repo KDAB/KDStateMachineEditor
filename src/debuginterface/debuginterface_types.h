@@ -73,7 +73,8 @@ inline QDataStream &operator>>(QDataStream &in, StateId &value)
     return in;
 }
 
-enum StateType {
+enum StateType
+{
     OtherState,
     FinalState,
     ShallowHistoryState,
@@ -97,7 +98,7 @@ inline QDataStream &operator>>(QDataStream &in, StateType &value)
 
 typedef QList<StateId> StateMachineConfiguration;
 
-inline void registerTypes() //krazy:exclude=inline
+inline void registerTypes() // krazy:exclude=inline
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<StateId>();

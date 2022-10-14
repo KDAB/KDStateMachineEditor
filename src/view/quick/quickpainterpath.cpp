@@ -15,7 +15,7 @@
 
 #include "quickpainterpath_p.h"
 
-QuickPainterPathStroker::QuickPainterPathStroker(QObject* parent)
+QuickPainterPathStroker::QuickPainterPathStroker(QObject *parent)
     : QObject(parent)
 {
 }
@@ -34,12 +34,12 @@ void QuickPainterPathStroker::setWidth(qreal width)
     emit widthChanged(width);
 }
 
-QPainterPath QuickPainterPathStroker::createStroke(const QPainterPath& path) const
+QPainterPath QuickPainterPathStroker::createStroke(const QPainterPath &path) const
 {
     return m_stroker.createStroke(path);
 }
 
-QuickPainterPath::QuickPainterPath(QObject* parent)
+QuickPainterPath::QuickPainterPath(QObject *parent)
     : QObject(parent)
     , m_isEmpty(true)
 {
@@ -50,7 +50,7 @@ QPainterPath QuickPainterPath::path() const
     return m_path;
 }
 
-void QuickPainterPath::setPath(const QPainterPath& path)
+void QuickPainterPath::setPath(const QPainterPath &path)
 {
     if (m_path == path)
         return;
@@ -76,13 +76,13 @@ bool QuickPainterPath::isEmpty() const
     return m_isEmpty;
 }
 
-void QuickPainterPath::moveTo(const QPointF& point)
+void QuickPainterPath::moveTo(const QPointF &point)
 {
     m_path.moveTo(point);
     updateState(m_path);
 }
 
-void QuickPainterPath::lineTo(const QPointF& endPoint)
+void QuickPainterPath::lineTo(const QPointF &endPoint)
 {
     m_path.lineTo(endPoint);
     updateState(m_path);
@@ -93,7 +93,7 @@ void QuickPainterPath::clear()
     setPath(QPainterPath());
 }
 
-bool QuickPainterPath::contains(const QPointF& point) const
+bool QuickPainterPath::contains(const QPointF &point) const
 {
     return m_path.contains(point);
 }
@@ -103,7 +103,7 @@ qreal QuickPainterPath::angleAtPercent(qreal t) const
     return m_path.angleAtPercent(t);
 }
 
-void QuickPainterPath::updateState(const QPainterPath& path)
+void QuickPainterPath::updateState(const QPainterPath &path)
 {
     QPointF newStartPoint = path.pointAtPercent(0.0);
     if (newStartPoint != m_startPoint) {
@@ -122,7 +122,7 @@ void QuickPainterPath::updateState(const QPainterPath& path)
     }
 }
 
-QuickPainterPathGeometryItem::QuickPainterPathGeometryItem(QQuickItem* parent)
+QuickPainterPathGeometryItem::QuickPainterPathGeometryItem(QQuickItem *parent)
     : QuickGeometryItem(parent)
 {
     setDrawingMode(LineStrip);
@@ -134,7 +134,7 @@ QPainterPath QuickPainterPathGeometryItem::path() const
     return m_path;
 }
 
-void QuickPainterPathGeometryItem::setPath(const QPainterPath& path)
+void QuickPainterPathGeometryItem::setPath(const QPainterPath &path)
 {
     if (m_path == path)
         return;
@@ -152,10 +152,10 @@ void QuickPainterPathGeometryItem::updateData()
     if (!m_path.isEmpty()) {
         m_vertexCoordinates.addPath(qtVectorPathForPath(m_path), 1.);
     }
-    QOpenGLPoint* points = m_vertexCoordinates.data();
+    QOpenGLPoint *points = m_vertexCoordinates.data();
     const int vertexCount = m_vertexCoordinates.vertexCount();
     QList<qreal> vertexData;
-    vertexData.reserve(vertexCount*2);
+    vertexData.reserve(vertexCount * 2);
     for (int i = 0; i < vertexCount; ++i) {
         vertexData << points[i].x;
         vertexData << points[i].y;

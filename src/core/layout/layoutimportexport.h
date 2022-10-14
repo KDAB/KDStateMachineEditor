@@ -32,40 +32,39 @@ class State;
  * @brief Utils for importing/exporting layout properties of a the object
  * tree representing a state
  */
-namespace LayoutImportExport
-{
-    /**
-     * @brief Check if the ids in @p data still match the ids from the
-     * object tree represented by @p state
-     *
-     * @return True if ids are identical, otherwise false
-     */
-    KDSME_CORE_EXPORT bool matches(const QJsonObject& data, State* state);
+namespace LayoutImportExport {
+/**
+ * @brief Check if the ids in @p data still match the ids from the
+ * object tree represented by @p state
+ *
+ * @return True if ids are identical, otherwise false
+ */
+KDSME_CORE_EXPORT bool matches(const QJsonObject &data, State *state);
 
-    /**
-     * @brief Export layout of @p state into a machine-parsable JSON format
-     *
-     * Goes through the object tree representented by @p state and fetches
-     * the layout properties of each element
-     * (such as, x/y-position, width/height, shape, ...)
-     *
-     * The resulting JSON output can be used to restore the layout of the exact
-     * same state hierarchy
-     *
-     * @sa importLayout()
-     */
-    KDSME_CORE_EXPORT QJsonObject exportLayout(const State* state);
+/**
+ * @brief Export layout of @p state into a machine-parsable JSON format
+ *
+ * Goes through the object tree representented by @p state and fetches
+ * the layout properties of each element
+ * (such as, x/y-position, width/height, shape, ...)
+ *
+ * The resulting JSON output can be used to restore the layout of the exact
+ * same state hierarchy
+ *
+ * @sa importLayout()
+ */
+KDSME_CORE_EXPORT QJsonObject exportLayout(const State *state);
 
-    /**
-     * @brief Import layout @p data to set properties of @p state and its children
-     *
-     * @note Ids of @p state and its children must match with the ids
-     * stored in @p data, otherwise the layout cannot be imported
-     *
-     * @sa matches()
-     * @sa exportLayout()
-     */
-    KDSME_CORE_EXPORT void importLayout(const QJsonObject& data, State* state);
+/**
+ * @brief Import layout @p data to set properties of @p state and its children
+ *
+ * @note Ids of @p state and its children must match with the ids
+ * stored in @p data, otherwise the layout cannot be imported
+ *
+ * @sa matches()
+ * @sa exportLayout()
+ */
+KDSME_CORE_EXPORT void importLayout(const QJsonObject &data, State *state);
 }
 
 }

@@ -24,7 +24,7 @@
 
 using namespace KDSME;
 
-DeleteElementCommand::DeleteElementCommand(StateMachineScene* scene, Element* deletedElement, QUndoCommand* parent)
+DeleteElementCommand::DeleteElementCommand(StateMachineScene *scene, Element *deletedElement, QUndoCommand *parent)
     : Command(scene->stateModel(), parent)
     , m_scene(scene)
     , m_index(-1)

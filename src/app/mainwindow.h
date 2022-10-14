@@ -29,8 +29,7 @@ class StateMachineScene;
 QT_BEGIN_NAMESPACE
 class QStandardItemModel;
 
-namespace Ui
-{
+namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
@@ -40,28 +39,29 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    enum InputMode {
+    enum InputMode
+    {
         PresetsInputMode,
     };
 
-    explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = {});
+    explicit MainWindow(QWidget *parent = nullptr, Qt::WindowFlags f = {});
     ~MainWindow();
 
     /// When in PresetsInputMode, return the currently selected file name
     QString selectedFile() const;
 
-    void loadPresets(const QString& presetsDir);
+    void loadPresets(const QString &presetsDir);
 
 public Q_SLOTS:
-    void setStateMachine(KDSME::StateMachine* stateMachine);
+    void setStateMachine(KDSME::StateMachine *stateMachine);
     void setInputMode(InputMode mode);
 
     void createNew();
 
 private Q_SLOTS:
-    void importFromScxmlFile(const QString& filePath);
+    void importFromScxmlFile(const QString &filePath);
 
-    void handlePresetActivated(const QModelIndex& index);
+    void handlePresetActivated(const QModelIndex &index);
 
 private:
     void setupPresetsView();
@@ -69,12 +69,12 @@ private:
     void setupObjectInspector();
     void setupActions();
 
-    Ui::MainWindow* ui;
+    Ui::MainWindow *ui;
 
-    QStandardItemModel* m_presetsModel;
-    KDSME::TransitionListModel* m_transitionsModel;
+    QStandardItemModel *m_presetsModel;
+    KDSME::TransitionListModel *m_transitionsModel;
 
-    KDSME::StateMachineView* m_stateMachineView;
+    KDSME::StateMachineView *m_stateMachineView;
     QScopedPointer<KDSME::StateMachine, QScopedPointerDeleteLater> m_owningStateMachine;
 };
 

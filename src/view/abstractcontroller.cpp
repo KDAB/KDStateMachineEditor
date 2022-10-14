@@ -21,12 +21,13 @@ struct AbstractController::Private
 {
     Private()
         : m_view(nullptr)
-    {}
+    {
+    }
 
-    StateMachineView* m_view;
+    StateMachineView *m_view;
 };
 
-AbstractController::AbstractController(StateMachineView* view)
+AbstractController::AbstractController(StateMachineView *view)
     : QObject(view)
     , d(new Private)
 {
@@ -37,7 +38,7 @@ AbstractController::~AbstractController()
 {
 }
 
-StateMachineView* AbstractController::stateMachineView() const
+StateMachineView *AbstractController::stateMachineView() const
 {
     return d->m_view;
 }

@@ -32,7 +32,8 @@ public:
     explicit SvgExporter(QIODevice *ioDevice);
     ~SvgExporter();
 
-    bool exportMachine(StateMachine* machine) override;
+    bool exportMachine(StateMachine *machine) override;
+
 private:
     friend class SvgExporterPrivate;
     QScopedPointer<SvgExporterPrivate> d;

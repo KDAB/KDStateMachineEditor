@@ -23,14 +23,17 @@ namespace KDSME {
 class AbstractScenePrivate
 {
 public:
-    explicit AbstractScenePrivate(AbstractScene* qq);
+    explicit AbstractScenePrivate(AbstractScene *qq);
 
-    static AbstractScenePrivate* get(AbstractScene* q) { return q->d.data(); }
+    static AbstractScenePrivate *get(AbstractScene *q)
+    {
+        return q->d.data();
+    }
 
-    AbstractScene* q;
-    QAbstractItemModel* m_model;
+    AbstractScene *q;
+    QAbstractItemModel *m_model;
     QPointer<QItemSelectionModel> m_selectionModel;
-    QQuickItem* m_instantiator;
+    QQuickItem *m_instantiator;
     AbstractScene::EditTriggers m_editTriggers;
     Qt::ContextMenuPolicy m_contextMenuPolicy = Qt::DefaultContextMenu;
     AbstractScene::ViewState m_state;

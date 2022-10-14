@@ -33,7 +33,7 @@ using namespace KDSME;
 /**
  * @brief Create a GUI driven by a state machine, realtime-debug this state machine in another window
  */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
@@ -65,11 +65,10 @@ int main(int argc, char** argv)
     client.setDebugInterface(interfaceReplica);
     QObject::connect(&client, &DebugInterfaceClient::repopulateView,
                      [&]() {
-            qDebug() << "Updating state machine in view";
-            view.scene()->setRootState(client.machine());
-            view.scene()->layout();
-        }
-    );
+                         qDebug() << "Updating state machine in view";
+                         view.scene()->setRootState(client.machine());
+                         view.scene()->layout();
+                     });
     //! [Client setup for viewing the state machine]
 
     app.exec();

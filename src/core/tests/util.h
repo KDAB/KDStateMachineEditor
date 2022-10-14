@@ -32,7 +32,7 @@ namespace TestUtil {
  * \return \p true if the requested signal was received
  *         \p false on timeout
  */
-bool waitForSignal(QObject* obj, const char* signal, int timeout = 1000);
+bool waitForSignal(QObject *obj, const char *signal, int timeout = 1000);
 
 }
 

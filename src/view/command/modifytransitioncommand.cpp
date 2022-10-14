@@ -21,7 +21,7 @@
 
 using namespace KDSME;
 
-ModifyTransitionCommand::ModifyTransitionCommand(Transition* transition, StateModel* model, QUndoCommand* parent)
+ModifyTransitionCommand::ModifyTransitionCommand(Transition *transition, StateModel *model, QUndoCommand *parent)
     : Command(model, parent)
     , m_transition(transition)
     , m_operation(NoOperation)
@@ -34,13 +34,11 @@ void ModifyTransitionCommand::redo()
         return;
 
     switch (m_operation) {
-    case SetSourceStateOperation:
-    {
+    case SetSourceStateOperation: {
         m_oldSourceState = m_transition->sourceState();
         ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_sourceState);
         m_transition->setSourceState(m_sourceState);
-    }
-        break;
+    } break;
     case SetTargetStateOperation:
         m_oldTargetState = m_transition->targetState();
         m_transition->setTargetState(m_targetState);
@@ -60,12 +58,10 @@ void ModifyTransitionCommand::undo()
         return;
 
     switch (m_operation) {
-    case SetSourceStateOperation:
-    {
+    case SetSourceStateOperation: {
         ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_oldSourceState);
         m_transition->setSourceState(m_oldSourceState);
-    }
-        break;
+    } break;
     case SetTargetStateOperation:
         m_transition->setTargetState(m_oldTargetState);
         break;
@@ -77,13 +73,13 @@ void ModifyTransitionCommand::undo()
     }
 }
 
-bool ModifyTransitionCommand::mergeWith(const QUndoCommand* other)
+bool ModifyTransitionCommand::mergeWith(const QUndoCommand *other)
 {
     if (other->id() != id()) {
         return false;
     }
 
-    auto cmd = static_cast<const ModifyTransitionCommand*>(other);
+    auto cmd = static_cast<const ModifyTransitionCommand *>(other);
     if (cmd->m_transition != m_transition || cmd->m_operation != m_operation) {
         return false;
     }
@@ -94,21 +90,21 @@ bool ModifyTransitionCommand::mergeWith(const QUndoCommand* other)
     return true;
 }
 
-void ModifyTransitionCommand::setSourceState(State* sourceState)
+void ModifyTransitionCommand::setSourceState(State *sourceState)
 {
     m_sourceState = sourceState;
     m_operation = SetSourceStateOperation;
     updateText();
 }
 
-void ModifyTransitionCommand::setTargetState(State* targetState)
+void ModifyTransitionCommand::setTargetState(State *targetState)
 {
     m_targetState = targetState;
     m_operation = SetTargetStateOperation;
     updateText();
 }
 
-void ModifyTransitionCommand::setShape(const QPainterPath& shape)
+void ModifyTransitionCommand::setShape(const QPainterPath &shape)
 {
     m_shape = shape;
     m_operation = SetShapeOperation;

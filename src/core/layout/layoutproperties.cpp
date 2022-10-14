@@ -37,7 +37,7 @@ LayoutProperties::Private::Private()
     regionLabelFont.setBold(true);
 }
 
-LayoutProperties::LayoutProperties(QObject* parent)
+LayoutProperties::LayoutProperties(QObject *parent)
     : QObject(parent)
     , d(new Private)
 {
@@ -68,7 +68,7 @@ QFont LayoutProperties::regionLabelFont() const
     return d->regionLabelFont;
 }
 
-void LayoutProperties::setRegionLabelFont(const QFont& font)
+void LayoutProperties::setRegionLabelFont(const QFont &font)
 {
     if (d->regionLabelFont == font) {
         return;
@@ -100,7 +100,7 @@ QSizeF LayoutProperties::regionLabelButtonBoxSize() const
     return d->regionLabelButtonBoxSize;
 }
 
-void LayoutProperties::setRegionLabelButtonBoxSize(const QSizeF& size)
+void LayoutProperties::setRegionLabelButtonBoxSize(const QSizeF &size)
 {
     if (d->regionLabelButtonBoxSize == size) {
         return;

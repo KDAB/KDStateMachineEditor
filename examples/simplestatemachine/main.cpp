@@ -28,7 +28,7 @@ using namespace KDSME;
 /**
  * @brief Instantiating a state chart by hand and displaying it
  */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 

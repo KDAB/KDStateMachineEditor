@@ -36,7 +36,7 @@ QString AbstractExporter::errorString() const
     return d->m_errorString;
 }
 
-void AbstractExporter::setErrorString(const QString& errorString)
+void AbstractExporter::setErrorString(const QString &errorString)
 {
     d->m_errorString = errorString;
 }

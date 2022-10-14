@@ -27,7 +27,7 @@ class KDSME_CORE_EXPORT ElementFactory
 public:
     ElementFactory();
 
-    Element* create(Element::Type type) const;
+    Element *create(Element::Type type) const;
 };
 
 }

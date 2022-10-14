@@ -37,11 +37,11 @@ namespace {
 
 StateId makeStateId(QAbstractState *state)
 {
-    return StateId{reinterpret_cast<quint64>(state)};
+    return StateId { reinterpret_cast<quint64>(state) };
 }
 TransitionId makeTransitionId(QAbstractTransition *transition)
 {
-    return TransitionId{reinterpret_cast<quint64>(transition)};
+    return TransitionId { reinterpret_cast<quint64>(transition) };
 }
 
 QString labelForTransition(QAbstractTransition *transition)
@@ -52,11 +52,9 @@ QString labelForTransition(QAbstractTransition *transition)
     }
 
     // Try to get a label for the transition if it is a QSignalTransition.
-    QSignalTransition *signalTransition = qobject_cast<QSignalTransition*>(transition);
+    QSignalTransition *signalTransition = qobject_cast<QSignalTransition *>(transition);
     if (signalTransition) {
-        return QString::fromLatin1("%1::%2").
-                arg(ObjectHelper::displayString(signalTransition->senderObject())).
-                arg(QString::fromLatin1(signalTransition->signal().mid(1)));
+        return QString::fromLatin1("%1::%2").arg(ObjectHelper::displayString(signalTransition->senderObject())).arg(QString::fromLatin1(signalTransition->signal().mid(1)));
     }
 
     return ObjectHelper::displayString(transition);
@@ -75,7 +73,7 @@ public:
     void addTransition(QAbstractTransition *transition);
 
     QStateMachine *qStateMachine() const;
-    void setQStateMachine(QStateMachine* machine);
+    void setQStateMachine(QStateMachine *machine);
 
 private Q_SLOTS:
     void stateEntered(QAbstractState *state);
@@ -94,8 +92,8 @@ private:
     bool mayAddState(QAbstractState *state);
 
     QSMWatcher *m_stateMachineWatcher;
-    QSet<QAbstractState*> m_recursionGuard;
-    QSet<QAbstractState*> m_lastStateConfig;
+    QSet<QAbstractState *> m_recursionGuard;
+    QSet<QAbstractState *> m_lastStateConfig;
 };
 
 QsmDebugInterfaceSource::QsmDebugInterfaceSource()
@@ -107,17 +105,17 @@ QsmDebugInterfaceSource::~QsmDebugInterfaceSource()
 {
 }
 
-QStateMachine * QsmDebugInterfaceSource::qStateMachine() const
+QStateMachine *QsmDebugInterfaceSource::qStateMachine() const
 {
     return d->qStateMachine();
 }
 
-void QsmDebugInterfaceSource::setQStateMachine(QStateMachine* machine)
+void QsmDebugInterfaceSource::setQStateMachine(QStateMachine *machine)
 {
     d->setQStateMachine(machine);
 }
 
-QObject* QsmDebugInterfaceSource::remoteObjectSource() const
+QObject *QsmDebugInterfaceSource::remoteObjectSource() const
 {
     return d.data();
 }
@@ -128,12 +126,12 @@ QsmDebugInterfaceSource::Private::Private(QObject *parent)
 {
     DebugInterface::registerTypes();
 
-    connect(m_stateMachineWatcher, SIGNAL(stateEntered(QAbstractState*)),
-            SLOT(stateEntered(QAbstractState*)));
-    connect(m_stateMachineWatcher, SIGNAL(stateExited(QAbstractState*)),
-            SLOT(stateExited(QAbstractState*)));
-    connect(m_stateMachineWatcher, SIGNAL(transitionTriggered(QAbstractTransition*)),
-            SLOT(handleTransitionTriggered(QAbstractTransition*)));
+    connect(m_stateMachineWatcher, SIGNAL(stateEntered(QAbstractState *)),
+            SLOT(stateEntered(QAbstractState *)));
+    connect(m_stateMachineWatcher, SIGNAL(stateExited(QAbstractState *)),
+            SLOT(stateExited(QAbstractState *)));
+    connect(m_stateMachineWatcher, SIGNAL(transitionTriggered(QAbstractTransition *)),
+            SLOT(handleTransitionTriggered(QAbstractTransition *)));
 
     updateStartStop();
 }
@@ -170,16 +168,16 @@ bool QsmDebugInterfaceSource::Private::mayAddState(QAbstractState *state)
     return true;
 }
 
-void QsmDebugInterfaceSource::Private::setQStateMachine(QStateMachine* machine)
+void QsmDebugInterfaceSource::Private::setQStateMachine(QStateMachine *machine)
 {
-    QStateMachine* oldMachine = qStateMachine();
+    QStateMachine *oldMachine = qStateMachine();
     if (oldMachine) {
         disconnect(oldMachine, SIGNAL(started()), this, SLOT(updateStartStop()));
         disconnect(oldMachine, SIGNAL(stopped()), this, SLOT(updateStartStop()));
         disconnect(oldMachine, SIGNAL(finished()), this, SLOT(updateStartStop()));
     }
 
-    //m_stateModel->setStateMachine(machine);
+    // m_stateModel->setStateMachine(machine);
     handleStateConfigurationChanged();
 
     m_stateMachineWatcher->setWatchedStateMachine(machine);
@@ -212,7 +210,7 @@ void QsmDebugInterfaceSource::Private::stateExited(QAbstractState *state)
 
 void QsmDebugInterfaceSource::Private::handleStateConfigurationChanged()
 {
-    QSet<QAbstractState*> newConfig;
+    QSet<QAbstractState *> newConfig;
     if (qStateMachine()) {
         newConfig = qStateMachine()->configuration();
     }
@@ -224,7 +222,7 @@ void QsmDebugInterfaceSource::Private::handleStateConfigurationChanged()
 
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
-    foreach (QAbstractState* state, newConfig) {
+    foreach (QAbstractState *state, newConfig) {
         config << makeStateId(state);
     }
 
@@ -248,30 +246,30 @@ void QsmDebugInterfaceSource::Private::addState(QAbstractState *state)
         addState(parentState); // be sure that parent is added first
     }
 
-    const bool hasChildren = state->findChild<QAbstractState*>();
+    const bool hasChildren = state->findChild<QAbstractState *>();
     const QString &label = ObjectHelper::displayString(state);
     // add a connection from parent state to initial state if
     // parent state is valid and parent state has an initial state
     const bool connectToInitial = parentState && parentState->initialState() == state;
     StateType type = OtherState;
-    if (qobject_cast<QFinalState*>(state)) {
+    if (qobject_cast<QFinalState *>(state)) {
         type = FinalState;
-    } else if (auto historyState = qobject_cast<QHistoryState*>(state)) {
+    } else if (auto historyState = qobject_cast<QHistoryState *>(state)) {
         type = historyState->historyType() == QHistoryState::ShallowHistory ? ShallowHistoryState : DeepHistoryState;
-    } else if (qobject_cast<QStateMachine*>(state)) {
+    } else if (qobject_cast<QStateMachine *>(state)) {
         type = StateMachineState;
     }
 
     emit stateAdded(makeStateId(state), makeStateId(parentState),
                     hasChildren, label, type, connectToInitial);
 
-      // add outgoing transitions
-    Q_FOREACH (auto transition, state->findChildren<QAbstractTransition*>(QString(), Qt::FindDirectChildrenOnly)) {
+    // add outgoing transitions
+    Q_FOREACH (auto transition, state->findChildren<QAbstractTransition *>(QString(), Qt::FindDirectChildrenOnly)) {
         addTransition(transition);
     }
 
     // add sub-states
-    Q_FOREACH (auto child, state->findChildren<QAbstractState*>(QString(), Qt::FindDirectChildrenOnly)) {
+    Q_FOREACH (auto child, state->findChildren<QAbstractState *>(QString(), Qt::FindDirectChildrenOnly)) {
         addState(child);
     }
 }

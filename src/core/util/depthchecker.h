@@ -27,20 +27,20 @@ namespace KDSME {
 class KDSME_CORE_EXPORT DepthChecker : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::Element* target READ target WRITE setTarget NOTIFY targetChanged FINAL)
+    Q_PROPERTY(KDSME::Element *target READ target WRITE setTarget NOTIFY targetChanged FINAL)
     Q_PROPERTY(int depth READ depth NOTIFY depthChanged FINAL)
 
 public:
-    explicit DepthChecker(QObject* parent = nullptr);
+    explicit DepthChecker(QObject *parent = nullptr);
     ~DepthChecker();
 
-    Element* target() const;
-    void setTarget(Element* target);
+    Element *target() const;
+    void setTarget(Element *target);
 
     int depth() const;
 
 Q_SIGNALS:
-    void targetChanged(QObject* target);
+    void targetChanged(QObject *target);
     void depthChanged(int depth);
 
 private:

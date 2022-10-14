@@ -21,24 +21,27 @@
 #include <QFile>
 #include <QFileInfo>
 
-#define QVERIFY_RETURN(statement, retval) \
-    do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
+#define QVERIFY_RETURN(statement, retval)                                     \
+    do {                                                                      \
+        if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) \
+            return retval;                                                    \
+    } while (0)
 
 using namespace KDSME;
 
 namespace {
-    static QString stripQml(const QByteArray &input)
-    {
-        QStringList result;
+static QString stripQml(const QByteArray &input)
+{
+    QStringList result;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-        Q_FOREACH(const QString &s, QString::fromUtf8(input).split('\n', Qt::SkipEmptyParts)) {
+    Q_FOREACH (const QString &s, QString::fromUtf8(input).split('\n', Qt::SkipEmptyParts)) {
 #else
-        Q_FOREACH(const QString &s, QString::fromUtf8(input).split('\n', QString::SkipEmptyParts)) {
+    Q_FOREACH (const QString &s, QString::fromUtf8(input).split('\n', QString::SkipEmptyParts)) {
 #endif
-            result.append(s.simplified().trimmed());
-        }
-        return result.join("\n");
+        result.append(s.simplified().trimmed());
     }
+    return result.join("\n");
+}
 }
 
 class QmlExportTest : public QObject
@@ -86,25 +89,25 @@ void QmlExportTest::testInvalidIds()
 void QmlExportTest::testSimpleStateMachine()
 {
     const QByteArray expectedOutput = "import QtQml.StateMachine 1.0\n\n"
-        "StateMachine {\n"
-        "id: root\n"
-        "initialState: s1\n"
-        "State {\n"
-        "id: s1\n"
-        "SignalTransition {\n"
-        "id: e1\n"
-        "targetState: s2\n"
-        "}\n"
-        "}\n"
-        "State {\n"
-        "id: s2\n"
-        "TimeoutTransition {\n"
-        "id: e2\n"
-        "targetState: s1\n"
-        "timeout: 1000\n"
-        "}\n"
-        "}\n"
-        "}\n";
+                                      "StateMachine {\n"
+                                      "id: root\n"
+                                      "initialState: s1\n"
+                                      "State {\n"
+                                      "id: s1\n"
+                                      "SignalTransition {\n"
+                                      "id: e1\n"
+                                      "targetState: s2\n"
+                                      "}\n"
+                                      "}\n"
+                                      "State {\n"
+                                      "id: s2\n"
+                                      "TimeoutTransition {\n"
+                                      "id: e2\n"
+                                      "targetState: s1\n"
+                                      "timeout: 1000\n"
+                                      "}\n"
+                                      "}\n"
+                                      "}\n";
 
     StateMachine root;
     root.setLabel("root");
@@ -112,9 +115,9 @@ void QmlExportTest::testSimpleStateMachine()
     s1.setLabel("s1");
     State s2(&root);
     s2.setLabel("s2");
-    Transition* t1 = s1.addSignalTransition(&s2);
+    Transition *t1 = s1.addSignalTransition(&s2);
     t1->setLabel("e1");
-    Transition* t2 = s2.addTimeoutTransition(&s1, 1000);
+    Transition *t2 = s2.addTimeoutTransition(&s1, 1000);
     t2->setLabel("e2");
     PseudoState initialState(PseudoState::InitialState, &root);
     initialState.addSignalTransition(&s1);

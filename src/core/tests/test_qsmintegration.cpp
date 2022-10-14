@@ -35,8 +35,11 @@
 #include <QString>
 #include <QTimer>
 
-#define QVERIFY_RETURN(statement, retval) \
-    do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
+#define QVERIFY_RETURN(statement, retval)                                     \
+    do {                                                                      \
+        if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) \
+            return retval;                                                    \
+    } while (0)
 
 using namespace KDSME;
 
@@ -46,7 +49,7 @@ struct QsmAdapter : public DebugInterfaceClient
     QRemoteObjectNode clientNode;
     QsmDebugInterfaceSource interface;
 
-    QsmAdapter(QObject* parent = nullptr)
+    QsmAdapter(QObject *parent = nullptr)
         : DebugInterfaceClient(parent)
         , registryNode(QUrl(QStringLiteral("local:registry")))
         , clientNode(QUrl(QStringLiteral("local:registry")))
@@ -95,7 +98,7 @@ void QsmIntegrationTest::testSimpleQSM()
     QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 2);
 
-    const StateMachine* machine = adapter.machine();
+    const StateMachine *machine = adapter.machine();
     QVERIFY(machine);
     QCOMPARE(machine->label(), QStringLiteral("myStateMachine"));
     QCOMPARE(machine->runtimeController()->isRunning(), false);
@@ -126,7 +129,7 @@ void QsmIntegrationTest::testRunningQSM()
     adapter.interface.setQStateMachine(&qsm);
     QVERIFY(spy.wait(20));
 
-    const StateMachine* machine = adapter.machine();
+    const StateMachine *machine = adapter.machine();
     QVERIFY(machine);
     QCOMPARE(machine->label(), QStringLiteral("myStateMachine"));
     QCOMPARE(machine->childStates().size(), 3); // pseudo state + "initial"

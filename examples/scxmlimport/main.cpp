@@ -30,7 +30,7 @@ using namespace KDSME;
 /**
  * @brief Loading a SCXML file from disk and displaying it
  */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 

@@ -17,7 +17,7 @@
 
 #include <QPen>
 
-QuickPen::QuickPen(QObject* parent)
+QuickPen::QuickPen(QObject *parent)
     : QObject(parent)
     , m_width(0.0)
     , m_color(Qt::black)
@@ -25,7 +25,7 @@ QuickPen::QuickPen(QObject* parent)
 {
 }
 
-void QuickPen::modifyPen(QPen* pen) const
+void QuickPen::modifyPen(QPen *pen) const
 {
     Q_ASSERT(pen);
     pen->setWidthF(m_width);
@@ -56,7 +56,7 @@ QColor QuickPen::color() const
     return m_color;
 }
 
-void QuickPen::setColor(const QColor& color)
+void QuickPen::setColor(const QColor &color)
 {
     m_color = color;
     emit penChanged();

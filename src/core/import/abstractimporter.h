@@ -42,7 +42,7 @@ public:
      * @return On success, the pointer to the KDSME::StateMachine instance is returned, otherwise null
      * @sa errorString()
      */
-    virtual StateMachine* import() = 0;
+    virtual StateMachine *import() = 0;
 
     /**
      * Returns a human readable description of the last error that occurred.
@@ -53,7 +53,7 @@ protected:
     /**
      * Sets the human readable description of the last device error that occurred to @p errorString
      */
-    void setErrorString(const QString& errorString);
+    void setErrorString(const QString &errorString);
 
 private:
     struct Private;

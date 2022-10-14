@@ -25,8 +25,8 @@ class QuickKDSMEGlobal : public QObject
     Q_OBJECT
 
 public:
-    Q_INVOKABLE QuickPainterPath* createPath() const;
-    Q_INVOKABLE QuickPainterPath* createPath(const QPointF& startPoint) const;
+    Q_INVOKABLE QuickPainterPath *createPath() const;
+    Q_INVOKABLE QuickPainterPath *createPath(const QPointF &startPoint) const;
 };
 
 #endif // QUICKKDSMEGLOBAL_P_H

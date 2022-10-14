@@ -32,10 +32,10 @@ class StateMachine;
 class KDSME_CORE_EXPORT ScxmlImporter : public AbstractImporter
 {
 public:
-    explicit ScxmlImporter(const QByteArray& data);
+    explicit ScxmlImporter(const QByteArray &data);
     virtual ~ScxmlImporter();
 
-    StateMachine* import() override;
+    StateMachine *import() override;
 
 private:
     struct Private;

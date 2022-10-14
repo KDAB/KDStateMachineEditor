@@ -35,10 +35,13 @@ namespace KDSME {
 class SvgExporterPrivate
 {
 public:
-    SvgExporterPrivate(SvgExporter *qq): q(qq) {}
+    SvgExporterPrivate(SvgExporter *qq)
+        : q(qq)
+    {
+    }
 
-    void writeSvgIntro(const QRectF& viewBox);
-    void writeSvgRect(const QRectF& rect, double radius = 0.0);
+    void writeSvgIntro(const QRectF &viewBox);
+    void writeSvgRect(const QRectF &rect, double radius = 0.0);
     void writeSvgEllipse(const QRectF &rect, bool fill);
     void writeSvgLine(const QLineF &line);
     void writeSvgPath(const QPainterPath &path, bool fill = false);
@@ -59,20 +62,19 @@ public:
 
 }
 
-void SvgExporterPrivate::writeSvgIntro(const QRectF& viewBox)
+void SvgExporterPrivate::writeSvgIntro(const QRectF &viewBox)
 {
     writer.writeStartElement(QStringLiteral("svg"));
     writer.writeAttribute(QStringLiteral("width"), QString::number(viewBox.width()));
-    writer.writeAttribute(QStringLiteral("height"), QString::number(viewBox.height()) );
-    writer.writeAttribute(QStringLiteral("viewBox"), QStringLiteral("%1 %2 %3 %4")
-        .arg(viewBox.x()).arg(viewBox.y()).arg(viewBox.width()).arg(viewBox.height()));
+    writer.writeAttribute(QStringLiteral("height"), QString::number(viewBox.height()));
+    writer.writeAttribute(QStringLiteral("viewBox"), QStringLiteral("%1 %2 %3 %4").arg(viewBox.x()).arg(viewBox.y()).arg(viewBox.width()).arg(viewBox.height()));
     writer.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://www.w3.org/2000/svg"));
     writer.writeAttribute(QStringLiteral("xmlns:svg"), QStringLiteral("http://www.w3.org/2000/svg"));
     writer.writeAttribute(QStringLiteral("version"), QStringLiteral("1.2"));
     writer.writeAttribute(QStringLiteral("baseProfile"), QStringLiteral("tiny"));
 }
 
-void SvgExporterPrivate::writeSvgRect(const QRectF& rect, double radius)
+void SvgExporterPrivate::writeSvgRect(const QRectF &rect, double radius)
 {
     writer.writeStartElement(QStringLiteral("rect"));
     writer.writeAttribute(QStringLiteral("x"), QString::number(rect.x()));
@@ -86,19 +88,19 @@ void SvgExporterPrivate::writeSvgRect(const QRectF& rect, double radius)
     writer.writeEndElement();
 }
 
-void SvgExporterPrivate::writeSvgEllipse(const QRectF& rect, bool fill)
+void SvgExporterPrivate::writeSvgEllipse(const QRectF &rect, bool fill)
 {
     writer.writeStartElement(QStringLiteral("ellipse"));
     writer.writeAttribute(QStringLiteral("cx"), QString::number(rect.center().x()));
     writer.writeAttribute(QStringLiteral("cy"), QString::number(rect.center().y()));
-    writer.writeAttribute(QStringLiteral("rx"), QString::number(rect.width()/2.0));
-    writer.writeAttribute(QStringLiteral("ry"), QString::number(rect.height()/2.0));
+    writer.writeAttribute(QStringLiteral("rx"), QString::number(rect.width() / 2.0));
+    writer.writeAttribute(QStringLiteral("ry"), QString::number(rect.height() / 2.0));
     writer.writeAttribute(QStringLiteral("fill"), fill ? QStringLiteral("black") : QStringLiteral("none"));
     writer.writeAttribute(QStringLiteral("stroke"), QStringLiteral("black"));
     writer.writeEndElement();
 }
 
-void SvgExporterPrivate::writeSvgLine(const QLineF& line)
+void SvgExporterPrivate::writeSvgLine(const QLineF &line)
 {
     writer.writeStartElement(QStringLiteral("line"));
     writer.writeAttribute(QStringLiteral("x1"), QString::number(line.x1()));
@@ -145,7 +147,7 @@ void SvgExporterPrivate::writeSvgPath(const QPainterPath &path, bool fill)
     writer.writeEndElement();
 }
 
-void SvgExporterPrivate::writeSvgText(const QString& text, const QPointF &pos, bool center)
+void SvgExporterPrivate::writeSvgText(const QString &text, const QPointF &pos, bool center)
 {
     writer.writeStartElement(QStringLiteral("text"));
     writer.writeAttribute(QStringLiteral("x"), QString::number(pos.x()));
@@ -160,36 +162,36 @@ void SvgExporterPrivate::writeSvgText(const QString& text, const QPointF &pos, b
 }
 
 
-bool SvgExporterPrivate::writeStateMachine(StateMachine* machine)
+bool SvgExporterPrivate::writeStateMachine(StateMachine *machine)
 {
     writeSvgRect(machine->boundingRect());
     const QFontMetricsF metrics(QGuiApplication::font());
     const QRectF headerBox(machine->pos().x(), machine->pos().y(),
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-                           metrics.horizontalAdvance(machine->label()) + 2*margin(), headerHeight());
+                           metrics.horizontalAdvance(machine->label()) + 2 * margin(), headerHeight());
 #else
-                           metrics.width(machine->label()) + 2*margin(), headerHeight());
+                           metrics.width(machine->label()) + 2 * margin(), headerHeight());
 #endif
     writeSvgRect(headerBox);
-    writeSvgText(machine->label(), machine->pos() + QPointF(margin(), headerHeight()/ 2.0));
+    writeSvgText(machine->label(), machine->pos() + QPointF(margin(), headerHeight() / 2.0));
     return writeStateInner(machine);
 }
 
-bool SvgExporterPrivate::writeState(State* state)
+bool SvgExporterPrivate::writeState(State *state)
 {
 #if !defined(NDEBUG)
-    if (auto pseudo = qobject_cast<PseudoState*>(state)) {
+    if (auto pseudo = qobject_cast<PseudoState *>(state)) {
         Q_ASSERT(pseudo->kind() == PseudoState::InitialState);
 #else
-    if (qobject_cast<PseudoState*>(state)) {
+    if (qobject_cast<PseudoState *>(state)) {
 #endif
         writeSvgEllipse(state->boundingRect(), true);
-    } else if (qobject_cast<FinalState*>(state)) {
+    } else if (qobject_cast<FinalState *>(state)) {
         writeSvgEllipse(state->boundingRect(), false);
         const auto dx = state->boundingRect().width() * 0.15;
         const auto dy = state->boundingRect().height() * 0.15;
         writeSvgEllipse(state->boundingRect().adjusted(dx, dy, -dx, -dy), true);
-    } else if (auto history = qobject_cast<HistoryState*>(state)) {
+    } else if (auto history = qobject_cast<HistoryState *>(state)) {
         writeSvgEllipse(state->boundingRect(), false);
         if (history->historyType() == HistoryState::DeepHistory) {
             const auto dx = state->boundingRect().width() * 0.1;
@@ -212,21 +214,21 @@ bool SvgExporterPrivate::writeState(State* state)
     return true;
 }
 
-bool SvgExporterPrivate::writeStateInner(State* state)
+bool SvgExporterPrivate::writeStateInner(State *state)
 {
     if (state->transitions().isEmpty() && state->childStates().isEmpty())
         return true;
 
     writer.writeStartElement(QStringLiteral("g"));
     writer.writeAttribute(QStringLiteral("transform"), QStringLiteral("translate(%1,%2)").arg(state->boundingRect().x()).arg(state->boundingRect().y()));
-    foreach (Transition* transition, state->transitions()) {
+    foreach (Transition *transition, state->transitions()) {
         if (!writeTransition(transition))
             return false;
     }
 
     if (state->isExpanded()) {
-        foreach (State* child, state->childStates()) {
-            if (auto machine = qobject_cast<StateMachine*>(child)) {
+        foreach (State *child, state->childStates()) {
+            if (auto machine = qobject_cast<StateMachine *>(child)) {
                 if (!writeStateMachine(machine))
                     return false;
             } else if (!writeState(child)) {
@@ -234,7 +236,7 @@ bool SvgExporterPrivate::writeStateInner(State* state)
             }
         }
     } else {
-        QPointF p(state->boundingRect().width()/2.0, state->boundingRect().height()/2.0 + headerHeight()/2.0);
+        QPointF p(state->boundingRect().width() / 2.0, state->boundingRect().height() / 2.0 + headerHeight() / 2.0);
         writeSvgText(QStringLiteral("..."), p, true);
     }
 
@@ -242,15 +244,15 @@ bool SvgExporterPrivate::writeStateInner(State* state)
     return true;
 }
 
-bool SvgExporterPrivate::writeTransition(Transition* transition)
+bool SvgExporterPrivate::writeTransition(Transition *transition)
 {
     const auto path = transition->shape().translated(transition->pos());
     writeSvgPath(path);
 
     QPainterPath arrowHead;
     arrowHead.moveTo(0, 0);
-    arrowHead.lineTo(arrowSize(), arrowSize()/2.0);
-    arrowHead.lineTo(arrowSize(), -arrowSize()/2.0);
+    arrowHead.lineTo(arrowSize(), arrowSize() / 2.0);
+    arrowHead.lineTo(arrowSize(), -arrowSize() / 2.0);
     arrowHead.closeSubpath();
 
     QTransform t;
@@ -285,8 +287,8 @@ double SvgExporterPrivate::arrowSize() const
 }
 
 
-SvgExporter::SvgExporter(QIODevice* ioDevice) :
-    d(new SvgExporterPrivate(this))
+SvgExporter::SvgExporter(QIODevice *ioDevice)
+    : d(new SvgExporterPrivate(this))
 {
     d->writer.setDevice(ioDevice);
     d->writer.setAutoFormatting(true);
@@ -296,7 +298,7 @@ SvgExporter::~SvgExporter()
 {
 }
 
-bool SvgExporter::exportMachine(StateMachine* machine)
+bool SvgExporter::exportMachine(StateMachine *machine)
 {
     setErrorString(QString());
 

@@ -32,16 +32,16 @@ using namespace KDSME::DebugInterface;
 
 namespace {
 
-RuntimeController::Configuration toSmeConfiguration(const StateMachineConfiguration& config,
-                                                                 const QHash<StateId, State*>& map)
+RuntimeController::Configuration toSmeConfiguration(const StateMachineConfiguration &config,
+                                                    const QHash<StateId, State *> &map)
 {
-  RuntimeController::Configuration result;
-  foreach (const StateId& id, config) {
-    if (auto state = map.value(id)) {
-      result << state;
+    RuntimeController::Configuration result;
+    foreach (const StateId &id, config) {
+        if (auto state = map.value(id)) {
+            result << state;
+        }
     }
-  }
-  return result;
+    return result;
 }
 
 }
@@ -51,7 +51,7 @@ struct DebugInterfaceClient::Private : public QObject
     Q_OBJECT
 
 public:
-    Private(DebugInterfaceClient* q)
+    Private(DebugInterfaceClient *q)
         : q(q)
         , m_debugInterface(nullptr)
         , m_machine(nullptr)
@@ -62,10 +62,10 @@ public:
 public Q_SLOTS:
     void showMessage(const QString &message);
     void stateAdded(const DebugInterface::StateId stateId, const DebugInterface::StateId parentId, const bool hasChildren,
-                    const QString& label, const DebugInterface::StateType type, const bool connectToInitial);
+                    const QString &label, const DebugInterface::StateType type, const bool connectToInitial);
     void stateConfigurationChanged(const DebugInterface::StateMachineConfiguration &config);
     void transitionAdded(const DebugInterface::TransitionId transitionId, const DebugInterface::StateId source,
-                        const DebugInterface::StateId target, const QString& label);
+                         const DebugInterface::StateId target, const QString &label);
     void statusChanged(const bool haveStateMachine, const bool running);
     void transitionTriggered(DebugInterface::TransitionId transition, const QString &label);
 
@@ -75,15 +75,15 @@ public Q_SLOTS:
     void stateChanged(QRemoteObjectReplica::State state);
 
 public:
-    DebugInterfaceClient* q;
+    DebugInterfaceClient *q;
     DebugInterfaceReplica *m_debugInterface;
 
-    QHash<DebugInterface::StateId, State*> m_idToStateMap;
-    QHash<DebugInterface::TransitionId, Transition*> m_idToTransitionMap;
-    StateMachine* m_machine;
+    QHash<DebugInterface::StateId, State *> m_idToStateMap;
+    QHash<DebugInterface::TransitionId, Transition *> m_idToTransitionMap;
+    StateMachine *m_machine;
 };
 
-DebugInterfaceClient::DebugInterfaceClient(QObject* parent)
+DebugInterfaceClient::DebugInterfaceClient(QObject *parent)
     : RuntimeController(parent)
     , d(new Private(this))
 {
@@ -93,12 +93,12 @@ DebugInterfaceClient::~DebugInterfaceClient()
 {
 }
 
-DebugInterfaceReplica* DebugInterfaceClient::debugInterface() const
+DebugInterfaceReplica *DebugInterfaceClient::debugInterface() const
 {
     return d->m_debugInterface;
 }
 
-void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterface)
+void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica *debugInterface)
 {
     if (d->m_debugInterface == debugInterface)
         return;
@@ -152,25 +152,25 @@ void DebugInterfaceClient::setDebugInterface(DebugInterfaceReplica* debugInterfa
     }
 }
 
-StateMachine* DebugInterfaceClient::machine() const
+StateMachine *DebugInterfaceClient::machine() const
 {
     return d->m_machine;
 }
 
-void DebugInterfaceClient::Private::showMessage(const QString& message)
+void DebugInterfaceClient::Private::showMessage(const QString &message)
 {
     Q_UNUSED(message);
     // FIXME: Port
 }
 
-void DebugInterfaceClient::Private::stateConfigurationChanged(const StateMachineConfiguration& config)
+void DebugInterfaceClient::Private::stateConfigurationChanged(const StateMachineConfiguration &config)
 {
     const auto smeConfig = toSmeConfiguration(config, m_idToStateMap);
     q->setActiveConfiguration(smeConfig);
 }
 
 void DebugInterfaceClient::Private::stateAdded(const StateId stateId, const StateId parentId, const bool hasChildren,
-                                            const QString& label, const StateType type, const bool connectToInitial)
+                                               const QString &label, const StateType type, const bool connectToInitial)
 {
     Q_UNUSED(hasChildren);
     IF_DEBUG(qDebug() << "stateAdded" << stateId << parentId << hasChildren << label << type << connectToInitial);
@@ -179,8 +179,8 @@ void DebugInterfaceClient::Private::stateAdded(const StateId stateId, const Stat
         return;
     }
 
-    State* parentState = m_idToStateMap.value(parentId);
-    State* state = nullptr;
+    State *parentState = m_idToStateMap.value(parentId);
+    State *state = nullptr;
     if (type == StateMachineState) {
         state = m_machine = new StateMachine;
         m_machine->setRuntimeController(q);
@@ -195,9 +195,9 @@ void DebugInterfaceClient::Private::stateAdded(const StateId stateId, const Stat
     }
 
     if (connectToInitial && parentState) {
-        State* initialState = new PseudoState(PseudoState::InitialState, parentState);
+        State *initialState = new PseudoState(PseudoState::InitialState, parentState);
         initialState->setFlags(Element::ElementIsSelectable);
-        Transition* transition = new Transition(initialState);
+        Transition *transition = new Transition(initialState);
         transition->setTargetState(state);
         transition->setFlags(Element::ElementIsSelectable);
     }
@@ -209,21 +209,21 @@ void DebugInterfaceClient::Private::stateAdded(const StateId stateId, const Stat
     m_idToStateMap[stateId] = state;
 }
 
-void DebugInterfaceClient::Private::transitionAdded(const TransitionId transitionId, const StateId sourceId, const StateId targetId, const QString& label)
+void DebugInterfaceClient::Private::transitionAdded(const TransitionId transitionId, const StateId sourceId, const StateId targetId, const QString &label)
 {
     if (m_idToTransitionMap.contains(transitionId))
         return;
 
     IF_DEBUG(qDebug() << transitionId << label << sourceId << targetId);
 
-    State* source = m_idToStateMap.value(sourceId);
-    State* target = m_idToStateMap.value(targetId);
+    State *source = m_idToStateMap.value(sourceId);
+    State *target = m_idToStateMap.value(targetId);
     if (!source || !target) {
-        qDebug() << "Null source or target for transition:" <<  transitionId;
+        qDebug() << "Null source or target for transition:" << transitionId;
         return;
     }
 
-    Transition* transition = new Transition(source);
+    Transition *transition = new Transition(source);
     transition->setTargetState(target);
     transition->setLabel(label);
     transition->setFlags(Element::ElementIsSelectable);
@@ -240,7 +240,7 @@ void DebugInterfaceClient::Private::statusChanged(const bool haveStateMachine, c
     }
 }
 
-void DebugInterfaceClient::Private::transitionTriggered(TransitionId transitionId, const QString& label)
+void DebugInterfaceClient::Private::transitionTriggered(TransitionId transitionId, const QString &label)
 {
     Q_UNUSED(label);
     q->setLastTransition(m_idToTransitionMap.value(transitionId));

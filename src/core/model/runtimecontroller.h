@@ -30,30 +30,30 @@ namespace KDSME {
 class KDSME_CORE_EXPORT RuntimeController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QSet<KDSME::State*> activeConfiguration READ activeConfiguration NOTIFY activeConfigurationChanged)
-    Q_PROPERTY(KDSME::Transition* lastTransition READ lastTransition NOTIFY lastTransitionChanged)
+    Q_PROPERTY(QSet<KDSME::State *> activeConfiguration READ activeConfiguration NOTIFY activeConfigurationChanged)
+    Q_PROPERTY(KDSME::Transition *lastTransition READ lastTransition NOTIFY lastTransitionChanged)
     Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
     Q_PROPERTY(QRectF activeRegion READ activeRegion NOTIFY activeRegionChanged)
 
 public:
-    typedef QSet<State*> Configuration;
+    typedef QSet<State *> Configuration;
 
-    explicit RuntimeController(QObject* parent = nullptr);
+    explicit RuntimeController(QObject *parent = nullptr);
     ~RuntimeController();
 
     Configuration activeConfiguration() const;
     QList<Configuration> lastConfigurations() const;
-    void setActiveConfiguration(const Configuration& configuration);
+    void setActiveConfiguration(const Configuration &configuration);
 
-    QList<Transition*> lastTransitions() const;
-    Transition* lastTransition() const;
-    void setLastTransition(Transition* transition);
+    QList<Transition *> lastTransitions() const;
+    Transition *lastTransition() const;
+    void setLastTransition(Transition *transition);
 
     bool isRunning() const;
     void setIsRunning(bool isRunning);
 
-    Q_INVOKABLE float activenessForState(KDSME::State* state) const;
-    Q_INVOKABLE float activenessForTransition(KDSME::Transition* transition);
+    Q_INVOKABLE float activenessForState(KDSME::State *state) const;
+    Q_INVOKABLE float activenessForTransition(KDSME::Transition *transition);
 
     int historySize() const;
     void setHistorySize(int size);
@@ -63,10 +63,10 @@ public:
     void clear();
 
 Q_SIGNALS:
-    void activeConfigurationChanged(const QSet<State*>& configuration);
-    void lastTransitionChanged(Transition* transition);
+    void activeConfigurationChanged(const QSet<State *> &configuration);
+    void lastTransitionChanged(Transition *transition);
     void isRunningChanged(bool isRunning);
-    void activeRegionChanged(const QRectF& region);
+    void activeRegionChanged(const QRectF &region);
 
 private:
     struct Private;

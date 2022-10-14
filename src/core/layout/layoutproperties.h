@@ -35,29 +35,29 @@ class KDSME_CORE_EXPORT LayoutProperties : public QObject
     Q_PROPERTY(bool showTransitionLabels READ showTransitionLabels WRITE setShowTransitionLabels NOTIFY showTransitionLabelsChanged FINAL)
 
 public:
-    explicit LayoutProperties(QObject* parent = nullptr);
+    explicit LayoutProperties(QObject *parent = nullptr);
     ~LayoutProperties();
 
     qreal regionMargins() const;
     void setRegionMargins(qreal margins);
 
     QFont regionLabelFont() const;
-    void setRegionLabelFont(const QFont& font);
+    void setRegionLabelFont(const QFont &font);
 
     qreal regionLabelMargins() const;
     void setRegionLabelMargins(qreal margins);
 
     QSizeF regionLabelButtonBoxSize() const;
-    void setRegionLabelButtonBoxSize(const QSizeF& size);
+    void setRegionLabelButtonBoxSize(const QSizeF &size);
 
     bool showTransitionLabels() const;
     void setShowTransitionLabels(bool show);
 
 Q_SIGNALS:
     void regionMarginsChanged(qreal);
-    void regionLabelFontChanged(const QFont&);
+    void regionLabelFontChanged(const QFont &);
     void regionLabelMarginsChanged(qreal);
-    void regionLabelButtonBoxSizeChanged(const QSizeF&);
+    void regionLabelButtonBoxSizeChanged(const QSizeF &);
     void showTransitionLabelsChanged(bool);
     void changed();
 

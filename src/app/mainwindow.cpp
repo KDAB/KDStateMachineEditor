@@ -43,13 +43,14 @@ using namespace KDSME;
 
 namespace {
 
-enum PresetsModelDataRoles {
+enum PresetsModelDataRoles
+{
     AbsoluteFilePathRole = Qt::UserRole + 1
 };
 
 }
 
-MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
     : QMainWindow(parent, f)
     , ui(new Ui::MainWindow)
     , m_presetsModel(new QStandardItemModel(this))
@@ -78,7 +79,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::loadPresets(const QString& presetsDir)
+void MainWindow::loadPresets(const QString &presetsDir)
 {
     m_presetsModel->clear();
 
@@ -88,11 +89,11 @@ void MainWindow::loadPresets(const QString& presetsDir)
     }
 
     QStringList files = dir.entryList(QDir::Files);
-    foreach (const QString& file, files) {
+    foreach (const QString &file, files) {
         if (!file.endsWith(QLatin1String(".scxml")))
             continue;
 
-        QStandardItem* item = new QStandardItem(file);
+        QStandardItem *item = new QStandardItem(file);
         item->setData(dir.absoluteFilePath(file), AbsoluteFilePathRole);
         m_presetsModel->appendRow(item);
     }
@@ -130,7 +131,7 @@ void MainWindow::setupActions()
     ui->mainToolBar->addAction(action);
 }
 
-void MainWindow::setStateMachine(StateMachine* stateMachine)
+void MainWindow::setStateMachine(StateMachine *stateMachine)
 {
     m_stateMachineView->scene()->setRootState(nullptr);
 
@@ -174,11 +175,11 @@ QString MainWindow::selectedFile() const
     return selected.data(AbsoluteFilePathRole).toString();
 }
 
-void MainWindow::importFromScxmlFile(const QString& filePath)
+void MainWindow::importFromScxmlFile(const QString &filePath)
 {
     if (!filePath.isEmpty()) {
         ScxmlImporter parser(ParseHelper::readFile(filePath));
-        StateMachine* stateMachine = parser.import();
+        StateMachine *stateMachine = parser.import();
         setStateMachine(stateMachine);
         if (stateMachine) {
             m_owningStateMachine.reset(stateMachine);
@@ -192,7 +193,7 @@ void MainWindow::importFromScxmlFile(const QString& filePath)
     ui->presetsTreeView->setCurrentIndex(match);
 }
 
-void MainWindow::handlePresetActivated(const QModelIndex& index)
+void MainWindow::handlePresetActivated(const QModelIndex &index)
 {
     const QString filePath = index.data(AbsoluteFilePathRole).toString();
     if (filePath.isEmpty())

@@ -36,39 +36,40 @@ class KDSME_CORE_EXPORT State : public Element
     Q_PROPERTY(bool expanded READ isExpanded WRITE setExpanded NOTIFY expandedChanged FINAL)
 
 public:
-    enum ChildMode {
+    enum ChildMode
+    {
         ExclusiveStates,
         ParallelStates,
     };
 
-    explicit State(State* parent = nullptr);
+    explicit State(State *parent = nullptr);
     ~State();
 
     Type type() const override;
 
-    Q_INVOKABLE KDSME::State* parentState() const;
+    Q_INVOKABLE KDSME::State *parentState() const;
 
-    State* initialState() const;
-    void setInitialState(State* initialState);
+    State *initialState() const;
+    void setInitialState(State *initialState);
 
-    QList<State*> childStates() const;
+    QList<State *> childStates() const;
 
-    QList<Transition*> transitions() const;
-    void addTransition(Transition* transition);
-    SignalTransition *addSignalTransition(State* target, const QString &silgnal = QString());
-    TimeoutTransition *addTimeoutTransition(State* target, int timeout);
+    QList<Transition *> transitions() const;
+    void addTransition(Transition *transition);
+    SignalTransition *addSignalTransition(State *target, const QString &silgnal = QString());
+    TimeoutTransition *addTimeoutTransition(State *target, int timeout);
 
     /**
      * Executable content to be executed when the state is entered
      */
     QString onEntry() const;
-    void setOnEntry(const QString& onEntry);
+    void setOnEntry(const QString &onEntry);
 
     /**
      * Executable content to be executed when the state is exited.
      */
     QString onExit() const;
-    void setOnExit(const QString& onExit);
+    void setOnExit(const QString &onExit);
 
     ChildMode childMode() const;
     void setChildMode(ChildMode childMode);
@@ -81,14 +82,14 @@ public:
     bool isExpanded() const;
     void setExpanded(bool expanded);
 
-    Q_INVOKABLE KDSME::StateMachine* machine() const;
+    Q_INVOKABLE KDSME::StateMachine *machine() const;
 
 protected:
-    bool event(QEvent* event) override;
+    bool event(QEvent *event) override;
 
 Q_SIGNALS:
-    void onEntryChanged(const QString& onEntry);
-    void onExitChanged(const QString& onExit);
+    void onEntryChanged(const QString &onEntry);
+    void onExitChanged(const QString &onExit);
     void childModeChanged(ChildMode childMode);
     void isCompositeChanged(bool isComposite);
     void expandedChanged(bool expanded);
@@ -102,23 +103,24 @@ class KDSME_CORE_EXPORT HistoryState : public State
 {
     Q_OBJECT
     Q_ENUMS(HistoryType)
-    Q_PROPERTY(KDSME::State* defaultState READ defaultState WRITE setDefaultState NOTIFY defaultStateChanged FINAL)
+    Q_PROPERTY(KDSME::State *defaultState READ defaultState WRITE setDefaultState NOTIFY defaultStateChanged FINAL)
     Q_PROPERTY(HistoryType historyType READ historyType WRITE setHistoryType NOTIFY historyTypeChanged FINAL)
 
 public:
-    enum HistoryType {
+    enum HistoryType
+    {
         ShallowHistory,
         DeepHistory
     };
 
-    explicit HistoryState(State* parent = nullptr);
-    explicit HistoryState(HistoryType type, State* parent = nullptr);
+    explicit HistoryState(State *parent = nullptr);
+    explicit HistoryState(HistoryType type, State *parent = nullptr);
     ~HistoryState();
 
     Type type() const override;
     QString toDisplayString() const override;
 
-    State* defaultState() const;
+    State *defaultState() const;
     void setDefaultState(State *state);
 
     HistoryType historyType() const;
@@ -133,14 +135,14 @@ private:
     QScopedPointer<Private> d;
 };
 
-KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const State* state);
+KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const State *state);
 
 class KDSME_CORE_EXPORT FinalState : public State
 {
     Q_OBJECT
 
 public:
-    explicit FinalState(State* parent = nullptr);
+    explicit FinalState(State *parent = nullptr);
     ~FinalState();
 
     Type type() const override;
@@ -153,19 +155,19 @@ private:
 class KDSME_CORE_EXPORT StateMachine : public State
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::RuntimeController* runtimeController READ runtimeController WRITE setRuntimeController NOTIFY runtimeControllerChanged)
+    Q_PROPERTY(KDSME::RuntimeController *runtimeController READ runtimeController WRITE setRuntimeController NOTIFY runtimeControllerChanged)
 
 public:
-    explicit StateMachine(QObject* parent = nullptr);
+    explicit StateMachine(QObject *parent = nullptr);
     ~StateMachine();
 
     Type type() const override;
 
-    RuntimeController* runtimeController() const;
-    void setRuntimeController(RuntimeController* runtimeController);
+    RuntimeController *runtimeController() const;
+    void setRuntimeController(RuntimeController *runtimeController);
 
 Q_SIGNALS:
-    void runtimeControllerChanged(RuntimeController* runtimeController);
+    void runtimeControllerChanged(RuntimeController *runtimeController);
 
 private:
     struct Private;
@@ -178,12 +180,13 @@ class KDSME_CORE_EXPORT PseudoState : public State
     Q_PROPERTY(Kind kind READ kind WRITE setKind NOTIFY kindChanged FINAL)
 
 public:
-    enum Kind {
+    enum Kind
+    {
         InitialState
     };
     Q_ENUMS(Kind)
 
-    explicit PseudoState(Kind kind = InitialState, State* parent = nullptr);
+    explicit PseudoState(Kind kind = InitialState, State *parent = nullptr);
     ~PseudoState();
 
     Type type() const override;
@@ -203,7 +206,7 @@ private:
     QScopedPointer<Private> d;
 };
 
-KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const PseudoState* state);
+KDSME_CORE_EXPORT QDebug operator<<(QDebug dbg, const PseudoState *state);
 
 }
 

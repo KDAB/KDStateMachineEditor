@@ -37,11 +37,11 @@ class Element;
 class KDSME_VIEW_EXPORT AbstractSceneContextMenuEvent : public QContextMenuEvent
 {
 public:
-    AbstractSceneContextMenuEvent(Reason reason, const QPoint & pos, const QPoint& globalPos, Qt::KeyboardModifiers modifiers = {}, Element* elementUnderCursor = nullptr);
+    AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers = {}, Element *elementUnderCursor = nullptr);
 
     ~AbstractSceneContextMenuEvent();
 
-    Element* elementUnderCursor() const;
+    Element *elementUnderCursor() const;
 
 private:
     QScopedPointer<AbstractSceneContextMenuEventPrivate> d;
@@ -50,25 +50,27 @@ private:
 class KDSME_VIEW_EXPORT AbstractScene : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QAbstractItemModel* model READ model WRITE setModel NOTIFY modelChanged)
-    Q_PROPERTY(QQuickItem* instantiator READ instantiator WRITE setInstantiator NOTIFY instantiatorChanged)
+    Q_PROPERTY(QAbstractItemModel *model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(QQuickItem *instantiator READ instantiator WRITE setInstantiator NOTIFY instantiatorChanged)
     Q_PROPERTY(ViewState viewState READ viewState NOTIFY stateChanged FINAL)
     Q_PROPERTY(Qt::ContextMenuPolicy ContextMenuPolicy READ contextMenuPolicy WRITE setContextMenuPolicy NOTIFY contextMenuPolicyChanged FINAL)
 
 public:
-    enum EditTrigger {
+    enum EditTrigger
+    {
         NoEditTriggers,
         SelectedClicked
     };
     Q_DECLARE_FLAGS(EditTriggers, EditTrigger)
 
-    enum ViewState {
+    enum ViewState
+    {
         NoState,
         RefreshState,
     };
     Q_ENUMS(ViewState)
 
-    explicit AbstractScene(QQuickItem* parent = nullptr);
+    explicit AbstractScene(QQuickItem *parent = nullptr);
     virtual ~AbstractScene();
 
     virtual void setModel(QAbstractItemModel *model);
@@ -77,8 +79,8 @@ public:
     virtual void setSelectionModel(QItemSelectionModel *selectionModel);
     QItemSelectionModel *selectionModel() const;
 
-    QQuickItem* instantiator() const;
-    void setInstantiator(QQuickItem* instantiator);
+    QQuickItem *instantiator() const;
+    void setInstantiator(QQuickItem *instantiator);
 
     void setEditTriggers(EditTriggers triggers);
     EditTriggers editTriggers() const;
@@ -86,24 +88,24 @@ public:
     void setContextMenuPolicy(Qt::ContextMenuPolicy contextMenuPolicy);
     Qt::ContextMenuPolicy contextMenuPolicy() const;
 
-    QObject* itemForIndex(const QModelIndex& index) const;
+    QObject *itemForIndex(const QModelIndex &index) const;
 
     ViewState viewState() const;
 
     QModelIndex currentIndex() const;
 
 public Q_SLOTS:
-    void setCurrentIndex(const QModelIndex& index);
+    void setCurrentIndex(const QModelIndex &index);
 
 protected:
-    bool event(QEvent* event) override;
+    bool event(QEvent *event) override;
 
 protected Q_SLOTS:
     virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-    virtual void currentChanged(const QModelIndex& current, const QModelIndex& previous);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 
-    virtual void rowsInserted(const QModelIndex& parent, int start, int end);
-    virtual void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end);
+    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 
     /**
      * Called whenever the model's contents layout changed
@@ -114,9 +116,9 @@ protected Q_SLOTS:
     void setViewState(ViewState state);
 
 Q_SIGNALS:
-    void modelChanged(QAbstractItemModel* model);
+    void modelChanged(QAbstractItemModel *model);
     void stateChanged(ViewState state);
-    void instantiatorChanged(QObject* instantiator);
+    void instantiatorChanged(QObject *instantiator);
     void contextMenuPolicyChanged(Qt::ContextMenuPolicy contextMenuPolicy);
 
     /**
@@ -125,7 +127,7 @@ Q_SIGNALS:
      * the scene. The position pos is the position of the context menu event
      * that the scene receives. Normally this is in scene coordinates.
      */
-    void customContextMenuEvent(KDSME::AbstractSceneContextMenuEvent* event);
+    void customContextMenuEvent(KDSME::AbstractSceneContextMenuEvent *event);
 
 private:
     friend AbstractScenePrivate;
@@ -134,7 +136,7 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::AbstractScene*)
+Q_DECLARE_METATYPE(KDSME::AbstractScene *)
 Q_DECLARE_METATYPE(KDSME::AbstractScene::ViewState)
 
 #endif // ABSTRACTVIEW_H

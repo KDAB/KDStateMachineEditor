@@ -52,7 +52,7 @@
 
 using namespace KDSME;
 
-static QObject* kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+static QObject *kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -60,7 +60,7 @@ static QObject* kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngin
     return new QuickKDSMEGlobal;
 }
 
-static QObject* kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+static QObject *kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -81,23 +81,23 @@ static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
 
 struct StateMachineView::Private
 {
-    Private(StateMachineView* q);
+    Private(StateMachineView *q);
 
-    StateMachineView* q;
+    StateMachineView *q;
 
     QPointer<StateMachineScene> m_scene; // potentially deleted by the QML engine, thus QPointer
 
-    CommandController* m_controller;
-    EditController* m_editController;
+    CommandController *m_controller;
+    EditController *m_editController;
     QString m_themeName;
     bool m_editModeEnabled;
 
     QRectF adjustedViewRect();
 
-    void onStateMachineChanged(KDSME::StateMachine* stateMachine);
+    void onStateMachineChanged(KDSME::StateMachine *stateMachine);
 };
 
-StateMachineView::Private::Private(StateMachineView* q)
+StateMachineView::Private::Private(StateMachineView *q)
     : q(q)
     , m_scene(nullptr)
     , m_controller(nullptr)
@@ -107,26 +107,26 @@ StateMachineView::Private::Private(StateMachineView* q)
 {
 }
 
-StateMachineView::StateMachineView(QWidget* parent)
+StateMachineView::StateMachineView(QWidget *parent)
     : QQuickWidget(parent)
     , d(new Private(this))
 {
     qRegisterMetaType<QPainterPath>();
     qRegisterMetaType<Qt::PenStyle>();
-    qRegisterMetaType<CommandController*>();
+    qRegisterMetaType<CommandController *>();
 
-    qRegisterMetaType<LayoutProperties*>();
-    qRegisterMetaType<State*>();
-    qRegisterMetaType<Transition*>();
-    qRegisterMetaType<Element*>();
+    qRegisterMetaType<LayoutProperties *>();
+    qRegisterMetaType<State *>();
+    qRegisterMetaType<Transition *>();
+    qRegisterMetaType<Element *>();
     qRegisterMetaType<Element::Type>();
-    qRegisterMetaType<State*>();
-    qRegisterMetaType<StateMachine*>();
-    qRegisterMetaType<StateModel*>();
-    qRegisterMetaType<ObjectTreeModel*>();
+    qRegisterMetaType<State *>();
+    qRegisterMetaType<StateMachine *>();
+    qRegisterMetaType<StateModel *>();
+    qRegisterMetaType<ObjectTreeModel *>();
     qRegisterMetaType<AbstractScene::ViewState>();
     qRegisterMetaType<GLenum>();
-    qRegisterMetaType<ObjectTreeModel*>();
+    qRegisterMetaType<ObjectTreeModel *>();
 
     // creatable types
     qmlRegisterType<DepthChecker>(KDSME_QML_NAMESPACE, 1, 0, "DepthChecker");
@@ -184,12 +184,12 @@ StateMachineView::~StateMachineView()
 }
 
 
-StateMachineScene* StateMachineView::scene() const
+StateMachineScene *StateMachineView::scene() const
 {
     return d->m_scene;
 }
 
-void StateMachineView::setScene(StateMachineScene* scene)
+void StateMachineView::setScene(StateMachineScene *scene)
 {
     if (d->m_scene == scene)
         return;
@@ -199,18 +199,18 @@ void StateMachineView::setScene(StateMachineScene* scene)
     }
     d->m_scene = scene;
     if (d->m_scene) {
-        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
+        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine *)), this, SLOT(onStateMachineChanged(KDSME::StateMachine *)));
     }
 
     emit sceneChanged(d->m_scene);
 }
 
-CommandController* StateMachineView::commandController() const
+CommandController *StateMachineView::commandController() const
 {
     return d->m_controller;
 }
 
-EditController* StateMachineView::editController() const
+EditController *StateMachineView::editController() const
 {
     return d->m_editController;
 }
@@ -225,7 +225,7 @@ QString StateMachineView::themeName() const
     return d->m_themeName;
 }
 
-void StateMachineView::setThemeName(const QString& themeName)
+void StateMachineView::setThemeName(const QString &themeName)
 {
     if (d->m_themeName == themeName)
         return;
@@ -245,21 +245,21 @@ void StateMachineView::setThemeName(const QString& themeName)
     emit themeNameChanged(d->m_themeName);
 }
 
-QQuickItem* StateMachineView::viewPortObject() const
+QQuickItem *StateMachineView::viewPortObject() const
 {
-    QQuickItem* item = rootObject()->findChild<QQuickItem*>("stateMachineViewport");
+    QQuickItem *item = rootObject()->findChild<QQuickItem *>("stateMachineViewport");
     Q_ASSERT(item);
     return item;
 }
 
-QQuickItem* StateMachineView::sceneObject() const
+QQuickItem *StateMachineView::sceneObject() const
 {
-    QQuickItem* item = rootObject()->findChild<QQuickItem*>("stateMachineScene");
+    QQuickItem *item = rootObject()->findChild<QQuickItem *>("stateMachineScene");
     Q_ASSERT(item);
     return item;
 }
 
-void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine* stateMachine)
+void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine *stateMachine)
 {
     Q_UNUSED(stateMachine);
 }
@@ -267,7 +267,7 @@ void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine* state
 void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 {
     Q_ASSERT(d->m_scene);
-    ChangeStateMachineCommand* cmd = new ChangeStateMachineCommand(d->m_scene);
+    ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(d->m_scene);
     cmd->setStateMachine(stateMachine);
     if (d->m_scene->rootState()) {
         commandController()->push(cmd);
@@ -279,7 +279,7 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 
 void StateMachineView::deleteElement(KDSME::Element *element)
 {
-    DeleteElementCommand* cmd = new DeleteElementCommand(d->m_scene, element);
+    DeleteElementCommand *cmd = new DeleteElementCommand(d->m_scene, element);
     commandController()->push(cmd);
 }
 
@@ -287,7 +287,7 @@ QRectF StateMachineView::Private::adjustedViewRect()
 {
     static const int margin = 10;
 
-    const QQuickItem* viewPort = q->rootObject()->findChild<QQuickItem*>("scrollView");
+    const QQuickItem *viewPort = q->rootObject()->findChild<QQuickItem *>("scrollView");
     const QRectF viewRect(viewPort->x(), viewPort->y(), viewPort->width(), viewPort->height());
     if (viewRect.isEmpty())
         return QRectF();
@@ -308,7 +308,7 @@ void StateMachineView::fitInView()
     scene()->zoomBy(uniformScale);
 }
 
-void StateMachineView::sendCommand(Command* cmd)
+void StateMachineView::sendCommand(Command *cmd)
 {
     Q_ASSERT(commandController());
     commandController()->undoStack()->push(cmd);

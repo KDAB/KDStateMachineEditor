@@ -19,13 +19,13 @@
 
 using namespace KDSME;
 
-LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene* scene,  QUndoCommand* parent)
+LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene *scene, QUndoCommand *parent)
     : Command(nullptr, parent)
     , m_scene(scene)
 {
 }
 
-LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene* scene, const QString& text, QUndoCommand* parent)
+LayoutSnapshotCommand::LayoutSnapshotCommand(StateMachineScene *scene, const QString &text, QUndoCommand *parent)
     : Command(text, parent)
     , m_scene(scene)
 {

@@ -28,40 +28,40 @@ using namespace KDSME;
 
 struct ScxmlExporter::Private
 {
-    Private(QByteArray* array, ScxmlExporter* q);
-    Private(QIODevice* device, ScxmlExporter* q);
+    Private(QByteArray *array, ScxmlExporter *q);
+    Private(QIODevice *device, ScxmlExporter *q);
 
     void init();
 
-    bool writeStateMachine(StateMachine* machine);
-    bool writeState(State* state);
-    bool writeStateInner(State* state);
-    bool writeTransition(Transition* transition);
+    bool writeStateMachine(StateMachine *machine);
+    bool writeState(State *state);
+    bool writeStateInner(State *state);
+    bool writeTransition(Transition *transition);
 
-    ScxmlExporter* q;
+    ScxmlExporter *q;
     QXmlStreamWriter m_writer;
 };
 
-ScxmlExporter::Private::Private(QByteArray* array, ScxmlExporter* q)
+ScxmlExporter::Private::Private(QByteArray *array, ScxmlExporter *q)
     : q(q)
     , m_writer(array)
 {
     init();
 }
 
-ScxmlExporter::Private::Private(QIODevice* device, ScxmlExporter* q)
+ScxmlExporter::Private::Private(QIODevice *device, ScxmlExporter *q)
     : q(q)
     , m_writer(device)
 {
     init();
 }
 
-ScxmlExporter::ScxmlExporter(QByteArray* array)
+ScxmlExporter::ScxmlExporter(QByteArray *array)
     : d(new Private(array, this))
 {
 }
 
-ScxmlExporter::ScxmlExporter(QIODevice* device)
+ScxmlExporter::ScxmlExporter(QIODevice *device)
     : d(new Private(device, this))
 {
 }
@@ -75,7 +75,7 @@ void ScxmlExporter::Private::init()
     m_writer.setAutoFormatting(true);
 }
 
-bool ScxmlExporter::exportMachine(StateMachine* machine)
+bool ScxmlExporter::exportMachine(StateMachine *machine)
 {
     setErrorString(QString());
 
@@ -92,7 +92,7 @@ bool ScxmlExporter::exportMachine(StateMachine* machine)
     return d->writeStateMachine(machine);
 }
 
-bool ScxmlExporter::Private::writeStateMachine(StateMachine* machine)
+bool ScxmlExporter::Private::writeStateMachine(StateMachine *machine)
 {
     Q_ASSERT(machine);
 
@@ -110,9 +110,9 @@ bool ScxmlExporter::Private::writeStateMachine(StateMachine* machine)
     return !m_writer.hasError();
 }
 
-bool ScxmlExporter::Private::writeState(State* state)
+bool ScxmlExporter::Private::writeState(State *state)
 {
-    if (qobject_cast<PseudoState*>(state)) {
+    if (qobject_cast<PseudoState *>(state)) {
         return true; // pseudo states are ignored
     }
 
@@ -123,20 +123,20 @@ bool ScxmlExporter::Private::writeState(State* state)
     return true;
 }
 
-bool ScxmlExporter::Private::writeStateInner(State* state)
+bool ScxmlExporter::Private::writeStateInner(State *state)
 {
     if (state->label().isEmpty()) {
         q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
         return false;
     }
 
-    if (qobject_cast<StateMachine*>(state)) {
+    if (qobject_cast<StateMachine *>(state)) {
         m_writer.writeAttribute("name", state->label());
     } else {
         m_writer.writeAttribute("id", state->label());
     }
 
-    if (State* initial = ElementUtil::findInitialState(state)) {
+    if (State *initial = ElementUtil::findInitialState(state)) {
         if (initial->label().isEmpty()) {
             q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
             return false;
@@ -144,23 +144,23 @@ bool ScxmlExporter::Private::writeStateInner(State* state)
         m_writer.writeAttribute("initial", initial->label());
     }
 
-    foreach (Transition* transition, state->transitions()) {
+    foreach (Transition *transition, state->transitions()) {
         if (!writeTransition(transition))
             return false;
     }
 
-    foreach (State* child, state->childStates()) {
+    foreach (State *child, state->childStates()) {
         if (!writeState(child))
             return false;
     }
     return true;
 }
 
-bool ScxmlExporter::Private::writeTransition(Transition* transition)
+bool ScxmlExporter::Private::writeTransition(Transition *transition)
 {
     m_writer.writeStartElement("transition");
     m_writer.writeAttribute("event", transition->label());
-    if (State* targetState = transition->targetState()) {
+    if (State *targetState = transition->targetState()) {
         m_writer.writeAttribute("target", targetState->label());
     }
     m_writer.writeEndElement();

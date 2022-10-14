@@ -29,14 +29,14 @@ class StateMachine;
 class KDSME_CORE_EXPORT QmlExporter : public AbstractExporter
 {
 public:
-    explicit QmlExporter(QByteArray* array);
-    explicit QmlExporter(QIODevice* device);
+    explicit QmlExporter(QByteArray *array);
+    explicit QmlExporter(QIODevice *device);
     virtual ~QmlExporter();
 
     int indent() const;
     void setIndent(int indent);
 
-    virtual bool exportMachine(StateMachine* machine) override;
+    virtual bool exportMachine(StateMachine *machine) override;
 
 private:
     struct Private;

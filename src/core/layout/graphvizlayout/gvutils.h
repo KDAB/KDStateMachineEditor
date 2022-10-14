@@ -42,7 +42,7 @@ Agsym_t *_agedgeattr(Agraph_t *object, const QString &attr,
 int _gvLayout(GVC_t *gvc, graph_t *g, const char *engine);
 
 #ifdef WITH_CGRAPH
-void* _agbindrec(void* obj, const char* name, unsigned int size, int move_to_front);
+void *_agbindrec(void *obj, const char *name, unsigned int size, int move_to_front);
 #endif
 
 Agnode_t *_agnode(Agraph_t *graph, const QString &attr, bool create = true);

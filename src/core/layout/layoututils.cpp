@@ -26,7 +26,7 @@
 
 using namespace KDSME;
 
-QSizeF LayoutUtils::sizeForLabel(const QString& label)
+QSizeF LayoutUtils::sizeForLabel(const QString &label)
 {
     // TODO: Get LayoutProperties here
     const qreal margin = 10;
@@ -38,22 +38,22 @@ QSizeF LayoutUtils::sizeForLabel(const QString& label)
 #else
     const qreal width = fm.width(label);
 #endif
-    return QSizeF(width + 2*margin, fm.height() + 2*margin);
+    return QSizeF(width + 2 * margin, fm.height() + 2 * margin);
 }
 
-bool LayoutUtils::moveInner(State* state, const QPointF& offset)
+bool LayoutUtils::moveInner(State *state, const QPointF &offset)
 {
     if (!state) {
         return false;
     }
 
-    foreach (State* childState, state->childStates()) {
+    foreach (State *childState, state->childStates()) {
         childState->setPos(childState->pos() + offset);
     }
     return true;
 }
 
-bool LayoutUtils::fixupLayout(State* /*state*/)
+bool LayoutUtils::fixupLayout(State * /*state*/)
 {
     /*
     LayoutWalker walker;
@@ -64,7 +64,7 @@ bool LayoutUtils::fixupLayout(State* /*state*/)
     return true;
 }
 
-bool LayoutUtils::moveToParent(Element* item, Element* parentItem)
+bool LayoutUtils::moveToParent(Element *item, Element *parentItem)
 {
     if (!item || !parentItem)
         return false;

@@ -21,8 +21,8 @@
 
 using namespace KDSME;
 
-ModifyPropertyCommand::ModifyPropertyCommand(QObject* object, const char* property,
-                                             const QVariant& value, const QString& text, QUndoCommand* parent)
+ModifyPropertyCommand::ModifyPropertyCommand(QObject *object, const char *property,
+                                             const QVariant &value, const QString &text, QUndoCommand *parent)
     : Command(text, parent)
     , m_object(object)
 {
@@ -30,8 +30,8 @@ ModifyPropertyCommand::ModifyPropertyCommand(QObject* object, const char* proper
     init();
 }
 
-ModifyPropertyCommand::ModifyPropertyCommand(QObject* object, const QJsonObject& propertyMap,
-                                             const QString& text, QUndoCommand* parent)
+ModifyPropertyCommand::ModifyPropertyCommand(QObject *object, const QJsonObject &propertyMap,
+                                             const QString &text, QUndoCommand *parent)
     : Command(text, parent)
     , m_object(object)
 {

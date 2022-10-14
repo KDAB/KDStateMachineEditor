@@ -44,7 +44,7 @@ EditController::Private::Private()
 {
 }
 
-EditController::EditController(StateMachineView* parent)
+EditController::EditController(StateMachineView *parent)
     : AbstractController(parent)
     , d(new Private)
 {
@@ -68,7 +68,7 @@ void EditController::setEditModeEnabled(bool editModeEnabled)
     emit editModeEnabledChanged(d->m_editModeEnabled);
 }
 
-bool EditController::sendDragEnterEvent(Element* sender, Element* target, const QPoint& pos, const QList<QUrl>& urls)
+bool EditController::sendDragEnterEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls)
 {
     Q_UNUSED(pos);
 
@@ -76,8 +76,8 @@ bool EditController::sendDragEnterEvent(Element* sender, Element* target, const 
 
     // For the case a Transition is dragged onto a State that
     // State will turns into the new source/target of the transition.
-    if (qobject_cast<Transition*>(sender)) {
-        return qobject_cast<State*>(target);
+    if (qobject_cast<Transition *>(sender)) {
+        return qobject_cast<State *>(target);
     }
 
     // No sender means we expect a URL to be given.
@@ -89,14 +89,14 @@ bool EditController::sendDragEnterEvent(Element* sender, Element* target, const 
     // we only accept one item only for now
     const QUrl url = urls.first();
     if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qCDebug(KDSME_VIEW)<< "Unexpected Url Schema=" << url.scheme();
+        qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
 
     return true;
 }
 
-bool EditController::sendDropEvent(Element* sender, Element* target, const QPoint& pos, const QList<QUrl>& urls)
+bool EditController::sendDropEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls)
 {
     Q_UNUSED(sender);
     Q_UNUSED(pos);
@@ -104,14 +104,14 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
     qCDebug(KDSME_VIEW) << "sender=" << sender << "target=" << target << "pos=" << pos << "urls=" << urls;
 
     if (urls.isEmpty()) {
-        qCDebug(KDSME_VIEW)<< "No urls";
+        qCDebug(KDSME_VIEW) << "No urls";
         return false;
     }
 
     // we only accept one item only for now
     const QUrl url = urls.first();
     if (url.scheme() != KDSME_QML_URI_PREFIX) {
-        qCDebug(KDSME_VIEW)<< "Unexpected Url Schema=" << url.scheme();
+        qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
 
@@ -125,7 +125,8 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
     // TODO should we probably either move that command to kdstatemachine/commands
     // for reuse or even extend the existing CreateElementCommand to set optionally
     // an initial position/geometry?
-    class CreateAndPositionCommand : public Command {
+    class CreateAndPositionCommand : public Command
+    {
     public:
         CreateAndPositionCommand(StateMachineScene *view, Element::Type type, Element *targetElement, const QPointF &pos)
             : Command(view->stateModel())
@@ -155,9 +156,9 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             QPointF pos = m_pos;
             QSizeF size = element->preferredSize();
             if (size.width() > 0)
-                pos.setX(qMax<qreal>(0, pos.x() - size.width()/2));
+                pos.setX(qMax<qreal>(0, pos.x() - size.width() / 2));
             if (size.height() > 0)
-                pos.setY(qMax<qreal>(0, pos.y() - size.height()/2));
+                pos.setY(qMax<qreal>(0, pos.y() - size.height() / 2));
             poscmd.setGeometry(QRectF(pos, size));
             poscmd.redo();
 
@@ -165,9 +166,11 @@ bool EditController::sendDropEvent(Element* sender, Element* target, const QPoin
             // as if a user clicked on it.
             m_view->setCurrentItem(element);
         }
-        void undo() override {
+        void undo() override
+        {
             m_createcmd->undo();
         }
+
     private:
         StateMachineScene *m_view;
         QScopedPointer<CreateElementCommand> m_createcmd;

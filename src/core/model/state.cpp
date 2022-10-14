@@ -50,7 +50,8 @@ struct State::Private
         : m_childMode(ExclusiveStates)
         , m_isComposite(false)
         , m_isExpanded(true)
-    {}
+    {
+    }
 
     QString m_onEntry;
     QString m_onExit;
@@ -59,7 +60,7 @@ struct State::Private
     bool m_isExpanded;
 };
 
-State::State(State* parent)
+State::State(State *parent)
     : Element(parent)
     , d(new Private)
 {
@@ -74,43 +75,43 @@ Element::Type State::type() const
     return StateType;
 }
 
-State* State::parentState() const
+State *State::parentState() const
 {
-    return qobject_cast<State*>(parent());
+    return qobject_cast<State *>(parent());
 }
 
-State* State::initialState() const
+State *State::initialState() const
 {
     return ElementUtil::findInitialState(this);
 }
 
-void State::setInitialState(State* initialState)
+void State::setInitialState(State *initialState)
 {
     ElementUtil::setInitialState(this, initialState);
 }
 
-QList<State*> State::childStates() const
+QList<State *> State::childStates() const
 {
-    return ObjectHelper::copy_if_type<State*>(children());
+    return ObjectHelper::copy_if_type<State *>(children());
 }
 
-QList<Transition*> State::transitions() const
+QList<Transition *> State::transitions() const
 {
-    return ObjectHelper::copy_if_type<Transition*>(children());
+    return ObjectHelper::copy_if_type<Transition *>(children());
 }
 
-void State::addTransition(Transition* transition)
+void State::addTransition(Transition *transition)
 {
     transition->setParent(this);
 }
 
-SignalTransition* State::addSignalTransition(State* target, const QString &silgnal)
+SignalTransition *State::addSignalTransition(State *target, const QString &silgnal)
 {
     if (!target) {
         return nullptr;
     }
 
-    SignalTransition* transition = new SignalTransition(this);
+    SignalTransition *transition = new SignalTransition(this);
     transition->setTargetState(target);
     transition->setSignal(silgnal);
     addTransition(transition);
@@ -123,7 +124,7 @@ TimeoutTransition *State::addTimeoutTransition(State *target, int timeout)
         return nullptr;
     }
 
-    TimeoutTransition* transition = new TimeoutTransition(this);
+    TimeoutTransition *transition = new TimeoutTransition(this);
     transition->setTargetState(target);
     transition->setTimeout(timeout);
     addTransition(transition);
@@ -140,7 +141,7 @@ QString State::onExit() const
     return d->m_onExit;
 }
 
-void State::setOnEntry(const QString& onEntry)
+void State::setOnEntry(const QString &onEntry)
 {
     if (d->m_onEntry == onEntry)
         return;
@@ -149,7 +150,7 @@ void State::setOnEntry(const QString& onEntry)
     emit onEntryChanged(d->m_onEntry);
 }
 
-void State::setOnExit(const QString& onExit)
+void State::setOnExit(const QString &onExit)
 {
     if (d->m_onExit == onExit)
         return;
@@ -191,14 +192,14 @@ void State::setExpanded(bool expanded)
     emit expandedChanged(d->m_isExpanded);
 }
 
-StateMachine* State::machine() const
+StateMachine *State::machine() const
 {
-    StateMachine* m = ElementUtil::findStateMachine(this);
+    StateMachine *m = ElementUtil::findStateMachine(this);
     QQmlEngine::setObjectOwnership(m, QQmlEngine::CppOwnership);
     return m;
 }
 
-bool State::event(QEvent* event)
+bool State::event(QEvent *event)
 {
     if (event->type() == QEvent::ChildAdded || event->type() == QEvent::ChildRemoved) {
         const bool newIsComposite = childStates().size() > 0;
@@ -221,17 +222,17 @@ struct StateMachine::Private
 
     ~Private()
     {
-        if (qobject_cast<StandardRuntimeController*>(m_runtimeController)) {
+        if (qobject_cast<StandardRuntimeController *>(m_runtimeController)) {
             delete m_runtimeController;
         }
     }
 
-    StateMachine* q;
+    StateMachine *q;
 
-    RuntimeController* m_runtimeController;
+    RuntimeController *m_runtimeController;
 };
 
-StateMachine::StateMachine(QObject* parent)
+StateMachine::StateMachine(QObject *parent)
     : State(nullptr)
     , d(new Private(this))
 {
@@ -243,17 +244,17 @@ StateMachine::StateMachine(QObject* parent)
     setHeight(128);
 }
 
-RuntimeController* StateMachine::runtimeController() const
+RuntimeController *StateMachine::runtimeController() const
 {
     return d->m_runtimeController;
 }
 
-void StateMachine::setRuntimeController(RuntimeController* runtimeController)
+void StateMachine::setRuntimeController(RuntimeController *runtimeController)
 {
     if (d->m_runtimeController == runtimeController)
         return;
 
-    if (qobject_cast<StandardRuntimeController*>(d->m_runtimeController)) {
+    if (qobject_cast<StandardRuntimeController *>(d->m_runtimeController)) {
         d->m_runtimeController->deleteLater();
     }
     d->m_runtimeController = runtimeController;
@@ -269,19 +270,20 @@ struct HistoryState::Private
     Private()
         : m_defaultState(nullptr)
         , m_historyType(ShallowHistory)
-    {}
+    {
+    }
 
     State *m_defaultState;
     HistoryType m_historyType;
 };
 
-HistoryState::HistoryState(State* parent)
+HistoryState::HistoryState(State *parent)
     : State(parent)
     , d(new Private)
 {
 }
 
-HistoryState::HistoryState(HistoryState::HistoryType type, State* parent)
+HistoryState::HistoryState(HistoryState::HistoryType type, State *parent)
     : State(parent)
     , d(new Private)
 {
@@ -304,7 +306,7 @@ QString HistoryState::toDisplayString() const
     return QString("%1 [Default: %2]").arg(thisClassName).arg(defaultClassName);
 }
 
-State* HistoryState::defaultState() const
+State *HistoryState::defaultState() const
 {
     return d->m_defaultState;
 }
@@ -334,7 +336,7 @@ struct FinalState::Private
 {
 };
 
-FinalState::FinalState(State* parent)
+FinalState::FinalState(State *parent)
     : State(parent)
     , d(new Private)
 {
@@ -362,12 +364,13 @@ struct PseudoState::Private
 {
     Private()
         : m_kind(PseudoState::InitialState)
-    {}
+    {
+    }
 
     Kind m_kind;
 };
 
-PseudoState::PseudoState(Kind kind, State* parent)
+PseudoState::PseudoState(Kind kind, State *parent)
     : State(parent)
     , d(new Private)
 {
@@ -408,27 +411,27 @@ QString PseudoState::toDisplayString() const
     return QString("%1 [Kind: %2]").arg(str).arg(kindString());
 }
 
-QDebug KDSME::operator<<(QDebug dbg, const State* state)
+QDebug KDSME::operator<<(QDebug dbg, const State *state)
 {
     if (!state) {
-        return operator<<(dbg, static_cast<QObject*>(nullptr));
+        return operator<<(dbg, static_cast<QObject *>(nullptr));
     }
     dbg.nospace() << "State["
-        << "this=" << (const void*)state
-        << ", label=" << state->label()
-        << "]";
+                  << "this=" << ( const void * )state
+                  << ", label=" << state->label()
+                  << "]";
     return dbg.space();
 }
 
-QDebug KDSME::operator<<(QDebug dbg, const PseudoState* state)
+QDebug KDSME::operator<<(QDebug dbg, const PseudoState *state)
 {
     if (!state) {
-        return operator<<(dbg, static_cast<QObject*>(nullptr));
+        return operator<<(dbg, static_cast<QObject *>(nullptr));
     }
     dbg.nospace() << "PseudoState["
-        << "this=" << (const void*)state
-        << ", kind=" << state->kindString()
-        << "]";
+                  << "this=" << ( const void * )state
+                  << ", kind=" << state->kindString()
+                  << "]";
     return dbg.space();
 }
 

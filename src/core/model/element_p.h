@@ -33,7 +33,8 @@ struct Element::Private
         , m_selected(false)
         , m_height(0.0)
         , m_width(0.0)
-    {}
+    {
+    }
 
     QString m_label;
     quintptr m_id;

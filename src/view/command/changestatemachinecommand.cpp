@@ -23,7 +23,7 @@
 
 using namespace KDSME;
 
-ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent)
+ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene *view, QUndoCommand *parent)
     : Command(tr("Change state machine"), parent)
     , m_view(view)
     , m_oldStateMachine(nullptr)
@@ -32,12 +32,12 @@ ChangeStateMachineCommand::ChangeStateMachineCommand(KDSME::StateMachineScene* v
     Q_ASSERT(view);
 }
 
-KDSME::State* ChangeStateMachineCommand::stateMachine() const
+KDSME::State *ChangeStateMachineCommand::stateMachine() const
 {
     return m_newStateMachine;
 }
 
-void ChangeStateMachineCommand::setStateMachine(KDSME::State* stateMachine)
+void ChangeStateMachineCommand::setStateMachine(KDSME::State *stateMachine)
 {
     if (m_newStateMachine == stateMachine)
         return;

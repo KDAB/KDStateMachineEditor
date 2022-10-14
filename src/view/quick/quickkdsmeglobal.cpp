@@ -17,12 +17,12 @@
 
 #include "quickpainterpath_p.h"
 
-QuickPainterPath* QuickKDSMEGlobal::createPath() const
+QuickPainterPath *QuickKDSMEGlobal::createPath() const
 {
     return new QuickPainterPath;
 }
 
-QuickPainterPath* QuickKDSMEGlobal::createPath(const QPointF& startPoint) const
+QuickPainterPath *QuickKDSMEGlobal::createPath(const QPointF &startPoint) const
 {
     auto path = new QuickPainterPath;
     path->moveTo(startPoint);

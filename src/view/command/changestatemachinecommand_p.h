@@ -35,21 +35,24 @@ class StateMachine;
 class KDSME_VIEW_EXPORT ChangeStateMachineCommand : public Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State* stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
+    Q_PROPERTY(KDSME::State *stateMachine READ stateMachine WRITE setStateMachine NOTIFY stateMachineChanged)
 
 public:
-    explicit ChangeStateMachineCommand(KDSME::StateMachineScene* view, QUndoCommand* parent = nullptr);
+    explicit ChangeStateMachineCommand(KDSME::StateMachineScene *view, QUndoCommand *parent = nullptr);
 
-    int id() const override { return ChangeStateMachine; }
+    int id() const override
+    {
+        return ChangeStateMachine;
+    }
 
-    KDSME::State* stateMachine() const;
-    void setStateMachine(KDSME::State* stateMachine);
+    KDSME::State *stateMachine() const;
+    void setStateMachine(KDSME::State *stateMachine);
 
     void redo() override;
     void undo() override;
 
 signals:
-    void stateMachineChanged(KDSME::State* statemachine);
+    void stateMachineChanged(KDSME::State *statemachine);
 
 private:
     QPointer<StateMachineScene> m_view;

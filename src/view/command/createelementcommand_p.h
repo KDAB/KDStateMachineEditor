@@ -24,39 +24,42 @@ namespace KDSME {
 class KDSME_VIEW_EXPORT CreateElementCommand : public Command
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::Element* parentElement READ parentElement WRITE setParentElement NOTIFY parentElementChanged)
+    Q_PROPERTY(KDSME::Element *parentElement READ parentElement WRITE setParentElement NOTIFY parentElementChanged)
     Q_PROPERTY(KDSME::Element::Type type READ type WRITE setType NOTIFY typeChanged)
 
 public:
-    explicit CreateElementCommand(StateModel* model = nullptr,
+    explicit CreateElementCommand(StateModel *model = nullptr,
                                   Element::Type type = Element::ElementType,
-                                  QUndoCommand* parent = nullptr);
+                                  QUndoCommand *parent = nullptr);
     ~CreateElementCommand();
 
-    Element* parentElement() const;
-    void setParentElement(Element* parentElement);
+    Element *parentElement() const;
+    void setParentElement(Element *parentElement);
 
     Element::Type type() const;
     void setType(Element::Type type);
 
-    Element* createdElement() const;
+    Element *createdElement() const;
 
-    int id() const override { return CreateElement; }
+    int id() const override
+    {
+        return CreateElement;
+    }
 
     void redo() override;
     void undo() override;
 
 Q_SIGNALS:
-    void parentElementChanged(Element* parentElement);
+    void parentElementChanged(Element *parentElement);
     void typeChanged(Element::Type type);
 
 private:
     void updateText();
 
-    Element* m_parentElement;
+    Element *m_parentElement;
     Element::Type m_type;
 
-    Element* m_createdElement;
+    Element *m_createdElement;
 };
 
 }

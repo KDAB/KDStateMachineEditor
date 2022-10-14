@@ -22,7 +22,7 @@
 
 namespace {
 
-QuickGeometryItem::VertexDataType typeOfGeometry(const QSGGeometry* geometry)
+QuickGeometryItem::VertexDataType typeOfGeometry(const QSGGeometry *geometry)
 {
     switch (geometry->sizeOfVertex()) {
     default:
@@ -37,7 +37,7 @@ QuickGeometryItem::VertexDataType typeOfGeometry(const QSGGeometry* geometry)
 }
 
 template<typename T>
-QRectF boundingBox_QSGGeometryNode_vertexData(T* vertices, int count)
+QRectF boundingBox_QSGGeometryNode_vertexData(T *vertices, int count)
 {
     if (count <= 0) {
         return QRectF();
@@ -62,7 +62,7 @@ QRectF boundingBox_QSGGeometryNode_vertexData(T* vertices, int count)
 
 }
 
-QRectF GeometryUtils::boundingRect(QSGGeometry* geometry)
+QRectF GeometryUtils::boundingRect(QSGGeometry *geometry)
 {
     switch (typeOfGeometry(geometry)) {
     case QuickGeometryItem::Point2DType:
@@ -76,7 +76,7 @@ QRectF GeometryUtils::boundingRect(QSGGeometry* geometry)
     }
 }
 
-QuickGeometryItem::QuickGeometryItem(QObject* parent)
+QuickGeometryItem::QuickGeometryItem(QObject *parent)
     : QObject(parent)
     , m_vertexDataType(Point2DType)
     , m_drawingMode(TriangleStrip)
@@ -89,7 +89,7 @@ QList<qreal> QuickGeometryItem::vertexData() const
     return m_vertexData;
 }
 
-void QuickGeometryItem::setVertexData(const QList<qreal>& vertexData)
+void QuickGeometryItem::setVertexData(const QList<qreal> &vertexData)
 {
     if (m_vertexData == vertexData) {
         return;
@@ -146,19 +146,19 @@ void QuickGeometryItem::setLineWidth(float lineWidth)
     emit changed();
 }
 
-QSGGeometry* QuickGeometryItem::createGeometry() const
+QSGGeometry *QuickGeometryItem::createGeometry() const
 {
-    QSGGeometry* geometry = nullptr;
-    const QList<qreal>& data = m_vertexData;
+    QSGGeometry *geometry = nullptr;
+    const QList<qreal> &data = m_vertexData;
     switch (m_vertexDataType) {
     case Point2DType: {
         Q_ASSERT(data.size() % 2 == 0);
-        const int vertexCount = data.size()/2;
+        const int vertexCount = data.size() / 2;
         geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), vertexCount);
-        QSGGeometry::Point2D* vertices = geometry->vertexDataAsPoint2D();
+        QSGGeometry::Point2D *vertices = geometry->vertexDataAsPoint2D();
         for (int i = 0; i < vertexCount; ++i) {
-            const float x = static_cast<float>(data[i*2]);
-            const float y = static_cast<float>(data[i*2+1]);
+            const float x = static_cast<float>(data[i * 2]);
+            const float y = static_cast<float>(data[i * 2 + 1]);
             vertices[i].set(x, y);
         }
         break;
@@ -177,7 +177,7 @@ QSGGeometry* QuickGeometryItem::createGeometry() const
     return geometry;
 }
 
-QuickPrimitiveItem::QuickPrimitiveItem(QQuickItem* parent)
+QuickPrimitiveItem::QuickPrimitiveItem(QQuickItem *parent)
     : QQuickItem(parent)
     , m_geometryItem(nullptr)
     , m_geometryDirty(false)
@@ -186,12 +186,12 @@ QuickPrimitiveItem::QuickPrimitiveItem(QQuickItem* parent)
     setFlag(ItemHasContents, true);
 }
 
-QuickGeometryItem* QuickPrimitiveItem::geometryItem() const
+QuickGeometryItem *QuickPrimitiveItem::geometryItem() const
 {
     return m_geometryItem;
 }
 
-void QuickPrimitiveItem::setGeometryItem(QuickGeometryItem* item)
+void QuickPrimitiveItem::setGeometryItem(QuickGeometryItem *item)
 {
     if (m_geometryItem == item)
         return;
@@ -207,7 +207,7 @@ void QuickPrimitiveItem::setGeometryItem(QuickGeometryItem* item)
     update();
 }
 
-void QuickPrimitiveItem::updateImplicitSize(QSGGeometry* geometry)
+void QuickPrimitiveItem::updateImplicitSize(QSGGeometry *geometry)
 {
     const QRectF boundingRect = GeometryUtils::boundingRect(geometry);
     setImplicitWidth(boundingRect.x() + boundingRect.width());
@@ -219,7 +219,7 @@ QColor QuickPrimitiveItem::color() const
     return m_color;
 }
 
-void QuickPrimitiveItem::setColor(const QColor& color)
+void QuickPrimitiveItem::setColor(const QColor &color)
 {
     if (m_color == color)
         return;
@@ -235,7 +235,7 @@ void QuickPrimitiveItem::updateGeometry()
     update();
 }
 
-QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data)
+QSGNode *QuickPrimitiveItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
 {
     Q_UNUSED(data);
 
@@ -253,7 +253,7 @@ QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeDa
     }
 
     if (m_geometryDirty) {
-        QSGGeometry* geometry = geometryItem()->createGeometry();
+        QSGGeometry *geometry = geometryItem()->createGeometry();
         updateImplicitSize(geometry);
         node->setGeometry(geometry);
 
@@ -261,7 +261,7 @@ QSGNode* QuickPrimitiveItem::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeDa
     }
 
 
-    QSGFlatColorMaterial* material = static_cast<QSGFlatColorMaterial*>(node->material());
+    QSGFlatColorMaterial *material = static_cast<QSGFlatColorMaterial *>(node->material());
     material->setColor(m_color);
 
     return node;

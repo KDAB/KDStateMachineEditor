@@ -37,24 +37,28 @@ class KDSME_VIEW_EXPORT ModifyTransitionCommand : public Command
     Q_OBJECT
 
 public:
-    explicit ModifyTransitionCommand(Transition* transition, StateModel* model, QUndoCommand* parent = nullptr);
+    explicit ModifyTransitionCommand(Transition *transition, StateModel *model, QUndoCommand *parent = nullptr);
 
-    int id() const override { return ModifyTransition; }
+    int id() const override
+    {
+        return ModifyTransition;
+    }
 
-    Q_INVOKABLE void setSourceState(KDSME::State* sourceState);
-    Q_INVOKABLE void setTargetState(KDSME::State* targetState);
-    Q_INVOKABLE void setShape(const QPainterPath& shape);
+    Q_INVOKABLE void setSourceState(KDSME::State *sourceState);
+    Q_INVOKABLE void setTargetState(KDSME::State *targetState);
+    Q_INVOKABLE void setShape(const QPainterPath &shape);
 
     void redo() override;
     void undo() override;
-    bool mergeWith(const QUndoCommand* other) override;
+    bool mergeWith(const QUndoCommand *other) override;
 
 private:
     void updateText();
 
     QPointer<Transition> m_transition;
 
-    enum Operation {
+    enum Operation
+    {
         NoOperation,
         SetSourceStateOperation,
         SetTargetStateOperation,

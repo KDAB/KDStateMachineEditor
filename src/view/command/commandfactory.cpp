@@ -31,25 +31,25 @@
 
 using namespace KDSME;
 
-CommandFactory::CommandFactory(QObject* parent)
+CommandFactory::CommandFactory(QObject *parent)
     : QObject(parent)
     , m_model(nullptr)
 {
-    qRegisterMetaType<CreateElementCommand*>();
-    qRegisterMetaType<DeleteElementCommand*>();
-    qRegisterMetaType<ModifyElementCommand*>();
-    qRegisterMetaType<ModifyPropertyCommand*>();
-    qRegisterMetaType<ModifyTransitionCommand*>();
-    qRegisterMetaType<ReparentElementCommand*>();
-    qRegisterMetaType<ChangeStateMachineCommand*>();
+    qRegisterMetaType<CreateElementCommand *>();
+    qRegisterMetaType<DeleteElementCommand *>();
+    qRegisterMetaType<ModifyElementCommand *>();
+    qRegisterMetaType<ModifyPropertyCommand *>();
+    qRegisterMetaType<ModifyTransitionCommand *>();
+    qRegisterMetaType<ReparentElementCommand *>();
+    qRegisterMetaType<ChangeStateMachineCommand *>();
 }
 
-StateModel* CommandFactory::model() const
+StateModel *CommandFactory::model() const
 {
     return m_model;
 }
 
-void CommandFactory::setModel(StateModel* model)
+void CommandFactory::setModel(StateModel *model)
 {
     if (m_model == model)
         return;
@@ -58,49 +58,49 @@ void CommandFactory::setModel(StateModel* model)
     emit modelChanged(m_model);
 }
 
-CreateElementCommand* CommandFactory::createElement(StateModel* model, Element::Type type, Element* parentElement) const
+CreateElementCommand *CommandFactory::createElement(StateModel *model, Element::Type type, Element *parentElement) const
 {
     auto cmd = new CreateElementCommand(model, type);
     cmd->setParentElement(parentElement);
     return cmd;
 }
 
-DeleteElementCommand* CommandFactory::deleteElement(KDSME::StateMachineScene* view, KDSME::Element* element) const
+DeleteElementCommand *CommandFactory::deleteElement(KDSME::StateMachineScene *view, KDSME::Element *element) const
 {
     return new DeleteElementCommand(view, element);
 }
 
-LayoutSnapshotCommand* CommandFactory::layoutSnapshot(KDSME::StateMachineScene* view, const QString& text) const
+LayoutSnapshotCommand *CommandFactory::layoutSnapshot(KDSME::StateMachineScene *view, const QString &text) const
 {
     return new LayoutSnapshotCommand(view, text);
 }
 
-ModifyPropertyCommand* CommandFactory::modifyProperty(QObject* object, const char* property, const QVariant& value, const QString& text)
+ModifyPropertyCommand *CommandFactory::modifyProperty(QObject *object, const char *property, const QVariant &value, const QString &text)
 {
     return new ModifyPropertyCommand(object, property, value, text);
 }
 
-ModifyPropertyCommand* CommandFactory::modifyProperty(QObject* object, const QJsonObject& propertyMap, const QString& text)
+ModifyPropertyCommand *CommandFactory::modifyProperty(QObject *object, const QJsonObject &propertyMap, const QString &text)
 {
     return new ModifyPropertyCommand(object, propertyMap, text);
 }
 
-ModifyElementCommand* CommandFactory::modifyElement(Element* item)
+ModifyElementCommand *CommandFactory::modifyElement(Element *item)
 {
     return new ModifyElementCommand(item);
 }
 
-KDSME::ModifyTransitionCommand* CommandFactory::modifyTransition(Transition* transition, KDSME::StateModel *model)
+KDSME::ModifyTransitionCommand *CommandFactory::modifyTransition(Transition *transition, KDSME::StateModel *model)
 {
     return new ModifyTransitionCommand(transition, model);
 }
 
-ReparentElementCommand* CommandFactory::reparentElement(StateMachineScene* view, Element* element)
+ReparentElementCommand *CommandFactory::reparentElement(StateMachineScene *view, Element *element)
 {
     return new ReparentElementCommand(view, element);
 }
 
-ChangeStateMachineCommand* CommandFactory::changeStateMachineElement(KDSME::StateMachineScene* view, KDSME::StateMachine* statemachine)
+ChangeStateMachineCommand *CommandFactory::changeStateMachineElement(KDSME::StateMachineScene *view, KDSME::StateMachine *statemachine)
 {
     ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(view);
     cmd->setStateMachine(statemachine);

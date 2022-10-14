@@ -43,7 +43,7 @@ static QLineF::IntersectType intersects(const QLineF &line1, const QLineF &line2
 /**
  * Return the first intersection point of @p line with @p rect
  */
-QPointF intersected(const QLineF& line, const QRectF& rect)
+QPointF intersected(const QLineF &line, const QRectF &rect)
 {
     QPointF point;
     if (intersects(line, QLineF(rect.topLeft(), rect.topRight()), &point) == QLineF::BoundedIntersection)
@@ -59,7 +59,7 @@ QPointF intersected(const QLineF& line, const QRectF& rect)
 
 }
 
-QuickSceneItem::QuickSceneItem(QQuickItem* parent)
+QuickSceneItem::QuickSceneItem(QQuickItem *parent)
     : QQuickItem(parent)
     , m_scene(nullptr)
     , m_element(nullptr)
@@ -73,15 +73,15 @@ QuickSceneItem::~QuickSceneItem()
 {
 }
 
-QQuickItem* QuickSceneItem::itemForElement(Element* element) const
+QQuickItem *QuickSceneItem::itemForElement(Element *element) const
 {
     // TODO: Ugly, decouple from ObjectTreeModel
-    auto model = qobject_cast<ObjectTreeModel*>(scene()->model());
+    auto model = qobject_cast<ObjectTreeModel *>(scene()->model());
     auto index = model->indexForObject(element);
     Q_ASSERT(index.isValid());
     auto object = scene()->itemForIndex(index);
     Q_ASSERT(object);
-    auto sceneItem = qobject_cast<QQuickItem*>(object);
+    auto sceneItem = qobject_cast<QQuickItem *>(object);
     Q_ASSERT(sceneItem);
     return sceneItem;
 }
@@ -92,12 +92,12 @@ void QuickSceneItem::sendClickEvent()
     scene()->setCurrentItem(element());
 }
 
-StateMachineScene* QuickSceneItem::scene() const
+StateMachineScene *QuickSceneItem::scene() const
 {
     return m_scene;
 }
 
-void QuickSceneItem::setScene(StateMachineScene* scene)
+void QuickSceneItem::setScene(StateMachineScene *scene)
 {
     Q_ASSERT(scene);
     Q_ASSERT(!m_scene || scene == m_scene);
@@ -105,7 +105,7 @@ void QuickSceneItem::setScene(StateMachineScene* scene)
     m_scene = scene;
 }
 
-Element* QuickSceneItem::element() const
+Element *QuickSceneItem::element() const
 {
     return m_element;
 }
@@ -115,7 +115,7 @@ QPainterPath QuickSceneItem::shape() const
     return m_shape;
 }
 
-void QuickSceneItem::setShape(const QPainterPath& shape)
+void QuickSceneItem::setShape(const QPainterPath &shape)
 {
     if (m_shape == shape) {
         return;
@@ -125,12 +125,12 @@ void QuickSceneItem::setShape(const QPainterPath& shape)
     emit shapeChanged(m_shape);
 }
 
-void QuickSceneItem::mousePressEvent(QMouseEvent* event)
+void QuickSceneItem::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void QuickSceneItem::mouseReleaseEvent(QMouseEvent* event)
+void QuickSceneItem::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
         // note: ideally we'd send the context menu event when we're in the mousePressEvent handler
@@ -143,13 +143,12 @@ void QuickSceneItem::mouseReleaseEvent(QMouseEvent* event)
         AbstractSceneContextMenuEvent contextMenuEvent(
             QContextMenuEvent::Mouse,
             event->pos(), event->globalPos(), event->modifiers(),
-            element()
-        );
+            element());
         QCoreApplication::sendEvent(scene(), &contextMenuEvent);
     }
 }
 
-bool QuickSceneItem::contains(const QPointF& point) const
+bool QuickSceneItem::contains(const QPointF &point) const
 {
     if (m_shape.isEmpty()) {
         return QQuickItem::contains(point);
@@ -158,7 +157,7 @@ bool QuickSceneItem::contains(const QPointF& point) const
     return m_shape.contains(point);
 }
 
-void QuickSceneItem::setElement(Element* element)
+void QuickSceneItem::setElement(Element *element)
 {
     if (m_element == element)
         return;
@@ -198,23 +197,23 @@ void QuickSceneItem::setActiveness(qreal activeness)
     emit activenessChanged(m_activeness);
 }
 
-QuickStateItem::QuickStateItem(QQuickItem* parent)
+QuickStateItem::QuickStateItem(QQuickItem *parent)
     : QuickSceneItem(parent)
 {
 }
 
-QuickTransitionItem::QuickTransitionItem(QQuickItem* parent)
+QuickTransitionItem::QuickTransitionItem(QQuickItem *parent)
     : QuickSceneItem(parent)
 {
 }
 
-void QuickTransitionItem::setElement(Element* element)
+void QuickTransitionItem::setElement(Element *element)
 {
     if (element == this->element()) {
         return;
     }
 
-    auto transition = qobject_cast<Transition*>(element);
+    auto transition = qobject_cast<Transition *>(element);
     if (element && !transition) {
         qCWarning(KDSME_VIEW) << "Set invalid element on QuickEdgeItem:" << element;
         return;
@@ -260,7 +259,7 @@ void QuickTransitionItem::updatePosition()
     const QRectF endRect(mapFromItem(targetStateItem, QPointF(0, 0)),
                          QSizeF(targetStateItem->width(), targetStateItem->height()));
 
-    //const auto shape = transition->shape();
+    // const auto shape = transition->shape();
     const auto labelBoundingRect = transition->labelBoundingRect();
 
     const auto preliminaryEdge = QLineF(startRect.center(), endRect.center());
@@ -314,7 +313,7 @@ void QuickTransitionItem::updateTarget()
     }
 }
 
-Transition* QuickTransitionItem::toTransition() const
+Transition *QuickTransitionItem::toTransition() const
 {
-    return static_cast<Transition*>(element());
+    return static_cast<Transition *>(element());
 }

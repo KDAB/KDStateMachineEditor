@@ -22,14 +22,14 @@
 namespace KDSME {
 
 template<>
-struct TreeWalkerTrait<Element*>
+struct TreeWalkerTrait<Element *>
 {
-    static inline QList<Element*> children(Element* element)
+    static inline QList<Element *> children(Element *element)
     {
         return element->childElements();
     }
 };
-typedef TreeWalker<Element*> ElementWalker;
+typedef TreeWalker<Element *> ElementWalker;
 
 }
 

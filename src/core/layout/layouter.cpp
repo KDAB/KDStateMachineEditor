@@ -17,7 +17,7 @@
 
 using namespace KDSME;
 
-Layouter::Layouter(QObject* parent)
+Layouter::Layouter(QObject *parent)
     : QObject(parent)
 {
 }

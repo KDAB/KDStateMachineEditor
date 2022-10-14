@@ -24,7 +24,7 @@
 
 using namespace KDSME;
 
-QByteArray ParseHelper::readFile(const QString& fileName)
+QByteArray ParseHelper::readFile(const QString &fileName)
 {
     QFile file(fileName);
     if (!file.exists()) {

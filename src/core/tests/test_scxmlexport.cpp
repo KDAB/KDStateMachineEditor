@@ -27,17 +27,20 @@
 #include <QXmlQuery>
 #endif
 
-#define QVERIFY_RETURN(statement, retval) \
-    do { if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) return retval; } while (0)
+#define QVERIFY_RETURN(statement, retval)                                     \
+    do {                                                                      \
+        if (!QTest::qVerify((statement), #statement, "", __FILE__, __LINE__)) \
+            return retval;                                                    \
+    } while (0)
 
 using namespace KDSME;
 
 namespace {
 
 #ifdef USE_QT_XMLPATTERNS_LIB
-QStringList query(QByteArray xml, const QString& sourceCode)
+QStringList query(QByteArray xml, const QString &sourceCode)
 {
-    static const QString preamble = \
+    static const QString preamble =
         "declare default element namespace \"http://www.w3.org/2005/07/scxml\";";
 
     QBuffer buffer(&xml);
@@ -94,7 +97,7 @@ void ScxmlExportTest::testSimpleStateMachine()
     s1.setLabel("s1");
     State s2(&root);
     s2.setLabel("s2");
-    Transition* t1 = s1.addSignalTransition(&s2);
+    Transition *t1 = s1.addSignalTransition(&s2);
     t1->setLabel("e1");
     PseudoState initialState(PseudoState::InitialState, &root);
     initialState.addSignalTransition(&s1);
@@ -109,7 +112,8 @@ void ScxmlExportTest::testSimpleStateMachine()
     QStringList stateMachineIds = query(output, "doc($input)/scxml/@name/string()");
     QCOMPARE(stateMachineIds, QStringList() << "root");
     QStringList stateIds = query(output, "doc($input)/scxml/state/@id/string()");
-    QCOMPARE(stateIds, QStringList() << "s1" << "s2");
+    QCOMPARE(stateIds, QStringList() << "s1"
+                                     << "s2");
     QStringList initialStateIds = query(output, "doc($input)/scxml/@initial/string()");
     QCOMPARE(initialStateIds, QStringList() << "s1");
     QStringList transitions = query(output, "doc($input)/scxml/state[@id='s1']/transition/@event/string()");

@@ -32,12 +32,12 @@ class QuickPainterPathStroker : public QObject
     Q_PROPERTY(qreal width READ width WRITE setWidth NOTIFY widthChanged)
 
 public:
-    explicit QuickPainterPathStroker(QObject* parent = nullptr);
+    explicit QuickPainterPathStroker(QObject *parent = nullptr);
 
     qreal width() const;
     void setWidth(qreal width);
 
-    Q_INVOKABLE QPainterPath createStroke(const QPainterPath& path) const;
+    Q_INVOKABLE QPainterPath createStroke(const QPainterPath &path) const;
 
 Q_SIGNALS:
     void widthChanged(qreal width);
@@ -55,32 +55,32 @@ class QuickPainterPath : public QObject
     Q_PROPERTY(bool isEmpty READ isEmpty NOTIFY isEmptyChanged)
 
 public:
-    explicit QuickPainterPath(QObject* parent = nullptr);
+    explicit QuickPainterPath(QObject *parent = nullptr);
 
     QPainterPath path() const;
-    void setPath(const QPainterPath& path);
+    void setPath(const QPainterPath &path);
 
     QPointF startPoint() const;
     QPointF endPoint() const;
     bool isEmpty() const;
 
     // BEGIN: Replicating QPainterPath API
-    Q_INVOKABLE void moveTo(const QPointF& point);
-    Q_INVOKABLE void lineTo(const QPointF& endPoint);
+    Q_INVOKABLE void moveTo(const QPointF &point);
+    Q_INVOKABLE void lineTo(const QPointF &endPoint);
     Q_INVOKABLE void clear();
 
-    Q_INVOKABLE bool contains(const QPointF& point) const;
+    Q_INVOKABLE bool contains(const QPointF &point) const;
     Q_INVOKABLE qreal angleAtPercent(qreal t) const;
     // END
 
 Q_SIGNALS:
-    void pathChanged(const QPainterPath& path);
-    void startPointChanged(const QPointF& startPoint);
-    void endPointChanged(const QPointF& endPoint);
+    void pathChanged(const QPainterPath &path);
+    void startPointChanged(const QPointF &startPoint);
+    void endPointChanged(const QPointF &endPoint);
     void isEmptyChanged(bool isEmpty);
 
 private:
-    void updateState(const QPainterPath& path);
+    void updateState(const QPainterPath &path);
 
     QPainterPath m_path;
 
@@ -99,10 +99,10 @@ public:
     explicit QuickPainterPathGeometryItem(QQuickItem *parent = nullptr);
 
     QPainterPath path() const;
-    void setPath(const QPainterPath& path);
+    void setPath(const QPainterPath &path);
 
 Q_SIGNALS:
-    void pathChanged(const QPainterPath& path);
+    void pathChanged(const QPainterPath &path);
 
 private:
     void updateData();

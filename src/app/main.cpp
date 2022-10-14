@@ -27,8 +27,7 @@
 
 using namespace KDSME;
 
-namespace
-{
+namespace {
 
 QString presetsLocation()
 {
@@ -46,7 +45,7 @@ QString scxmlPresetsLocation()
 
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // this must be called before the QApplication constructor
     QQmlDebuggingEnabler enabler;
@@ -65,7 +64,7 @@ int main(int argc, char** argv)
     const QStringList args = parser.positionalArguments();
     const QString source = args.value(0);
 
-    StateMachine* stateMachine = nullptr;
+    StateMachine *stateMachine = nullptr;
     if (!source.isEmpty()) {
         ScxmlImporter parser(ParseHelper::readFile(source));
         stateMachine = parser.import();

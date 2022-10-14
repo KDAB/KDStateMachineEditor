@@ -19,20 +19,19 @@
 
 using namespace KDSME;
 
-Command::Command(KDSME::StateModel* model, QUndoCommand* parent)
+Command::Command(KDSME::StateModel *model, QUndoCommand *parent)
     : QUndoCommand(parent)
     , m_model(model)
 {
 }
 
-Command::Command(const QString& text, QUndoCommand* parent)
+Command::Command(const QString &text, QUndoCommand *parent)
     : QUndoCommand(text, parent)
     , m_model(nullptr)
 {
-
 }
 
-KDSME::StateModel* Command::model() const
+KDSME::StateModel *Command::model() const
 {
     return m_model;
 }

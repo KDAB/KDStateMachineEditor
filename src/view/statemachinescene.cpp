@@ -44,7 +44,7 @@
 
 using namespace KDSME;
 
-StateMachineScene::Private::Private(StateMachineScene* view)
+StateMachineScene::Private::Private(StateMachineScene *view)
     : q(view)
     , m_rootState(nullptr)
 #if HAVE_GRAPHVIZ
@@ -58,7 +58,7 @@ StateMachineScene::Private::Private(StateMachineScene* view)
 {
 }
 
-StateMachineScene::StateMachineScene(QQuickItem* parent)
+StateMachineScene::StateMachineScene(QQuickItem *parent)
     : AbstractScene(parent)
     , d(new Private(this))
 {
@@ -69,12 +69,12 @@ StateMachineScene::~StateMachineScene()
 {
 }
 
-LayoutProperties* StateMachineScene::layoutProperties() const
+LayoutProperties *StateMachineScene::layoutProperties() const
 {
     return d->m_properties;
 }
 
-void StateMachineScene::collapseItem(State* state)
+void StateMachineScene::collapseItem(State *state)
 {
     if (!state)
         return;
@@ -83,7 +83,7 @@ void StateMachineScene::collapseItem(State* state)
     d->updateChildItemVisibility(state, false);
 }
 
-void StateMachineScene::expandItem(State* state)
+void StateMachineScene::expandItem(State *state)
 {
     if (!state)
         return;
@@ -92,12 +92,12 @@ void StateMachineScene::expandItem(State* state)
     d->updateChildItemVisibility(state, true);
 }
 
-bool StateMachineScene::isItemExpanded(State* state) const
+bool StateMachineScene::isItemExpanded(State *state) const
 {
     return state ? state->isExpanded() : false;
 }
 
-void StateMachineScene::setItemExpanded(State* state, bool expand)
+void StateMachineScene::setItemExpanded(State *state, bool expand)
 {
     if (expand) {
         expandItem(state);
@@ -106,7 +106,7 @@ void StateMachineScene::setItemExpanded(State* state, bool expand)
     }
 }
 
-bool StateMachineScene::isItemSelected(Element* item)
+bool StateMachineScene::isItemSelected(Element *item)
 {
     if (!stateModel() || !item)
         return false;
@@ -115,7 +115,7 @@ bool StateMachineScene::isItemSelected(Element* item)
     return selectionModel()->isSelected(index);
 }
 
-void StateMachineScene::setItemSelected(Element* item, bool selected)
+void StateMachineScene::setItemSelected(Element *item, bool selected)
 {
     if (!stateModel() || !item)
         return;
@@ -124,12 +124,12 @@ void StateMachineScene::setItemSelected(Element* item, bool selected)
     selectionModel()->select(index, (selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect));
 }
 
-Element* StateMachineScene::currentItem() const
+Element *StateMachineScene::currentItem() const
 {
-    return currentIndex().data(StateModel::ElementRole).value<Element*>();
+    return currentIndex().data(StateModel::ElementRole).value<Element *>();
 }
 
-void StateMachineScene::setCurrentItem(Element* item)
+void StateMachineScene::setCurrentItem(Element *item)
 {
     if (!stateModel() || !item)
         return;
@@ -138,25 +138,25 @@ void StateMachineScene::setCurrentItem(Element* item)
     setCurrentIndex(index);
 }
 
-Element* StateMachineScene::currentState() const
+Element *StateMachineScene::currentState() const
 {
-    Element *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element*>();
+    Element *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element *>();
     if (!element || element->type() == Element::ElementType)
         return nullptr;
 
     if (element->type() == Element::SignalTransitionType || element->type() == Element::TimeoutTransitionType)
-        element = static_cast<Transition*>(element)->sourceState();
+        element = static_cast<Transition *>(element)->sourceState();
 
     QQmlEngine::setObjectOwnership(element, QQmlEngine::CppOwnership);
     return element;
 }
 
-State* StateMachineScene::rootState() const
+State *StateMachineScene::rootState() const
 {
     return d->m_rootState;
 }
 
-void StateMachineScene::setRootState(State* rootState)
+void StateMachineScene::setRootState(State *rootState)
 {
     if (d->m_rootState == rootState)
         return;
@@ -173,12 +173,12 @@ void StateMachineScene::setRootState(State* rootState)
     d->updateItemVisibilities();
 }
 
-Layouter* StateMachineScene::layouter() const
+Layouter *StateMachineScene::layouter() const
 {
     return d->m_layouter;
 }
 
-void StateMachineScene::setLayouter(Layouter* layouter)
+void StateMachineScene::setLayouter(Layouter *layouter)
 {
     if (d->m_layouter == layouter)
         return;
@@ -250,11 +250,11 @@ void StateMachineScene::Private::zoomByInternal(qreal scale)
     q->setViewState(RefreshState);
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkItems(root, [&](Element* element) -> ElementWalker::VisitResult {
+    walker.walkItems(root, [&](Element *element) -> ElementWalker::VisitResult {
         element->setPos(matrix.map(element->pos()));
         element->setWidth(element->width() * scale);
         element->setHeight(element->height() * scale);
-        if (auto transition = qobject_cast<Transition*>(element)) {
+        if (auto transition = qobject_cast<Transition *>(element)) {
             transition->setShape(matrix.map(transition->shape()));
         }
         return ElementWalker::RecursiveWalk;
@@ -287,14 +287,14 @@ void StateMachineScene::layout()
     setViewState(oldViewState);
 }
 
-StateModel* StateMachineScene::stateModel() const
+StateModel *StateMachineScene::stateModel() const
 {
-    return qobject_cast<StateModel*>(model());
+    return qobject_cast<StateModel *>(model());
 }
 
-void StateMachineScene::setModel(QAbstractItemModel* model)
+void StateMachineScene::setModel(QAbstractItemModel *model)
 {
-    StateModel* stateModel = qobject_cast<StateModel*>(model);
+    StateModel *stateModel = qobject_cast<StateModel *>(model);
     if (!stateModel) {
         qCWarning(KDSME_VIEW) << "Invalid model class type, expected StateModel instance";
         return;
@@ -306,8 +306,8 @@ void StateMachineScene::setModel(QAbstractItemModel* model)
 void StateMachineScene::Private::updateItemVisibilities()
 {
     ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkItems(m_rootState, [&](Element* element) -> ElementWalker::VisitResult {
-        if (auto state = qobject_cast<State*>(element)) {
+    walker.walkItems(m_rootState, [&](Element *element) -> ElementWalker::VisitResult {
+        if (auto state = qobject_cast<State *>(element)) {
             const bool expand = (m_maximumDepth > 0 ? ObjectHelper::depth(m_rootState, state) < m_maximumDepth : true);
 
             q->setItemExpanded(state, expand);
@@ -317,20 +317,20 @@ void StateMachineScene::Private::updateItemVisibilities()
     });
 }
 
-void StateMachineScene::Private::updateChildItemVisibility(State* state, bool expand)
+void StateMachineScene::Private::updateChildItemVisibility(State *state, bool expand)
 {
     if (!state)
         return;
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
-    walker.walkChildren(state, [&](Element* i) -> ElementWalker::VisitResult {
-        if (Transition* transition = qobject_cast<Transition*>(i)) {
+    walker.walkChildren(state, [&](Element *i) -> ElementWalker::VisitResult {
+        if (Transition *transition = qobject_cast<Transition *>(i)) {
             // Avoid hiding transitions from states that are collapsed but still visible
             // which have a sibling state as their target
             auto sourceState = transition->sourceState();
             auto targetState = transition->targetState();
             if (sourceState->isVisible()
-                    && (sourceState->parentState() ? sourceState->parentState()->children().contains(targetState) : false)) {
+                && (sourceState->parentState() ? sourceState->parentState()->children().contains(targetState) : false)) {
                 i->setVisible(true);
                 return ElementWalker::RecursiveWalk;
             }
@@ -341,12 +341,12 @@ void StateMachineScene::Private::updateChildItemVisibility(State* state, bool ex
     });
 }
 
-void StateMachineScene::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void StateMachineScene::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     AbstractScene::currentChanged(current, previous);
 
-    Element* currentItem = current.data(StateModel::ElementRole).value<Element*>();
-    Element* previousItem = previous.data(StateModel::ElementRole).value<Element*>();
+    Element *currentItem = current.data(StateModel::ElementRole).value<Element *>();
+    Element *previousItem = previous.data(StateModel::ElementRole).value<Element *>();
     if (!currentItem && !previousItem) {
         // something went wrong
         return;
@@ -362,12 +362,12 @@ void StateMachineScene::currentChanged(const QModelIndex& current, const QModelI
     emit currentItemChanged(currentItem);
 }
 
-void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
+void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     AbstractScene::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void StateMachineScene::rowsInserted(const QModelIndex& parent, int start, int end)
+void StateMachineScene::rowsInserted(const QModelIndex &parent, int start, int end)
 {
     AbstractScene::rowsInserted(parent, start, end);
 }

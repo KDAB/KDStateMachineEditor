@@ -13,7 +13,7 @@
   Contact info@kdab.com if any conditions of this licensing are not clear to you.
 */
 
-//krazy:excludeall=inline as this is a template
+// krazy:excludeall=inline as this is a template
 #ifndef KDSME_UTIL_RINGBUFFER_H
 #define KDSME_UTIL_RINGBUFFER_H
 
@@ -43,7 +43,8 @@ public:
      */
     RingBuffer(int capacity = 10)
         : m_capacity(capacity)
-    {}
+    {
+    }
 
     /**
      * (Re-)set the capacity of this ring buffer to @p capacity
@@ -75,21 +76,36 @@ public:
         m_entries.clear();
     }
 
-    inline const T& at(int i) const { return m_entries.at(i); }
-    inline int size() const { return m_entries.size(); }
+    inline const T &at(int i) const
+    {
+        return m_entries.at(i);
+    }
+    inline int size() const
+    {
+        return m_entries.size();
+    }
     /**
      * Returns a reference to the queue's head item.
      * This function assumes that the queue isn't empty.
      */
-    inline T head() const { return m_entries.head(); }
+    inline T head() const
+    {
+        return m_entries.head();
+    }
     /**
      * Returns a reference to the last item in the list.
      * The list must not be empty.
      */
-    inline T last() const { return m_entries.last(); }
-    inline QList<T> entries() const { return m_entries; }
+    inline T last() const
+    {
+        return m_entries.last();
+    }
+    inline QList<T> entries() const
+    {
+        return m_entries;
+    }
 
-  private:
+private:
     void cleanup()
     {
         while (m_entries.size() > m_capacity) {

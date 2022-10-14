@@ -30,15 +30,15 @@ class KDSME_VIEW_EXPORT EditController : public AbstractController
     Q_PROPERTY(bool editModeEnabled READ editModeEnabled WRITE setEditModeEnabled NOTIFY editModeEnabledChanged)
 
 public:
-    explicit EditController(StateMachineView* parent = nullptr);
+    explicit EditController(StateMachineView *parent = nullptr);
     ~EditController();
 
     bool editModeEnabled() const;
     void setEditModeEnabled(bool editModeEnabled);
 
 public Q_SLOTS:
-    bool sendDragEnterEvent(KDSME::Element* sender, KDSME::Element* target, const QPoint& pos, const QList<QUrl>& urls);
-    bool sendDropEvent(KDSME::Element* sender, KDSME::Element* target, const QPoint& pos, const QList<QUrl>& urls);
+    bool sendDragEnterEvent(KDSME::Element *sender, KDSME::Element *target, const QPoint &pos, const QList<QUrl> &urls);
+    bool sendDropEvent(KDSME::Element *sender, KDSME::Element *target, const QPoint &pos, const QList<QUrl> &urls);
 
 Q_SIGNALS:
     void editModeEnabledChanged(bool editModeEnabled);

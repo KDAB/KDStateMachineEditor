@@ -33,14 +33,14 @@ public:
     virtual ~QsmDebugInterfaceSource();
 
     QStateMachine *qStateMachine() const;
-    void setQStateMachine(QStateMachine* machine);
+    void setQStateMachine(QStateMachine *machine);
 
     /**
      * Publish this object on the QtRemoteObjects bus
      *
      * @sa QRemoteObjectNode::enableRemoting()
      */
-    QObject* remoteObjectSource() const;
+    QObject *remoteObjectSource() const;
 
 private:
     class Private;

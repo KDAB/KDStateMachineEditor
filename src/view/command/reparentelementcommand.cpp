@@ -23,7 +23,7 @@
 
 using namespace KDSME;
 
-ReparentElementCommand::ReparentElementCommand(StateMachineScene* view, Element* element, QUndoCommand* parent)
+ReparentElementCommand::ReparentElementCommand(StateMachineScene *view, Element *element, QUndoCommand *parent)
     : Command(tr("Set parent of '%1'").arg(element->label()), parent)
     , m_view(view)
     , m_element(element)
@@ -33,7 +33,7 @@ ReparentElementCommand::ReparentElementCommand(StateMachineScene* view, Element*
     Q_ASSERT(element);
 }
 
-void ReparentElementCommand::setParentElement(Element* parentElement)
+void ReparentElementCommand::setParentElement(Element *parentElement)
 {
     m_newParentElement = parentElement;
 }

@@ -33,14 +33,14 @@ public:
     virtual ~QScxmlDebugInterfaceSource();
 
     QScxmlStateMachine *qScxmlStateMachine() const;
-    void setQScxmlStateMachine(QScxmlStateMachine* machine);
+    void setQScxmlStateMachine(QScxmlStateMachine *machine);
 
     /**
      * Publish this object on the QtRemoteObjects bus
      *
      * @sa QRemoteObjectNode::enableRemoting()
      */
-    QObject* remoteObjectSource() const;
+    QObject *remoteObjectSource() const;
 
 private:
     class Private;

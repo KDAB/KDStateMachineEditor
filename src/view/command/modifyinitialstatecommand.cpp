@@ -22,10 +22,10 @@
 
 using namespace KDSME;
 
-ModifyInitialStateCommand::ModifyInitialStateCommand(State* state, State* initialState, QUndoCommand* parent):
-    Command(QString(), parent),
-    m_state(state),
-    m_initialState(initialState)
+ModifyInitialStateCommand::ModifyInitialStateCommand(State *state, State *initialState, QUndoCommand *parent)
+    : Command(QString(), parent)
+    , m_state(state)
+    , m_initialState(initialState)
 {
     Q_ASSERT(state);
     setText(tr("Changing initial state of %1").arg(state->label()));

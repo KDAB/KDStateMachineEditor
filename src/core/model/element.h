@@ -35,7 +35,7 @@ class KDSME_CORE_EXPORT Element : public QObject
 {
     Q_OBJECT
     Q_ENUMS(Flags)
-    Q_PROPERTY(KDSME::Element* parent READ parentElement WRITE setParentElement NOTIFY parentChanged FINAL)
+    Q_PROPERTY(KDSME::Element *parent READ parentElement WRITE setParentElement NOTIFY parentChanged FINAL)
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
     Q_PROPERTY(Flags flags READ flags WRITE setFlags NOTIFY flagsChanged FINAL)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged FINAL)
@@ -49,7 +49,8 @@ class KDSME_CORE_EXPORT Element : public QObject
     Q_PROPERTY(bool selected READ isSelected WRITE setSelected NOTIFY selectedChanged FINAL)
 
 public:
-    enum Type {
+    enum Type
+    {
         ElementType,
 
         // Transition types
@@ -66,7 +67,8 @@ public:
     };
     Q_ENUMS(Type)
 
-    enum Flag {
+    enum Flag
+    {
         NoFlags = 0x0,
         ElementIsDragEnabled = 0x1,
         ElementIsSelectable = 0x2,
@@ -74,7 +76,7 @@ public:
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    explicit Element(QObject* parent = nullptr);
+    explicit Element(QObject *parent = nullptr);
     ~Element();
 
     virtual Type type() const;
@@ -86,7 +88,7 @@ public:
      * Label of this state (required to be unique)
      */
     QString label() const;
-    void setLabel(const QString& label);
+    void setLabel(const QString &label);
 
     /**
      * Internal ID (e.g. memory address)
@@ -96,11 +98,11 @@ public:
     quintptr internalId() const;
     void setInternalId(quintptr id);
 
-    void setInternalPointer(void* ptr);
-    void* internalPointer() const;
+    void setInternalPointer(void *ptr);
+    void *internalPointer() const;
 
     QPointF pos() const;
-    void setPos(const QPointF& pos);
+    void setPos(const QPointF &pos);
 
     qreal height() const;
     void setHeight(qreal height);
@@ -119,21 +121,21 @@ public:
     QSizeF preferredSize() const;
     virtual QRectF boundingRect() const;
 
-    Element* parentElement() const;
-    void setParentElement(Element* parent);
-    void setParent(QObject* object); // hide parent function
-    QList<Element*> childElements() const;
+    Element *parentElement() const;
+    void setParentElement(Element *parent);
+    void setParent(QObject *object); // hide parent function
+    QList<Element *> childElements() const;
 
     virtual QString toDisplayString() const;
 
-    Q_INVOKABLE static const char* typeToString(Type type);
-    Q_INVOKABLE static Type stringToType(const char* type);
+    Q_INVOKABLE static const char *typeToString(Type type);
+    Q_INVOKABLE static Type stringToType(const char *type);
 
 Q_SIGNALS:
-    void parentChanged(Element* parent);
+    void parentChanged(Element *parent);
     void flagsChanged(Flags flags);
-    void labelChanged(const QString& label);
-    void posChanged(const QPointF& pos);
+    void labelChanged(const QString &label);
+    void posChanged(const QPointF &pos);
     void heightChanged(qreal height);
     void widthChanged(qreal width);
     void visibleChanged(bool visible);
@@ -147,6 +149,6 @@ private:
 }
 
 Q_DECLARE_METATYPE(KDSME::Element::Type)
-Q_DECLARE_METATYPE(KDSME::Element*)
+Q_DECLARE_METATYPE(KDSME::Element *)
 
 #endif // TREESTRUCTURE_H

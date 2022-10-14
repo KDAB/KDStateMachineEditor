@@ -29,7 +29,7 @@ QT_END_NAMESPACE
 
 class QSMWatcher : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit QSMWatcher(QObject *parent = nullptr);
@@ -42,7 +42,7 @@ Q_SIGNALS:
     void stateEntered(QAbstractState *state);
     void stateExited(QAbstractState *state);
 
-    void transitionTriggered(QAbstractTransition*);
+    void transitionTriggered(QAbstractTransition *);
 
     void watchedStateMachineChanged(QStateMachine *);
 

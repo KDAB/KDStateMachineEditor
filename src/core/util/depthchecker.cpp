@@ -19,13 +19,13 @@ using namespace KDSME;
 
 namespace {
 
-int elementDepth(const Element* element)
+int elementDepth(const Element *element)
 {
     if (!element)
         return -1;
 
     int depth = 0;
-    const Element* current = element;
+    const Element *current = element;
     while (current) {
         ++depth;
         current = current->parentElement();
@@ -37,20 +37,21 @@ int elementDepth(const Element* element)
 
 struct DepthChecker::Private
 {
-    Private(DepthChecker* q)
+    Private(DepthChecker *q)
         : q(q)
         , m_target(nullptr)
         , m_depth(-1)
-    {}
+    {
+    }
 
     void updateDepth();
 
-    DepthChecker* q;
-    Element* m_target;
+    DepthChecker *q;
+    Element *m_target;
     int m_depth;
 };
 
-DepthChecker::DepthChecker(QObject* parent)
+DepthChecker::DepthChecker(QObject *parent)
     : QObject(parent)
     , d(new Private(this))
 {
@@ -65,25 +66,25 @@ int DepthChecker::depth() const
     return d->m_depth;
 }
 
-Element* DepthChecker::target() const
+Element *DepthChecker::target() const
 {
     return d->m_target;
 }
 
-void DepthChecker::setTarget(Element* target)
+void DepthChecker::setTarget(Element *target)
 {
     if (d->m_target == target)
         return;
 
     if (d->m_target) {
-        disconnect(d->m_target, SIGNAL(parentChanged(Element*)),
+        disconnect(d->m_target, SIGNAL(parentChanged(Element *)),
                    this, SLOT(updateDepth()));
     }
 
     d->m_target = target;
 
     if (d->m_target) {
-        connect(d->m_target, SIGNAL(parentChanged(Element*)),
+        connect(d->m_target, SIGNAL(parentChanged(Element *)),
                 this, SLOT(updateDepth()));
     }
     emit targetChanged(d->m_target);

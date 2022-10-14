@@ -22,7 +22,7 @@ public:
     QStateMachine *machine() const;
 
 private:
-    QStateMachine* m_machine;
+    QStateMachine *m_machine;
 };
 
 #endif

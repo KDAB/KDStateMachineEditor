@@ -51,7 +51,7 @@ StateModel::Private::Private()
 {
 }
 
-StateModel::StateModel(QObject* parent)
+StateModel::StateModel(QObject *parent)
     : ObjectTreeModel(parent)
     , d(new Private)
 {
@@ -61,19 +61,19 @@ StateModel::~StateModel()
 {
 }
 
-State* StateModel::state() const
+State *StateModel::state() const
 {
-    return qobject_cast<State*>(rootObjects().value(0));
+    return qobject_cast<State *>(rootObjects().value(0));
 }
 
-void StateModel::setState(State* state)
+void StateModel::setState(State *state)
 {
     setRootObject(state);
 }
 
-QVariant StateModel::data(const QModelIndex& index, int role) const
+QVariant StateModel::data(const QModelIndex &index, int role) const
 {
-    Element* element = qobject_cast<Element*>(ObjectTreeModel::data(index, ObjectRole).value<QObject*>());
+    Element *element = qobject_cast<Element *>(ObjectTreeModel::data(index, ObjectRole).value<QObject *>());
     if (!element) {
         return ObjectTreeModel::data(index, role);
     }
@@ -82,7 +82,7 @@ QVariant StateModel::data(const QModelIndex& index, int role) const
     case Qt::DisplayRole:
         return element->toDisplayString();
     case ElementRole:
-        return QVariant::fromValue<Element*>(element);
+        return QVariant::fromValue<Element *>(element);
     case InternalIdRole:
         return element->internalId();
     case Qt::EditRole:
@@ -105,9 +105,9 @@ QVariant StateModel::headerData(int section, Qt::Orientation orientation, int ro
     return QAbstractItemModel::headerData(section, orientation, role);
 }
 
-Qt::ItemFlags StateModel::flags(const QModelIndex& index) const
+Qt::ItemFlags StateModel::flags(const QModelIndex &index) const
 {
-    const Element* element = index.data(ElementRole).value<Element*>();
+    const Element *element = index.data(ElementRole).value<Element *>();
     Q_ASSERT(element);
     if (!element) {
         return QAbstractItemModel::flags(index);
@@ -120,7 +120,7 @@ struct TransitionModel::Private
 {
 };
 
-TransitionModel::TransitionModel(QObject* parent)
+TransitionModel::TransitionModel(QObject *parent)
     : QSortFilterProxyModel(parent)
     , d(new Private)
 {
@@ -130,14 +130,14 @@ TransitionModel::~TransitionModel()
 {
 }
 
-void TransitionModel::setSourceModel(QAbstractItemModel* sourceModel)
+void TransitionModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     if (!sourceModel) {
         QSortFilterProxyModel::setSourceModel(nullptr);
         return;
     }
 
-    StateModel* model = qobject_cast<StateModel*>(sourceModel);
+    StateModel *model = qobject_cast<StateModel *>(sourceModel);
     if (!model) {
         qCWarning(KDSME_CORE) << "called with invalid model instance:" << model;
         return;
@@ -146,12 +146,12 @@ void TransitionModel::setSourceModel(QAbstractItemModel* sourceModel)
     QSortFilterProxyModel::setSourceModel(sourceModel);
 }
 
-bool TransitionModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+bool TransitionModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
     Q_UNUSED(source_row);
 
-    QObject* object = source_parent.data(StateModel::ObjectRole).value<QObject*>();
-    Transition* transition = qobject_cast<Transition*>(object);
+    QObject *object = source_parent.data(StateModel::ObjectRole).value<QObject *>();
+    Transition *transition = qobject_cast<Transition *>(object);
     if (!transition) {
         return false;
     }
@@ -162,8 +162,8 @@ struct TransitionListModel::Private
 {
     Private();
 
-    State* m_state;
-    QList<Transition*> m_transitions;
+    State *m_state;
+    QList<Transition *> m_transitions;
 };
 
 TransitionListModel::Private::Private()
@@ -171,7 +171,7 @@ TransitionListModel::Private::Private()
 {
 }
 
-TransitionListModel::TransitionListModel(QObject* parent)
+TransitionListModel::TransitionListModel(QObject *parent)
     : QAbstractListModel(parent)
     , d(new Private)
 {
@@ -181,7 +181,7 @@ TransitionListModel::~TransitionListModel()
 {
 }
 
-int TransitionListModel::rowCount(const QModelIndex& parent) const
+int TransitionListModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return 0;
@@ -189,19 +189,19 @@ int TransitionListModel::rowCount(const QModelIndex& parent) const
     return d->m_transitions.size();
 }
 
-int TransitionListModel::columnCount(const QModelIndex& parent) const
+int TransitionListModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return _LastColumn;
 }
 
-QVariant TransitionListModel::data(const QModelIndex& index, int role) const
+QVariant TransitionListModel::data(const QModelIndex &index, int role) const
 {
     if (index.row() < 0 || index.row() >= rowCount()) {
         return QVariant();
     }
 
-    Transition* transition = d->m_transitions[index.row()];
+    Transition *transition = d->m_transitions[index.row()];
     Q_ASSERT(transition);
     if (role == Qt::DisplayRole) {
         const int column = index.column();
@@ -216,7 +216,7 @@ QVariant TransitionListModel::data(const QModelIndex& index, int role) const
             return QVariant();
         }
     } else if (role == ObjectRole) {
-        return QVariant::fromValue<Transition*>(transition);
+        return QVariant::fromValue<Transition *>(transition);
     }
     return QVariant();
 }
@@ -238,23 +238,23 @@ QVariant TransitionListModel::headerData(int section, Qt::Orientation orientatio
     return QAbstractListModel::headerData(section, orientation, role);
 }
 
-QHash< int, QByteArray > TransitionListModel::roleNames() const
+QHash<int, QByteArray> TransitionListModel::roleNames() const
 {
     QHash<int, QByteArray> roleNames = QAbstractItemModel::roleNames();
     roleNames.insert(ObjectRole, "object");
     return roleNames;
 }
 
-State* TransitionListModel::state() const
+State *TransitionListModel::state() const
 {
     return d->m_state;
 }
 
-void TransitionListModel::setState(State* state)
+void TransitionListModel::setState(State *state)
 {
     beginResetModel();
     d->m_state = state;
-    d->m_transitions = (state ? state->findChildren<Transition*>() : QList<Transition*>());
+    d->m_transitions = (state ? state->findChildren<Transition *>() : QList<Transition *>());
     // TODO: Track updates to object (newly created/removed transitions)?
     endResetModel();
 }

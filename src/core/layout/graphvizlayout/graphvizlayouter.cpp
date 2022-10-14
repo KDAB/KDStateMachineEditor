@@ -25,7 +25,7 @@
 
 using namespace KDSME;
 
-GraphvizLayouter::GraphvizLayouter(QObject* parent)
+GraphvizLayouter::GraphvizLayouter(QObject *parent)
     : Layouter(parent)
     , m_backend(new GraphvizLayouterBackend)
 {
@@ -36,7 +36,7 @@ GraphvizLayouter::~GraphvizLayouter()
     delete m_backend;
 }
 
-QRectF GraphvizLayouter::layout(State* state, const LayoutProperties* properties)
+QRectF GraphvizLayouter::layout(State *state, const LayoutProperties *properties)
 {
     if (!state) {
         qCWarning(KDSME_CORE) << "Null state passed to layout function";

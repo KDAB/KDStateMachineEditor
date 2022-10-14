@@ -33,17 +33,17 @@ class StateModel;
 class KDSME_VIEW_EXPORT CommandController : public AbstractController
 {
     Q_OBJECT
-    Q_PROPERTY(QUndoStack* undoStack READ undoStack CONSTANT)
+    Q_PROPERTY(QUndoStack *undoStack READ undoStack CONSTANT)
 
 public:
-    explicit CommandController(QUndoStack* undoStack, StateMachineView* parent);
+    explicit CommandController(QUndoStack *undoStack, StateMachineView *parent);
     ~CommandController();
 
-    Q_INVOKABLE void push(KDSME::Command* command);
+    Q_INVOKABLE void push(KDSME::Command *command);
 
     void clear();
 
-    QUndoStack* undoStack() const;
+    QUndoStack *undoStack() const;
 
 private:
     struct Private;
@@ -52,6 +52,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(KDSME::CommandController*)
+Q_DECLARE_METATYPE(KDSME::CommandController *)
 
 #endif // COMMANDCONTROLLER_H

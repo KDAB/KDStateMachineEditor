@@ -31,27 +31,27 @@ namespace {
 
 StateId makeStateId(QScxmlStateMachineInfo::StateId stateId)
 {
-    return StateId{static_cast<quint64>(stateId)};
+    return StateId { static_cast<quint64>(stateId) };
 }
 TransitionId makeTransitionId(QScxmlStateMachineInfo::TransitionId transitionId)
 {
-    return TransitionId{static_cast<quint64>(transitionId)};
+    return TransitionId { static_cast<quint64>(transitionId) };
 }
 StateType makeStateType(QScxmlStateMachineInfo::StateType stateType)
 {
     switch (stateType) {
-        case QScxmlStateMachineInfo::InvalidState:
-            return StateMachineState;
-        case QScxmlStateMachineInfo::NormalState:
-            return OtherState;
-        case QScxmlStateMachineInfo::ParallelState:
-            return OtherState; // FIXME: No ParallelState. Bug.
-        case QScxmlStateMachineInfo::FinalState:
-            return FinalState;
-        case QScxmlStateMachineInfo::ShallowHistoryState:
-            return ShallowHistoryState;
-        case QScxmlStateMachineInfo::DeepHistoryState:
-            return DeepHistoryState;
+    case QScxmlStateMachineInfo::InvalidState:
+        return StateMachineState;
+    case QScxmlStateMachineInfo::NormalState:
+        return OtherState;
+    case QScxmlStateMachineInfo::ParallelState:
+        return OtherState; // FIXME: No ParallelState. Bug.
+    case QScxmlStateMachineInfo::FinalState:
+        return FinalState;
+    case QScxmlStateMachineInfo::ShallowHistoryState:
+        return ShallowHistoryState;
+    case QScxmlStateMachineInfo::DeepHistoryState:
+        return DeepHistoryState;
     }
     Q_UNREACHABLE();
     return OtherState;
@@ -67,7 +67,7 @@ public:
     explicit Private(QObject *parent = nullptr);
 
     QScxmlStateMachine *qScxmlStateMachine() const;
-    void setQScxmlStateMachine(QScxmlStateMachine* machine);
+    void setQScxmlStateMachine(QScxmlStateMachine *machine);
 
 private Q_SLOTS:
     void stateEntered(QScxmlStateMachineInfo::StateId state);
@@ -124,17 +124,17 @@ QScxmlDebugInterfaceSource::~QScxmlDebugInterfaceSource()
 {
 }
 
-QScxmlStateMachine * QScxmlDebugInterfaceSource::qScxmlStateMachine() const
+QScxmlStateMachine *QScxmlDebugInterfaceSource::qScxmlStateMachine() const
 {
     return d->qScxmlStateMachine();
 }
 
-void QScxmlDebugInterfaceSource::setQScxmlStateMachine(QScxmlStateMachine* machine)
+void QScxmlDebugInterfaceSource::setQScxmlStateMachine(QScxmlStateMachine *machine)
 {
     d->setQScxmlStateMachine(machine);
 }
 
-QObject* QScxmlDebugInterfaceSource::remoteObjectSource() const
+QObject *QScxmlDebugInterfaceSource::remoteObjectSource() const
 {
     return d.data();
 }
@@ -179,7 +179,7 @@ QScxmlStateMachine *QScxmlDebugInterfaceSource::Private::qScxmlStateMachine() co
     return m_info ? m_info->stateMachine() : nullptr;
 }
 
-void QScxmlDebugInterfaceSource::Private::setQScxmlStateMachine(QScxmlStateMachine* machine)
+void QScxmlDebugInterfaceSource::Private::setQScxmlStateMachine(QScxmlStateMachine *machine)
 {
     repopulateGraph();
 
@@ -193,25 +193,25 @@ void QScxmlDebugInterfaceSource::Private::setQScxmlStateMachine(QScxmlStateMachi
     if (m_info) {
         connect(m_info.data(), &QScxmlStateMachineInfo::statesEntered, this,
                 [this](const QVector<QScxmlStateMachineInfo::StateId> &states) {
-            // TODO: Don't just use the first
-            if (!states.isEmpty()) {
-                stateEntered(states.first());
-            }
-        });
+                    // TODO: Don't just use the first
+                    if (!states.isEmpty()) {
+                        stateEntered(states.first());
+                    }
+                });
         connect(m_info.data(), &QScxmlStateMachineInfo::statesExited, this,
                 [this](const QVector<QScxmlStateMachineInfo::StateId> &states) {
-            // TODO: Don't just use the first
-            if (!states.isEmpty()) {
-                stateExited(states.first());
-            }
-        });
+                    // TODO: Don't just use the first
+                    if (!states.isEmpty()) {
+                        stateExited(states.first());
+                    }
+                });
         connect(m_info.data(), &QScxmlStateMachineInfo::transitionsTriggered,
                 this, [this](const QVector<QScxmlStateMachineInfo::TransitionId> &transitions) {
-            // TODO: Don't just use the first
-            if (!transitions.isEmpty()) {
-                handleTransitionTriggered(transitions.first());
-            }
-        });
+                    // TODO: Don't just use the first
+                    if (!transitions.isEmpty()) {
+                        handleTransitionTriggered(transitions.first());
+                    }
+                });
     }
 
     updateStartStop();

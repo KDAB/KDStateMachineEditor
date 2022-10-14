@@ -31,13 +31,13 @@ class KDSME_CORE_EXPORT GraphvizLayouter : public Layouter
     Q_OBJECT
 
 public:
-    explicit GraphvizLayouter(QObject* parent = nullptr);
+    explicit GraphvizLayouter(QObject *parent = nullptr);
     ~GraphvizLayouter();
 
-    QRectF layout(State* state, const LayoutProperties* properties) override;
+    QRectF layout(State *state, const LayoutProperties *properties) override;
 
 private:
-    GraphvizLayouterBackend* m_backend;
+    GraphvizLayouterBackend *m_backend;
 };
 
 }

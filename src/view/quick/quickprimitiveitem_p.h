@@ -26,7 +26,7 @@ QT_END_NAMESPACE
 
 namespace GeometryUtils {
 
-QRectF boundingRect(QSGGeometry* geometry);
+QRectF boundingRect(QSGGeometry *geometry);
 
 }
 
@@ -42,12 +42,14 @@ class QuickGeometryItem : public QObject
     Q_ENUMS(DrawingMode)
 
 public:
-    enum VertexDataType {
+    enum VertexDataType
+    {
         Point2DType, ///< Default
         ColoredPoint2DType,
         TexturedPoint2DType
     };
-    enum DrawingMode {
+    enum DrawingMode
+    {
         Points = QSGGeometry::DrawPoints,
         Lines = QSGGeometry::DrawLines,
         LineLoop = QSGGeometry::DrawLineLoop,
@@ -57,10 +59,10 @@ public:
         TriangleFan = QSGGeometry::DrawTriangleFan
     };
 
-    explicit QuickGeometryItem(QObject* parent = nullptr);
+    explicit QuickGeometryItem(QObject *parent = nullptr);
 
     QList<qreal> vertexData() const;
-    void setVertexData(const QList<qreal>& vertexData);
+    void setVertexData(const QList<qreal> &vertexData);
 
     VertexDataType vertexDataType() const;
     void setVertexDataType(VertexDataType type);
@@ -71,10 +73,10 @@ public:
     float lineWidth() const;
     void setLineWidth(float lineWidth);
 
-    QSGGeometry* createGeometry() const;
+    QSGGeometry *createGeometry() const;
 
 Q_SIGNALS:
-    void vertexDataChanged(const QList<qreal>& vertexData);
+    void vertexDataChanged(const QList<qreal> &vertexData);
     void vertexDataTypeChanged(VertexDataType type);
     void drawingModeChanged(DrawingMode drawingMode);
     void lineWidthChanged(float lineWidth);
@@ -94,32 +96,32 @@ Q_DECLARE_METATYPE(QuickGeometryItem::DrawingMode)
 class QuickPrimitiveItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QuickGeometryItem* geometry READ geometryItem WRITE setGeometryItem NOTIFY geometryItemChanged)
+    Q_PROPERTY(QuickGeometryItem *geometry READ geometryItem WRITE setGeometryItem NOTIFY geometryItemChanged)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
-    explicit QuickPrimitiveItem(QQuickItem* parent = nullptr);
+    explicit QuickPrimitiveItem(QQuickItem *parent = nullptr);
 
-    QuickGeometryItem* geometryItem() const;
-    void setGeometryItem(QuickGeometryItem* item);
+    QuickGeometryItem *geometryItem() const;
+    void setGeometryItem(QuickGeometryItem *item);
 
     QColor color() const;
-    void setColor(const QColor& color);
+    void setColor(const QColor &color);
 
 Q_SIGNALS:
-    void geometryItemChanged(QuickGeometryItem* geometry);
-    void colorChanged(const QColor& color);
+    void geometryItemChanged(QuickGeometryItem *geometry);
+    void colorChanged(const QColor &color);
 
 protected:
-    QSGNode *updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData* data) override;
+    QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data) override;
 
 private Q_SLOTS:
     void updateGeometry();
 
 private:
-    void updateImplicitSize(QSGGeometry* geometry);
+    void updateImplicitSize(QSGGeometry *geometry);
 
-    QuickGeometryItem* m_geometryItem;
+    QuickGeometryItem *m_geometryItem;
     bool m_geometryDirty;
     QColor m_color;
 };
