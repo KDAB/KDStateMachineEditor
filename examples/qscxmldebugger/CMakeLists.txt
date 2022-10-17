@@ -22,9 +22,7 @@ if(NOT BUILD_QT6)
     # Work-around QTBUG-84387
     # Needed in Qt5, otherwise we'll run into duplicate symbol issues like this:
     #   ld: error: duplicate symbol: TrafficLightStateMachine::qt_metacall(QMetaObject::Call, int, void**)
-    set_source_files_properties(${STATECHART_SRCS} PROPERTIES
-                                                GENERATED TRUE
-                                                SKIP_AUTOGEN ON)
+    set_source_files_properties(${STATECHART_SRCS} PROPERTIES GENERATED TRUE SKIP_AUTOGEN ON)
     target_sources(qscxmldebugger PRIVATE ${REPC_SRCS} ${STATECHART_SRCS})
 endif()
 if(BUILD_QT6)
