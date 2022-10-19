@@ -55,7 +55,7 @@ struct QsmAdapter : public DebugInterfaceClient
         , clientNode(QUrl(QStringLiteral("local:registry")))
     {
         // set up the debug interface on the local registry and connect to it
-        // this is simpler than writing another class that handles in-process debuggging
+        // this is simpler than writing another class that handles in-process debugging
         // just pay the cost for the in-process communication, it's not that much anyway
         registryNode.enableRemoting(interface.remoteObjectSource());
 

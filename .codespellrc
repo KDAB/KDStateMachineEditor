@@ -1,4 +1,4 @@
 [codespell]
 skip = ./build-*,.git
 interactive = 3
-ignore-words-list = indention
+ignore-words-list = indention,therefrom,propert,currenty

@@ -39,4 +39,3 @@ Item {
     readonly property color viewBackgroundColor: myPalette.base;
     readonly property color viewAlternateBackgroundColor: myPalette.alternateBase;
 }
-
