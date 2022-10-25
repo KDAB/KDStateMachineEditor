@@ -42,24 +42,29 @@ and will be built automatically.  It can be run from the bin/ directory once the
 * Internal API to create state charts
   * Consisting of states and transitions
   * Also supports history/initial states (in short: everything the SCXML spec provides)
+
 * QML scene which shows the state charts
   * Custom items for drawing transitions using bezier curves
   * Editing: Drag & drop support, move support, etc.
   * Editing: Undo stack implementation, redo/undo actions for all operations
+
 * Abstract interface to layout state charts
   * [GraphViz's cgraph](https://www.graphviz.org/pdf/libguide.pdf) is one of the implemented
     layouting backends (part of this repository)
+
 * Import/Export capabilities
   * Allows to import/export .scxml files
   * Allows to export .svg files
   * Allows to export .qml files
     (in [QtQml.StateMachine](https://doc.qt.io/qt-5/qmlstatemachine.html) syntax)
+
 * Allows to inspect running state machine instances
   * Both supports visualizing `QStateMachine` or `QScxmlStateMachine`
   * Can inspect remote applications (i.e. processes living on another machine)
   * Using [QtRemoteObjects](https://doc.qt.io/qt-5/qtremoteobjects-index.html) for communication
     * Requires the target application to be "instrumented",
       cf. the [qsmdebugger](examples/qsmdebugger/] example
+
 * Theming support (cf. screenshots above) -- currently available are:
   * DarkTheme
   * SystemTheme
