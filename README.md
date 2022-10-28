@@ -81,7 +81,7 @@ configuration changes of the state machine, as well as zooming into child state 
 We strongly recommend installing [Graphviz](https://graphviz.org):
 
 ```bash
-    (Ubuntu) sudo apt-get graphviz graphviz-dev
+    (Ubuntu) sudo apt install graphviz graphviz-dev
     (Fedora) dnf install graphviz graphviz-devel
     (Mac) brew install graphviz
     (Windows) choco install graphviz
