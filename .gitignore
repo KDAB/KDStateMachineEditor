@@ -5,6 +5,7 @@
 *.orig
 *.out
 CMakeLists.txt.user*
+/compile_commands.json
 
 # from kdiff3
 *.BACKUP.*
