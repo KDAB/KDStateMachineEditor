@@ -47,12 +47,12 @@ environment:
 
 install:
   - cmd: choco install winflexbison graphviz
-  - sh: if [ "`uname -s`" = "Darwin" ]; then rm -f /usr/local/include/X11 /usr/local/bin/ccmake; brew install ninja graphviz; else sudo apt-get -y update; sudo apt-get -y install libgraphviz-dev qt5-default qtbase5-dev qtbase5-dev-tools qtbase5-private-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev qtdeclarative5-dev-tools libqt5xmlpatterns5-dev libqt5xmlpatterns5 qtxmlpatterns5-dev-tools mesa-common-dev libglu1-mesa-dev; fi
+  - sh: if [ "`uname -s`" = "Darwin" ]; then rm -f /usr/local/include/X11; brew install ninja; brew install graphviz --ignore-dependencies cmake; else sudo apt-get -y update; sudo apt-get -y install libgraphviz-dev qt5-default qtbase5-dev qtbase5-dev-tools qtbase5-private-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev qtdeclarative5-dev-tools libqt5xmlpatterns5-dev libqt5xmlpatterns5 qtxmlpatterns5-dev-tools mesa-common-dev libglu1-mesa-dev; fi
 
 before_build:
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: set PATH=C:\Qt\6.2\msvc2019_64\bin;C:\Qt\5.15\msvc2019_64\bin;%PATH%
-  - sh: if [ "`uname -s`" = "Darwin" ]; then export PATH=$HOME/Qt/6.1/macos/bin:$HOME/Qt/5.15/clang_64/bin:$PATH; else export PATH=$HOME/Qt/6.2/gcc_64/bin:$HOME/Qt/5.15/gcc_64/bin:$PATH; fi
+  - sh: if [ "`uname -s`" = "Darwin" ]; then export PATH=$HOME/Qt/6.3/macos/bin:$HOME/Qt/5.15/clang_64/bin:$PATH; else export PATH=$HOME/Qt/6.2/gcc_64/bin:$HOME/Qt/5.15/gcc_64/bin:$PATH; fi
   - cmd: set GRAPHVIZ_ROOT=c:\Program Files\Graphviz
   - cmd: set PATH=%QTDIR%\bin;C:\Python39-x64;%GRAPHVIZ_ROOT%\bin;%PATH%
 
