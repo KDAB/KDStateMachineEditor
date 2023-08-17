@@ -13,6 +13,8 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
+include(CMakeFindDependencyMacro)
+
 find_dependency(Qt@Qt_VERSION_MAJOR@Widgets)
 find_dependency(Qt@Qt_VERSION_MAJOR@Quick)
 find_dependency(Qt@Qt_VERSION_MAJOR@QuickWidgets)
