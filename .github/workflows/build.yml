@@ -1,0 +1,99 @@
+# SPDX-FileCopyrightText: 2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          #- ubuntu-22.04 # OK
+          #- ubuntu-20.04
+          - windows-2022
+          #- windows-2019
+          #- macos-12 # OK
+          #- macos-11
+        build_type:
+          - Debug
+          #- Release
+        qt:
+          - version: "5.15.2"
+            requested: "5.15"
+          #- version: "6.4.2"
+            #requested: "6.4.*"
+            #modules: qtscxml
+
+    steps:
+      - name: Install Dependencies on Linux
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo apt update -qq
+          sudo apt install -y doxygen libgraphviz-dev
+
+      - name: Install Dependencies on Windows
+        if: ${{ runner.os == 'Windows' }}
+        run: choco install winflexbison3 graphviz
+
+      - name: Install Dependencies on macOS
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install graphviz
+
+      - name: Install Qt with options and default aqtversion
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: null # use whatever the default is
+          modules: ${{ matrix.qt.modules }}
+          version: ${{ matrix.qt.requested }}
+          cache: true
+
+      - name: Install ninja-build tool (must be after Qt due PATH changes)
+        uses: turtlesec-no/get-ninja@main
+
+      - name: Make sure MSVC is found when Ninja generator is in use
+        if: ${{ runner.os == 'Windows' }}
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Fetch Git submodule
+        run: git submodule update --init --recursive
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Configure project
+        run: >
+          cmake -S . -B ./build -G Ninja
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_PREFIX_PATH='C:\Program Files\Graphviz'
+          -DBUILD_QT6=${{ startsWith(matrix.qt.version, '6.') }}
+          -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
+          -DBUILD_EXAMPLES=ON
+          -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DWITH_STATIC_GRAPHVIZ=${{ runner.os == 'Windows' }}
+
+      - name: Build Project
+        run: cmake --build ./build
+
+      - name: Run tests on Linux (offscreen)
+        if: ${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      - name: Run tests on Windown/macOS
+        if: ${{ matrix.build_type == 'Debug' && runner.os != 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+
+      - name: Read tests log when it fails
+        uses: andstor/file-reader-action@v1
+        if: ${{ failure() && matrix.build_type == 'Debug' }}
+        with:
+          path: "./build/Testing/Temporary/LastTest.log"
