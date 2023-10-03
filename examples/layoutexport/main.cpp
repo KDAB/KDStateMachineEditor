@@ -28,7 +28,7 @@
 using namespace KDSME;
 
 /**
- * @brief Loading a SCXML file, layouting it, and print out just (re-usable) layout information
+ * @brief Loading a SCXML file, layouting it, and print out just (reusable) layout information
  */
 int main()
 {
