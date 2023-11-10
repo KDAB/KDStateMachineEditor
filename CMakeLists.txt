@@ -129,13 +129,16 @@ set_package_properties(
     PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
 
-find_package(Qt${Qt_VERSION_MAJOR}XmlPatterns ${QT_MIN_VERSION} CONFIG QUIET)
-set_package_properties(
-    Qt${Qt_VERSION_MAJOR}XmlPatterns PROPERTIES
-    TYPE OPTIONAL
-    DESCRIPTION "Qt XmlPatterns library"
-    PURPOSE "Required for unit tests dealing with XML input/output"
-)
+# QtXmlPatterns is removed since Qt6
+if(NOT BUILD_QT6)
+    find_package(Qt5XmlPatterns ${QT_MIN_VERSION} CONFIG QUIET)
+    set_package_properties(
+        Qt5XmlPatterns PROPERTIES
+        TYPE OPTIONAL
+        DESCRIPTION "Qt5 XmlPatterns library"
+        PURPOSE "Required with Qt5 for unit tests dealing with XML input/output"
+    )
+endif()
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
