@@ -14,6 +14,10 @@
 #
 
 # qhelpgenerator
+if(NOT DEFINED QT_INSTALL_BINS)
+    # silent --warn-uninitialized
+    set(QT_INSTALL_BINS "")
+endif()
 find_program(QHELPGEN_EXECUTABLE qhelpgenerator HINTS ${QT_INSTALL_BINS})
 
 if(QHELPGEN_EXECUTABLE)

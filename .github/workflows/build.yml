@@ -25,14 +25,12 @@ jobs:
         build_type:
           - Debug
           - Release
-        qt:
-          - version: "5.15.2"
-            requested: "5.15"
-            arch: win64_mingw81
-          - version: "6.4.2"
-            requested: "6.4.*"
-            modules: qtscxml
-            arch: win64_mingw
+        config:
+          - qt_version: "5.15"
+            qt_arch: win64_mingw81
+          - qt_version: "6.4.*"
+            qt_modules: qtscxml
+            qt_arch: win64_mingw
 
     steps:
       - name: Install Dependencies on Linux
@@ -54,8 +52,8 @@ jobs:
         uses: jurplel/install-qt-action@v3
         with:
           aqtversion: null # use whatever the default is
-          modules: ${{ matrix.qt.modules }}
-          version: ${{ matrix.qt.requested }}
+          modules: ${{ matrix.config.qt_modules }}
+          version: ${{ matrix.config.qt_version }}
           cache: true
 
       - name: Install Qt with options and default aqtversion (Windows)
@@ -63,9 +61,9 @@ jobs:
         uses: jurplel/install-qt-action@v3
         with:
           aqtversion: null # use whatever the default is
-          modules: ${{ matrix.qt.modules }}
-          version: ${{ matrix.qt.requested }}
-          arch: ${{ matrix.qt.arch }} # MinGW is required otherwise we get link errors with graphviz
+          modules: ${{ matrix.config.qt_modules }}
+          version: ${{ matrix.config.qt_version }}
+          arch: ${{ matrix.config.qt_arch }} # MinGW is required otherwise we get link errors with graphviz
           cache: true
 
       - name: Add Graphviz libraries to Windows PATH
@@ -82,15 +80,13 @@ jobs:
       - name: Fetch Git submodule
         run: git submodule update --init --recursive
 
-      - name: Create build directory
-        run: mkdir build
-
       - name: Configure project
         run: >
           cmake -S . -B ./build -G Ninja
+          --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_PREFIX_PATH='C:\Program Files\Graphviz'
-          -DBUILD_QT6=${{ startsWith(matrix.qt.version, '6.') }}
+          -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
