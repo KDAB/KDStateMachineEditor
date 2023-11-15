@@ -60,10 +60,14 @@ endif()
 
 ecm_add_test(test_scxmlimport.cpp LINK_LIBRARIES kdsme_testhelper)
 
-ecm_add_test(
-    test_scxmlexport.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test ${KDSME_TESTHELPER_EXTRA_LIBS}
-    kdstatemachineeditor_core
-)
+if(DEFINED KDSME_TESTHELPER_EXTRA_LIBS)
+    ecm_add_test(
+        test_scxmlexport.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test ${KDSME_TESTHELPER_EXTRA_LIBS}
+        kdstatemachineeditor_core
+    )
+else()
+    ecm_add_test(test_scxmlexport.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_core)
+endif()
 
 ecm_add_test(test_statemachine.cpp LINK_LIBRARIES kdsme_testhelper)
 
