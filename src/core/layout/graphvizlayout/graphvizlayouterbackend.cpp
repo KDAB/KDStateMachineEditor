@@ -144,12 +144,12 @@ struct GraphvizLayouterBackend::Private
     inline Agnode_t *agnodeForState(State *state);
 
     /// Root Graphviz graph used for layouting
-    Agraph_t *m_graph;
+    Agraph_t *m_graph = nullptr;
     /// Graphviz context
-    GVC_t *m_context;
+    GVC_t *m_context = nullptr;
 
-    LayoutMode m_layoutMode;
-    const LayoutProperties *m_properties;
+    LayoutMode m_layoutMode = RecursiveMode;
+    const LayoutProperties *m_properties = nullptr;
 
     /// Mapping from state machine items to Graphviz layout items
     QPointer<State> m_root;
@@ -158,10 +158,6 @@ struct GraphvizLayouterBackend::Private
 };
 
 GraphvizLayouterBackend::Private::Private()
-    : m_graph(nullptr)
-    , m_context(nullptr)
-    , m_layoutMode(RecursiveMode)
-    , m_properties(0)
 {
     // hide non-critical warnings, such as
     // Warning: node '0x15e1800', graph 'GraphvizLayouterBackend@0xa90330' size too small for label
