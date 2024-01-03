@@ -33,11 +33,7 @@ namespace {
 static QString stripQml(const QByteArray &input)
 {
     QStringList result;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     Q_FOREACH (const QString &s, QString::fromUtf8(input).split(u'\n', Qt::SkipEmptyParts)) {
-#else
-    Q_FOREACH (const QString &s, QString::fromUtf8(input).split(u'\n', QString::SkipEmptyParts)) {
-#endif
         result.append(s.simplified().trimmed());
     }
     return result.join(u'\n');

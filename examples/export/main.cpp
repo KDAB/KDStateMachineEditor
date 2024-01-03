@@ -25,11 +25,7 @@ using namespace KDSME;
 
 static void doOutput(QTextStream &qOut, const QByteArray &output)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     qOut << output << Qt::endl;
-#else
-    qOut << output << endl;
-#endif
 }
 
 /**

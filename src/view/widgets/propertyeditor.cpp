@@ -108,13 +108,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     d->m_widgetToPropertyMap.insert(d->m_transitionWidget->timeoutEdit, QStringLiteral("timeout"));
 
     connect(d->m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     connect(d->m_stateWidget->initialStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setInitalState(text); });
     connect(d->m_stateWidget->defaultStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setDefaultState(text); });
-#else
-    connect(d->m_stateWidget->initialStateComboBox, SIGNAL(activated(QString)), SLOT(setInitalState(QString)));
-    connect(d->m_stateWidget->defaultStateComboBox, SIGNAL(activated(QString)), SLOT(setDefaultState(QString)));
-#endif
     connect(d->m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
     connect(d->m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
     connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
@@ -122,13 +117,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     connect(d->m_stateWidget->historyTypeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
 
     connect(d->m_transitionWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     connect(d->m_transitionWidget->sourceStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setSourceState(text); });
     connect(d->m_transitionWidget->targetStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setTargetState(text); });
-#else
-    connect(d->m_transitionWidget->sourceStateComboBox, SIGNAL(activated(QString)), SLOT(setSourceState(QString)));
-    connect(d->m_transitionWidget->targetStateComboBox, SIGNAL(activated(QString)), SLOT(setTargetState(QString)));
-#endif
     connect(d->m_transitionWidget->guardEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
     connect(d->m_transitionWidget->signalEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
     connect(d->m_transitionWidget->timeoutEdit, SIGNAL(valueChanged(int)), SLOT(updateSimpleProperty()));

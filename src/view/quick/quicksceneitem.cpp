@@ -28,17 +28,10 @@ using namespace KDSME;
 
 namespace {
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 static QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
 {
     return line1.intersects(line2, intersectionPoint);
 }
-#else
-static QLineF::IntersectType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
-{
-    return line1.intersect(line2, intersectionPoint);
-}
-#endif
 
 /**
  * Return the first intersection point of @p line with @p rect

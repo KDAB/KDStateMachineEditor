@@ -48,11 +48,7 @@ QRectF boundingRectForCollapsedRegion(State *state, const LayoutProperties *prop
 
     const QString label = state->label();
     const QFontMetricsF fm(prop->regionLabelFont());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     const qreal width = fm.horizontalAdvance(label);
-#else
-    const qreal width = fm.width(label);
-#endif
     const qreal height = fm.height();
     const qreal margin = prop->regionLabelMargins();
     return QRectF(0, 0, width + prop->regionLabelButtonBoxSize().width() + 2 * margin, height + 2 * margin);
