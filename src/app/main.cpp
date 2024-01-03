@@ -31,7 +31,7 @@ namespace {
 
 QString presetsLocation()
 {
-    const QString presetsLocation = qgetenv("KDSME_PRESETS_LOCATION");
+    const QString presetsLocation = qEnvironmentVariable("KDSME_PRESETS_LOCATION");
     if (!presetsLocation.isEmpty()) {
         return presetsLocation;
     }
@@ -40,7 +40,7 @@ QString presetsLocation()
 
 QString scxmlPresetsLocation()
 {
-    return presetsLocation() + "/scxml";
+    return presetsLocation() + u"/scxml";
 }
 
 }
@@ -51,15 +51,15 @@ int main(int argc, char **argv)
     QQmlDebuggingEnabler enabler;
 
     QApplication app(argc, argv);
-    app.setOrganizationName("KDAB");
-    app.setApplicationName("kdsme");
-    app.setApplicationVersion("0.1");
+    app.setOrganizationName(QStringLiteral("KDAB"));
+    app.setApplicationName(QStringLiteral("kdsme"));
+    app.setApplicationVersion(QStringLiteral("0.1"));
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("State Machine Editor");
+    parser.setApplicationDescription(QStringLiteral("State Machine Editor"));
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("source", QCoreApplication::translate("main", "SCXML file"));
+    parser.addPositionalArgument(QStringLiteral("source"), QCoreApplication::translate("main", "SCXML file"));
     parser.process(app);
     const QStringList args = parser.positionalArguments();
     const QString source = args.value(0);

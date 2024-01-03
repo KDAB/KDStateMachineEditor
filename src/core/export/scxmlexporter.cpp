@@ -80,12 +80,12 @@ bool ScxmlExporter::exportMachine(StateMachine *machine)
     setErrorString(QString());
 
     if (!machine) {
-        setErrorString("Null machine instance passed");
+        setErrorString(QStringLiteral("Null machine instance passed"));
         return false;
     }
 
     if (d->m_writer.hasError()) {
-        setErrorString("Setting up XML writer failed");
+        setErrorString(QStringLiteral("Setting up XML writer failed"));
         return false;
     }
 
@@ -100,9 +100,9 @@ bool ScxmlExporter::Private::writeStateMachine(StateMachine *machine)
     // TODO: Check if preconditions are met, e.g. that all state labels are unique?
 
     m_writer.writeStartDocument();
-    m_writer.writeStartElement("scxml");
-    m_writer.writeDefaultNamespace("http://www.w3.org/2005/07/scxml");
-    m_writer.writeAttribute("version", "1.0");
+    m_writer.writeStartElement(QStringLiteral("scxml"));
+    m_writer.writeDefaultNamespace(QStringLiteral("http://www.w3.org/2005/07/scxml"));
+    m_writer.writeAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
     if (!writeStateInner(machine))
         return false;
     m_writer.writeEndElement();
@@ -116,7 +116,7 @@ bool ScxmlExporter::Private::writeState(State *state)
         return true; // pseudo states are ignored
     }
 
-    m_writer.writeStartElement("state");
+    m_writer.writeStartElement(QStringLiteral("state"));
     if (!writeStateInner(state))
         return false;
     m_writer.writeEndElement();
@@ -126,22 +126,22 @@ bool ScxmlExporter::Private::writeState(State *state)
 bool ScxmlExporter::Private::writeStateInner(State *state)
 {
     if (state->label().isEmpty()) {
-        q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
+        q->setErrorString(QStringLiteral("Encountered empty label for state: %1").arg(ObjectHelper::displayString(state)));
         return false;
     }
 
     if (qobject_cast<StateMachine *>(state)) {
-        m_writer.writeAttribute("name", state->label());
+        m_writer.writeAttribute(QStringLiteral("name"), state->label());
     } else {
-        m_writer.writeAttribute("id", state->label());
+        m_writer.writeAttribute(QStringLiteral("id"), state->label());
     }
 
     if (State *initial = ElementUtil::findInitialState(state)) {
         if (initial->label().isEmpty()) {
-            q->setErrorString(QString("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
+            q->setErrorString(QStringLiteral("Encountered empty label for state: %1").arg(ObjectHelper::displayString(initial)));
             return false;
         }
-        m_writer.writeAttribute("initial", initial->label());
+        m_writer.writeAttribute(QStringLiteral("initial"), initial->label());
     }
 
     foreach (Transition *transition, state->transitions()) {
@@ -158,10 +158,10 @@ bool ScxmlExporter::Private::writeStateInner(State *state)
 
 bool ScxmlExporter::Private::writeTransition(Transition *transition)
 {
-    m_writer.writeStartElement("transition");
-    m_writer.writeAttribute("event", transition->label());
+    m_writer.writeStartElement(QStringLiteral("transition"));
+    m_writer.writeAttribute(QStringLiteral("event"), transition->label());
     if (State *targetState = transition->targetState()) {
-        m_writer.writeAttribute("target", targetState->label());
+        m_writer.writeAttribute(QStringLiteral("target"), targetState->label());
     }
     m_writer.writeEndElement();
     return true;

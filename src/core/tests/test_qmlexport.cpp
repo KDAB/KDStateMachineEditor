@@ -34,13 +34,13 @@ static QString stripQml(const QByteArray &input)
 {
     QStringList result;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    Q_FOREACH (const QString &s, QString::fromUtf8(input).split('\n', Qt::SkipEmptyParts)) {
+    Q_FOREACH (const QString &s, QString::fromUtf8(input).split(u'\n', Qt::SkipEmptyParts)) {
 #else
-    Q_FOREACH (const QString &s, QString::fromUtf8(input).split('\n', QString::SkipEmptyParts)) {
+    Q_FOREACH (const QString &s, QString::fromUtf8(input).split(u'\n', QString::SkipEmptyParts)) {
 #endif
         result.append(s.simplified().trimmed());
     }
-    return result.join("\n");
+    return result.join(u'\n');
 }
 }
 
@@ -76,9 +76,9 @@ void QmlExportTest::testInvalidIds()
         "}\n";
     */
     StateMachine root;
-    root.setLabel("root");
+    root.setLabel(QStringLiteral("root"));
     State s1(&root);
-    s1.setLabel("s1.foo");
+    s1.setLabel(QStringLiteral("s1.foo"));
 
     QByteArray output;
     QmlExporter exporter(&output);
@@ -110,15 +110,15 @@ void QmlExportTest::testSimpleStateMachine()
                                       "}\n";
 
     StateMachine root;
-    root.setLabel("root");
+    root.setLabel(QStringLiteral("root"));
     State s1(&root);
-    s1.setLabel("s1");
+    s1.setLabel(QStringLiteral("s1"));
     State s2(&root);
-    s2.setLabel("s2");
+    s2.setLabel(QStringLiteral("s2"));
     Transition *t1 = s1.addSignalTransition(&s2);
-    t1->setLabel("e1");
+    t1->setLabel(QStringLiteral("e1"));
     Transition *t2 = s2.addTimeoutTransition(&s1, 1000);
-    t2->setLabel("e2");
+    t2->setLabel(QStringLiteral("e2"));
     PseudoState initialState(PseudoState::InitialState, &root);
     initialState.addSignalTransition(&s1);
 

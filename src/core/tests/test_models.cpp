@@ -36,11 +36,11 @@ namespace {
 QObject *createQObjectTreeSample()
 {
     QObject *o1 = new QObject;
-    o1->setObjectName("root");
+    o1->setObjectName(QStringLiteral("root"));
     QObject *o11 = new QObject(o1);
-    o11->setObjectName("o1");
+    o11->setObjectName(QStringLiteral("o1"));
     QObject *o12 = new QObject(o1);
-    o12->setObjectName("o2");
+    o12->setObjectName(QStringLiteral("o2"));
     return o1;
 }
 
@@ -91,7 +91,7 @@ void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
     {
         ObjectTreeModel::AppendOperation insert(&model, root.data());
         appendedObject = new QObject(root.data());
-        appendedObject->setObjectName("appendedObject");
+        appendedObject->setObjectName(QStringLiteral("appendedObject"));
     }
 
     QCOMPARE(spy.count(), 1);

@@ -19,9 +19,9 @@ jobs:
       fail-fast: true
       matrix:
         os:
-          - ubuntu-22.04
-          - windows-2022
-          - macos-12
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
         build_type:
           - Debug
           - Release

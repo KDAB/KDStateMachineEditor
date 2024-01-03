@@ -80,5 +80,5 @@ void DeleteElementCommand::undo()
 
 void DeleteElementCommand::updateText()
 {
-    setText(tr("Delete %1").arg(m_deletedElement ? m_deletedElement->toDisplayString() : ("<No element>")));
+    setText(tr("Delete %1").arg(m_deletedElement ? m_deletedElement->toDisplayString() : QStringLiteral("<No element>")));
 }

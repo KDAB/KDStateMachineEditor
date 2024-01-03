@@ -197,15 +197,15 @@ void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
 
     // build nodes
     if (m_layoutMode == RecursiveMode && !state->childStates().isEmpty()) {
-        const QString graphName = "cluster" + addressToString(state);
+        const QString graphName = u"cluster" + addressToString(state);
         Agraph_t *newGraph = _agsubg(graph, graphName);
 
         m_elementToPointerMap[state] = newGraph;
-        _agset(newGraph, "label", state->label().isEmpty() ? QObject::tr("<unnamed>") : state->label() + " ###"); // add a placeholder for the expand/collapse button
+        _agset(newGraph, QStringLiteral("label"), state->label().isEmpty() ? QObject::tr("<unnamed>") : state->label() + u" ###"); // add a placeholder for the expand/collapse button
 
-        auto dummyNode = _agnode(newGraph, "dummynode_" + graphName);
-        _agset(dummyNode, "shape", "point");
-        _agset(dummyNode, "style", "invis");
+        auto dummyNode = _agnode(newGraph, u"dummynode_" + graphName);
+        _agset(dummyNode, QStringLiteral("shape"), QStringLiteral("point"));
+        _agset(dummyNode, QStringLiteral("style"), QStringLiteral("invis"));
         m_elementToDummyNodeMap[state] = dummyNode;
 
         if (!isAncestorCollapsed(state)) {
@@ -222,16 +222,16 @@ void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
         m_elementToPointerMap[state] = newNode;
 
         if (!qIsNull(state->width()) && !qIsNull(state->height())) {
-            _agset(newNode, "width", QString::number(state->width() / DISPLAY_DPI));
-            _agset(newNode, "height", QString::number(state->height() / DISPLAY_DPI));
-            _agset(newNode, "fixedsize", "true");
+            _agset(newNode, QStringLiteral("width"), QString::number(state->width() / DISPLAY_DPI));
+            _agset(newNode, QStringLiteral("height"), QString::number(state->height() / DISPLAY_DPI));
+            _agset(newNode, QStringLiteral("fixedsize"), QStringLiteral("true"));
         }
         if (!state->label().isEmpty()) {
-            _agset(newNode, "label", state->label());
+            _agset(newNode, QStringLiteral("label"), state->label());
         }
 
         foreach (const auto &kv, attributesForState(qobject_cast<State *>(state))) {
-            _agset(newNode, kv.first, kv.second);
+            _agset(newNode, QString::fromLatin1(kv.first), QString::fromLatin1(kv.second));
         }
     }
 }
@@ -281,18 +281,18 @@ void GraphvizLayouterBackend::Private::buildTransition(Transition *transition, A
                              targetDummyNode ? targetDummyNode : target,
                              addressToString(transition), true);
     if (!transition->label().isEmpty() && m_properties->showTransitionLabels()) {
-        _agset(edge, "label", transition->label());
+        _agset(edge, QStringLiteral("label"), transition->label());
     }
 
     // in order to connect subgraphs we need to leverage ltail + lhead attribute of edges
     // see: https://stackoverflow.com/questions/2012036/graphviz-how-to-connect-subgraphs
     if (sourceDummyNode) {
-        const QString graphName = "cluster" + addressToString(sourceState);
-        _agset(edge, "ltail", graphName);
+        const QString graphName = u"cluster" + addressToString(sourceState);
+        _agset(edge, QStringLiteral("ltail"), graphName);
     }
     if (targetDummyNode) {
-        const QString graphName = "cluster" + addressToString(targetState);
-        _agset(edge, "lhead", graphName);
+        const QString graphName = u"cluster" + addressToString(targetState);
+        _agset(edge, QStringLiteral("lhead"), graphName);
     }
     m_elementToPointerMap[transition] = edge;
     Q_ASSERT(edge);
@@ -419,14 +419,14 @@ void GraphvizLayouterBackend::Private::openContext(const QString &id)
 
     // modify settings
     if (m_layoutMode == RecursiveMode) {
-        _agset(m_graph, "compound", "true");
+        _agset(m_graph, QStringLiteral("compound"), QStringLiteral("true"));
     }
-    _agset(m_graph, "overlap", "prism");
-    _agset(m_graph, "overlap_shrink", "true");
-    _agset(m_graph, "splines", "true");
-    _agset(m_graph, "pad", "0.0");
-    _agset(m_graph, "dpi", "96.0");
-    _agset(m_graph, "nodesep", "0.2");
+    _agset(m_graph, QStringLiteral("overlap"), QStringLiteral("prism"));
+    _agset(m_graph, QStringLiteral("overlap_shrink"), QStringLiteral("true"));
+    _agset(m_graph, QStringLiteral("splines"), QStringLiteral("true"));
+    _agset(m_graph, QStringLiteral("pad"), QStringLiteral("0.0"));
+    _agset(m_graph, QStringLiteral("dpi"), QStringLiteral("96.0"));
+    _agset(m_graph, QStringLiteral("nodesep"), QStringLiteral("0.2"));
 }
 
 void GraphvizLayouterBackend::Private::closeLayout()
@@ -562,10 +562,10 @@ void GraphvizLayouterBackend::layout()
         const QString machineName = !machine->label().isEmpty() ? machine->label() : ObjectHelper::addressToString(machine);
         const QString stateName = !state->label().isEmpty() ? state->label() : ObjectHelper::addressToString(state);
         QDir tmpDir = QDir::temp();
-        tmpDir.mkdir("kdsme_debug");
-        const QString baseName = QString("%1/%2_%3").arg(tmpDir.filePath("kdsme_debug")).arg(machineName).arg(stateName);
-        saveToFile(baseName + ".png");
-        saveToFile(baseName + ".dot", "dot");
+        tmpDir.mkdir(QStringLiteral("kdsme_debug"));
+        const QString baseName = QStringLiteral("%1/%2_%3").arg(tmpDir.filePath(QStringLiteral("kdsme_debug"))).arg(machineName).arg(stateName);
+        saveToFile(baseName + u".png");
+        saveToFile(baseName + u".dot", QStringLiteral("dot"));
     }
 }
 
@@ -594,7 +594,7 @@ void GraphvizLayouterBackend::openLayout(State *state, const LayoutProperties *p
     d->m_root = state;
     d->m_properties = properties;
 
-    d->openContext(QString("GraphvizLayouterBackend@%1").arg(addressToString(this)));
+    d->openContext(QStringLiteral("GraphvizLayouterBackend@%1").arg(addressToString(this)));
 }
 
 void GraphvizLayouterBackend::closeLayout()

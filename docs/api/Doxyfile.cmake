@@ -38,7 +38,7 @@ PROJECT_NAME           = "KDStateMachineEditor API Documentation"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = @KDSME_VERSION_MAJOR@.@KDSME_VERSION_MINOR@
+PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -1413,7 +1413,7 @@ QCH_FILE               = "@DOXYGEN_OUTPUT_DIR@/qch/kdstatemachineeditor-api.qch"
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHP_NAMESPACE          = com.kdab.KDStateMachineEditor.api.@KDSME_VERSION@
+QHP_NAMESPACE          = com.kdab.KDStateMachineEditor.api.@PROJECT_VERSION@
 
 # The QHP_VIRTUAL_FOLDER tag specifies the namespace to use when generating Qt
 # Help Project output. For more information please see Qt Help Project / Virtual
@@ -1422,7 +1422,7 @@ QHP_NAMESPACE          = com.kdab.KDStateMachineEditor.api.@KDSME_VERSION@
 # The default value is: doc.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHP_VIRTUAL_FOLDER     = KDStateMachineEditor-@KDSME_VERSION@
+QHP_VIRTUAL_FOLDER     = KDStateMachineEditor-@PROJECT_VERSION@
 
 # If the QHP_CUST_FILTER_NAME tag is set, it specifies the name of a custom
 # filter to add. For more information please see Qt Help Project / Custom

@@ -117,7 +117,7 @@ QObject *QuickRecursiveInstantiator::createItems(const QModelIndex &index, QObje
     Q_ASSERT(object);
     auto creationContext = m_delegate->creationContext();
     auto context = new QQmlContext(creationContext ? creationContext : qmlContext(this));
-    context->setContextProperty("object", object);
+    context->setContextProperty(QStringLiteral("object"), object);
 
     auto createdObject = m_delegate->create(context);
     createdObject->setParent(parent);

@@ -97,15 +97,15 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     d->m_transitionWidget->setupUi(w);
     d->m_transitionWidgetIndex = addWidget(w);
 
-    d->m_widgetToPropertyMap.insert(d->m_stateWidget->labelLineEdit, "label");
-    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onEntryEditor, "onEntry");
-    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onExitEditor, "onExit");
-    d->m_widgetToPropertyMap.insert(d->m_stateWidget->childModeEdit, "childMode");
-    d->m_widgetToPropertyMap.insert(d->m_stateWidget->historyTypeEdit, "historyType");
-    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->labelLineEdit, "label");
-    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->guardEditor, "guard");
-    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->signalEdit, "signal");
-    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->timeoutEdit, "timeout");
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->labelLineEdit, QStringLiteral("label"));
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onEntryEditor, QStringLiteral("onEntry"));
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->onExitEditor, QStringLiteral("onExit"));
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->childModeEdit, QStringLiteral("childMode"));
+    d->m_widgetToPropertyMap.insert(d->m_stateWidget->historyTypeEdit, QStringLiteral("historyType"));
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->labelLineEdit, QStringLiteral("label"));
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->guardEditor, QStringLiteral("guard"));
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->signalEdit, QStringLiteral("signal"));
+    d->m_widgetToPropertyMap.insert(d->m_transitionWidget->timeoutEdit, QStringLiteral("timeout"));
 
     connect(d->m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
@@ -228,7 +228,7 @@ void PropertyEditor::Private::setCurrentElement(KDSME::Element *element)
             const QMetaProperty prop = m_currentElement->metaObject()->property(i);
             if (!prop.hasNotifySignal())
                 continue;
-            q->connect(m_currentElement, "2" + prop.notifySignal().methodSignature(), q, SLOT(loadFromCurrentElement())); // krazy:exclude=doublequote_chars
+            q->connect(m_currentElement, QByteArray { "2" + prop.notifySignal().methodSignature() }.constData(), q, SLOT(loadFromCurrentElement())); // krazy:exclude=doublequote_chars
         }
     }
     loadFromCurrentElement();
@@ -263,7 +263,7 @@ void PropertyEditor::Private::loadFromCurrentElement()
         if (state->type() == Element::HistoryStateType) {
             m_stateWidget->defaultStateComboBox->addItems(allStates(state->machine()));
             State *defaultState = qobject_cast<HistoryState *>(state)->defaultState();
-            m_stateWidget->defaultStateComboBox->setCurrentText(defaultState ? defaultState->label() : "");
+            m_stateWidget->defaultStateComboBox->setCurrentText(defaultState ? defaultState->label() : QLatin1String(""));
         }
 
         m_stateWidget->onEntryEditor->setPlainText(state->onEntry());
@@ -330,7 +330,7 @@ void PropertyEditor::Private::updateSimpleProperty()
     const QString propertyName = m_widgetToPropertyMap.value(object);
     Q_ASSERT(!propertyName.isEmpty());
 
-    const QVariant currentValue = m_currentElement->property(propertyName.toUtf8());
+    const QVariant currentValue = m_currentElement->property(propertyName.toUtf8().constData());
 
     QVariant newValue;
     QComboBox *comboBox = qobject_cast<QComboBox *>(object);
@@ -343,7 +343,7 @@ void PropertyEditor::Private::updateSimpleProperty()
         return;
 
     Q_ASSERT(m_commandController);
-    ModifyPropertyCommand *command = new ModifyPropertyCommand(m_currentElement, propertyName.toUtf8(), newValue);
+    ModifyPropertyCommand *command = new ModifyPropertyCommand(m_currentElement, propertyName.toUtf8().constData(), newValue);
     m_commandController->undoStack()->push(command);
 }
 

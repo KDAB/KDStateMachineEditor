@@ -223,7 +223,7 @@ QString Element::toDisplayString() const
     if (label().isEmpty()) {
         return str;
     }
-    return QString("%1 [Label: %2]").arg(str).arg(label());
+    return QStringLiteral("%1 [Label: %2]").arg(str).arg(label());
 }
 
 const char *Element::typeToString(Element::Type type)

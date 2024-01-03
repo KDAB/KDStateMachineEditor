@@ -73,13 +73,13 @@ private:
 PaletteModel::PaletteModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    m_entries << Entry(Element::StateMachineType, ":/kdsme/icons/state_machine.png", tr("State Machine"));
-    m_entries << Entry(Element::StateType, ":/kdsme/icons/state.png", tr("State"));
-    m_entries << Entry(Element::FinalStateType, ":/kdsme/icons/final_state.png", tr("Final State"));
-    m_entries << Entry(Element::HistoryStateType, ":/kdsme/icons/shallow_history.png", tr("History State"));
+    m_entries << Entry(Element::StateMachineType, QStringLiteral(":/kdsme/icons/state_machine.png"), tr("State Machine"));
+    m_entries << Entry(Element::StateType, QStringLiteral(":/kdsme/icons/state.png"), tr("State"));
+    m_entries << Entry(Element::FinalStateType, QStringLiteral(":/kdsme/icons/final_state.png"), tr("Final State"));
+    m_entries << Entry(Element::HistoryStateType, QStringLiteral(":/kdsme/icons/shallow_history.png"), tr("History State"));
 
-    m_entries << Entry(Element::SignalTransitionType, ":/kdsme/icons/transition.png", tr("Signal Transition"));
-    m_entries << Entry(Element::TimeoutTransitionType, ":/kdsme/icons/transition.png", tr("Timeout Transition"));
+    m_entries << Entry(Element::SignalTransitionType, QStringLiteral(":/kdsme/icons/transition.png"), tr("Signal Transition"));
+    m_entries << Entry(Element::TimeoutTransitionType, QStringLiteral(":/kdsme/icons/transition.png"), tr("Timeout Transition"));
 }
 
 int PaletteModel::rowCount(const QModelIndex &parent) const
@@ -115,22 +115,22 @@ QMimeData *PaletteModel::mimeData(const QModelIndexList &indexes) const
 
     const QModelIndex index = indexes.first();
     auto type = index.data(ElementTypeRole).value<Element::Type>();
-    const QString typeString = Element::typeToString(type);
+    const QString typeString = QString::fromLatin1(Element::typeToString(type));
 
     QMimeData *mimeData = new QMimeData;
 
-    mimeData->setUrls(QList<QUrl>() << QUrl(QString("%1:Element/%2").arg(KDSME_QML_URI_PREFIX, typeString)));
+    mimeData->setUrls({ QUrl(QStringLiteral("%1:Element/%2").arg(QStringLiteral(KDSME_QML_URI_PREFIX)).arg(typeString)) });
 
     // Following setData calls are used in QML DropArea.keys to accept/reject a drag and drop
     // depending on the data given. We are using this to allow for example "TransitionType"
     // elements not to be placed on a UmlStateMachine.qml but only "StateType" elements.
 
-    if (typeString.contains(QRegularExpression(".+StateType$")))
-        mimeData->setData("StateType", "");
-    if (typeString.contains(QRegularExpression(".+TransitionType$")))
-        mimeData->setData("TransitionType", "");
+    if (typeString.contains(QRegularExpression(QStringLiteral(".+StateType$"))))
+        mimeData->setData(QStringLiteral("StateType"), "");
+    if (typeString.contains(QRegularExpression(QStringLiteral(".+TransitionType$"))))
+        mimeData->setData(QStringLiteral("TransitionType"), "");
 
-    mimeData->setData("external", "");
+    mimeData->setData(QStringLiteral("external"), "");
     mimeData->setData(typeString, "");
 
     return mimeData;

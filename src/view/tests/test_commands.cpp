@@ -151,7 +151,7 @@ void CommandsTest::testLayoutSnapshot()
 void CommandsTest::testModifyProperty()
 {
     TestHarness harness;
-    QAction action("foo", nullptr);
+    QAction action(QStringLiteral("foo"), nullptr);
 
     // via (const char*, QVariant) ctor
     QCOMPARE(action.isCheckable(), false);
@@ -166,8 +166,8 @@ void CommandsTest::testModifyProperty()
     QCOMPARE(action.isCheckable(), false);
     QCOMPARE(action.autoRepeat(), true);
     QJsonObject object;
-    object.insert("checkable", true);
-    object.insert("autoRepeat", false);
+    object.insert(QStringLiteral("checkable"), true);
+    object.insert(QStringLiteral("autoRepeat"), false);
     cmd = new ModifyPropertyCommand(&action, object);
     QCOMPARE(action.isCheckable(), false);
     QCOMPARE(action.autoRepeat(), true);

@@ -119,13 +119,13 @@ void SvgExporterPrivate::writeSvgPath(const QPainterPath &path, bool fill)
         auto pathElement = path.elementAt(i);
         switch (pathElement.type) {
         case QPainterPath::MoveToElement:
-            pathData += QStringLiteral(" M") + QString::number(pathElement.x) + ',' + QString::number(pathElement.y);
+            pathData += QStringLiteral(" M") + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
             break;
         case QPainterPath::LineToElement:
-            pathData += QStringLiteral(" L") + QString::number(pathElement.x) + ',' + QString::number(pathElement.y);
+            pathData += QStringLiteral(" L") + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
             break;
         case QPainterPath::CurveToElement:
-            pathData += QStringLiteral(" C") + QString::number(pathElement.x) + ',' + QString::number(pathElement.y);
+            pathData += QStringLiteral(" C") + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
             ++i;
             while (i < path.elementCount()) {
                 auto pathElement = path.elementAt(i);
@@ -133,7 +133,7 @@ void SvgExporterPrivate::writeSvgPath(const QPainterPath &path, bool fill)
                     --i;
                     break;
                 }
-                pathData += ' ' + QString::number(pathElement.x) + ',' + QString::number(pathElement.y);
+                pathData += u' ' + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
                 ++i;
             }
             break;
@@ -274,11 +274,7 @@ double SvgExporterPrivate::headerHeight() const
 double SvgExporterPrivate::margin() const
 {
     QFontMetricsF metrics(QGuiApplication::font());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-    return metrics.horizontalAdvance('x');
-#else
-    return metrics.width('x');
-#endif
+    return metrics.horizontalAdvance(u'x');
 }
 
 double SvgExporterPrivate::arrowSize() const
@@ -300,15 +296,15 @@ SvgExporter::~SvgExporter()
 
 bool SvgExporter::exportMachine(StateMachine *machine)
 {
-    setErrorString(QString());
+    setErrorString({});
 
     if (!machine) {
-        setErrorString("Null machine instance passed");
+        setErrorString(QStringLiteral("Null machine instance passed"));
         return false;
     }
 
     if (d->writer.hasError()) {
-        setErrorString("Setting up XML writer failed");
+        setErrorString(QStringLiteral("Setting up XML writer failed"));
         return false;
     }
 

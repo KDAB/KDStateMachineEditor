@@ -128,7 +128,7 @@ StateMachine *ScxmlImporter::Private::visitScxml()
     const QXmlStreamAttributes attributes = m_reader.attributes();
 
     StateMachine *state = new StateMachine;
-    state->setLabel(attributes.value("name").toString());
+    state->setLabel(attributes.value(QStringLiteral("name")).toString());
 
     tryCreateInitialState(state);
 
@@ -144,7 +144,7 @@ StateMachine *ScxmlImporter::Private::visitScxml()
         } else if (m_reader.name() == QStringLiteral("script")) {
             m_reader.skipCurrentElement();
         } else {
-            raiseUnexpectedElementError("scxml");
+            raiseUnexpectedElementError(QStringLiteral("scxml"));
         }
     }
     return state;
@@ -176,7 +176,7 @@ void ScxmlImporter::Private::visitParallel(State *parent)
         } else if (m_reader.name() == QStringLiteral("history")) {
             visitHistory(state);
         } else {
-            raiseUnexpectedElementError("parallel");
+            raiseUnexpectedElementError(QStringLiteral("parallel"));
         }
     }
 }
@@ -210,7 +210,7 @@ void ScxmlImporter::Private::visitState(State *parent)
         } else if (m_reader.name() == QStringLiteral("invoke")) {
             m_reader.skipCurrentElement();
         } else {
-            raiseUnexpectedElementError("state");
+            raiseUnexpectedElementError(QStringLiteral("state"));
         }
     }
 }
@@ -223,17 +223,17 @@ void ScxmlImporter::Private::visitInitial(State *parent)
     // Must have exactly one <transition> child
     Transition *transition = nullptr;
     while (m_reader.readNextStartElement()) {
-        if (m_reader.name() == QStringLiteral("transition")) {
+        if (m_reader.name() == u"transition") {
             State *initialState = new PseudoState(PseudoState::InitialState, parent);
             const QXmlStreamAttributes attributes = m_reader.attributes();
-            const QString targetStateId = attributes.value("target").toString();
+            const QString targetStateId = attributes.value(QStringLiteral("target")).toString();
             transition = createTransition(initialState, targetStateId);
         } else {
-            raiseUnexpectedElementError("initial");
+            raiseUnexpectedElementError(QStringLiteral("initial"));
         }
     }
     if (!transition) {
-        m_reader.raiseError(QString("Encountered <initial> element with invalid <transition> child"));
+        m_reader.raiseError(QStringLiteral("Encountered <initial> element with invalid <transition> child"));
     }
 
     m_reader.skipCurrentElement();
@@ -256,8 +256,8 @@ void ScxmlImporter::Private::visitTransiton(State *parent)
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     const QXmlStreamAttributes attributes = m_reader.attributes();
-    const QString event = attributes.value("event").toString();
-    const QString targetStateId = attributes.value("target").toString();
+    const QString event = attributes.value(QLatin1String("event")).toString();
+    const QString targetStateId = attributes.value(QLatin1String("target")).toString();
     Transition *transition = createTransition(parent, targetStateId);
     if (transition) {
         transition->setLabel(event);
@@ -269,7 +269,7 @@ void ScxmlImporter::Private::visitTransiton(State *parent)
 void ScxmlImporter::Private::visitHistory(State *parent)
 {
     Q_UNUSED(parent);
-    Q_ASSERT(m_reader.isStartElement() && m_reader.name() == QStringLiteral("transition"));
+    Q_ASSERT(m_reader.isStartElement() && m_reader.name() == u"transition");
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     qCWarning(KDSME_CORE) << "NYI";
@@ -286,7 +286,7 @@ void ScxmlImporter::Private::resolveTargetStates()
         const QString targetStateId = it.value();
         State *targetState = m_nameToStateMap.value(targetStateId);
         if (!targetState) {
-            m_reader.raiseError(QString("Unknown state id: %1").arg(targetStateId));
+            m_reader.raiseError(QStringLiteral("Unknown state id: %1").arg(targetStateId));
             return;
         }
 
@@ -299,9 +299,9 @@ void ScxmlImporter::Private::resolveTargetStates()
 State *ScxmlImporter::Private::tryCreateInitialState(State *parent)
 {
     const QXmlStreamAttributes attributes = m_reader.attributes();
-    if (attributes.hasAttribute("initial")) {
+    if (attributes.hasAttribute(QStringLiteral("initial"))) {
         State *initialState = new PseudoState(PseudoState::InitialState, parent);
-        const QString initialStateId = attributes.value("initial").toString();
+        const QString initialStateId = attributes.value(QStringLiteral("initial")).toString();
         createTransition(initialState, initialStateId);
     }
     return nullptr;
@@ -312,7 +312,7 @@ void ScxmlImporter::Private::initState(State *state)
     Q_ASSERT(state);
 
     const QXmlStreamAttributes attributes = m_reader.attributes();
-    const QString id = attributes.value("id").toString();
+    const QString id = attributes.value(QStringLiteral("id")).toString();
     IF_DEBUG(qCDebug(KDSME_CORE) << parent->label() << id;)
     if (id.isEmpty()) {
         qCWarning(KDSME_CORE) << "Unnamed state at offset:" << m_reader.characterOffset();
@@ -342,6 +342,6 @@ void ScxmlImporter::Private::reset()
 
 void ScxmlImporter::Private::raiseUnexpectedElementError(const QString &context)
 {
-    m_reader.raiseError(QString("Unexpected element found while parsing '%1': %2")
+    m_reader.raiseError(QStringLiteral("Unexpected element found while parsing '%1': %2")
                             .arg(context, m_reader.name().toString()));
 }

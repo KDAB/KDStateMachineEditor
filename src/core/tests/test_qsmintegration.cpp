@@ -84,7 +84,7 @@ void QsmIntegrationTest::testEmptyInput()
 void QsmIntegrationTest::testSimpleQSM()
 {
     QStateMachine qsm;
-    qsm.setObjectName("myStateMachine");
+    qsm.setObjectName(QStringLiteral("myStateMachine"));
 
     QsmAdapter adapter;
     QSignalSpy spy(&adapter, &QsmAdapter::repopulateView);
@@ -107,13 +107,13 @@ void QsmIntegrationTest::testSimpleQSM()
 void QsmIntegrationTest::testRunningQSM()
 {
     QStateMachine qsm;
-    qsm.setObjectName("myStateMachine");
+    qsm.setObjectName(QStringLiteral("myStateMachine"));
     QState qsmInitial(&qsm);
-    qsmInitial.setObjectName("initial");
+    qsmInitial.setObjectName(QStringLiteral("initial"));
     qsm.setInitialState(&qsmInitial);
 
     QFinalState qsmFinal(&qsm);
-    qsmFinal.setObjectName("final");
+    qsmFinal.setObjectName(QStringLiteral("final"));
     qsm.addState(&qsmFinal);
 
     QTimer timer;

@@ -127,7 +127,7 @@ TrafficLight::TrafficLight(QScxmlStateMachine *machine, QWidget *parent)
 
 void TrafficLight::toggleWorking(bool pause)
 {
-    m_machine->submitEvent(pause ? "smash" : "repair");
+    m_machine->submitEvent(pause ? QStringLiteral("smash") : QStringLiteral("repair"));
 }
 
 LightWidget::LightWidget(const QString &image, QWidget *parent)

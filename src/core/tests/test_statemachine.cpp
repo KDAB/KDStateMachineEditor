@@ -33,9 +33,9 @@ private Q_SLOTS:
 void StateMachineTest::testProperties()
 {
     State machine;
-    machine.setLabel("machine");
+    machine.setLabel(QStringLiteral("machine"));
     State s1(&machine);
-    s1.setLabel("s1");
+    s1.setLabel(QStringLiteral("s1"));
 
     QCOMPARE(machine.label(), QLatin1String("machine"));
     QCOMPARE(s1.label(), QLatin1String("s1"));

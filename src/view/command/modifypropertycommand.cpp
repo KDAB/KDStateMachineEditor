@@ -65,8 +65,8 @@ void ModifyPropertyCommand::redo()
 
     auto it = m_propertyMap.constBegin();
     while (it != m_propertyMap.constEnd()) {
-        m_oldPropertyMap.insert(it.key(), m_object->property(it.key()));
-        if (!m_object->setProperty(it.key(), it.value())) {
+        m_oldPropertyMap.insert(it.key(), m_object->property(it.key().constData()));
+        if (!m_object->setProperty(it.key().constData(), it.value())) {
             qCDebug(KDSME_VIEW) << "Failed to set property" << it.key();
         }
         ++it;
@@ -82,7 +82,7 @@ void ModifyPropertyCommand::undo()
 
     auto it = m_oldPropertyMap.constBegin();
     while (it != m_oldPropertyMap.constEnd()) {
-        if (!m_object->setProperty(it.key(), it.value())) {
+        if (!m_object->setProperty(it.key().constData(), it.value())) {
             qCDebug(KDSME_VIEW) << "Failed to set property" << it.key();
         }
         ++it;

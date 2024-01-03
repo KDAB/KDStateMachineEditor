@@ -86,19 +86,19 @@ void ScxmlExportTest::testEmptyLabels()
     ScxmlExporter exporter(&output);
     bool success = exporter.exportMachine(&root);
     QVERIFY(!success);
-    QVERIFY(exporter.errorString().contains("empty label"));
+    QVERIFY(exporter.errorString().contains(u"empty label"));
 }
 
 void ScxmlExportTest::testSimpleStateMachine()
 {
     StateMachine root;
-    root.setLabel("root");
+    root.setLabel(QStringLiteral("root"));
     State s1(&root);
-    s1.setLabel("s1");
+    s1.setLabel(QStringLiteral("s1"));
     State s2(&root);
-    s2.setLabel("s2");
+    s2.setLabel(QStringLiteral("s2"));
     Transition *t1 = s1.addSignalTransition(&s2);
-    t1->setLabel("e1");
+    t1->setLabel(QStringLiteral("e1"));
     PseudoState initialState(PseudoState::InitialState, &root);
     initialState.addSignalTransition(&s1);
 

@@ -113,5 +113,5 @@ void CreateElementCommand::undo()
 
 void CreateElementCommand::updateText()
 {
-    setText(tr("Create %1").arg(m_createdElement ? m_createdElement->toDisplayString() : ("<No element>")));
+    setText(tr("Create %1").arg(m_createdElement ? m_createdElement->toDisplayString() : QStringLiteral("<No element>")));
 }

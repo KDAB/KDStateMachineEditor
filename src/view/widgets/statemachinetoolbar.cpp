@@ -39,10 +39,10 @@ namespace {
 
 QStringList availableThemeNames()
 {
-    QDir dir(":/kdsme/qml/themes");
+    QDir dir(QStringLiteral(":/kdsme/qml/themes"));
     auto entries = dir.entryList();
     std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString &x) {
-        return QString(x).remove(".qml");
+        return QString(x).remove(QStringLiteral(".qml"));
     });
     return entries;
 }
@@ -82,7 +82,7 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView *view, QWidget *parent
     setWindowTitle(tr("State Machine Tool Bar"));
     d->m_exportAction = new QAction(tr("Export to File..."), this);
     d->m_exportAction->setObjectName(QStringLiteral("actionExportToFile"));
-    d->m_exportAction->setStatusTip("Export current state machine to a file.");
+    d->m_exportAction->setStatusTip(QStringLiteral("Export current state machine to a file."));
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
     addAction(d->m_exportAction);
 
@@ -110,7 +110,7 @@ void StateMachineToolBar::Private::handleExport()
 {
     auto stateMachine = m_view->scene()->rootState()->machine();
     if (!stateMachine) {
-        QMessageBox::information(q, QString(), "State machine unavailable");
+        QMessageBox::information(q, QString(), QStringLiteral("State machine unavailable"));
         return;
     }
 
@@ -132,9 +132,9 @@ void StateMachineToolBar::Private::exportToFile(StateMachine *machine, const QSt
 
     const QString suffix = QFileInfo(fileName).suffix();
     AbstractExporter *exporter;
-    if (suffix == "qml") {
+    if (suffix == u"qml") {
         exporter = new QmlExporter(&file);
-    } else if (suffix == "svg") {
+    } else if (suffix == u"svg") {
         exporter = new SvgExporter(&file);
     } else {
         // fallback

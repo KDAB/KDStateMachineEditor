@@ -40,7 +40,7 @@ Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 
 QString GVUtils::_agget(void *object, const QString &attr, const QString &alt)
 {
-    const QString str = agget(object, const_cast<char *>(qPrintable(attr)));
+    const QString str = QString::fromUtf8(agget(object, attr.toUtf8().data()));
     if (str.isEmpty()) {
         return alt;
     } else {
