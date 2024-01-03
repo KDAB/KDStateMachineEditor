@@ -19,9 +19,9 @@ jobs:
       fail-fast: true
       matrix:
         os:
-          - ubuntu-22.04
-          - windows-2022
-          - macos-12
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
         build_type:
           - Debug
           - Release
@@ -81,9 +81,6 @@ jobs:
 
       - name: Fetch Git submodule
         run: git submodule update --init --recursive
-
-      - name: Create build directory
-        run: mkdir build
 
       - name: Configure project
         run: >

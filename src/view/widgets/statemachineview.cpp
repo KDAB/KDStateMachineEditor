@@ -73,7 +73,7 @@ static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
 {
     QString s;
     Q_FOREACH (const QQmlError &e, errors) {
-        s += e.toString() + '\n';
+        s += e.toString() + u'\n';
     }
     return s;
 }
@@ -145,16 +145,16 @@ StateMachineView::StateMachineView(QWidget *parent)
     qmlRegisterType<SemanticZoomManager>(KDSME_QML_NAMESPACE, 1, 0, "SemanticZoomManager");
     qmlRegisterType<StateMachineScene>(KDSME_QML_NAMESPACE, 1, 0, "StateMachineScene");
 
-    qmlRegisterUncreatableType<AbstractMask>(KDSME_QML_NAMESPACE, 1, 0, "AbstractMask", "Access to object");
-    qmlRegisterUncreatableType<AbstractScene>(KDSME_QML_NAMESPACE, 1, 0, "AbstractScene", "Access to object");
-    qmlRegisterUncreatableType<EditController>(KDSME_QML_NAMESPACE, 1, 0, "EditController", "Access to object");
-    qmlRegisterUncreatableType<CommandController>(KDSME_QML_NAMESPACE, 1, 0, "CommandController", "Access to object");
-    qmlRegisterUncreatableType<RuntimeController>(KDSME_QML_NAMESPACE, 1, 0, "RuntimeController", "Access to object");
-    qmlRegisterUncreatableType<Element>(KDSME_QML_NAMESPACE, 1, 0, "Element", "Access to object");
-    qmlRegisterUncreatableType<HistoryState>(KDSME_QML_NAMESPACE, 1, 0, "HistoryState", "Access to object");
-    qmlRegisterUncreatableType<PseudoState>(KDSME_QML_NAMESPACE, 1, 0, "PseudoState", "Access to object");
-    qmlRegisterUncreatableType<State>(KDSME_QML_NAMESPACE, 1, 0, "State", "Access to object");
-    qmlRegisterUncreatableType<Transition>(KDSME_QML_NAMESPACE, 1, 0, "Transition", "Access to object");
+    qmlRegisterUncreatableType<AbstractMask>(KDSME_QML_NAMESPACE, 1, 0, "AbstractMask", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<AbstractScene>(KDSME_QML_NAMESPACE, 1, 0, "AbstractScene", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<EditController>(KDSME_QML_NAMESPACE, 1, 0, "EditController", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<CommandController>(KDSME_QML_NAMESPACE, 1, 0, "CommandController", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<RuntimeController>(KDSME_QML_NAMESPACE, 1, 0, "RuntimeController", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<Element>(KDSME_QML_NAMESPACE, 1, 0, "Element", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<HistoryState>(KDSME_QML_NAMESPACE, 1, 0, "HistoryState", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<PseudoState>(KDSME_QML_NAMESPACE, 1, 0, "PseudoState", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<State>(KDSME_QML_NAMESPACE, 1, 0, "State", QStringLiteral("Access to object"));
+    qmlRegisterUncreatableType<Transition>(KDSME_QML_NAMESPACE, 1, 0, "Transition", QStringLiteral("Access to object"));
 
     // singletons
     qmlRegisterSingletonType<QuickKDSMEGlobal>(KDSME_QML_NAMESPACE, 1, 0, "Global", kdsme_global_singletontype_provider);
@@ -163,7 +163,7 @@ StateMachineView::StateMachineView(QWidget *parent)
     d->m_controller = new CommandController(new QUndoStack(this), this);
     d->m_editController = new EditController(this);
 
-    engine()->rootContext()->setContextProperty("_quickView", this);
+    engine()->rootContext()->setContextProperty(QStringLiteral("_quickView"), this);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     // Does not seem to work under Qt 6 -- yields a black QML scene if enabled there
@@ -173,7 +173,7 @@ StateMachineView::StateMachineView(QWidget *parent)
 #endif
 
     setResizeMode(QQuickWidget::SizeRootObjectToView);
-    setSource(QUrl("qrc:/kdsme/qml/StateMachineView.qml"));
+    setSource(QUrl(QStringLiteral("qrc:/kdsme/qml/StateMachineView.qml")));
 #if !defined(NDEBUG)
     Q_ASSERT_X(errors().isEmpty(), __FUNCTION__, qPrintable(kdsme_qmlErrorString(errors())));
 #endif
@@ -247,14 +247,14 @@ void StateMachineView::setThemeName(const QString &themeName)
 
 QQuickItem *StateMachineView::viewPortObject() const
 {
-    QQuickItem *item = rootObject()->findChild<QQuickItem *>("stateMachineViewport");
+    QQuickItem *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineViewport"));
     Q_ASSERT(item);
     return item;
 }
 
 QQuickItem *StateMachineView::sceneObject() const
 {
-    QQuickItem *item = rootObject()->findChild<QQuickItem *>("stateMachineScene");
+    QQuickItem *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineScene"));
     Q_ASSERT(item);
     return item;
 }
@@ -287,7 +287,7 @@ QRectF StateMachineView::Private::adjustedViewRect()
 {
     static const int margin = 10;
 
-    const QQuickItem *viewPort = q->rootObject()->findChild<QQuickItem *>("scrollView");
+    const QQuickItem *viewPort = q->rootObject()->findChild<QQuickItem *>(QStringLiteral("scrollView"));
     const QRectF viewRect(viewPort->x(), viewPort->y(), viewPort->width(), viewPort->height());
     if (viewRect.isEmpty())
         return QRectF();

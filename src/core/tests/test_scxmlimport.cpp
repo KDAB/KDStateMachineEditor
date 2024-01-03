@@ -56,7 +56,7 @@ StateMachine *parse(const QByteArray &data)
 
 StateMachine *parseFile(const QString &fileName)
 {
-    const QByteArray data = ParseHelper::readFile(QStringLiteral(TEST_DATA_DIR) + '/' + fileName);
+    const QByteArray data = ParseHelper::readFile(QStringLiteral(TEST_DATA_DIR) + u'/' + fileName);
     return parse(data);
 }
 
@@ -177,7 +177,7 @@ void ScxmlImportTest::testBasicState()
         State chart:
             (I) -> (S1) -> (S2) -> (Final)
     */
-    State *root = parseFile("scxml/basicstate.scxml");
+    State *root = parseFile(QStringLiteral("scxml/basicstate.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String("basicstate"));
     QCOMPARE(root->childStates().size(), 4);
@@ -204,7 +204,7 @@ void ScxmlImportTest::testParallelState()
 
         Special case: Contains <parallel>
     */
-    State *root = parseFile("scxml/parallelstate.scxml");
+    State *root = parseFile(QStringLiteral("scxml/parallelstate.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String("parallelstate"));
     QCOMPARE(root->childStates().size(), 2);
@@ -262,7 +262,7 @@ void ScxmlImportTest::testExampleCalculator()
 
         Special case: Contains <datamodel>, <onentry>, <onexit>
      */
-    State *root = parseFile("scxml/calculator.scxml");
+    State *root = parseFile(QStringLiteral("scxml/calculator.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String("Calculator"));
     QCOMPARE(root->childStates().size(), 2);
@@ -293,7 +293,7 @@ void ScxmlImportTest::testExampleMicrowave()
 
         Special case: Contains <initial> element
      */
-    State *root = parseFile("scxml/microwave.scxml");
+    State *root = parseFile(QStringLiteral("scxml/microwave.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String(""));
     QCOMPARE(root->childStates().size(), 3);
@@ -319,7 +319,7 @@ void ScxmlImportTest::testExampleTrafficLight()
             (I) -> (redGoingYellow) -> (yellowGoingGreen) -> (greenGoingYellow) -> (yellowGoingRed) --.
                            ^--------------------------------------------------------------------------'
     */
-    State *root = parseFile("scxml/trafficlight_alternative.scxml");
+    State *root = parseFile(QStringLiteral("scxml/trafficlight_alternative.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String("trafficlight"));
     QCOMPARE(root->childStates().size(), 5);
@@ -350,7 +350,7 @@ void ScxmlImportTest::testExampleTrafficReport()
 
         Special case: Contains <invoke>
     */
-    State *root = parseFile("scxml/trafficreport.scxml");
+    State *root = parseFile(QStringLiteral("scxml/trafficreport.scxml"));
     QVERIFY(root);
     QCOMPARE(root->label(), QLatin1String(""));
     QCOMPARE(root->childStates().size(), 8);

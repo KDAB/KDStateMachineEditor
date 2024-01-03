@@ -225,20 +225,20 @@ void ObjectTreeModel::clear()
 QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
-        return QVariant();
+        return {};
     }
 
     Q_D(const ObjectTreeModel);
     QObject *obj = d->mapModelIndex2QObject(index);
     Q_ASSERT(obj);
     if (role == Qt::DisplayRole) {
-        return ("0x" + QString::number(reinterpret_cast<quint64>(obj), 16));
+        return QString { u"0x" + QString::number(reinterpret_cast<quint64>(obj), 16) };
     } else if (role == ObjectRole) {
         return QVariant::fromValue(obj);
     } else if (role == ObjectIdRole) {
         return reinterpret_cast<quint64>(obj);
     }
-    return QVariant();
+    return {};
 }
 
 int ObjectTreeModel::columnCount(const QModelIndex &parent) const

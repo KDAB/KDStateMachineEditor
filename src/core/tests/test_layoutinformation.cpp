@@ -97,8 +97,8 @@ private Q_SLOTS:
 void LayoutInformationTest::testLayoutInformation()
 {
     State rootState, copyState;
-    rootState.setLabel("root");
-    copyState.setLabel("root");
+    rootState.setLabel(QStringLiteral("root"));
+    copyState.setLabel(QStringLiteral("root"));
     rootState.setPos(QPointF(123, 456));
     rootState.setWidth(1.2);
     rootState.setHeight(3.4);
@@ -106,13 +106,13 @@ void LayoutInformationTest::testLayoutInformation()
     State *lastCopyState = nullptr;
     for (int i = 0; i < 3; ++i) {
         State *state = new State();
-        state->setLabel(QString("state %1").arg(i));
+        state->setLabel(QStringLiteral("state %1").arg(i));
         state->setPos(QPointF(i, 10 * i));
         state->setWidth(100 + i);
         state->setHeight(50 + i);
         if (lastState) {
             Transition *transition = new Transition(lastState);
-            transition->setLabel(QString("trans %1").arg(i));
+            transition->setLabel(QStringLiteral("trans %1").arg(i));
             transition->setTargetState(static_cast<State *>(state));
             transition->setTargetState(state);
             transition->setPos(QPointF(i * 10, i * 10));
@@ -122,10 +122,10 @@ void LayoutInformationTest::testLayoutInformation()
         lastState = state;
 
         state = new State();
-        state->setLabel(QString("state %1").arg(i));
+        state->setLabel(QStringLiteral("state %1").arg(i));
         if (lastCopyState) {
             Transition *transition = new Transition(lastCopyState);
-            transition->setLabel(QString("trans %1").arg(i));
+            transition->setLabel(QStringLiteral("trans %1").arg(i));
             transition->setTargetState(static_cast<State *>(state));
             transition->setTargetState(state);
         }
@@ -146,25 +146,25 @@ void LayoutInformationTest::testLayoutMatches()
     {
         // check switching label of an element
         State s1;
-        s1.setLabel("s1");
+        s1.setLabel(QStringLiteral("s1"));
 
         QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
         QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
-        s1.setLabel("s2");
+        s1.setLabel(QStringLiteral("s2"));
         QVERIFY(!LayoutImportExport::matches(doc.object(), &s1));
     }
     {
         // check keeping ids but turn them into another type (transition <-> state)
         State s1;
-        s1.setLabel("s1");
+        s1.setLabel(QStringLiteral("s1"));
 
         Transition t1(&s1);
-        t1.setLabel("t1");
+        t1.setLabel(QStringLiteral("t1"));
 
         QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
         QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
-        s1.setLabel("t1");
-        t1.setLabel("s1");
+        s1.setLabel(QStringLiteral("t1"));
+        t1.setLabel(QStringLiteral("s1"));
         QVERIFY(!LayoutImportExport::matches(doc.object(), &s1));
     }
 }

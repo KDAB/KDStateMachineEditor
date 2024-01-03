@@ -88,7 +88,7 @@ bool EditController::sendDragEnterEvent(Element *sender, Element *target, const 
 
     // we only accept one item only for now
     const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX) {
+    if (url.scheme() != QStringLiteral(KDSME_QML_URI_PREFIX)) {
         qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
@@ -110,13 +110,13 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
 
     // we only accept one item only for now
     const QUrl url = urls.first();
-    if (url.scheme() != KDSME_QML_URI_PREFIX) {
+    if (url.scheme() != QStringLiteral(KDSME_QML_URI_PREFIX)) {
         qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
     }
 
     const QString str = url.toString(QUrl::RemoveScheme);
-    const QString typeString = str.split('/').last();
+    const QString typeString = str.split(u'/').last();
     if (typeString.isEmpty())
         return false;
 

@@ -53,7 +53,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-    QFont font("Monospace");
+    QFont font(QStringLiteral("Monospace"));
     font.setStyleHint(QFont::TypeWriter);
     setFont(font);
 

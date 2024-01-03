@@ -209,9 +209,9 @@ QVariant TransitionListModel::data(const QModelIndex &index, int role) const
         case NameColumn:
             return transition->toDisplayString();
         case SourceStateColumn:
-            return (transition->sourceState() ? transition->sourceState()->toDisplayString() : QString("0x0"));
+            return (transition->sourceState() ? transition->sourceState()->toDisplayString() : QStringLiteral("0x0"));
         case TargetStateColumn:
-            return (transition->targetState() ? transition->targetState()->toDisplayString() : QString("0x0"));
+            return (transition->targetState() ? transition->targetState()->toDisplayString() : QStringLiteral("0x0"));
         default:
             return QVariant();
         }

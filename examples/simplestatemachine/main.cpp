@@ -35,9 +35,9 @@ int main(int argc, char **argv)
     //! [Display the state machine]
     StateMachine machine;
     State s1(&machine);
-    s1.setLabel("s1");
+    s1.setLabel(QStringLiteral("s1"));
     State s2(&machine);
-    s2.setLabel("s2");
+    s2.setLabel(QStringLiteral("s2"));
     s1.addSignalTransition(&s2);
 
     StateMachineView view;

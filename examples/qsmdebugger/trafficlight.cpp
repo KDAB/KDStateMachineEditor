@@ -132,15 +132,15 @@ TrafficLight::TrafficLight(QWidget *parent)
 
     QStateMachine *machine = new QStateMachine(this);
     QState *redGoingYellow = createLightState(widget->redLight(), 3000);
-    redGoingYellow->setObjectName("redGoingYellow");
+    redGoingYellow->setObjectName(QStringLiteral("redGoingYellow"));
     QState *yellowGoingGreen = createLightState(widget->yellowLight(), 1000);
-    yellowGoingGreen->setObjectName("yellowGoingGreen");
+    yellowGoingGreen->setObjectName(QStringLiteral("yellowGoingGreen"));
     redGoingYellow->addTransition(redGoingYellow, SIGNAL(finished()), yellowGoingGreen);
     QState *greenGoingYellow = createLightState(widget->greenLight(), 3000);
-    greenGoingYellow->setObjectName("greenGoingYellow");
+    greenGoingYellow->setObjectName(QStringLiteral("greenGoingYellow"));
     yellowGoingGreen->addTransition(yellowGoingGreen, SIGNAL(finished()), greenGoingYellow);
     QState *yellowGoingRed = createLightState(widget->yellowLight(), 1000);
-    yellowGoingRed->setObjectName("yellowGoingRed");
+    yellowGoingRed->setObjectName(QStringLiteral("yellowGoingRed"));
     greenGoingYellow->addTransition(greenGoingYellow, SIGNAL(finished()), yellowGoingRed);
     yellowGoingRed->addTransition(yellowGoingRed, SIGNAL(finished()), redGoingYellow);
 

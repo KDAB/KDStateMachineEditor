@@ -81,7 +81,7 @@ public:
      *
      * @note Context must be open
      */
-    void saveToFile(const QString &filePath, const QString &format = "png");
+    void saveToFile(const QString &filePath, const QString &format = QStringLiteral("png"));
 
 private:
     struct Private;

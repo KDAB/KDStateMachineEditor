@@ -42,11 +42,11 @@ int main()
 
     //! [Construct the state machine]
     StateMachine machine;
-    machine.setLabel("root");
+    machine.setLabel(QStringLiteral("root"));
     State s1(&machine);
-    s1.setLabel("s1");
+    s1.setLabel(QStringLiteral("s1"));
     State s2(&machine);
-    s2.setLabel("s2");
+    s2.setLabel(QStringLiteral("s2"));
     s1.addSignalTransition(&s2);
     //! [Construct the state machine]
 

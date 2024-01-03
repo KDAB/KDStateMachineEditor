@@ -35,49 +35,49 @@ namespace {
 QJsonObject stateLayoutToJson(const State *state)
 {
     QJsonObject res;
-    res["label"] = state->label();
-    res["x"] = state->pos().x();
-    res["y"] = state->pos().y();
-    res["width"] = state->width();
-    res["height"] = state->height();
+    res[u"label"] = state->label();
+    res[u"x"] = state->pos().x();
+    res[u"y"] = state->pos().y();
+    res[u"width"] = state->width();
+    res[u"height"] = state->height();
     return res;
 }
 
 QJsonObject transitionLayoutToJson(const Transition *transition)
 {
     QJsonObject res;
-    res["label"] = transition->label();
-    res["x"] = transition->pos().x();
-    res["y"] = transition->pos().y();
+    res[u"label"] = transition->label();
+    res[u"x"] = transition->pos().x();
+    res[u"y"] = transition->pos().y();
     QRectF labelRect = transition->labelBoundingRect();
     QJsonObject lbr;
-    lbr["x"] = labelRect.x();
-    lbr["y"] = labelRect.y();
-    lbr["width"] = labelRect.width();
-    lbr["height"] = labelRect.height();
-    res["labelBoundingRect"] = lbr;
+    lbr[u"x"] = labelRect.x();
+    lbr[u"y"] = labelRect.y();
+    lbr[u"width"] = labelRect.width();
+    lbr[u"height"] = labelRect.height();
+    res[u"labelBoundingRect"] = lbr;
     QByteArray shapeData;
     QDataStream ds(&shapeData, QIODevice::WriteOnly);
     ds << transition->shape();
-    res["shape"] = QLatin1String(shapeData.toBase64());
+    res[u"shape"] = QLatin1String(shapeData.toBase64());
     return res;
 }
 
 void importStateLayout(const QJsonObject &data, State *state)
 {
-    QJsonObject::const_iterator x = data.find("x");
+    QJsonObject::const_iterator x = data.find(u"x");
     if (x == data.end())
         return;
 
-    QJsonObject::const_iterator y = data.find("y");
+    QJsonObject::const_iterator y = data.find(u"y");
     if (y == data.end())
         return;
 
-    QJsonObject::const_iterator width = data.find("width");
+    QJsonObject::const_iterator width = data.find(u"width");
     if (width == data.end())
         return;
 
-    QJsonObject::const_iterator height = data.find("height");
+    QJsonObject::const_iterator height = data.find(u"height");
     if (height == data.end())
         return;
 
@@ -88,38 +88,38 @@ void importStateLayout(const QJsonObject &data, State *state)
 
 bool isValidState(const QJsonObject &data, State *state)
 {
-    return data.value("label") == state->label() && data.contains("x") && data.contains("y") && data.contains("width") && data.contains("height");
+    return data.value(u"label") == state->label() && data.contains(u"x") && data.contains(u"y") && data.contains(u"width") && data.contains(u"height");
 }
 
 bool isValidTransition(const QJsonObject &data, Transition *state)
 {
-    return data.value("label") == state->label() && data.contains("x") && data.contains("y") && data.contains("labelBoundingRect") && data.contains("shape");
+    return data.value(u"label") == state->label() && data.contains(u"x") && data.contains(u"y") && data.contains(u"labelBoundingRect") && data.contains(u"shape");
 }
 
 void importTransitionLayout(const QJsonObject &data, Transition *transition)
 {
-    QJsonObject::const_iterator x = data.find("x");
+    QJsonObject::const_iterator x = data.find(u"x");
     if (x == data.end())
         return;
 
-    QJsonObject::const_iterator y = data.find("y");
+    QJsonObject::const_iterator y = data.find(u"y");
     if (y == data.end())
         return;
 
-    QJsonObject::const_iterator lbrIt = data.find("labelBoundingRect");
+    QJsonObject::const_iterator lbrIt = data.find(u"labelBoundingRect");
     if (lbrIt == data.end())
         return;
 
-    QJsonObject::const_iterator shape = data.find("shape");
+    QJsonObject::const_iterator shape = data.find(u"shape");
     if (shape == data.end())
         return;
 
     transition->setPos(QPointF((*x).toDouble(), (*y).toDouble()));
     QJsonObject lbr = (*lbrIt).toObject();
-    transition->setLabelBoundingRect(QRectF(lbr["x"].toDouble(),
-                                            lbr["y"].toDouble(),
-                                            lbr["width"].toDouble(),
-                                            lbr["height"].toDouble()));
+    transition->setLabelBoundingRect(QRectF(lbr[u"x"].toDouble(),
+                                            lbr[u"y"].toDouble(),
+                                            lbr[u"width"].toDouble(),
+                                            lbr[u"height"].toDouble()));
     QByteArray shapeData = QByteArray::fromBase64((*shape).toString().toLatin1());
     QPainterPath shapePath;
     QDataStream ds(&shapeData, QIODevice::ReadOnly);
@@ -133,13 +133,13 @@ void LayoutImportExport::importLayout(const QJsonObject &data, State *state)
 {
     importStateLayout(data, state);
 
-    const QJsonArray states = data.value("childStates").toArray();
+    const QJsonArray states = data.value(u"childStates").toArray();
     for (int i = 0; i < states.size() && i < state->childStates().size(); ++i) {
         State *child = state->childStates().at(i);
         importLayout(states.at(i).toObject(), child);
     }
 
-    const QJsonArray transitions = data.value("transitions").toArray();
+    const QJsonArray transitions = data.value(u"transitions").toArray();
     for (int i = 0; i < transitions.size() && i < state->transitions().size(); ++i) {
         Transition *child = state->transitions().at(i);
         importTransitionLayout(transitions.at(i).toObject(), child);
@@ -153,12 +153,12 @@ QJsonObject LayoutImportExport::exportLayout(const State *state)
     QJsonArray states;
     foreach (State *child, state->childStates())
         states.push_back(exportLayout(child));
-    res["childStates"] = states;
+    res[u"childStates"] = states;
 
     QJsonArray transitions;
     foreach (Transition *child, state->transitions())
         transitions.push_back(transitionLayoutToJson(child));
-    res["transitions"] = transitions;
+    res[u"transitions"] = transitions;
 
     return res;
 }
@@ -168,7 +168,7 @@ bool LayoutImportExport::matches(const QJsonObject &data, State *state)
     if (!isValidState(data, state))
         return false;
 
-    const QJsonArray states = data.value("childStates").toArray();
+    const QJsonArray states = data.value(u"childStates").toArray();
     if (states.size() != state->childStates().size())
         return false;
 
@@ -178,7 +178,7 @@ bool LayoutImportExport::matches(const QJsonObject &data, State *state)
             return false;
     }
 
-    const QJsonArray transitions = data.value("transitions").toArray();
+    const QJsonArray transitions = data.value(u"transitions").toArray();
     if (transitions.size() != state->transitions().size())
         return false;
 

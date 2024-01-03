@@ -59,10 +59,10 @@ void ElementUtil::setInitialState(State *state, State *initialState)
         return;
 
     if (pseudoStateName.isEmpty())
-        pseudoStateName = QString("initalState_%1_%2").arg(state->label()).arg(initialState->label());
+        pseudoStateName = QStringLiteral("initalState_%1_%2").arg(state->label()).arg(initialState->label());
 
     if (transitionName.isEmpty())
-        transitionName = QString("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label());
+        transitionName = QStringLiteral("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label());
 
     State *ps = new PseudoState(PseudoState::InitialState, state);
     ps->setLabel(pseudoStateName);

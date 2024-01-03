@@ -35,7 +35,7 @@ int main()
     QTextStream qErr(stderr);
     QTextStream qOut(stdout);
 
-    const QString fileName = TEST_DATA_DIR "/scxml/trafficlight_alternative.scxml";
+    const QString fileName = QStringLiteral(TEST_DATA_DIR) + u"/scxml/trafficlight_alternative.scxml";
     QFile file(fileName);
     if (!file.exists()) {
         qErr << "File does not exist:" << file.fileName();

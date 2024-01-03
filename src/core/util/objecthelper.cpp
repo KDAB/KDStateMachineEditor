@@ -26,7 +26,7 @@ namespace {
 
 QString stripNameSpace(const QString &className)
 {
-    const int pos = className.lastIndexOf("::");
+    const int pos = className.lastIndexOf(QLatin1String("::"));
     if (pos != -1)
         return className.mid(pos + 2);
     return className;
@@ -40,13 +40,14 @@ QString ObjectHelper::addressToString(const void *p)
 
 QString ObjectHelper::className(const QObject *object, ObjectHelper::DisplayOption option)
 {
-    return (option == StripNameSpace ? stripNameSpace(object->metaObject()->className()) : object->metaObject()->className());
+    QString className = QString::fromLatin1(object->metaObject()->className());
+    return option == StripNameSpace ? stripNameSpace(className) : className;
 }
 
 QString ObjectHelper::displayString(const QObject *object, DisplayOption option)
 {
     if (!object) {
-        return "QObject(0x0)";
+        return QStringLiteral("QObject(0x0)");
     }
     if (object->objectName().isEmpty()) {
         return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option));
@@ -70,17 +71,17 @@ int ObjectHelper::stringToEnum(const QMetaObject *metaObject, const char *name, 
 
 QString ObjectHelper::toString(const QPointF &point)
 {
-    return QString("(%1,%2)").arg(point.x()).arg(point.y());
+    return QStringLiteral("(%1,%2)").arg(point.x()).arg(point.y());
 }
 
 QString ObjectHelper::toString(const QSizeF &size)
 {
-    return QString("(%1,%2)").arg(size.width()).arg(size.height());
+    return QStringLiteral("(%1,%2)").arg(size.width()).arg(size.height());
 }
 
 QString ObjectHelper::toString(const QRectF &rect)
 {
-    return QString("(pos=%1,size=%2)")
+    return QStringLiteral("(pos=%1,size=%2)")
         .arg(toString(rect.topLeft()))
         .arg(toString(rect.size()));
 }

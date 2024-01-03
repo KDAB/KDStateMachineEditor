@@ -1,4 +1,5 @@
 # general
+build*/
 *.kdev4
 *~
 *.rej
