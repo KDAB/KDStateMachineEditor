@@ -218,13 +218,15 @@ bool SvgExporterPrivate::writeStateInner(State *state)
 
     writer.writeStartElement(QStringLiteral("g"));
     writer.writeAttribute(QStringLiteral("transform"), QStringLiteral("translate(%1,%2)").arg(state->boundingRect().x()).arg(state->boundingRect().y()));
-    foreach (Transition *transition, state->transitions()) {
+    const auto stateTransitions = state->transitions();
+    for (Transition *transition : stateTransitions) {
         if (!writeTransition(transition))
             return false;
     }
 
     if (state->isExpanded()) {
-        foreach (State *child, state->childStates()) {
+        const auto childStates = state->childStates();
+        for (State *child : childStates) {
             if (auto machine = qobject_cast<StateMachine *>(child)) {
                 if (!writeStateMachine(machine))
                     return false;

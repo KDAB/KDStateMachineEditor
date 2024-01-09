@@ -207,7 +207,7 @@ void ObjectTreeModel::setRootObjects(const QList<QObject *> &rootObjects)
     Q_D(ObjectTreeModel);
     beginResetModel();
     d->m_rootObjects.clear();
-    foreach (QObject *object, rootObjects) {
+    for (QObject *object : rootObjects) {
         if (object)
             d->m_rootObjects << object;
     }

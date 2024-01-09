@@ -186,7 +186,7 @@ bool QmlExporter::Private::writeStateMachine(StateMachine *machine)
     m_out << indention() << importStmt;
 
     const QStringList customImports = machine->property("com.kdab.KDSME.DSMExporter.customImports").toStringList();
-    foreach (const QString &customImport, customImports)
+    for (const QString &customImport : customImports)
         m_out << customImport << '\n';
     m_out << '\n';
 
@@ -264,12 +264,14 @@ bool QmlExporter::Private::writeStateInner(State *state)
     writeAttribute(state, QStringLiteral("onEntered"), state->onEntry());
     writeAttribute(state, QStringLiteral("onExited"), state->onExit());
 
-    foreach (State *child, state->childStates()) {
+    const auto childStates = state->childStates();
+    for (State *child : childStates) {
         if (!writeState(child))
             return false;
     }
 
-    foreach (Transition *transition, state->transitions()) {
+    const auto stateTransitions = state->transitions();
+    for (Transition *transition : stateTransitions) {
         if (!writeTransition(transition))
             return false;
     }

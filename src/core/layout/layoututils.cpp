@@ -43,7 +43,8 @@ bool LayoutUtils::moveInner(State *state, const QPointF &offset)
         return false;
     }
 
-    foreach (State *childState, state->childStates()) {
+    const auto childStates = state->childStates();
+    for (State *childState : childStates) {
         childState->setPos(childState->pos() + offset);
     }
     return true;

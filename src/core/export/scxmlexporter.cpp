@@ -144,12 +144,14 @@ bool ScxmlExporter::Private::writeStateInner(State *state)
         m_writer.writeAttribute(QStringLiteral("initial"), initial->label());
     }
 
-    foreach (Transition *transition, state->transitions()) {
+    const auto stateTransitions = state->transitions();
+    for (Transition *transition : stateTransitions) {
         if (!writeTransition(transition))
             return false;
     }
 
-    foreach (State *child, state->childStates()) {
+    const auto childStates = state->childStates();
+    for (State *child : childStates) {
         if (!writeState(child))
             return false;
     }

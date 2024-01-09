@@ -151,12 +151,14 @@ QJsonObject LayoutImportExport::exportLayout(const State *state)
     QJsonObject res = stateLayoutToJson(state);
 
     QJsonArray states;
-    foreach (State *child, state->childStates())
+    const auto childStates = state->childStates();
+    for (State *child : childStates)
         states.push_back(exportLayout(child));
     res[u"childStates"] = states;
 
     QJsonArray transitions;
-    foreach (Transition *child, state->transitions())
+    const auto stateTransitions = state->transitions();
+    for (Transition *child : stateTransitions)
         transitions.push_back(transitionLayoutToJson(child));
     res[u"transitions"] = transitions;
 

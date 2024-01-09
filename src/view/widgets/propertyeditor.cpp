@@ -167,7 +167,8 @@ static QStringList allStates(const State *state)
 
     if (!state->label().isEmpty())
         ret << state->label();
-    foreach (const State *st, state->childStates())
+    const auto childStates = state->childStates();
+    for (const State *st : childStates)
         ret << allStates(st);
     ret.removeDuplicates();
     return ret;
@@ -180,7 +181,8 @@ static QStringList childStates(const State *state)
     if (!state)
         return ret;
 
-    foreach (const State *st, state->childStates())
+    const auto childStates = state->childStates();
+    for (const State *st : childStates)
         if (!st->label().isEmpty())
             ret << st->label();
 

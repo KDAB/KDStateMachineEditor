@@ -54,7 +54,7 @@ private:
         const State *reference = states[0];
 
         const qreal referenceCenterY = reference->pos().y() + reference->height() / 2;
-        foreach (State *item, states) {
+        for (State *item : states) {
             const qreal centerY = item->pos().y() + item->height() / 2;
             QVERIFY2(qAbs(centerY - referenceCenterY) < epsilonY, "Not horizontally aligned");
         }
@@ -66,7 +66,7 @@ private:
         const State *reference = states[0];
 
         const qreal referenceCenterX = reference->pos().x() + reference->width() / 2;
-        foreach (State *state, states) {
+        for (State *state : states) {
             const qreal centerX = state->pos().x() + state->width() / 2;
             QVERIFY2(qAbs(centerX - referenceCenterX) < epsilonX, "Not vertically aligned");
         }

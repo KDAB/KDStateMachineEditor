@@ -47,14 +47,16 @@ void compare(const State *state1, const State *state2)
     QCOMPARE(state1->height(), state2->height());
 
     auto copyChildren = state2->childStates();
-    foreach (const State *child, state1->childStates()) {
+    const auto childStates = state1->childStates();
+    for (const State *child : childStates) {
         auto copyChild = std::find_if(copyChildren.begin(), copyChildren.end(), [&child](State *state) -> bool { return state->label() == child->label(); });
         if (copyChild != copyChildren.end())
             compare(child, *copyChild);
     }
 
     auto copyTransitions = state2->transitions();
-    foreach (const Transition *item, state1->transitions()) {
+    const auto state1Transitions = state1->transitions();
+    for (const Transition *item : state1Transitions) {
         auto copyTransition = std::find_if(copyTransitions.begin(), copyTransitions.end(), [&item](Transition *state) -> bool { return state->label() == item->label(); });
         if (copyTransition != copyTransitions.end()) {
             compare(item, *copyTransition);
