@@ -26,7 +26,8 @@ State *ElementUtil::findInitialState(const KDSME::State *state)
     if (!state)
         return nullptr;
 
-    foreach (State *child, state->childStates()) {
+    const auto childStates = state->childStates();
+    for (State *child : childStates) {
         if (PseudoState *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
                 Transition *transition = pseudoState->transitions().value(0);
@@ -43,7 +44,8 @@ void ElementUtil::setInitialState(State *state, State *initialState)
         return;
 
     QString pseudoStateName, transitionName;
-    foreach (State *child, state->childStates()) {
+    const auto childStates = state->childStates();
+    for (State *child : childStates) {
         if (PseudoState *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
                 pseudoStateName = pseudoState->label();
@@ -80,7 +82,8 @@ State *ElementUtil::findState(State *root, const QString &label)
     if (label == root->label())
         return root;
 
-    foreach (State *state, root->childStates())
+    const auto childStates = root->childStates();
+    for (State *state : childStates)
         if (State *st = findState(state, label))
             return st;
 

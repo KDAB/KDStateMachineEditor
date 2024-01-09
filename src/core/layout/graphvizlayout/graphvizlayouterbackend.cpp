@@ -226,7 +226,7 @@ void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
             _agset(newNode, QStringLiteral("label"), state->label());
         }
 
-        foreach (const auto &kv, attributesForState(qobject_cast<State *>(state))) {
+        for (const auto &kv : attributesForState(qobject_cast<State *>(state))) {
             _agset(newNode, QString::fromLatin1(kv.first), QString::fromLatin1(kv.second));
         }
     }
@@ -236,12 +236,14 @@ void GraphvizLayouterBackend::Private::buildTransitions(State *state, Agraph_t *
 {
     IF_DEBUG(qCDebug(KDSME_CORE) << state->label() << *state << graph);
 
-    foreach (Transition *transition, state->transitions()) {
+    const auto stateTransitions = state->transitions();
+    for (Transition *transition : stateTransitions) {
         buildTransition(transition, graph);
     }
 
     if (m_layoutMode == RecursiveMode) {
-        foreach (State *childState, state->childStates()) {
+        const auto childStates = state->childStates();
+        for (State *childState : childStates) {
             buildTransitions(childState, graph); // recursive call
         }
     }

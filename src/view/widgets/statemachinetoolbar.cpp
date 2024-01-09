@@ -90,7 +90,8 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView *view, QWidget *parent
     themeSelectionButton->setText(tr("Theme"));
     themeSelectionButton->setPopupMode(QToolButton::InstantPopup);
     QMenu *themeSelectionMenu = new QMenu(themeSelectionButton);
-    foreach (const QString &themeName, availableThemeNames()) {
+    const auto themes = availableThemeNames();
+    for (const QString &themeName : themes) {
         auto action = new QAction(themeName, this);
         action->setObjectName(QStringLiteral("action%1").arg(themeName));
         connect(action, &QAction::triggered, this, [this, themeName]() {

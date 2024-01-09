@@ -52,11 +52,11 @@ struct RuntimeController::Private
 
 void RuntimeController::Private::updateActiveRegion()
 {
-    Configuration configuration = q->activeConfiguration();
+    const Configuration configuration = q->activeConfiguration();
 
     // Calculate the bounding rect of all states in that are currently active
     QRectF activeRegion;
-    foreach (State *state, configuration) {
+    for (State *state : configuration) {
         activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;

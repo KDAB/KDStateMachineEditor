@@ -88,9 +88,9 @@ void MainWindow::loadPresets(const QString &presetsDir)
         qWarning() << "Non-existent presets location:" << presetsDir;
     }
 
-    QStringList files = dir.entryList(QDir::Files);
-    foreach (const QString &file, files) {
-        if (!file.endsWith(QLatin1String(".scxml")))
+    const QStringList files = dir.entryList(QDir::Files);
+    for (const QString &file : files) {
+        if (!file.endsWith(u".scxml"))
             continue;
 
         QStandardItem *item = new QStandardItem(file);
