@@ -241,7 +241,7 @@ void StateMachineView::setThemeName(const QString &themeName)
         }
     }
 
-    d->m_themeName = selectedThemeName;
+    d->m_themeName = std::move(selectedThemeName);
     emit themeNameChanged(d->m_themeName);
 }
 
