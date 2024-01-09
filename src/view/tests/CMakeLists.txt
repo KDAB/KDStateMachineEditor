@@ -13,6 +13,6 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-ecm_add_test(test_commands.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_view)
+ecm_add_test(test_commands.cpp LINK_LIBRARIES Qt::Test kdstatemachineeditor_view)
 
-ecm_add_test(test_statemachineview.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_view)
+ecm_add_test(test_statemachineview.cpp LINK_LIBRARIES Qt::Test kdstatemachineeditor_view)

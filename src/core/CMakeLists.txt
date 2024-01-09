@@ -14,33 +14,64 @@
 #
 
 set(LIB_SRCS
-    export/abstractexporter.cpp
-    export/qmlexporter.cpp
-    export/scxmlexporter.cpp
-    export/svgexporter.cpp
-    layout/layerwiselayouter.cpp
-    layout/layouter.cpp
-    layout/layoutimportexport.cpp
-    layout/layoutproperties.cpp
-    layout/layoututils.cpp
-    model/element.cpp
-    model/elementfactory.cpp
-    model/elementmodel.cpp
-    model/elementutil.cpp
-    model/runtimecontroller.cpp
-    model/state.cpp
-    model/transition.cpp
-    import/abstractimporter.cpp
-    import/scxmlimporter.cpp
-    util/depthchecker.cpp
-    util/objecthelper.cpp
-    util/objecttreemodel.cpp
     debug.cpp
+    debug.h
+    export/abstractexporter.cpp
+    export/abstractexporter.h
+    export/qmlexporter.cpp
+    export/qmlexporter.h
+    export/scxmlexporter.cpp
+    export/scxmlexporter.h
+    export/svgexporter.cpp
+    export/svgexporter.h
+    import/abstractimporter.cpp
+    import/abstractimporter.h
+    import/scxmlimporter.cpp
+    import/scxmlimporter.h
+    layout/layerwiselayouter.cpp
+    layout/layerwiselayouter.h
+    layout/layouter.cpp
+    layout/layouter.h
+    layout/layoutimportexport.cpp
+    layout/layoutimportexport.h
+    layout/layoutproperties.cpp
+    layout/layoutproperties.h
+    layout/layoututils.cpp
+    layout/layoututils.h
+    model/element.cpp
+    model/element.h
+    model/elementfactory.cpp
+    model/elementfactory.h
+    model/elementmodel.cpp
+    model/elementmodel.h
+    model/elementutil.cpp
+    model/elementutil.h
+    model/runtimecontroller.cpp
+    model/runtimecontroller.h
+    model/state.cpp
+    model/state.h
+    model/transition.cpp
+    model/transition.h
+    util/depthchecker.cpp
+    util/depthchecker.h
+    util/objecthelper.cpp
+    util/objecthelper.h
+    util/objecttreemodel.cpp
+    util/objecttreemodel.h
 )
 
 if(GRAPHVIZ_FOUND)
-    list(APPEND LIB_SRCS layout/graphvizlayout/gvutils.cpp layout/graphvizlayout/graphvizlayerlayouter.cpp
-         layout/graphvizlayout/graphvizlayouter.cpp layout/graphvizlayout/graphvizlayouterbackend.cpp
+    list(
+        APPEND
+        LIB_SRCS
+        layout/graphvizlayout/graphvizlayerlayouter.cpp
+        layout/graphvizlayout/graphvizlayerlayouter.h
+        layout/graphvizlayout/graphvizlayouter.cpp
+        layout/graphvizlayout/graphvizlayouter.h
+        layout/graphvizlayout/graphvizlayouterbackend.cpp
+        layout/graphvizlayout/graphvizlayouterbackend_p.h
+        layout/graphvizlayout/gvutils.cpp
+        layout/graphvizlayout/gvutils.h
     )
     if(WITH_STATIC_GRAPHVIZ)
         list(APPEND LIB_SRCS layout/graphvizlayout/graphviz_staticbuild.c)
