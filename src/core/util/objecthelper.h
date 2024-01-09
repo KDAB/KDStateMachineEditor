@@ -71,10 +71,10 @@ KDSME_CORE_EXPORT int depth(const QObject *root, const QObject *object);
  * Returns a list that only contains item of type @p FilterType
  */
 template<class FilterType, class ItemType>
-QList<FilterType> copy_if_type(const QList<ItemType> list)
+QList<FilterType> copy_if_type(const QList<ItemType> &list)
 {
     QList<FilterType> filteredList;
-    Q_FOREACH (const ItemType object, list) {
+    for (const ItemType &object : list) {
         if (FilterType filterObject = qobject_cast<FilterType>(object))
             filteredList << filterObject;
     }

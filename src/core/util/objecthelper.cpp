@@ -41,7 +41,7 @@ QString ObjectHelper::addressToString(const void *p)
 QString ObjectHelper::className(const QObject *object, ObjectHelper::DisplayOption option)
 {
     QString className = QString::fromLatin1(object->metaObject()->className());
-    return option == StripNameSpace ? stripNameSpace(className) : className;
+    return option == StripNameSpace ? stripNameSpace(className) : std::move(className);
 }
 
 QString ObjectHelper::displayString(const QObject *object, DisplayOption option)

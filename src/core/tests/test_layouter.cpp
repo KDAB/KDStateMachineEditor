@@ -72,10 +72,10 @@ private:
         }
     }
 
-    static void assertRegionContainsStates(State *region, const QList<State *> states)
+    static void assertRegionContainsStates(State *region, const QList<State *> &states)
     {
         const QRectF rect = region->boundingRect();
-        foreach (State *item, states) {
+        for (const State *item : states) {
             QVERIFY(rect.contains(item->boundingRect()));
         }
     }
