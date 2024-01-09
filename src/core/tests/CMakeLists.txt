@@ -22,62 +22,54 @@ if(TARGET Qt5::XmlPatterns_FOUND AND NOT APPLE)
 endif()
 
 add_library(kdsme_testhelper STATIC parsehelper.cpp util.cpp)
-target_link_libraries(kdsme_testhelper Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_core)
+target_link_libraries(kdsme_testhelper Qt::Test kdstatemachineeditor_core)
 
 if(GRAPHVIZ_FOUND)
-    ecm_add_test(test_layouter.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Gui kdsme_testhelper)
+    ecm_add_test(test_layouter.cpp LINK_LIBRARIES Qt::Gui kdsme_testhelper)
 endif()
 
 ecm_add_test(test_layoutitem.cpp LINK_LIBRARIES kdsme_testhelper)
 
-ecm_add_test(
-    test_models.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Gui Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_core
-)
+ecm_add_test(test_models.cpp LINK_LIBRARIES Qt::Gui Qt::Test kdstatemachineeditor_core)
 
 ecm_add_test(test_qmlexport.cpp LINK_LIBRARIES kdsme_testhelper)
 
-if(Qt${Qt_VERSION_MAJOR}RemoteObjects_FOUND)
+if(TARGET Qt::RemoteObjects)
     set(SRCS test_qsmintegration.cpp)
     if(NOT BUILD_QT6)
-        qt5_generate_repc(SRCS ../../debuginterface/debuginterface.rep REPLICA)
+        qt_generate_repc(SRCS ../../debuginterface/debuginterface.rep REPLICA)
     endif()
     ecm_add_test(
         ${SRCS}
         TEST_NAME
         test_qsmintegration
         LINK_LIBRARIES
-        Qt${Qt_VERSION_MAJOR}::RemoteObjects
-        Qt${Qt_VERSION_MAJOR}::Test
+        Qt::RemoteObjects
+        Qt::Test
         kdstatemachineeditor_debuginterfaceclient
         kdstatemachineeditor_debuginterfacesource
         kdsme_testhelper
     )
     if(BUILD_QT6)
         target_link_libraries(test_qsmintegration Qt6::StateMachine)
-        qt6_add_repc_replicas(test_qsmintegration ../../debuginterface/debuginterface.rep)
+        qt_add_repc_replicas(test_qsmintegration ../../debuginterface/debuginterface.rep)
     endif()
 endif()
 
 ecm_add_test(test_scxmlimport.cpp LINK_LIBRARIES kdsme_testhelper)
 
 if(DEFINED KDSME_TESTHELPER_EXTRA_LIBS)
-    ecm_add_test(
-        test_scxmlexport.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test ${KDSME_TESTHELPER_EXTRA_LIBS}
-        kdstatemachineeditor_core
-    )
+    ecm_add_test(test_scxmlexport.cpp LINK_LIBRARIES Qt::Test ${KDSME_TESTHELPER_EXTRA_LIBS} kdstatemachineeditor_core)
 else()
-    ecm_add_test(test_scxmlexport.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Test kdstatemachineeditor_core)
+    ecm_add_test(test_scxmlexport.cpp LINK_LIBRARIES Qt::Test kdstatemachineeditor_core)
 endif()
 
 ecm_add_test(test_statemachine.cpp LINK_LIBRARIES kdsme_testhelper)
 
-ecm_add_test(test_util.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Gui kdsme_testhelper)
+ecm_add_test(test_util.cpp LINK_LIBRARIES Qt::Gui kdsme_testhelper)
 
 if(NOT BUILD_QT6 OR Qt6Core5Compat_FOUND)
-    ecm_add_test(
-        test_layoutinformation.cpp LINK_LIBRARIES Qt${Qt_VERSION_MAJOR}::Gui Qt${Qt_VERSION_MAJOR}::Test
-        kdstatemachineeditor_core
-    )
+    ecm_add_test(test_layoutinformation.cpp LINK_LIBRARIES Qt::Gui Qt::Test kdstatemachineeditor_core)
     if(BUILD_QT6)
         target_link_libraries(test_layoutinformation Qt6::Core5Compat)
     endif()

@@ -19,9 +19,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-examples.h.cmake ${CMAKE_CURRE
 
 add_subdirectory(layoutexport)
 add_subdirectory(export)
-if(Qt${Qt_VERSION_MAJOR}RemoteObjects_FOUND)
+if(TARGET Qt::RemoteObjects)
     add_subdirectory(qsmdebugger)
-    if(Qt${Qt_VERSION_MAJOR}Scxml_FOUND)
+    if(TARGET Qt::Scxml)
         add_subdirectory(qscxmldebugger)
     endif()
 endif()
