@@ -166,7 +166,9 @@ Rectangle {
 
             Connections {
                 target: (root.followActiveRegion ? root.configurationController : null)
-                onActiveRegionChanged: centerOnActiveRegion();
+                function onActiveRegionChanged() {
+                    centerOnActiveRegion();
+                }
             }
 
             Behavior on contentX {

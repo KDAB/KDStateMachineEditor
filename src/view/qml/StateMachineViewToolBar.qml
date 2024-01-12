@@ -113,7 +113,9 @@ ToolBar {
             onValueChanged: root.stateMachineView.zoom = value
             Connections {
                 target: root.stateMachineView
-                onZoomChanged: zoomSlider.value = zoom
+                function onZoomChanged(zoom) {
+                    zoomSlider.value = zoom;
+                }
             }
         }
         Label {
