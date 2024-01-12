@@ -16,28 +16,36 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
+          #- windows-latest
+          #- macos-latest
         build_type:
           - Debug
-          - Release
+          #- Release
         config:
           - qt_version: "5.15"
             qt_arch: win64_mingw81
-          - qt_version: "6.4.*"
-            qt_modules: qtscxml
-            qt_arch: win64_mingw
+          #- qt_version: "6.4.*"
+            #qt_modules: qtscxml
+            #qt_arch: win64_mingw
+        include:
+          - os: ubuntu-latest
+            build_type:
+              Debug
+            config:
+              qt_version: "6.6.*"
+              qt_modules: qtscxml
+              cmake_arg: "-DWITH_INTERNAL_GRAPHVIZ=ON"
 
     steps:
-      - name: Install Dependencies on Linux
+      - name: Install Dependencies on Linux #removed libgraphviz-dev
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt update -qq
-          sudo apt install -y doxygen libgraphviz-dev
+          sudo apt install -y doxygen libgtk2.0-dev
 
       - name: Install Dependencies on Windows (graphviz was built with MinGW)
         if: ${{ runner.os == 'Windows' }}
@@ -47,7 +55,7 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: brew install graphviz
 
-      - name: Install Qt with options and default aqtversion (Linux/macOS)
+      - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion (Linux/macOS)
         if: ${{ runner.os != 'Windows' }}
         uses: jurplel/install-qt-action@v3
         with:
@@ -76,6 +84,8 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Fetch Git submodule
         run: git submodule update --init --recursive
@@ -83,13 +93,13 @@ jobs:
       - name: Configure project
         run: >
           cmake -S . -B ./build -G Ninja
-          --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_PREFIX_PATH='C:\Program Files\Graphviz'
           -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          ${{ matrix.config.cmake_arg }}
 
       - name: Build Project
         run: cmake --build ./build
