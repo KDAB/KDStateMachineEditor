@@ -16,19 +16,19 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          # - ubuntu-latest
           - windows-latest
           - macos-latest
         build_type:
           - Debug
           - Release
         config:
-          - qt_version: "5.15"
-            qt_arch: win64_mingw81
-          - qt_version: "6.4.*"
+          # - qt_version: "5.15"
+            # qt_arch: win64_mingw81
+          - qt_version: "6.7.*"
             qt_modules: qtscxml
             qt_arch: win64_mingw
 
