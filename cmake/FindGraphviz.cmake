@@ -15,7 +15,7 @@
 #                           (containing bin/, include/, etc.)
 
 # SPDX-FileCopyrightText: 2009, Adrien Bustany, <madcat@mymadcat.com>
-# SPDX-FileCopyrightText: 2012-2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileCopyrightText: 2012 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 
 # Version computation and some cleanups by Allen Winter <allen.winter@kdab.com>
 # Bug fixing for WIN32 by Guillaume Jacquenot <guillaume.jacquenot@gmail.com>
