@@ -58,13 +58,9 @@ add_library(
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(
     kdstatemachineeditor_view
-    LINK_PRIVATE
-    Qt${Qt_VERSION_MAJOR}::GuiPrivate
-    LINK_PUBLIC
-    Qt${Qt_VERSION_MAJOR}::Quick
-    Qt${Qt_VERSION_MAJOR}::QuickWidgets
-    Qt${Qt_VERSION_MAJOR}::Widgets
-    kdstatemachineeditor_core
+    PRIVATE Qt${Qt_VERSION_MAJOR}::GuiPrivate
+    PUBLIC Qt${Qt_VERSION_MAJOR}::Quick Qt${Qt_VERSION_MAJOR}::QuickWidgets Qt${Qt_VERSION_MAJOR}::Widgets
+           kdstatemachineeditor_core
 )
 
 set(build_iface_dirs ${CMAKE_CURRENT_SOURCE_DIR}/command ${CMAKE_CURRENT_SOURCE_DIR}/widgets)
