@@ -81,12 +81,13 @@ endif()
 add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
-    kdstatemachineeditor_core LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::Quick # TODO: Get rid off this
-    LINK_PUBLIC Qt${Qt_VERSION_MAJOR}::Core Qt${Qt_VERSION_MAJOR}::Gui
+    kdstatemachineeditor_core
+    PRIVATE Qt${Qt_VERSION_MAJOR}::Quick # TODO: Get rid off this
+    PUBLIC Qt${Qt_VERSION_MAJOR}::Core Qt${Qt_VERSION_MAJOR}::Gui
 )
 
 if(BUILD_QT6)
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE Qt6::StateMachine)
+    target_link_libraries(kdstatemachineeditor_core PRIVATE Qt6::StateMachine)
 endif()
 
 set_target_properties(
@@ -112,9 +113,9 @@ generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_exp
 
 if(GRAPHVIZ_FOUND)
     if(WITH_STATIC_GRAPHVIZ)
-        target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE GraphvizStaticDotLayoutPlugin)
+        target_link_libraries(kdstatemachineeditor_core PRIVATE GraphvizStaticDotLayoutPlugin)
     endif()
-    target_link_libraries(kdstatemachineeditor_core LINK_PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
+    target_link_libraries(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
     if(WITH_INTERNAL_GRAPHVIZ)
         add_dependencies(kdstatemachineeditor_core GraphvizExternalProject)
     endif()
