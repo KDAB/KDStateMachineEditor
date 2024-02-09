@@ -12,6 +12,16 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
+add_definitions(
+    -DQT_NO_CAST_TO_ASCII
+    -DQT_NO_CAST_FROM_ASCII
+    -DQT_STRICT_ITERATORS
+    -DQT_NO_URL_CAST_FROM_STRING
+    -DQT_NO_CAST_FROM_BYTEARRAY
+    -DQT_USE_QSTRINGBUILDER
+    -DQT_USE_FAST_OPERATOR_PLUS
+)
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-examples.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-examples.h)
