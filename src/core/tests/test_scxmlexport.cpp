@@ -112,8 +112,7 @@ void ScxmlExportTest::testSimpleStateMachine()
     QStringList stateMachineIds = query(output, "doc($input)/scxml/@name/string()");
     QCOMPARE(stateMachineIds, QStringList() << "root");
     QStringList stateIds = query(output, "doc($input)/scxml/state/@id/string()");
-    QCOMPARE(stateIds, QStringList() << "s1"
-                                     << "s2");
+    QCOMPARE(stateIds, QStringList() << "s1" << "s2");
     QStringList initialStateIds = query(output, "doc($input)/scxml/@initial/string()");
     QCOMPARE(initialStateIds, QStringList() << "s1");
     QStringList transitions = query(output, "doc($input)/scxml/state[@id='s1']/transition/@event/string()");
