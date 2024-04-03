@@ -34,9 +34,9 @@ Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 #endif
 {
 #ifdef WITH_CGRAPH
-    return agopen(const_cast<char *>(qPrintable(name)), kind, disc);
+    return agopen(name.toLocal8Bit().data(), kind, disc);
 #else
-    return agopen(const_cast<char *>(qPrintable(name)), kind);
+    return agopen(name.toLocal8Bit().data(), kind);
 #endif
 }
 
@@ -57,8 +57,8 @@ Agsym_t *GVUtils::_agnodeattr(Agraph_t *object, const QString &attr, const QStri
 #else
     return agnodeattr(object,
 #endif
-                  const_cast<char *>(qPrintable(attr)),
-                  const_cast<char *>(qPrintable(alt)));
+                  attr.toLocal8Bit().data(),
+                  alt.toLocal8Bit().data());
 }
 
 Agsym_t *GVUtils::_agedgeattr(Agraph_t *object, const QString &attr, const QString &alt)
@@ -68,8 +68,8 @@ Agsym_t *GVUtils::_agedgeattr(Agraph_t *object, const QString &attr, const QStri
 #else
     return agedgeattr(object,
 #endif
-                  const_cast<char *>(qPrintable(attr)),
-                  const_cast<char *>(qPrintable(alt)));
+                  attr.toLocal8Bit().data(),
+                  alt.toLocal8Bit().data());
 }
 
 #ifdef WITH_CGRAPH
@@ -82,12 +82,12 @@ void *GVUtils::_agbindrec(void *obj, const char *name, unsigned int size, int mo
 Agnode_t *GVUtils::_agnode(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
-    Agnode_t *n = agnode(graph, const_cast<char *>(qPrintable(attr)), create);
+    Agnode_t *n = agnode(graph, attr.toLocal8Bit().data(), create);
     _agbindrec(n, "Agnodeinfo_t", sizeof(Agnodeinfo_t), MOVE_TO_FRONT);
     return n;
 #else
     Q_UNUSED(create);
-    return agnode(graph, const_cast<char *>(qPrintable(attr)));
+    return agnode(graph, attr)));
 #endif
 }
 
@@ -95,7 +95,7 @@ Agedge_t *GVUtils::_agedge(Agraph_t *graph, Agnode_t *tail, Agnode_t *head,
                            const QString &name, bool create)
 {
 #ifdef WITH_CGRAPH
-    Agedge_t *e = agedge(graph, tail, head, const_cast<char *>(qPrintable(name)), create);
+    Agedge_t *e = agedge(graph, tail, head, name.toLocal8Bit().data(), create);
     _agbindrec(e, "Agedgeinfo_t", sizeof(Agedgeinfo_t), MOVE_TO_FRONT);
     return e;
 #else
@@ -108,22 +108,22 @@ Agedge_t *GVUtils::_agedge(Agraph_t *graph, Agnode_t *tail, Agnode_t *head,
 Agraph_t *GVUtils::_agsubg(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
-    Agraph_t *g = agsubg(graph, const_cast<char *>(qPrintable(attr)), create);
+    Agraph_t *g = agsubg(graph, attr.toLocal8Bit().data(), create);
     _agbindrec(g, "Agraphinfo_t", sizeof(Agraphinfo_t), MOVE_TO_FRONT);
     return g;
 #else
     Q_UNUSED(create);
-    return agsubg(graph, const_cast<char *>(qPrintable(attr)));
+    return agsubg(graph, attr.toLocal8Bit().data());
 #endif
 }
 
 int GVUtils::_agset(void *object, const QString &attr, const QString &value)
 {
-    return agsafeset(object, const_cast<char *>(qPrintable(attr)),
-                     const_cast<char *>(qPrintable(value)), const_cast<char *>(""));
+    return agsafeset(object, attr.toLocal8Bit().data(),
+                     value.toLocal8Bit().data(), const_cast<char *>(""));
 }
 
 int GVUtils::_gvLayout(GVC_t *gvc, graph_t *g, const char *engine)
 {
-    return gvLayout(gvc, g, const_cast<char *>(engine));
+    return gvLayout(gvc, g, engine);
 }
