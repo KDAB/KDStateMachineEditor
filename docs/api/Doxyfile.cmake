@@ -1,4 +1,4 @@
-# Doxyfile 1.8.20
+# Doxyfile 1.9.1
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -58,7 +58,7 @@ PROJECT_LOGO           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = "@DOXYGEN_OUTPUT_DIR@"
+OUTPUT_DIRECTORY       = @DOXYGEN_OUTPUT_DIR@
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -323,7 +323,10 @@ OPTIMIZE_OUTPUT_SLICE  = NO
 # Note: For files without extension you can use no_extension as a placeholder.
 #
 # Note that for custom extensions you also need to set FILE_PATTERNS otherwise
-# the files are not read by doxygen.
+# the files are not read by doxygen. When specifying no_extension you should add
+# * to the FILE_PATTERNS.
+#
+# Note see also the list of default file extension mappings.
 
 EXTENSION_MAPPING      =
 
@@ -533,6 +536,13 @@ EXTRACT_LOCAL_METHODS  = NO
 
 EXTRACT_ANON_NSPACES   = NO
 
+# If this flag is set to YES, the name of an unnamed parameter in a declaration
+# will be determined by the corresponding definition. By default unnamed
+# parameters remain unnamed in the output.
+# The default value is: YES.
+
+RESOLVE_UNNAMED_PARAMS = YES
+
 # If the HIDE_UNDOC_MEMBERS tag is set to YES, doxygen will hide all
 # undocumented members inside documented classes or files. If set to NO these
 # members will be included in the various overviews, but no documentation
@@ -570,11 +580,18 @@ HIDE_IN_BODY_DOCS      = YES
 
 INTERNAL_DOCS          = NO
 
-# If the CASE_SENSE_NAMES tag is set to NO then doxygen will only generate file
-# names in lower-case letters. If set to YES, upper-case letters are also
-# allowed. This is useful if you have classes or files whose names only differ
-# in case and if your file system supports case sensitive file names. Windows
-# (including Cygwin) and Mac users are advised to set this option to NO.
+# With the correct setting of option CASE_SENSE_NAMES doxygen will better be
+# able to match the capabilities of the underlying filesystem. In case the
+# filesystem is case sensitive (i.e. it supports files in the same directory
+# whose names only differ in casing), the option must be set to YES to properly
+# deal with such files in case they appear in the input. For filesystems that
+# are not case sensitive the option should be be set to NO to properly deal with
+# output files written for symbols that only differ in casing, such as for two
+# classes, one named CLASS and the other named Class, and to also support
+# references to files without having to specify the exact matching casing. On
+# Windows (including Cygwin) and MacOS, users should typically set this option
+# to NO, whereas on Linux or other Unix flavors it should typically be set to
+# YES.
 # The default value is: system dependent.
 
 CASE_SENSE_NAMES       = YES
@@ -813,7 +830,10 @@ WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = YES
 
 # If the WARN_AS_ERROR tag is set to YES then doxygen will immediately stop when
-# a warning is encountered.
+# a warning is encountered. If the WARN_AS_ERROR tag is set to FAIL_ON_WARNINGS
+# then doxygen will continue running as if WARN_AS_ERROR tag is set to NO, but
+# at the end of the doxygen process doxygen will return with a non-zero status.
+# Possible values are: NO, YES and FAIL_ON_WARNINGS.
 # The default value is: NO.
 
 WARN_AS_ERROR          = NO
@@ -844,14 +864,14 @@ WARN_LOGFILE           = doxygen.log
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "@CMAKE_SOURCE_DIR@/README.md" \
-                         "@CMAKE_SOURCE_DIR@/src"
+INPUT                  = @CMAKE_SOURCE_DIR@/README.md \
+                         @CMAKE_SOURCE_DIR@/src
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
 # libiconv (or the iconv built into libc) for the transcoding. See the libiconv
-# documentation (see: https://www.gnu.org/software/libiconv/) for the list of
-# possible encodings.
+# documentation (see:
+# https://www.gnu.org/software/libiconv/) for the list of possible encodings.
 # The default value is: UTF-8.
 
 INPUT_ENCODING         = UTF-8
@@ -864,13 +884,15 @@ INPUT_ENCODING         = UTF-8
 # need to set EXTENSION_MAPPING for the extension otherwise the files are not
 # read by doxygen.
 #
+# Note the list of default checked file patterns might differ from the list of
+# default file extension mappings.
+#
 # If left blank the following patterns are tested:*.c, *.cc, *.cxx, *.cpp,
 # *.c++, *.java, *.ii, *.ixx, *.ipp, *.i++, *.inl, *.idl, *.ddl, *.odl, *.h,
 # *.hh, *.hxx, *.hpp, *.h++, *.cs, *.d, *.php, *.php4, *.php5, *.phtml, *.inc,
 # *.m, *.markdown, *.md, *.mm, *.dox (to be provided as doxygen C comment),
-# *.doc (to be provided as doxygen C comment), *.txt (to be provided as doxygen
-# C comment), *.py, *.pyw, *.f90, *.f95, *.f03, *.f08, *.f18, *.f, *.for, *.vhd,
-# *.vhdl, *.ucf, *.qsf and *.ice.
+# *.py, *.pyw, *.f90, *.f95, *.f03, *.f08, *.f18, *.f, *.for, *.vhd, *.vhdl,
+# *.ucf, *.qsf and *.ice.
 
 FILE_PATTERNS          = *.cpp \
                          *.h \
@@ -918,7 +940,7 @@ EXCLUDE_PATTERNS       = */.svn/* \
                          */test/* \
                          */tests/* \
                          *_export.h \
-                         "@CMAKE_CURRENT_SOURCE_DIR@/src/app/*"
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/app/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -935,7 +957,7 @@ EXCLUDE_SYMBOLS        = *Private
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = "@CMAKE_SOURCE_DIR@/examples"
+EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/examples
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -955,8 +977,8 @@ EXAMPLE_RECURSIVE      = YES
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = "@CMAKE_CURRENT_SOURCE_DIR@" \
-                         "@CMAKE_SOURCE_DIR@/screenshots"
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@ \
+                         @CMAKE_SOURCE_DIR@/screenshots
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1012,7 +1034,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/README.md"
+USE_MDFILE_AS_MAINPAGE = @CMAKE_SOURCE_DIR@/README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -1100,6 +1122,44 @@ USE_HTAGS              = NO
 
 VERBATIM_HEADERS       = YES
 
+# If the CLANG_ASSISTED_PARSING tag is set to YES then doxygen will use the
+# clang parser (see:
+# http://clang.llvm.org/) for more accurate parsing at the cost of reduced
+# performance. This can be particularly helpful with template rich C++ code for
+# which doxygen's built-in parser lacks the necessary type information.
+# Note: The availability of this option depends on whether or not doxygen was
+# generated with the -Duse_libclang=ON option for CMake.
+# The default value is: NO.
+
+CLANG_ASSISTED_PARSING = NO
+
+# If clang assisted parsing is enabled and the CLANG_ADD_INC_PATHS tag is set to
+# YES then doxygen will add the directory of each input to the include path.
+# The default value is: YES.
+
+CLANG_ADD_INC_PATHS    = YES
+
+# If clang assisted parsing is enabled you can provide the compiler with command
+# line options that you would normally use when invoking the compiler. Note that
+# the include paths will already be set by doxygen for the files and directories
+# specified with INPUT and INCLUDE_PATH.
+# This tag requires that the tag CLANG_ASSISTED_PARSING is set to YES.
+
+CLANG_OPTIONS          =
+
+# If clang assisted parsing is enabled you can provide the clang parser with the
+# path to the directory containing a file called compile_commands.json. This
+# file is the compilation database (see:
+# http://clang.llvm.org/docs/HowToSetupToolingForLLVM.html) containing the
+# options used when the source files were built. This is equivalent to
+# specifying the -p option to a clang tool, such as clang-check. These options
+# will then be passed to the parser. Any options specified with CLANG_OPTIONS
+# will be added as well.
+# Note: The availability of this option depends on whether or not doxygen was
+# generated with the -Duse_libclang=ON option for CMake.
+
+CLANG_DATABASE_PATH    =
+
 #---------------------------------------------------------------------------
 # Configuration options related to the alphabetical class index
 #---------------------------------------------------------------------------
@@ -1110,13 +1170,6 @@ VERBATIM_HEADERS       = YES
 # The default value is: YES.
 
 ALPHABETICAL_INDEX     = YES
-
-# The COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns in
-# which the alphabetical index list will be split.
-# Minimum value: 1, maximum value: 20, default value: 5.
-# This tag requires that the tag ALPHABETICAL_INDEX is set to YES.
-
-COLS_IN_ALPHA_INDEX    = 5
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1178,7 +1231,7 @@ HTML_HEADER            =
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            = "@CMAKE_CURRENT_SOURCE_DIR@/footer.html"
+HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1213,7 +1266,7 @@ HTML_EXTRA_STYLESHEET  =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = "@CMAKE_CURRENT_SOURCE_DIR@/kdab-logo-16x16.png"
+HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/kdab-logo-16x16.png
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1288,10 +1341,11 @@ HTML_INDEX_NUM_ENTRIES = 100
 
 # If the GENERATE_DOCSET tag is set to YES, additional index files will be
 # generated that can be used as input for Apple's Xcode 3 integrated development
-# environment (see: https://developer.apple.com/xcode/), introduced with OSX
-# 10.5 (Leopard). To create a documentation set, doxygen will generate a
-# Makefile in the HTML output directory. Running make will produce the docset in
-# that directory and running make install will install the docset in
+# environment (see:
+# https://developer.apple.com/xcode/), introduced with OSX 10.5 (Leopard). To
+# create a documentation set, doxygen will generate a Makefile in the HTML
+# output directory. Running make will produce the docset in that directory and
+# running make install will install the docset in
 # ~/Library/Developer/Shared/Documentation/DocSets so that Xcode will find it at
 # startup. See https://developer.apple.com/library/archive/featuredarticles/Doxy
 # genXcode/_index.html for more information.
@@ -1333,8 +1387,8 @@ DOCSET_PUBLISHER_NAME  = Publisher
 # If the GENERATE_HTMLHELP tag is set to YES then doxygen generates three
 # additional HTML index files: index.hhp, index.hhc, and index.hhk. The
 # index.hhp is a project file that can be read by Microsoft's HTML Help Workshop
-# (see: https://www.microsoft.com/en-us/download/details.aspx?id=21138) on
-# Windows.
+# (see:
+# https://www.microsoft.com/en-us/download/details.aspx?id=21138) on Windows.
 #
 # The HTML Help Workshop contains a compiler that can convert all HTML output
 # generated by doxygen into a single compiled HTML file (.chm). Compiled HTML
@@ -1405,11 +1459,12 @@ GENERATE_QHP           = @HAVE_QHELPGEN@
 # the HTML output folder.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QCH_FILE               = "@DOXYGEN_OUTPUT_DIR@/qch/kdstatemachineeditor-api.qch"
+QCH_FILE               = @DOXYGEN_OUTPUT_DIR@/qch/kdstatemachineeditor-api.qch
 
 # The QHP_NAMESPACE tag specifies the namespace to use when generating Qt Help
 # Project output. For more information please see Qt Help Project / Namespace
-# (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#namespace).
+# (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#namespace).
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
@@ -1417,8 +1472,8 @@ QHP_NAMESPACE          = com.kdab.KDStateMachineEditor.api.@PROJECT_VERSION@
 
 # The QHP_VIRTUAL_FOLDER tag specifies the namespace to use when generating Qt
 # Help Project output. For more information please see Qt Help Project / Virtual
-# Folders (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#virtual-
-# folders).
+# Folders (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#virtual-folders).
 # The default value is: doc.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
@@ -1426,16 +1481,16 @@ QHP_VIRTUAL_FOLDER     = KDStateMachineEditor-@PROJECT_VERSION@
 
 # If the QHP_CUST_FILTER_NAME tag is set, it specifies the name of a custom
 # filter to add. For more information please see Qt Help Project / Custom
-# Filters (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-
-# filters).
+# Filters (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-filters).
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
 QHP_CUST_FILTER_NAME   =
 
 # The QHP_CUST_FILTER_ATTRS tag specifies the list of the attributes of the
 # custom filter to add. For more information please see Qt Help Project / Custom
-# Filters (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-
-# filters).
+# Filters (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-filters).
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
 QHP_CUST_FILTER_ATTRS  =
@@ -1447,12 +1502,12 @@ QHP_CUST_FILTER_ATTRS  =
 
 QHP_SECT_FILTER_ATTRS  =
 
-# The QHG_LOCATION tag can be used to specify the location of Qt's
-# qhelpgenerator. If non-empty doxygen will try to run qhelpgenerator on the
-# generated .qhp file.
+# The QHG_LOCATION tag can be used to specify the location (absolute path
+# including file name) of Qt's qhelpgenerator. If non-empty doxygen will try to
+# run qhelpgenerator on the generated .qhp file.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHG_LOCATION           = "@QHELPGEN_EXECUTABLE@"
+QHG_LOCATION           = @QHELPGEN_EXECUTABLE@
 
 # If the GENERATE_ECLIPSEHELP tag is set to YES, additional index files will be
 # generated, together with the HTML files, they form an Eclipse help plugin. To
@@ -1576,7 +1631,7 @@ USE_MATHJAX            = NO
 
 # When MathJax is enabled you can set the default output format to be used for
 # the MathJax output. See the MathJax site (see:
-# http://docs.mathjax.org/en/latest/output.html) for more details.
+# http://docs.mathjax.org/en/v2.7-latest/output.html) for more details.
 # Possible values are: HTML-CSS (which is slower, but has the best
 # compatibility), NativeMML (i.e. MathML) and SVG.
 # The default value is: HTML-CSS.
@@ -1606,7 +1661,8 @@ MATHJAX_EXTENSIONS     =
 
 # The MATHJAX_CODEFILE tag can be used to specify a file with javascript pieces
 # of code that will be used on startup of the MathJax code. See the MathJax site
-# (see: http://docs.mathjax.org/en/latest/output.html) for more details. For an
+# (see:
+# http://docs.mathjax.org/en/v2.7-latest/output.html) for more details. For an
 # example see the documentation.
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
@@ -1653,7 +1709,8 @@ SERVER_BASED_SEARCH    = NO
 #
 # Doxygen ships with an example indexer (doxyindexer) and search engine
 # (doxysearch.cgi) which are based on the open source search engine library
-# Xapian (see: https://xapian.org/).
+# Xapian (see:
+# https://xapian.org/).
 #
 # See the section "External Indexing and Searching" for details.
 # The default value is: NO.
@@ -1666,8 +1723,9 @@ EXTERNAL_SEARCH        = NO
 #
 # Doxygen ships with an example indexer (doxyindexer) and search engine
 # (doxysearch.cgi) which are based on the open source search engine library
-# Xapian (see: https://xapian.org/). See the section "External Indexing and
-# Searching" for details.
+# Xapian (see:
+# https://xapian.org/). See the section "External Indexing and Searching" for
+# details.
 # This tag requires that the tag SEARCHENGINE is set to YES.
 
 SEARCHENGINE_URL       =
@@ -2169,12 +2227,12 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = "Q_DECL_IMPORT=" \
-                         "Q_CORE_EXPORT=" \
-                         "DOXYGEN_SHOULD_SKIP_THIS=" \
-                         "KDSME_CORE_EXPORT=" \
-                         "KDSME_VIEW_EXPORT=" \
-                         "override=override"
+PREDEFINED             = Q_DECL_IMPORT= \
+                         Q_CORE_EXPORT= \
+                         DOXYGEN_SHOULD_SKIP_THIS= \
+                         KDSME_CORE_EXPORT= \
+                         KDSME_VIEW_EXPORT= \
+                         override=override
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
@@ -2212,15 +2270,15 @@ SKIP_FUNCTION_MACROS   = YES
 # the path). If a tag file is not located in the directory in which doxygen is
 # run, you must also specify the path to the tagfile here.
 
-TAGFILES               = "@QDOC_TAG_DIR@/qtcore/qtcore.tags=https://doc.qt.io/qt-5/" \
-                         "@QDOC_TAG_DIR@/qtgui/qtgui.tags=https://doc.qt.io/qt-5/" \
-                         "@QDOC_TAG_DIR@/qtwidgets/qtwidgets.tags=https://doc.qt.io/qt-5/"
+TAGFILES               = @QDOC_TAG_DIR@/qtcore/qtcore.tags=https://doc.qt.io/qt-5/ \
+                         @QDOC_TAG_DIR@/qtgui/qtgui.tags=https://doc.qt.io/qt-5/ \
+                         @QDOC_TAG_DIR@/qtwidgets/qtwidgets.tags=https://doc.qt.io/qt-5/
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create a
 # tag file that is based on the input files it reads. See section "Linking to
 # external documentation" for more information about the usage of tag files.
 
-GENERATE_TAGFILE       = "@DOXYGEN_OUTPUT_DIR@/kdstatemachineeditor.tags"
+GENERATE_TAGFILE       = @DOXYGEN_OUTPUT_DIR@/kdstatemachineeditor.tags
 
 # If the ALLEXTERNALS tag is set to YES, all external class will be listed in
 # the class index. If set to NO, only the inherited external classes will be
@@ -2274,7 +2332,7 @@ HIDE_UNDOC_RELATIONS   = YES
 # http://www.graphviz.org/), a graph visualization toolkit from AT&T and Lucent
 # Bell Labs. The other options in this section have no effect if this option is
 # set to NO
-# The default value is: NO.
+# The default value is: YES.
 
 HAVE_DOT               = @HAVE_DOT@
 
@@ -2353,9 +2411,31 @@ UML_LOOK               = NO
 # but if the number exceeds 15, the total amount of fields shown is limited to
 # 10.
 # Minimum value: 0, maximum value: 100, default value: 10.
-# This tag requires that the tag HAVE_DOT is set to YES.
+# This tag requires that the tag UML_LOOK is set to YES.
 
 UML_LIMIT_NUM_FIELDS   = 10
+
+# If the DOT_UML_DETAILS tag is set to NO, doxygen will show attributes and
+# methods without types and arguments in the UML graphs. If the DOT_UML_DETAILS
+# tag is set to YES, doxygen will add type and arguments for attributes and
+# methods in the UML graphs. If the DOT_UML_DETAILS tag is set to NONE, doxygen
+# will not generate fields with class member information in the UML graphs. The
+# class diagrams will look similar to the default class diagrams but using UML
+# notation for the relationships.
+# Possible values are: NO, YES and NONE.
+# The default value is: NO.
+# This tag requires that the tag UML_LOOK is set to YES.
+
+DOT_UML_DETAILS        = NO
+
+# The DOT_WRAP_THRESHOLD tag can be used to set the maximum number of characters
+# to display on a single line. If the actual line length exceeds this threshold
+# significantly it will wrapped across multiple lines. Some heuristics are apply
+# to avoid ugly line breaks.
+# Minimum value: 0, maximum value: 1000, default value: 17.
+# This tag requires that the tag HAVE_DOT is set to YES.
+
+DOT_WRAP_THRESHOLD     = 17
 
 # If the TEMPLATE_RELATIONS tag is set to YES then the inheritance and
 # collaboration graphs will show the relations between templates and their
@@ -2430,7 +2510,9 @@ DIRECTORY_GRAPH        = YES
 # Note: If you choose svg you need to set HTML_FILE_EXTENSION to xhtml in order
 # to make the SVG files visible in IE 9+ (other browsers do not have this
 # requirement).
-# Possible values are: png, jpg, gif, svg, png:gd, png:gd:gd, png:cairo,
+# Possible values are: png, png:cairo, png:cairo:cairo, png:cairo:gd, png:gd,
+# png:gd:gd, jpg, jpg:cairo, jpg:cairo:gd, jpg:gd, jpg:gd:gd, gif, gif:cairo,
+# gif:cairo:gd, gif:gd, gif:gd:gd, svg, png:gd, png:gd:gd, png:cairo,
 # png:cairo:gd, png:cairo:cairo, png:cairo:gdiplus, png:gdiplus and
 # png:gdiplus:gdiplus.
 # The default value is: png.
@@ -2546,9 +2628,11 @@ DOT_MULTI_TARGETS      = NO
 
 GENERATE_LEGEND        = YES
 
-# If the DOT_CLEANUP tag is set to YES, doxygen will remove the intermediate dot
+# If the DOT_CLEANUP tag is set to YES, doxygen will remove the intermediate
 # files that are used to generate the various graphs.
+#
+# Note: This setting is not only used for dot files but also for msc and
+# plantuml temporary files.
 # The default value is: YES.
-# This tag requires that the tag HAVE_DOT is set to YES.
 
 DOT_CLEANUP            = YES
