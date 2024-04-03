@@ -95,7 +95,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 if(BUILD_QT6)
-    set(Qt_VERSION_MAJOR 6)
+    set(QT_VERSION_MAJOR 6)
     set(QT_MIN_VERSION "6.1.0")
     find_package(
         Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine
@@ -109,25 +109,25 @@ if(BUILD_QT6)
     )
     set(KDSME_LIBRARY_QTID "-qt6")
 else()
-    set(Qt_VERSION_MAJOR 5)
+    set(QT_VERSION_MAJOR 5)
     set(QT_MIN_VERSION "5.15")
     find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
     set(KDSME_LIBRARY_QTID "")
     include(ECMGeneratePriFile)
-    include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 endif()
+include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
-find_package(Qt${Qt_VERSION_MAJOR}RemoteObjects ${QT_MIN_VERSION} CONFIG QUIET)
+find_package(Qt${QT_VERSION_MAJOR}RemoteObjects ${QT_MIN_VERSION} CONFIG QUIET)
 set_package_properties(
-    Qt${Qt_VERSION_MAJOR}RemoteObjects PROPERTIES
+    Qt${QT_VERSION_MAJOR}RemoteObjects PROPERTIES
     TYPE OPTIONAL
     DESCRIPTION "Qt Remote Objects module"
     PURPOSE "Needed for the QStateMachine/QtSCXML adapter and remote debugging capabilities"
 )
 
-find_package(Qt${Qt_VERSION_MAJOR}Scxml ${QT_MIN_VERSION} CONFIG QUIET)
+find_package(Qt${QT_VERSION_MAJOR}Scxml ${QT_MIN_VERSION} CONFIG QUIET)
 set_package_properties(
-    Qt${Qt_VERSION_MAJOR}Scxml PROPERTIES
+    Qt${QT_VERSION_MAJOR}Scxml PROPERTIES
     TYPE OPTIONAL
     DESCRIPTION "Qt SCXML module"
     PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
@@ -212,7 +212,7 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
     Devel
     BUNDLE
     DESTINATION
-    "/Applications/Qt${Qt_VERSION_MAJOR}"
+    "/Applications/Qt${QT_VERSION_MAJOR}"
 )
 
 # search for Graphviz

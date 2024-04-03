@@ -20,7 +20,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(core)
 add_subdirectory(view)
 
-if(TARGET Qt${Qt_VERSION_MAJOR}::RemoteObjects)
+if(TARGET Qt${QT_VERSION_MAJOR}::RemoteObjects)
     add_subdirectory(debuginterface)
 endif()
 

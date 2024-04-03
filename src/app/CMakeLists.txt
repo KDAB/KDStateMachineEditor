@@ -19,6 +19,6 @@ set(BIN_UIS mainwindow.ui)
 
 add_executable(${KDSME_APPBIN} WIN32 ${BIN_SRCS} ${BIN_UIS})
 target_link_libraries(
-    ${KDSME_APPBIN} PUBLIC Qt${Qt_VERSION_MAJOR}::QuickWidgets kdstatemachineeditor_core kdstatemachineeditor_view
+    ${KDSME_APPBIN} PUBLIC Qt${QT_VERSION_MAJOR}::QuickWidgets kdstatemachineeditor_core kdstatemachineeditor_view
                            kdsme_testhelper
 )

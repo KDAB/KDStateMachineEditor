@@ -14,9 +14,9 @@ Marks a target as only being required for tests.
   ecm_mark_as_test(<target1> [<target2> [...]])
 
 This will cause the specified targets to not be built unless either
-BUILD_TESTING is set to ON or the user invokes the ``buildtests`` target.
+``BUILD_TESTING`` is set to ``ON`` or the user invokes the ``buildtests`` target.
 
-BUILD_TESTING is created as a cache variable by the CTest module and by the
+``BUILD_TESTING`` is created as a cache variable by the CTest module and by the
 :kde-module:`KDECMakeSettings` module.
 
 Since pre-1.0.0.
