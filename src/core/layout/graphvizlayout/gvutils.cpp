@@ -25,6 +25,8 @@
 
 using namespace KDSME;
 
+constexpr int MOVE_TO_FRONT = 1;
+
 #ifdef WITH_CGRAPH
 Agraph_t *GVUtils::_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc)
 #else
@@ -81,7 +83,7 @@ Agnode_t *GVUtils::_agnode(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
     Agnode_t *n = agnode(graph, const_cast<char *>(qPrintable(attr)), create);
-    _agbindrec(n, "Agnodeinfo_t", sizeof(Agnodeinfo_t), TRUE);
+    _agbindrec(n, "Agnodeinfo_t", sizeof(Agnodeinfo_t), MOVE_TO_FRONT);
     return n;
 #else
     Q_UNUSED(create);
@@ -94,7 +96,7 @@ Agedge_t *GVUtils::_agedge(Agraph_t *graph, Agnode_t *tail, Agnode_t *head,
 {
 #ifdef WITH_CGRAPH
     Agedge_t *e = agedge(graph, tail, head, const_cast<char *>(qPrintable(name)), create);
-    _agbindrec(e, "Agedgeinfo_t", sizeof(Agedgeinfo_t), TRUE);
+    _agbindrec(e, "Agedgeinfo_t", sizeof(Agedgeinfo_t), MOVE_TO_FRONT);
     return e;
 #else
     Q_UNUSED(name);
@@ -107,7 +109,7 @@ Agraph_t *GVUtils::_agsubg(Agraph_t *graph, const QString &attr, bool create)
 {
 #ifdef WITH_CGRAPH
     Agraph_t *g = agsubg(graph, const_cast<char *>(qPrintable(attr)), create);
-    _agbindrec(g, "Agraphinfo_t", sizeof(Agraphinfo_t), TRUE);
+    _agbindrec(g, "Agraphinfo_t", sizeof(Agraphinfo_t), MOVE_TO_FRONT);
     return g;
 #else
     Q_UNUSED(create);
