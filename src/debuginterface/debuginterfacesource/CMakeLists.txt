@@ -14,7 +14,7 @@
 
 set(QSMDEBUGINTERFACESOURCE_SRCS qsmdebuginterfacesource.cpp qsmwatcher.cpp ../../core/util/objecthelper.cpp)
 
-if(Qt${Qt_VERSION_MAJOR}Scxml_FOUND)
+if(Qt${QT_VERSION_MAJOR}Scxml_FOUND)
     list(APPEND QSMDEBUGINTERFACESOURCE_SRCS qscxmldebuginterfacesource.cpp)
 endif()
 
@@ -31,13 +31,13 @@ endif()
 
 add_library(KDSME::DebugInterfaceSource ALIAS kdstatemachineeditor_debuginterfacesource)
 target_link_libraries(
-    kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::RemoteObjects
-    kdstatemachineeditor_core LINK_PUBLIC Qt${Qt_VERSION_MAJOR}::Core
+    kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${QT_VERSION_MAJOR}::RemoteObjects
+    kdstatemachineeditor_core LINK_PUBLIC Qt${QT_VERSION_MAJOR}::Core
 )
-if(Qt${Qt_VERSION_MAJOR}Scxml_FOUND)
+if(Qt${QT_VERSION_MAJOR}Scxml_FOUND)
     target_link_libraries(
-        kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::ScxmlPrivate LINK_PUBLIC
-        Qt${Qt_VERSION_MAJOR}::Scxml
+        kdstatemachineeditor_debuginterfacesource LINK_PRIVATE Qt${QT_VERSION_MAJOR}::ScxmlPrivate LINK_PUBLIC
+        Qt${QT_VERSION_MAJOR}::Scxml
     )
 endif()
 set_target_properties(

@@ -82,8 +82,8 @@ add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
     kdstatemachineeditor_core
-    PRIVATE Qt${Qt_VERSION_MAJOR}::Quick # TODO: Get rid off this
-    PUBLIC Qt${Qt_VERSION_MAJOR}::Core Qt${Qt_VERSION_MAJOR}::Gui
+    PRIVATE Qt${QT_VERSION_MAJOR}::Quick # TODO: Get rid off this
+    PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
 )
 
 if(BUILD_QT6)
