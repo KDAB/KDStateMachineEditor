@@ -112,10 +112,7 @@ endif()
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(GRAPHVIZ_FOUND)
-    if(WITH_STATIC_GRAPHVIZ)
-        target_link_libraries(kdstatemachineeditor_core PRIVATE GraphvizStaticDotLayoutPlugin)
-    endif()
-    target_link_libraries(kdstatemachineeditor_core PRIVATE gvc cgraph)
+    target_link_libraries(kdstatemachineeditor_core PRIVATE gvc cgraph gvplugin_dot_layout)
 endif()
 
 set(build_iface_dirs
@@ -131,10 +128,24 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatem
 
 if(WITH_INTERNAL_GRAPHVIZ)
     install(
-        TARGETS gvc cgraph cdt
+        TARGETS gvc cgraph cdt gvplugin_dot_layout dotgen
         EXPORT KDSME_TARGETS
         ${INSTALL_TARGETS_DEFAULT_ARGS}
     )
+    if(WITH_STATIC_GRAPHVIZ)
+        install(
+            TARGET
+            common
+            pack
+            ortho
+            pathplan
+            label
+            xdot
+            EXPORT
+            KDSME_TARGETS
+            ${INSTALL_TARGETS_DEFAULT_ARGS}
+        )
+    endif()
 endif()
 install(
     TARGETS kdstatemachineeditor_core

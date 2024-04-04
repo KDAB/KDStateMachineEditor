@@ -514,6 +514,16 @@ Agnode_t *GraphvizLayouterBackend::Private::agnodeForState(State *state)
     return static_cast<Agnode_t *>(m_elementToPointerMap.value(state));
 }
 
+extern "C" {
+
+extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
+
+lt_symlist_t lt_preloaded_symbols[] = {
+    { "gvplugin_dot_layout_LTX_library", &gvplugin_dot_layout_LTX_library },
+    { 0, 0 },
+};
+}
+
 GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
 {
@@ -521,7 +531,7 @@ GraphvizLayouterBackend::GraphvizLayouterBackend()
 #if WITH_STATIC_GRAPHVIZ
     d->m_context = gvContextWithStaticPlugins();
 #else
-    d->m_context = gvContext();
+    d->m_context = gvContextPlugins(lt_preloaded_symbols, 1);
 #endif
     Q_ASSERT(d->m_context);
 }
