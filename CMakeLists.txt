@@ -231,6 +231,15 @@ add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable wit
 
 set(WITH_STATIC_GRAPHVIZ OFF) # Whether the Graphviz build we're using is static or not -- WIP
 
+if(WITH_INTERNAL_GRAPHVIZ)
+    include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/common)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/gvc)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/pathplan)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cgraph)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cdt)
+endif()
+
 add_subdirectory(3rdparty)
 
 #

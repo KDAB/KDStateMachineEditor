@@ -16,6 +16,8 @@
 #ifndef KDSME_LAYOUT_GVUTILS_H
 #define KDSME_LAYOUT_GVUTILS_H
 
+#include <config-kdsme.h>
+
 #include <graphviz/types.h>
 
 #include <QString>
