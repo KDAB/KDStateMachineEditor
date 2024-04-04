@@ -3,7 +3,7 @@
 ci:
     autoupdate_schedule: monthly
 
-exclude: ^(cmake/ECM/|cmake/KDAB/|examples/qscxmldebugger/trafficlight.*|src/view/quick/qopengl2pexvertexarray.*|src/view/widgets/codeeditor.*)
+exclude: ^(cmake/ECM/|cmake/KDAB/|examples/qscxmldebugger/trafficlight.*|src/view/quick/qopengl2pexvertexarray.*|src/view/widgets/codeeditor.*|docs/api/doxygen-awesome.css))
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.5.0
