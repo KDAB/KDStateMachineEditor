@@ -115,8 +115,7 @@ if(GRAPHVIZ_FOUND)
     if(WITH_STATIC_GRAPHVIZ)
         target_link_libraries(kdstatemachineeditor_core PRIVATE GraphvizStaticDotLayoutPlugin)
     endif()
-    target_link_libraries(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_GVC_LIBRARY} ${GRAPHVIZ_CGRAPH_LIBRARY})
-    target_include_directories(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_INCLUDE_DIR})
+    target_link_libraries(kdstatemachineeditor_core PRIVATE gvc cgraph)
 endif()
 
 set(build_iface_dirs
@@ -130,6 +129,13 @@ target_include_directories(
 
 set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatemachineeditor_core${KDSME_LIBRARY_QTID}")
 
+if(WITH_INTERNAL_GRAPHVIZ)
+    install(
+        TARGETS gvc cgraph cdt
+        EXPORT KDSME_TARGETS
+        ${INSTALL_TARGETS_DEFAULT_ARGS}
+    )
+endif()
 install(
     TARGETS kdstatemachineeditor_core
     EXPORT KDSME_TARGETS
