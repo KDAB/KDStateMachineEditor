@@ -44,7 +44,9 @@ jobs:
 
       - name: Install Dependencies on macOS
         if: ${{ runner.os == 'macOS' }}
-        run: brew install bison
+        run: |
+            brew install bison
+            echo "/usr/local/opt/bison/bin" >> $GITHUB_PATH
 
       - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion (Linux/macOS)
         if: ${{ runner.os != 'Windows' }}
