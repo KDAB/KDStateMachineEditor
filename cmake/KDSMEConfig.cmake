@@ -14,8 +14,8 @@
 
 include(CMakeFindDependencyMacro)
 
-find_dependency(Qt@Qt_VERSION_MAJOR@Widgets)
-find_dependency(Qt@Qt_VERSION_MAJOR@Quick)
-find_dependency(Qt@Qt_VERSION_MAJOR@QuickWidgets)
+find_dependency(Qt@QT_VERSION_MAJOR@Widgets)
+find_dependency(Qt@QT_VERSION_MAJOR@Quick)
+find_dependency(Qt@QT_VERSION_MAJOR@QuickWidgets)
 
 include("${CMAKE_CURRENT_LIST_DIR}/KDSME@KDSME_LIBRARY_QTID@Targets.cmake")

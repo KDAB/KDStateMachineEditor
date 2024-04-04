@@ -58,8 +58,8 @@ add_library(
 add_library(KDSME::View ALIAS kdstatemachineeditor_view)
 target_link_libraries(
     kdstatemachineeditor_view
-    PRIVATE Qt${Qt_VERSION_MAJOR}::GuiPrivate
-    PUBLIC Qt${Qt_VERSION_MAJOR}::Quick Qt${Qt_VERSION_MAJOR}::QuickWidgets Qt${Qt_VERSION_MAJOR}::Widgets
+    PRIVATE Qt${QT_VERSION_MAJOR}::GuiPrivate
+    PUBLIC Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickWidgets Qt${QT_VERSION_MAJOR}::Widgets
            kdstatemachineeditor_core
 )
 

@@ -25,8 +25,8 @@ endif()
 
 add_library(KDSME::DebugInterfaceClient ALIAS kdstatemachineeditor_debuginterfaceclient)
 target_link_libraries(
-    kdstatemachineeditor_debuginterfaceclient LINK_PRIVATE Qt${Qt_VERSION_MAJOR}::RemoteObjects LINK_PUBLIC KDSME::Core
-    Qt${Qt_VERSION_MAJOR}::Core
+    kdstatemachineeditor_debuginterfaceclient LINK_PRIVATE Qt${QT_VERSION_MAJOR}::RemoteObjects LINK_PUBLIC KDSME::Core
+    Qt${QT_VERSION_MAJOR}::Core
 )
 set_target_properties(
     kdstatemachineeditor_debuginterfaceclient
