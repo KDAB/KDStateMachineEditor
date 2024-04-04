@@ -490,7 +490,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t *edge) const
         }
 
         // Loop over the curve points
-        for (int i = 1; i < ED_spl(edge)->list->size; i += 3) {
+        for (size_t i = 1; i < ED_spl(edge)->list->size; i += 3) {
             path.cubicTo(ED_spl(edge)->list->list[i].x * TO_DOT_DPI_RATIO,
                          (GD_bb(m_graph).UR.y - ED_spl(edge)->list->list[i].y) * TO_DOT_DPI_RATIO,
                          ED_spl(edge)->list->list[i + 1].x * TO_DOT_DPI_RATIO,
