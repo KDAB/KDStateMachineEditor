@@ -37,7 +37,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E make_directory ${DOXYGEN_OUTPUT_DIR}/html/docs
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_SOURCE_DIR}/docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf ${DOXYGEN_OUTPUT_DIR}/html/docs
-    DEPENDS ${_dox_deps} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    DEPENDS ${_dox_deps} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile ${CMAKE_SOURCE_DIR}/README.md
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMENT "Generate the .qch file"
 )
