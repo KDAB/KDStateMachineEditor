@@ -100,7 +100,7 @@ install(
 if(MSVC)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_view>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_view>"
-        DESTINATION ${LIB_INSTALL_DIR}
+        DESTINATION ${BIN_INSTALL_DIR}
         CONFIGURATIONS Debug RelWithDebInfo
     )
 endif()
