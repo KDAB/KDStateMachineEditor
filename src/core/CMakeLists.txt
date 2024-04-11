@@ -134,15 +134,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
     )
     if(WITH_STATIC_GRAPHVIZ)
         install(
-            TARGETS
-            common
-            pack
-            ortho
-            pathplan
-            label
-            xdot
-            EXPORT
-            KDSME_TARGETS
+            TARGETS common pack ortho pathplan label xdot
+            EXPORT KDSME_TARGETS
             ${INSTALL_TARGETS_DEFAULT_ARGS}
         )
     endif()
