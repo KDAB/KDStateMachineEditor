@@ -398,9 +398,11 @@ void GraphvizLayouterBackend::Private::importTransition(Transition *transition, 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
 }
 
+extern "C" {
 #if WITH_STATIC_GRAPHVIZ
-extern "C" GVC_t *gvContextWithStaticPlugins();
+GVC_t *gvContextWithStaticPlugins();
 #endif
+}
 
 void GraphvizLayouterBackend::Private::openContext(const QString &id)
 {
@@ -514,6 +516,7 @@ Agnode_t *GraphvizLayouterBackend::Private::agnodeForState(State *state)
     return static_cast<Agnode_t *>(m_elementToPointerMap.value(state));
 }
 
+#if !defined(Q_OS_WINDOWS)
 extern "C" {
 
 extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
@@ -523,6 +526,7 @@ lt_symlist_t lt_preloaded_symbols[] = {
     { 0, 0 },
 };
 }
+#endif
 
 GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
@@ -530,8 +534,10 @@ GraphvizLayouterBackend::GraphvizLayouterBackend()
     // create context
 #if WITH_STATIC_GRAPHVIZ
     d->m_context = gvContextWithStaticPlugins();
-#else
+#elif !defined(Q_OS_WINDOWS)
     d->m_context = gvContextPlugins(lt_preloaded_symbols, 1);
+#else
+    d->m_context = gvContext();
 #endif
     Q_ASSERT(d->m_context);
 }

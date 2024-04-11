@@ -112,7 +112,7 @@ endif()
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
 if(GRAPHVIZ_FOUND)
-    target_link_libraries(kdstatemachineeditor_core PRIVATE gvc cgraph gvplugin_dot_layout)
+    target_link_libraries(kdstatemachineeditor_core PRIVATE cgraph gvc gvplugin_dot_layout)
 endif()
 
 set(build_iface_dirs
@@ -134,7 +134,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
     )
     if(WITH_STATIC_GRAPHVIZ)
         install(
-            TARGET
+            TARGETS
             common
             pack
             ortho
