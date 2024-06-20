@@ -19,12 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          #- ubuntu-latest OK
+          - ubuntu-latest
           - windows-latest
-          #- macos-latest
+          - macos-latest
         build_type:
           - Debug
-          #- Release
+          - Release
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
@@ -115,6 +115,12 @@ jobs:
       - name: Run tests on Windown/macOS
         if: ${{ matrix.build_type == 'Debug' && runner.os != 'Linux' }}
         run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+
+      - name: Check DLL Dependencies
+        if: ${{ runner.os == 'Windows' }}
+        run: |
+          call "$(vswhere -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC/Auxiliary/Build/vcvars64.bat)"
+          dumpbin /DEPENDENTS bin\text_commands.exe
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
