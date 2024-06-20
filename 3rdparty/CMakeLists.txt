@@ -18,7 +18,6 @@ if(WITH_INTERNAL_GRAPHVIZ)
     function(add_graphviz_subdirectory)
         #TODO check if there are unneeded features to disable
 
-        set(with_gvedit OFF)
         if(WITH_STATIC_GRAPHVIZ)
             set(CMAKE_POSITION_INDEPENDENT_CODE ON)
             set(BUILD_SHARED_LIBS OFF)
