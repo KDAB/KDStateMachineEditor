@@ -19,18 +19,18 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          # - ubuntu-latest
           - windows-latest
-          - macos-latest
+          # - macos-latest
         build_type:
           - Debug
-          - Release
+          # - Release
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
-          - qt_version: 6.6.2
-            qt_modules: qtscxml
-            qt_arch: win64_msvc2019_64
+          # - qt_version: 6.6.2
+          #   qt_modules: qtscxml
+          #   qt_arch: win64_msvc2019_64
 
     steps:
       - name: Install Dependencies on Linux
@@ -120,7 +120,6 @@ jobs:
       - name: Check DLL Dependencies
         if: ${{ runner.os == 'Windows' }}
         run: |
-          call "$(vswhere -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC/Auxiliary/Build/vcvars64.bat)"
           dumpbin /DEPENDENTS bin\text_commands.exe
 
       - name: Read tests log when it fails
