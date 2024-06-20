@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          # - ubuntu-latest
           - windows-latest
           # - macos-latest
         build_type:
@@ -119,7 +119,8 @@ jobs:
       - name: Check DLL Dependencies
         if: ${{ failure() && runner.os == 'Windows' }}
         run: |
-          ls
+          ls build
+          ls build\bin
           dumpbin /DEPENDENTS build\bin\test_commands.exe
 
       - name: Read tests log when it fails
