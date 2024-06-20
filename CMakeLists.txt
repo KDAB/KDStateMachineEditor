@@ -229,7 +229,7 @@ endif()
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
-set(WITH_STATIC_GRAPHVIZ OFF) # Whether the Graphviz build we're using is static or not -- WIP
+set(WITH_STATIC_GRAPHVIZ ON) # Whether the Graphviz build we're using is static or not -- WIP
 
 if(WITH_INTERNAL_GRAPHVIZ)
     include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)

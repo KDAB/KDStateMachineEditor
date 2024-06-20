@@ -121,7 +121,11 @@ jobs:
         run: |
           ls build
           ls build\bin
-          dumpbin /DEPENDENTS build\bin\test_commands.exe
+          ls build/bin
+
+      - name: Check DLL Dependencies
+        if: ${{ failure() && runner.os == 'Windows' }}
+        run: dumpbin /DEPENDENTS build\bin\test_commands.exe
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
