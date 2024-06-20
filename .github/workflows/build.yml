@@ -28,9 +28,9 @@ jobs:
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
-          # - qt_version: 6.6.2
-          #   qt_modules: qtscxml
-          #   qt_arch: win64_msvc2019_64
+          - qt_version: 6.6.2
+            qt_modules: qtscxml
+            qt_arch: win64_msvc2019_64
 
     steps:
       - name: Install Dependencies on Linux
@@ -119,7 +119,8 @@ jobs:
       - name: Check DLL Dependencies
         if: ${{ failure() && runner.os == 'Windows' }}
         run: |
-          dumpbin /DEPENDENTS build\bin\text_commands.exe
+          ls
+          dumpbin /DEPENDENTS build\bin\test_commands.exe
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
