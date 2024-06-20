@@ -118,7 +118,7 @@ jobs:
         run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
 
       - name: Check DLL Dependencies
-        if: ${{ runner.os == 'Windows' }}
+        if: ${{ failure() && runner.os == 'Windows' }}
         run: |
           dumpbin /DEPENDENTS bin\text_commands.exe
 

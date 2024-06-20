@@ -78,7 +78,7 @@ if(GRAPHVIZ_FOUND)
     add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 endif()
 
-add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
+add_library(kdstatemachineeditor_core STATIC ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
     kdstatemachineeditor_core
