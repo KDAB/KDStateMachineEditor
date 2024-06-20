@@ -127,9 +127,20 @@ jobs:
         if: ${{ failure() && runner.os == 'Windows' }}
         run: dumpbin /DEPENDENTS D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
 
-      - name: Check DLL Dependencies devenv
+      - name: Download Dependency Walker
         if: ${{ failure() && runner.os == 'Windows' }}
-        run: devenv -DebugExe D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
+        run: Invoke-WebRequest -Uri https://dependencywalker.com/depends22_x64.zip -OutFile depends22_x64.zip
+
+      - name: Unzip Dependency Walker
+        if: ${{ failure() && runner.os == 'Windows' }}
+        run: Expand-Archive depends22_x64.zip -DestinationPath .
+
+      - name: Check Dependencies
+        if: ${{ failure() && runner.os == 'Windows' }}
+        run: |
+          .\depends.exe /c /f:1 /pb /ot:log.txt D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
+          Get-Content log.txt
+        shell: pwsh
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
