@@ -119,13 +119,11 @@ jobs:
       - name: Check DLL Dependencies
         if: ${{ failure() && runner.os == 'Windows' }}
         run: |
-          ls build
-          ls build\bin
-          ls build/bin
+          ls D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\
 
       - name: Check DLL Dependencies
         if: ${{ failure() && runner.os == 'Windows' }}
-        run: dumpbin /DEPENDENTS build\bin\test_commands.exe
+        run: dumpbin /DEPENDENTS D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
