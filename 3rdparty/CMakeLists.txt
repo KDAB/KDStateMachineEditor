@@ -20,6 +20,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
 
         set(with_gvedit OFF)
         if(WITH_STATIC_GRAPHVIZ)
+            set(CMAKE_POSITION_INDEPENDENT_CODE ON)
             set(BUILD_SHARED_LIBS OFF)
         endif()
         if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/graphviz/CMakeLists.txt")

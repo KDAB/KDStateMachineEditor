@@ -516,7 +516,7 @@ Agnode_t *GraphvizLayouterBackend::Private::agnodeForState(State *state)
     return static_cast<Agnode_t *>(m_elementToPointerMap.value(state));
 }
 
-#if !defined(Q_OS_WINDOWS)
+#if !WITH_STATIC_GRAPHVIZ && !defined(Q_OS_WINDOWS)
 extern "C" {
 
 extern gvplugin_library_t gvplugin_dot_layout_LTX_library;

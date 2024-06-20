@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          # - ubuntu-latest
+          - ubuntu-latest
           - windows-latest
           # - macos-latest
         build_type:
@@ -98,7 +98,6 @@ jobs:
             -DBUILD_EXAMPLES=ON
             -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
             -DWITH_INTERNAL_GRAPHVIZ=ON
-            -Dwith_gvedit=OFF
             -DCMAKE_PREFIX_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/libraries"
             -DCMAKE_PROGRAM_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities"
             -DBISON_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe"
@@ -120,7 +119,7 @@ jobs:
       - name: Check DLL Dependencies
         if: ${{ failure() && runner.os == 'Windows' }}
         run: |
-          dumpbin /DEPENDENTS bin\text_commands.exe
+          dumpbin /DEPENDENTS build\bin\text_commands.exe
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
