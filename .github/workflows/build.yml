@@ -28,9 +28,11 @@ jobs:
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
+            macos_architectures: "x86_64"
           - qt_version: 6.6.2
             qt_modules: qtscxml
             qt_arch: win64_msvc2019_64
+            macos_architectures: "x86_64;arm64"
 
     steps:
       - name: Install Dependencies on Linux
@@ -68,9 +70,6 @@ jobs:
       - name: Add Bison to PATH (must be after Qt due PATH changes)
         if: ${{ runner.os == 'macOS' }}
         run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
-      - name: Verify Bison installation
-        if: ${{ runner.os == 'macOS' }}
-        run: bison --version
 
       - uses: TheMrMilchmann/setup-msvc-dev@v3
         if: ${{ runner.os == 'Windows' }}
@@ -87,6 +86,7 @@ jobs:
         run: >
           cmake -S . -B ./build -G Ninja
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.qt.architectures }}"
           -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
@@ -99,6 +99,7 @@ jobs:
         run: >
             cmake -S . -B ./build -G Ninja
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.qt.architectures }}"
             -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
             -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
             -DBUILD_EXAMPLES=ON
