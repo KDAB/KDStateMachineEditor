@@ -71,14 +71,14 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
 
-      - name: Add Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
-        if: ${{ runner.os == 'Windows' }}
-        run: echo "${{github.workspace}}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin" >> $GITHUB_PATH
-
       - uses: TheMrMilchmann/setup-msvc-dev@v3
         if: ${{ runner.os == 'Windows' }}
         with:
           arch: x64
+
+      - name: Add Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'Windows' }}
+        run: echo "${{github.workspace}}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin" >> $GITHUB_PATH
 
       - name: Checkout sources
         uses: actions/checkout@v4
