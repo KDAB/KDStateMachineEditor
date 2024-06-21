@@ -236,7 +236,9 @@ add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable wit
 
 if(WITH_INTERNAL_GRAPHVIZ)
     option(WITH_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
-    add_feature_info("Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF")
+    add_feature_info(
+        "Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF"
+    )
 
     include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/common)

@@ -19,7 +19,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
         #TODO check if there are unneeded features to disable
 
         if(WITH_STATIC_GRAPHVIZ)
-            set(CMAKE_POSITION_INDEPENDENT_CODE ON) #TODO remove after https://gitlab.com/graphviz/graphviz/-/merge_requests/3823 is merged
+            set(CMAKE_POSITION_INDEPENDENT_CODE ON
+            )#TODO remove after https://gitlab.com/graphviz/graphviz/-/merge_requests/3823 is merged
             set(BUILD_SHARED_LIBS OFF)
         endif()
         if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/graphviz/CMakeLists.txt")
