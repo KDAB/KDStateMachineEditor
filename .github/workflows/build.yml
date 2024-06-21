@@ -92,7 +92,6 @@ jobs:
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
           -DWITH_INTERNAL_GRAPHVIZ=ON
-          -Dwith_gvedit=OFF
 
       - name: Configure project (Windows)
         if: ${{ runner.os == 'Windows' }}
@@ -104,7 +103,6 @@ jobs:
             -DBUILD_EXAMPLES=ON
             -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
             -DWITH_INTERNAL_GRAPHVIZ=ON
-            -Dwith_gvedit=OFF
             -DCMAKE_PREFIX_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/libraries"
             -DCMAKE_PROGRAM_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities"
             -DBISON_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe"
