@@ -22,6 +22,11 @@
 #  In the case where a separate Graphviz installation is not practical or desired.
 #  Default=true if Graphviz is not located; false otherwise
 #
+# -WITH_STATIC_GRAPHVIZ=[true|false]
+#  Allow the internal Graphviz build to be statically.
+#  Currently shared graphviz builds on Windows have link issues.
+#  Default=true
+#
 # -DBUILD_QT6=[true|false]
 #  Build against Qt6 rather than Qt5
 #  Default=false (Qt5 will be used even if Qt6 is available)
@@ -229,9 +234,10 @@ endif()
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
-set(WITH_STATIC_GRAPHVIZ ON) # Whether the Graphviz build we're using is static or not -- WIP
-
 if(WITH_INTERNAL_GRAPHVIZ)
+    option(WITH_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
+    add_feature_info("Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF")
+
     include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/common)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/gvc)
