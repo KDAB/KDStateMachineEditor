@@ -27,6 +27,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
             message(FATAL_ERROR "Please do git submodule update --init --recursive")
         endif()
 
+        # cmake-lint: disable=C0103
         set(with_gvedit
             FALSE
             CACHE BOOL " GVEdit interactive graph editor" FORCE
