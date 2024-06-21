@@ -14,7 +14,7 @@ Copyright: Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
 
 #misc config files
-Files: .pre-commit-config.yaml .codespellrc .krazy .clang-tidy .gitignore appveyor.yml distro/* .clang-format .cmake-format.py .mdlrc .mdlrc.rb
+Files: .pre-commit-config.yaml .codespellrc .krazy .clang-tidy .gitignore .gitmodules appveyor.yml distro/* .clang-format .cmake-format.py .mdlrc .mdlrc.rb
 Copyright: Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 License: BSD-3-Clause
 

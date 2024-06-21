@@ -398,9 +398,11 @@ void GraphvizLayouterBackend::Private::importTransition(Transition *transition, 
     IF_DEBUG(qCDebug(KDSME_CORE) << "after" << transition << edge);
 }
 
+extern "C" {
 #if WITH_STATIC_GRAPHVIZ
-extern "C" GVC_t *gvContextWithStaticPlugins();
+GVC_t *gvContextWithStaticPlugins();
 #endif
+}
 
 void GraphvizLayouterBackend::Private::openContext(const QString &id)
 {
@@ -490,7 +492,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t *edge) const
         }
 
         // Loop over the curve points
-        for (int i = 1; i < ED_spl(edge)->list->size; i += 3) {
+        for (size_t i = 1; i < ED_spl(edge)->list->size; i += 3) {
             path.cubicTo(ED_spl(edge)->list->list[i].x * TO_DOT_DPI_RATIO,
                          (GD_bb(m_graph).UR.y - ED_spl(edge)->list->list[i].y) * TO_DOT_DPI_RATIO,
                          ED_spl(edge)->list->list[i + 1].x * TO_DOT_DPI_RATIO,
@@ -514,12 +516,26 @@ Agnode_t *GraphvizLayouterBackend::Private::agnodeForState(State *state)
     return static_cast<Agnode_t *>(m_elementToPointerMap.value(state));
 }
 
+#if !WITH_STATIC_GRAPHVIZ && !defined(Q_OS_WINDOWS)
+extern "C" {
+
+extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
+
+lt_symlist_t lt_preloaded_symbols[] = {
+    { "gvplugin_dot_layout_LTX_library", &gvplugin_dot_layout_LTX_library },
+    { 0, 0 },
+};
+}
+#endif
+
 GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
 {
     // create context
 #if WITH_STATIC_GRAPHVIZ
     d->m_context = gvContextWithStaticPlugins();
+#elif !defined(Q_OS_WINDOWS)
+    d->m_context = gvContextPlugins(lt_preloaded_symbols, 1);
 #else
     d->m_context = gvContext();
 #endif

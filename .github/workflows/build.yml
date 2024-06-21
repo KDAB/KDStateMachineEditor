@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
@@ -26,28 +26,26 @@ jobs:
           - Debug
           - Release
         config:
-          - qt_version: "5.15"
-            qt_arch: win64_mingw81
-          - qt_version: "6.4.*"
+          - qt_version: 5.15.2
+            qt_arch: win64_msvc2019_64
+            macos_architectures: "x86_64"
+          - qt_version: 6.6.2
             qt_modules: qtscxml
-            qt_arch: win64_mingw
+            qt_arch: win64_msvc2019_64
+            macos_architectures: "x86_64;arm64"
 
     steps:
       - name: Install Dependencies on Linux
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt update -qq
-          sudo apt install -y doxygen libgraphviz-dev
-
-      - name: Install Dependencies on Windows (graphviz was built with MinGW)
-        if: ${{ runner.os == 'Windows' }}
-        run: choco install winflexbison3 graphviz
+          sudo apt install -y doxygen libgtk2.0-dev
 
       - name: Install Dependencies on macOS
         if: ${{ runner.os == 'macOS' }}
-        run: brew install graphviz
+        run: brew install bison
 
-      - name: Install Qt with options and default aqtversion (Linux/macOS)
+      - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion (Linux/macOS)
         if: ${{ runner.os != 'Windows' }}
         uses: jurplel/install-qt-action@v3
         with:
@@ -63,33 +61,54 @@ jobs:
           aqtversion: null # use whatever the default is
           modules: ${{ matrix.config.qt_modules }}
           version: ${{ matrix.config.qt_version }}
-          arch: ${{ matrix.config.qt_arch }} # MinGW is required otherwise we get link errors with graphviz
+          arch: ${{ matrix.config.qt_arch }}
           cache: true
-
-      - name: Add Graphviz libraries to Windows PATH
-        if: ${{ runner.os == 'Windows' }}
-        shell: bash
-        run: echo "C:/Program Files/Graphviz/bin" >> $GITHUB_PATH
 
       - name: Install ninja-build tool (must be after Qt due PATH changes)
         uses: turtlesec-no/get-ninja@main
 
+      - name: Add Bison to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'macOS' }}
+        run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
+
+      - uses: TheMrMilchmann/setup-msvc-dev@v3
+        if: ${{ runner.os == 'Windows' }}
+        with:
+          arch: x64
+
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      - name: Fetch Git submodule
-        run: git submodule update --init --recursive
-
-      - name: Configure project
+      - name: Configure project (Linux/macOS)
+        if: ${{ runner.os != 'Windows' }}
         run: >
           cmake -S . -B ./build -G Ninja
-          --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DCMAKE_PREFIX_PATH='C:\Program Files\Graphviz'
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.config.macos_architectures }}"
           -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DWITH_INTERNAL_GRAPHVIZ=ON
+          -Dwith_gvedit=OFF
+
+      - name: Configure project (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: >
+            cmake -S . -B ./build -G Ninja
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
+            -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
+            -DBUILD_EXAMPLES=ON
+            -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+            -DWITH_INTERNAL_GRAPHVIZ=ON
+            -Dwith_gvedit=OFF
+            -DCMAKE_PREFIX_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/libraries"
+            -DCMAKE_PROGRAM_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities"
+            -DBISON_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe"
+            -DFLEX_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe"
 
       - name: Build Project
         run: cmake --build ./build

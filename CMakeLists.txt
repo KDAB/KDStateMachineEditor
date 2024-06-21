@@ -22,6 +22,11 @@
 #  In the case where a separate Graphviz installation is not practical or desired.
 #  Default=true if Graphviz is not located; false otherwise
 #
+# -WITH_STATIC_GRAPHVIZ=[true|false]
+#  Allow the internal Graphviz build to be statically.
+#  Currently shared graphviz builds on Windows have link issues.
+#  Default=true
+#
 # -DBUILD_QT6=[true|false]
 #  Build against Qt6 rather than Qt5
 #  Default=false (Qt5 will be used even if Qt6 is available)
@@ -48,16 +53,6 @@ project(
     HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
     LANGUAGES CXX C
     VERSION 1.99.50
-)
-
-add_definitions(
-    -DQT_NO_CAST_TO_ASCII
-    -DQT_NO_CAST_FROM_ASCII
-    -DQT_STRICT_ITERATORS
-    -DQT_NO_URL_CAST_FROM_STRING
-    -DQT_NO_CAST_FROM_BYTEARRAY
-    -DQT_USE_QSTRINGBUILDER
-    -DQT_USE_FAST_OPERATOR_PLUS
 )
 
 set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
@@ -217,7 +212,9 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
 
 # search for Graphviz
 set(GRAPHVIZ_MIN_VERSION "2.30.1")
-find_package(Graphviz)
+if(NOT DEFINED WITH_INTERNAL_GRAPHVIZ)
+    find_package(Graphviz)
+endif()
 set_package_properties(
     Graphviz PROPERTIES
     TYPE RECOMMENDED
@@ -231,101 +228,27 @@ if(GRAPHVIZ_FOUND)
 elseif(NOT CMAKE_SYSTEM_NAME STREQUAL QNX)
     message(STATUS "Auto-enabling internal Graphviz build, since no installed version is available")
     set(WITH_INTERNAL_GRAPHVIZ_DEFAULT ON)
+    set(GRAPHVIZ_FOUND ON)
 endif()
 
 option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
 add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
 
-set(WITH_STATIC_GRAPHVIZ OFF) # Whether the Graphviz build we're using is static or not -- WIP
-
 if(WITH_INTERNAL_GRAPHVIZ)
-    # CMake is really awful here...
-    set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-src)
-    set(install_dir ${CMAKE_CURRENT_BINARY_DIR}/graphviz-install)
-
-    # work-around: https://cmake.org/Bug/view.php?id=15052
-    set(include_dir "${install_dir}/include")
-    file(MAKE_DIRECTORY ${include_dir})
-    set(GRAPHVIZ_INCLUDE_DIR ${include_dir})
-
-    if(UNIX OR WITH_STATIC_GRAPHVIZ)
-        set(libfolder "lib")
-    else()
-        set(libfolder "bin")
-    endif()
-
-    if(WITH_STATIC_GRAPHVIZ)
-        set(staticdotlayoutplugin_library
-            "${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gvplugin_dot_layout${CMAKE_STATIC_LIBRARY_SUFFIX}"
-        )
-        set(link_libraries_absolute)
-        foreach(link_library "xdot;gvc;cgraph;pathplan")
-            list(APPEND link_libraries_absolute
-                 ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${link_library}${CMAKE_STATIC_LIBRARY_SUFFIX}
-            )
-        endforeach()
-    else()
-        set(GRAPHVIZ_CGRAPH_LIBRARY
-            "${install_dir}/${libfolder}/${CMAKE_SHARED_LIBRARY_PREFIX}cgraph${CMAKE_SHARED_LIBRARY_SUFFIX}"
-        )
-        set(GRAPHVIZ_GVC_LIBRARY
-            "${install_dir}/${libfolder}/${CMAKE_SHARED_LIBRARY_PREFIX}gvc${CMAKE_SHARED_LIBRARY_SUFFIX}"
-        )
-        set(link_libraries_absolute "${GRAPHVIZ_CGRAPH_LIBRARY};${GRAPHVIZ_GVC_LIBRARY}")
-    endif()
-
-    set(win_build_utilities ${source_dir}/windows/dependencies/graphviz-build-utilities)
-    string(TIMESTAMP graphvizDate)
-    set(GRAPHVIZ_MAJOR_VERSION 2)
-    set(GRAPHVIZ_MINOR_VERSION 48)
-    set(GRAPHVIZ_PATCH_VERSION 0)
-    set(graphvizVersion "${GRAPHVIZ_MAJOR_VERSION}.${GRAPHVIZ_MINOR_VERSION}.${GRAPHVIZ_PATCH_VERSION}")
-    # cmake-lint: disable=C0301
-    externalproject_add(
-        GraphvizExternalProject
-        GIT_REPOSITORY "https://gitlab.com/graphviz/graphviz.git"
-        GIT_TAG ${graphvizVersion}
-        GIT_PROGRESS 1
-        USES_TERMINAL_DOWNLOAD
-            TRUE # needed for Ninja so we can see the Git progress (cf. https://gitlab.kitware.com/cmake/cmake/-/issues/18238)
-        CMAKE_ARGS
-            -DVERSION=${graphvizVersion}
-            -DDATE=${graphvizDate}
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-            -DCMAKE_C_COMPILER_AR=${CMAKE_C_COMPILER_AR}
-            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-            -DCMAKE_CXX_COMPILER_AR=${CMAKE_CXX_COMPILER_AR}
-            -DCMAKE_INSTALL_PREFIX=${install_dir}
-            $<$<BOOL:${WIN32}>:-DCMAKE_IGNORE_PATH="C:/Strawberry/c/bin">
-            $<$<BOOL:${WIN32}>:-DCMAKE_SYSTEM_PREFIX_PATH=${win_build_utilities}$<SEMICOLON>${win_build_utilities}/winflexbison$<SEMICOLON>${win_build_utilities}/Perl64$<SEMICOLON>${win_build_utilities}/GnuWin/bin>
-        BUILD_COMMAND "" # skip, make install is enough
-        SOURCE_DIR ${source_dir}
-        INSTALL_DIR ${install_dir}
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
-        # Note: BUILD_BYPRODUCTS only available since CMake 3.2
-        # Needed to make ExternalProject_Add in combination with the Ninja generator work
-        # Also see: https://cmake.org/pipermail/cmake/2015-April/060234.html
-        BUILD_BYPRODUCTS ${staticdotlayoutplugin_library} ${link_libraries_absolute}
+    option(WITH_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
+    add_feature_info(
+        "Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF"
     )
 
-    if(WITH_STATIC_GRAPHVIZ)
-        add_library(GraphvizStaticDotLayoutPlugin IMPORTED STATIC)
-        set_target_properties(
-            GraphvizStaticDotLayoutPlugin
-            PROPERTIES IMPORTED_LOCATION "${staticdotlayoutplugin_library}"
-                       INTERFACE_COMPILE_DEFINITIONS
-                       "CGRAPH_EXPORTS;GVC_EXPORTS;WITH_CGRAPH" # Fix export macro madness in Graphviz
-                       INTERFACE_INCLUDE_DIRECTORIES ${include_dir}
-                       INTERFACE_LINK_LIBRARIES "${link_libraries_absolute}"
-        )
-    else()
-        # in case of a Graphviz dynamic library build, we need to install
-        install(DIRECTORY ${install_dir}/ DESTINATION ".")
-    endif()
-
-    set(GRAPHVIZ_FOUND TRUE)
+    include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/common)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/gvc)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/pathplan)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cgraph)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cdt)
 endif()
+
+add_subdirectory(3rdparty)
 
 #
 # Compiler & linker settings
