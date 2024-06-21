@@ -76,20 +76,13 @@ jobs:
         with:
           arch: x64
 
-      - name: Install dependencies
-        run: |
-            if [ $RUNNER_OS == 'Windows' ]; then
-            echo "${{ github.workspace }}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin" >> $GITHUB_PATH
-            fi
+      - name: Add Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'Windows' }}
+        run: echo "${{github.workspace}}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin" >> $GITHUB_PATH
 
-      - name: Verify PATH
-        run: |
-            echo $PATH
-            if [ $RUNNER_OS == 'Windows' ]; then
-            dir ${{ github.workspace }}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin
-            else
-            ls ${{ github.workspace }}/3rdparty/graphviz/windows/dependencies/libraries/x64/bin
-            fi
+      - name: cat Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'Windows' }}
+        run: cat $GITHUB_PATH
 
       - name: Checkout sources
         uses: actions/checkout@v4
