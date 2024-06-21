@@ -86,7 +86,7 @@ jobs:
         run: >
           cmake -S . -B ./build -G Ninja
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.qt.macos_architectures }}"
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.config.macos_architectures }}"
           -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
@@ -99,7 +99,7 @@ jobs:
         run: >
             cmake -S . -B ./build -G Ninja
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.qt.macos_architectures }}"
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.config.macos_architectures }}"
             -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
             -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
             -DBUILD_EXAMPLES=ON
