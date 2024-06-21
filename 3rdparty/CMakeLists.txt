@@ -30,11 +30,10 @@ if(WITH_INTERNAL_GRAPHVIZ)
 
         if(WIN32)
             # On Windows we need some dependencies available for tests
-            file(GLOB GRAPHVIZ_DEPENDENCIES ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/libraries/x64/bin/*)
-            file(COPY
-                ${GRAPHVIZ_DEPENDENCIES}
-                DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+            file(GLOB GRAPHVIZ_DEPENDENCIES
+                 ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/libraries/x64/bin/*
             )
+            file(COPY ${GRAPHVIZ_DEPENDENCIES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
         endif()
     endfunction()
 
