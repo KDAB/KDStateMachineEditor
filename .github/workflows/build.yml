@@ -81,18 +81,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Add Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
-        if: ${{ runner.os == 'Windows' }}
-        run: ls "${{github.workspace}}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin"
-
-      - name: Add Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
-        if: ${{ runner.os == 'Windows' }}
-        run: echo "${{github.workspace}}\3rdparty\graphviz\windows\dependencies\libraries\x64\bin" >> $GITHUB_PATH
-
-      - name: cat Graphviz dependencies binaries to PATH (must be after Qt due PATH changes)
-        if: ${{ runner.os == 'Windows' }}
-        run: cat $GITHUB_PATH
-
       - name: Configure project (Linux/macOS)
         if: ${{ runner.os != 'Windows' }}
         run: >
@@ -135,30 +123,6 @@ jobs:
       - name: Run tests on Windown/macOS
         if: ${{ matrix.build_type == 'Debug' && runner.os != 'Linux' }}
         run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
-
-      - name: List bin dir
-        if: ${{ failure() && runner.os == 'Windows' }}
-        run: |
-          ls D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\
-
-      - name: Check DLL Dependencies dumpbin
-        if: ${{ failure() && runner.os == 'Windows' }}
-        run: dumpbin /DEPENDENTS D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
-
-      - name: Download Dependency Walker
-        if: ${{ failure() && runner.os == 'Windows' }}
-        run: Invoke-WebRequest -Uri https://dependencywalker.com/depends22_x64.zip -OutFile depends22_x64.zip
-
-      - name: Unzip Dependency Walker
-        if: ${{ failure() && runner.os == 'Windows' }}
-        run: Expand-Archive depends22_x64.zip -DestinationPath .
-
-      - name: Check Dependencies
-        if: ${{ failure() && runner.os == 'Windows' }}
-        run: |
-          .\depends.exe /c /f:1 /pb /ot:log.txt D:\a\KDStateMachineEditor\KDStateMachineEditor\build\bin\test_commands.exe
-          Get-Content log.txt
-        shell: pwsh
 
       - name: Read tests log when it fails
         uses: andstor/file-reader-action@v1
