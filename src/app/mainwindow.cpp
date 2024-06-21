@@ -112,7 +112,7 @@ void MainWindow::setupPresetsView()
 {
     ui->presetsTreeView->setModel(m_presetsModel);
     ui->presetsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    connect(ui->presetsTreeView, SIGNAL(clicked(QModelIndex)), SLOT(handlePresetActivated(QModelIndex)));
+    connect(ui->presetsTreeView, &QTreeView::clicked, this, &MainWindow::handlePresetActivated);
 }
 
 void MainWindow::setupObjectInspector()
@@ -127,7 +127,7 @@ void MainWindow::setupObjectInspector()
 void MainWindow::setupActions()
 {
     auto action = new QAction(tr("New"), this);
-    connect(action, SIGNAL(triggered(bool)), this, SLOT(createNew()));
+    connect(action, &QAction::triggered, this, &MainWindow::createNew);
     ui->mainToolBar->addAction(action);
 }
 
