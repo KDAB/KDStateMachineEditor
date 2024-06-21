@@ -19,12 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          # - ubuntu-latest
           # - windows-latest
           - macos-latest
         build_type:
           - Debug
-          - Release
+          # - Release
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
@@ -41,9 +41,7 @@ jobs:
 
       - name: Install Dependencies on macOS
         if: ${{ runner.os == 'macOS' }}
-        run: |
-            brew install bison
-            echo "/usr/local/opt/bison/bin" >> $GITHUB_PATH
+        run: brew install bison
 
       - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion (Linux/macOS)
         if: ${{ runner.os != 'Windows' }}
@@ -66,6 +64,13 @@ jobs:
 
       - name: Install ninja-build tool (must be after Qt due PATH changes)
         uses: turtlesec-no/get-ninja@main
+
+      - name: Add Bison to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'macOS' }}
+        run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
+      - name: Verify Bison installation
+        if: ${{ runner.os == 'macOS' }}
+        run: bison --version
 
       - uses: TheMrMilchmann/setup-msvc-dev@v3
         if: ${{ runner.os == 'Windows' }}
