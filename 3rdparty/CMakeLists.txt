@@ -27,7 +27,10 @@ if(WITH_INTERNAL_GRAPHVIZ)
             message(FATAL_ERROR "Please do git submodule update --init --recursive")
         endif()
 
-        set(with_gvedit FALSE CACHE BOOL " GVEdit interactive graph editor" FORCE)
+        set(with_gvedit
+            FALSE
+            CACHE BOOL " GVEdit interactive graph editor" FORCE
+        )
         add_subdirectory(graphviz)
 
         if(WIN32)
