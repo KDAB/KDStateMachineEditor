@@ -29,8 +29,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
 
         # cmake-lint: disable=C0103
         set(with_gvedit
-            FALSE
-            CACHE BOOL " GVEdit interactive graph editor" FORCE
+            "OFF"
+            CACHE STRING " GVEdit interactive graph editor" FORCE
         )
         add_subdirectory(graphviz)
 
