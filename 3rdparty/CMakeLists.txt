@@ -28,7 +28,7 @@ if(WITH_INTERNAL_GRAPHVIZ)
         # cmake-lint: disable=C0103
         set(with_gvedit
             "OFF"
-            CACHE STRING " GVEdit interactive graph editor" FORCE
+            CACHE STRING "GVEdit interactive graph editor" FORCE
         )
 
         # cmake-lint: disable=C0301

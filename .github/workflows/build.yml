@@ -39,7 +39,7 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt update -qq
-          sudo apt install -y doxygen libgtk2.0-dev
+          sudo apt install -y doxygen
 
       - name: Install Dependencies on macOS
         if: ${{ runner.os == 'macOS' }}
