@@ -30,7 +30,6 @@ if(WITH_INTERNAL_GRAPHVIZ)
             "OFF"
             CACHE STRING " GVEdit interactive graph editor" FORCE
         )
-        add_subdirectory(graphviz)
 
         if(WIN32)
             # On Windows we need some dependencies available for tests
@@ -38,7 +37,12 @@ if(WITH_INTERNAL_GRAPHVIZ)
                  ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/libraries/x64/bin/*
             )
             file(COPY ${GRAPHVIZ_DEPENDENCIES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+            set(BISON_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe)
+            set(FLEX_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe)
         endif()
+
+        add_subdirectory(graphviz)
     endfunction()
 
     add_graphviz_subdirectory()

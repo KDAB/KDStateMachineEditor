@@ -103,8 +103,6 @@ jobs:
             -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
             -DCMAKE_PREFIX_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/libraries"
             -DCMAKE_PROGRAM_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities"
-            -DBISON_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe"
-            -DFLEX_EXECUTABLE="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe"
 
       - name: Build Project
         run: cmake --build ./build
