@@ -31,7 +31,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
             CACHE STRING " GVEdit interactive graph editor" FORCE
         )
 
-        if(WIN32)
+            # cmake-lint: disable=C0301
+            if(WIN32)
             # On Windows we need some dependencies available for tests
             file(GLOB GRAPHVIZ_DEPENDENCIES
                  ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/libraries/x64/bin/*
@@ -43,11 +44,9 @@ if(WITH_INTERNAL_GRAPHVIZ)
                  ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities
             )
             set(BISON_EXECUTABLE
-                # cmake-lint: disable=C0301
                 ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe
             )
             set(FLEX_EXECUTABLE
-                # cmake-lint: disable=C0301
                 ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe
             )
         endif()
