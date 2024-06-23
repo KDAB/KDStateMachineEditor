@@ -81,8 +81,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Configure project (Linux/macOS)
-        if: ${{ runner.os != 'Windows' }}
+      - name: Configure project
         run: >
           cmake -S . -B ./build -G Ninja
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
@@ -91,18 +90,6 @@ jobs:
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
-
-      - name: Configure project (Windows)
-        if: ${{ runner.os == 'Windows' }}
-        run: >
-            cmake -S . -B ./build -G Ninja
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-            -DBUILD_QT6=${{ startsWith(matrix.config.qt_version, '6.') }}
-            -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
-            -DBUILD_EXAMPLES=ON
-            -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
-            -DCMAKE_PREFIX_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/libraries"
-            -DCMAKE_PROGRAM_PATH="${{github.workspace}}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities"
 
       - name: Build Project
         run: cmake --build ./build

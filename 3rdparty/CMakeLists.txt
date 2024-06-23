@@ -38,8 +38,18 @@ if(WITH_INTERNAL_GRAPHVIZ)
             )
             file(COPY ${GRAPHVIZ_DEPENDENCIES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-            set(BISON_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe)
-            set(FLEX_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe)
+            list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/graphviz/windows/dependencies/libraries)
+            list(APPEND CMAKE_PROGRAM_PATH
+                 ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/graphviz/windows/dependencies/graphviz-build-utilities
+            )
+            set(BISON_EXECUTABLE
+                # cmake-lint: disable=C0301
+                ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_bison.exe
+            )
+            set(FLEX_EXECUTABLE
+                # cmake-lint: disable=C0301
+                ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/graphviz-build-utilities/winflexbison/win_flex.exe
+            )
         endif()
 
         add_subdirectory(graphviz)
