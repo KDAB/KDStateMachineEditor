@@ -20,7 +20,7 @@
 # -DWITH_INTERNAL_GRAPHVIZ=[true|false]
 #  Allow to build with an internal Graphviz install.
 #  In the case where a separate Graphviz installation is not practical or desired.
-#  Default=true if Graphviz is not located; false otherwise
+#  Default=true
 #
 # -WITH_STATIC_GRAPHVIZ=[true|false]
 #  Allow the internal Graphviz build to be statically.
@@ -210,35 +210,15 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
     "/Applications/Qt${QT_VERSION_MAJOR}"
 )
 
-# search for Graphviz
-set(GRAPHVIZ_MIN_VERSION "2.30.1")
-if(NOT DEFINED WITH_INTERNAL_GRAPHVIZ)
-    find_package(Graphviz)
-endif()
-set_package_properties(
-    Graphviz PROPERTIES
-    TYPE RECOMMENDED
-    DESCRIPTION "Graph visualization software"
-    PURPOSE "Needed for automatic layout of state charts"
-    URL "https://www.graphviz.org/"
-)
-
-if(GRAPHVIZ_FOUND)
-    set(WITH_INTERNAL_GRAPHVIZ_DEFAULT OFF)
-elseif(NOT CMAKE_SYSTEM_NAME STREQUAL QNX)
-    message(STATUS "Auto-enabling internal Graphviz build, since no installed version is available")
-    set(WITH_INTERNAL_GRAPHVIZ_DEFAULT ON)
-    set(GRAPHVIZ_FOUND ON)
-endif()
-
-option(WITH_INTERNAL_GRAPHVIZ "Enable build of external project Graphviz" ${WITH_INTERNAL_GRAPHVIZ_DEFAULT})
-add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "enable with WITH_INTERNAL_GRAPHVIZ=ON")
+option(WITH_INTERNAL_GRAPHVIZ "Enable internal build of external project Graphviz" ON)
+add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "disable with WITH_INTERNAL_GRAPHVIZ=OFF")
 
 if(WITH_INTERNAL_GRAPHVIZ)
     option(WITH_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
     add_feature_info(
         "Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF"
     )
+    set(GRAPHVIZ_FOUND ON)
 
     include_directories(${PROJECT_SOURCE_DIR}/src/fwd_headers)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/common)
@@ -246,6 +226,17 @@ if(WITH_INTERNAL_GRAPHVIZ)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/pathplan)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cgraph)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/graphviz/lib/cdt)
+else()
+    # search for External Graphviz installation, NOT SUPPORTED anymore
+    set(GRAPHVIZ_MIN_VERSION "2.30.1")
+    find_package(Graphviz)
+    set_package_properties(
+        Graphviz PROPERTIES
+        TYPE RECOMMENDED
+        DESCRIPTION "Graph visualization software"
+        PURPOSE "Needed for automatic layout of state charts"
+        URL "https://www.graphviz.org/"
+    )
 endif()
 
 add_subdirectory(3rdparty)

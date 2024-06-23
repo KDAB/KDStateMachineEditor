@@ -75,7 +75,6 @@ if(GRAPHVIZ_FOUND)
     if(WITH_STATIC_GRAPHVIZ)
         list(APPEND LIB_SRCS layout/graphvizlayout/graphviz_staticbuild.c)
     endif()
-    add_definitions(${GRAPHVIZ_COMPILE_FLAGS})
 endif()
 
 add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
