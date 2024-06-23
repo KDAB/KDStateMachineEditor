@@ -31,8 +31,8 @@ if(WITH_INTERNAL_GRAPHVIZ)
             CACHE STRING " GVEdit interactive graph editor" FORCE
         )
 
-            # cmake-lint: disable=C0301
-            if(WIN32)
+        # cmake-lint: disable=C0301
+        if(WIN32)
             # On Windows we need some dependencies available for tests
             file(GLOB GRAPHVIZ_DEPENDENCIES
                  ${CMAKE_CURRENT_SOURCE_DIR}/graphviz/windows/dependencies/libraries/x64/bin/*
