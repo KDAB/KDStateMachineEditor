@@ -11,8 +11,10 @@ EXCLUDE strings,explicit,normalize,passbyvalue,operators,nullstrcompare,nullstra
 #exclude more checks
 EXCLUDE style
 
+#skip fwd_headers
+SKIP /fwd_headers/
 #no need to check 3rdparty stuff
-SKIP /3rdparty/
+SKIP /3rdparty/graphviz
 #nor examples
 SKIP /examples/
 #nor Digia'stuff
