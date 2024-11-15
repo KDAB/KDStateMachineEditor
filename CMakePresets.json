@@ -45,7 +45,7 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev6-internal-graphviz",
             "cacheVariables": {
-                "BUILD_QT6" : "ON",
+                "BUILD_QT6": "ON",
                 "WITH_INTERNAL_GRAPHVIZ": "ON"
             }
         },
@@ -55,7 +55,7 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev6",
             "cacheVariables": {
-                "BUILD_QT6" : "ON",
+                "BUILD_QT6": "ON",
                 "WITH_INTERNAL_GRAPHVIZ": "OFF"
             }
         },
@@ -93,7 +93,7 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel6-internal-graphviz",
             "cacheVariables": {
-                "BUILD_QT6" : "ON",
+                "BUILD_QT6": "ON",
                 "WITH_INTERNAL_GRAPHVIZ": "ON"
             }
         },
@@ -103,7 +103,7 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel6",
             "cacheVariables": {
-                "BUILD_QT6" : "ON",
+                "BUILD_QT6": "ON",
                 "WITH_INTERNAL_GRAPHVIZ": "OFF"
             }
         }
