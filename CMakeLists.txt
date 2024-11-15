@@ -57,6 +57,12 @@ project(
 
 set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.31)
+    # Silence cmake warning about normalizing paths in install()
+    # Please add "make install" tests to CI before using the newer policy
+    cmake_policy(SET CMP0177 OLD) # CMake normalizes install paths
+endif()
+
 include(FeatureSummary)
 
 if(CMAKE_CROSSCOMPILING)
