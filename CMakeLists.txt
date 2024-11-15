@@ -18,8 +18,9 @@
 # (See INSTALL.txt for more information)
 #
 # -DWITH_INTERNAL_GRAPHVIZ=[true|false]
-#  Allow to build with an internal Graphviz install.
-#  In the case where a separate Graphviz installation is not practical or desired.
+#  Allow to build with an external Graphviz install.
+#  We build with our internal graphviz sub-module but someone might want to
+#  build against distro package, which is not recommended and probably broken.
 #  Default=true
 #
 # -WITH_STATIC_GRAPHVIZ=[true|false]

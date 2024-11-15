@@ -78,17 +78,6 @@ configuration changes of the state machine, as well as zooming into child state 
 
 ## Building and running
 
-We strongly recommend installing [Graphviz](https://graphviz.org):
-
-```bash
-    (Ubuntu) sudo apt install graphviz graphviz-dev
-    (Fedora) dnf install graphviz graphviz-devel
-    (Mac) brew install graphviz
-    (Windows) choco install graphviz
-```
-
-of course you need a Qt5 or Qt6 installation and CMake too.
-
 ### Build
 
 Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
@@ -100,6 +89,8 @@ Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
     cmake --build
     cmake --build . --target install
 ```
+
+Pass `-DBUILD_QT6=ON` for a Qt 6 build.
 
 ### Start the test app
 
