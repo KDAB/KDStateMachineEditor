@@ -6,6 +6,7 @@ Version 2.0.0: (unreleased):
  * Buildsystem: generate and install kdsme-version.h
  * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True
    (Bad side-effect: allows dynamic builds only)
+ * Fixed build with more recent graphviz versions
 
 Version 1.2.8:
 --------------

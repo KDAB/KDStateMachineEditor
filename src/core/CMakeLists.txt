@@ -110,8 +110,12 @@ endif()
 
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
+if (NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
+    set(GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY gvplugin_dot_layout)
+endif()
+
 if(GRAPHVIZ_FOUND)
-    target_link_libraries(kdstatemachineeditor_core PRIVATE cgraph gvc gvplugin_dot_layout)
+    target_link_libraries(kdstatemachineeditor_core PRIVATE cgraph gvc ${GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY})
 endif()
 
 set(build_iface_dirs
