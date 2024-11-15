@@ -1,0 +1,58 @@
+version = 1
+SPDX-PackageName = "KDStateMachineEditor"
+SPDX-PackageSupplier = "<info@kdab.com>"
+SPDX-PackageDownloadLocation = "https://www.github.com/KDAB/KDStateMachineEditor"
+
+[[annotations]]
+path = ["**.ui", "**.qrc", "**.scxml", "docs/api/Doxyfile.cmake", "src/view/qml/util/qmldir", "CMakePresets.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
+SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"
+
+[[annotations]]
+path = ["CHANGES", "INSTALL.txt", "README.md", "conan/README.txt", "data/scxml/README.txt", "docs/api/footer.html", "docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
+SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"
+
+[[annotations]]
+path = [".pre-commit-config.yaml", ".codespellrc", ".krazy", ".clang-tidy", ".gitignore", ".gitmodules", "appveyor.yml", "distro/**", ".clang-format", ".cmake-format.py", ".mdlrc", ".mdlrc.rb", "REUSE.toml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ["screenshots/**.png", "src/view/icons/**.png", "examples/qscxmldebugger/**.png", "docs/api/**.png"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
+SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"
+
+[[annotations]]
+path = "cmake/ECM/modules/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "The KDE Project"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ["examples/qscxmldebugger/trafficlight.**", "examples/qsmdebugger/trafficlight.**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2016 The Qt Company Ltd"
+SPDX-License-Identifier = "BSD-3-Clause OR LicenseRef-Qt-Commercial"
+
+[[annotations]]
+path = ["src/view/quick/qopengl2pexvertexarray.cpp", "src/view/quick/qopengl2pexvertexarray_p.h"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2013 Digia Plc and/or its subsidiary(-ies)."
+SPDX-License-Identifier = "LGPL-2.1-only OR GPL-3.0-only OR LicenseRef-Qt-Commercial"
+
+[[annotations]]
+path = ["src/view/widgets/codeeditor.cpp", "src/view/widgets/codeeditor_p.h"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2013 Digia Plc and/or its subsidiary(-ies)."
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = "docs/api/doxygen-awesome.css"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 - 2023 jothepro"
+SPDX-License-Identifier = "MIT"
