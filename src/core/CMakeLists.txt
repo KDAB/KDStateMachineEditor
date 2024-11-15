@@ -110,7 +110,7 @@ endif()
 
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
-if (NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
+if(NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
     set(GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY gvplugin_dot_layout)
 endif()
 
