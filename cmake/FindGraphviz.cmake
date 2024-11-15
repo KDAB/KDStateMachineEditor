@@ -120,6 +120,13 @@ find_library(
     PATH_SUFFIXES ${GRAPHVIZ_LIB_PATH_SUFFIX} ${_GRAPHVIZ_FIND_OPTS}
 )
 
+find_library(
+    GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY
+    NAMES gvplugin_dot_layout
+    HINTS ${_GRAPHVIZ_LIBRARY_DIR}
+    PATH_SUFFIXES ${GRAPHVIZ_LIB_PATH_SUFFIX} ${_GRAPHVIZ_FIND_OPTS} graphviz
+)
+
 cmake_push_check_state()
 if(NOT DEFINED CMAKE_REQUIRED_INCLUDES)
     set(CMAKE_REQUIRED_INCLUDES "") #to make --warn-uninitialized happy
