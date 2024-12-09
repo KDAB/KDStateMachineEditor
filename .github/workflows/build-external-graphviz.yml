@@ -1,0 +1,90 @@
+# SPDX-FileCopyrightText: 2023 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
+
+name: CI with external graphviz
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        build_type:
+          - Debug
+        config:
+          - qt_version: 6.6.2
+            qt_modules: qtscxml
+
+    steps:
+      - name: Install Dependencies on Linux
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo apt update -qq
+          sudo apt install -y doxygen libgraphviz-dev
+
+      - name: Install Dependencies on macOS
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install bison graphviz
+
+      - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: null # use whatever the default is
+          modules: ${{ matrix.config.qt_modules }}
+          version: ${{ matrix.config.qt_version }}
+          cache: true
+
+      - name: Install ninja-build tool (must be after Qt due PATH changes)
+        uses: turtlesec-no/get-ninja@main
+
+      - name: Add Bison to PATH (must be after Qt due PATH changes)
+        if: ${{ runner.os == 'macOS' }}
+        run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure project
+        run: >
+          cmake -S . -B ./build -G Ninja
+          --warn-uninitialized -Werror=dev
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_OSX_ARCHITECTURES="arm64"
+          -DBUILD_QT6=ON
+          -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
+          -DBUILD_EXAMPLES=ON
+          -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DWITH_INTERNAL_GRAPHVIZ=OFF
+
+      - name: Build Project
+        run: cmake --build ./build
+
+      - name: Run tests on Linux (offscreen)
+        if: ${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+      - name: Run tests on macOS
+        if: ${{ matrix.build_type == 'Debug' && runner.os != 'Linux' }}
+        run: ctest --test-dir ./build -C ${{ matrix.build_type }} --output-on-failure
+
+      - name: Read tests log when it fails
+        uses: andstor/file-reader-action@v1
+        if: ${{ failure() && matrix.build_type == 'Debug' }}
+        with:
+          path: "./build/Testing/Temporary/LastTest.log"
