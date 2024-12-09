@@ -89,6 +89,10 @@ if(BUILD_QT6)
     target_link_libraries(kdstatemachineeditor_core PRIVATE Qt6::StateMachine)
 endif()
 
+if(NOT WITH_INTERNAL_GRAPHVIZ)
+    target_include_directories(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_INCLUDE_DIR})
+endif()
+
 set_target_properties(
     kdstatemachineeditor_core
     PROPERTIES SOVERSION ${KDSME_SOVERSION}
@@ -110,12 +114,19 @@ endif()
 
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
-if(NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
-    set(GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY gvplugin_dot_layout)
+if(WITH_INTERNAL_GRAPHVIZ)
+    set(GRAPHVIZ_GVC_LIBRARY gvc)
+    set(GRAPHVIZ_CGRAPH_LIBRARY cgraph)
+    if(NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
+        set(GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY gvplugin_dot_layout)
+    endif()
 endif()
 
 if(GRAPHVIZ_FOUND)
-    target_link_libraries(kdstatemachineeditor_core PRIVATE cgraph gvc ${GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY})
+    target_link_libraries(
+        kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_CGRAPH_LIBRARY} ${GRAPHVIZ_GVC_LIBRARY}
+                                          ${GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY}
+    )
 endif()
 
 set(build_iface_dirs
