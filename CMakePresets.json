@@ -1,111 +1,111 @@
 {
-  "version": 3,
-  "configurePresets": [
-    {
-      "name": "base",
-      "hidden": true,
-      "generator": "Ninja",
-      "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "BUILD_DOCS": "OFF"
-      }
-    },
-    {
-      "name": "dev-base",
-      "description": "dev-base",
-      "hidden": true,
-      "inherits": "base",
-      "binaryDir": "${sourceDir}/build-dev",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "BUILD_TESTS": "ON"
-      }
-    },
-    {
-      "name": "dev5-external-graphviz",
-      "description": "Qt5 dev build with external graphviz",
-      "inherits": "dev-base",
-      "binaryDir": "${sourceDir}/build-dev5-external-graphviz",
-      "cacheVariables": {
-        "WITH_INTERNAL_GRAPHVIZ": "OFF"
-      }
-    },
-    {
-      "name": "dev5",
-      "description": "Qt5 dev build",
-      "inherits": "dev-base",
-      "binaryDir": "${sourceDir}/build-dev5",
-      "cacheVariables": {
-        "WITH_INTERNAL_GRAPHVIZ": "ON"
-      }
-    },
-    {
-      "name": "dev6-external-graphviz",
-      "description": "Qt6 dev build with external graphviz",
-      "inherits": "dev-base",
-      "binaryDir": "${sourceDir}/build-dev6-external-graphviz",
-      "cacheVariables": {
-        "BUILD_QT6": "ON",
-        "WITH_INTERNAL_GRAPHVIZ": "OFF"
-      }
-    },
-    {
-      "name": "dev6",
-      "description": "Qt6 dev build",
-      "inherits": "dev-base",
-      "binaryDir": "${sourceDir}/build-dev6",
-      "cacheVariables": {
-        "BUILD_QT6": "ON",
-        "WITH_INTERNAL_GRAPHVIZ": "ON"
-      }
-    },
-    {
-      "name": "rel-base",
-      "description": "rel-base",
-      "inherits": "base",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "BUILD_TESTS": "OFF"
-      }
-    },
-    {
-      "name": "rel5-external-graphviz",
-      "description": "Qt5 release build with external graphviz",
-      "inherits": "rel-base",
-      "binaryDir": "${sourceDir}/build-rel5-external-graphviz",
-      "cacheVariables": {
-        "WITH_INTERNAL_GRAPHVIZ": "OFF"
-      }
-    },
-    {
-      "name": "rel5",
-      "description": "Qt5 release build",
-      "inherits": "rel-base",
-      "binaryDir": "${sourceDir}/build-rel5",
-      "cacheVariables": {
-        "WITH_INTERNAL_GRAPHVIZ": "ON"
-      }
-    },
-    {
-      "name": "rel6-external-graphviz",
-      "description": "Qt6 release build with external graphviz",
-      "inherits": "rel-base",
-      "binaryDir": "${sourceDir}/build-rel6-external-graphviz",
-      "cacheVariables": {
-        "BUILD_QT6": "ON",
-        "WITH_INTERNAL_GRAPHVIZ": "OFF"
-      }
-    },
-    {
-      "name": "rel6",
-      "description": "Qt6 release build",
-      "inherits": "rel-base",
-      "binaryDir": "${sourceDir}/build-rel6",
-      "cacheVariables": {
-        "BUILD_QT6": "ON",
-        "WITH_INTERNAL_GRAPHVIZ": "ON"
-      }
-    }
-  ]
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "BUILD_DOCS": "OFF"
+            }
+        },
+        {
+            "name": "dev-base",
+            "description": "dev-base",
+            "hidden": true,
+            "inherits": "base",
+            "binaryDir": "${sourceDir}/build-dev",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "BUILD_TESTS": "ON"
+            }
+        },
+        {
+            "name": "dev5-external-graphviz",
+            "description": "Qt5 dev build with external graphviz",
+            "inherits": "dev-base",
+            "binaryDir": "${sourceDir}/build-dev5-external-graphviz",
+            "cacheVariables": {
+                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+            }
+        },
+        {
+            "name": "dev5",
+            "description": "Qt5 dev build",
+            "inherits": "dev-base",
+            "binaryDir": "${sourceDir}/build-dev5",
+            "cacheVariables": {
+                "WITH_INTERNAL_GRAPHVIZ": "ON"
+            }
+        },
+        {
+            "name": "dev6-external-graphviz",
+            "description": "Qt6 dev build with external graphviz",
+            "inherits": "dev-base",
+            "binaryDir": "${sourceDir}/build-dev6-external-graphviz",
+            "cacheVariables": {
+                "BUILD_QT6": "ON",
+                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+            }
+        },
+        {
+            "name": "dev6",
+            "description": "Qt6 dev build",
+            "inherits": "dev-base",
+            "binaryDir": "${sourceDir}/build-dev6",
+            "cacheVariables": {
+                "BUILD_QT6": "ON",
+                "WITH_INTERNAL_GRAPHVIZ": "ON"
+            }
+        },
+        {
+            "name": "rel-base",
+            "description": "rel-base",
+            "inherits": "base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_TESTS": "OFF"
+            }
+        },
+        {
+            "name": "rel5-external-graphviz",
+            "description": "Qt5 release build with external graphviz",
+            "inherits": "rel-base",
+            "binaryDir": "${sourceDir}/build-rel5-external-graphviz",
+            "cacheVariables": {
+                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+            }
+        },
+        {
+            "name": "rel5",
+            "description": "Qt5 release build",
+            "inherits": "rel-base",
+            "binaryDir": "${sourceDir}/build-rel5",
+            "cacheVariables": {
+                "WITH_INTERNAL_GRAPHVIZ": "ON"
+            }
+        },
+        {
+            "name": "rel6-external-graphviz",
+            "description": "Qt6 release build with external graphviz",
+            "inherits": "rel-base",
+            "binaryDir": "${sourceDir}/build-rel6-external-graphviz",
+            "cacheVariables": {
+                "BUILD_QT6": "ON",
+                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+            }
+        },
+        {
+            "name": "rel6",
+            "description": "Qt6 release build",
+            "inherits": "rel-base",
+            "binaryDir": "${sourceDir}/build-rel6",
+            "cacheVariables": {
+                "BUILD_QT6": "ON",
+                "WITH_INTERNAL_GRAPHVIZ": "ON"
+            }
+        }
+    ]
 }
