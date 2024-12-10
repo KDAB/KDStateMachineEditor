@@ -25,6 +25,9 @@ jobs:
         build_type:
           - Debug
           - Release
+        lib_type:
+          - Shared
+          - Static
         config:
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
@@ -91,6 +94,7 @@ jobs:
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DBUILD_STATIC=${{ matrix.lib_type == 'Static' }}
 
       - name: Build Project
         run: cmake --build ./build

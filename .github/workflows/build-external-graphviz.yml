@@ -23,6 +23,9 @@ jobs:
           - macos-latest
         build_type:
           - Debug
+        lib_type:
+          - Shared
+          - Static
         config:
           - qt_version: 6.6.2
             qt_modules: qtscxml
@@ -68,6 +71,7 @@ jobs:
           -DBUILD_TESTS=${{ matrix.build_type == 'Debug' }}
           -DBUILD_EXAMPLES=ON
           -DBUILD_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}
+          -DBUILD_STATIC=${{ matrix.lib_type == 'Static' }}
           -DWITH_INTERNAL_GRAPHVIZ=OFF
 
       - name: Build Project

@@ -45,6 +45,9 @@
 #  Note: disabling tests also disables building the kdstatemachineeditor test application.
 #  Default=True
 #
+# -DBUILD_STATIC=[true|false]
+#  Build static libraries
+#  Default=false
 
 cmake_minimum_required(VERSION 3.16)
 
@@ -76,6 +79,13 @@ else()
     option(BUILD_TESTS "Build the test harness" ON)
 endif()
 option(BUILD_QT6 "Build against Qt 6" OFF)
+option(BUILD_STATIC "Build statically" OFF)
+
+if(BUILD_STATIC)
+    set(BUILD_LIBRARY_MODE "STATIC")
+else()
+    set(BUILD_LIBRARY_MODE "SHARED")
+endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")

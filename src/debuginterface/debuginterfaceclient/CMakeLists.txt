@@ -17,7 +17,7 @@ if(NOT BUILD_QT6)
     qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
 endif()
 
-add_library(kdstatemachineeditor_debuginterfaceclient SHARED ${DEBUGINTERFACECLIENT_SRCS})
+add_library(kdstatemachineeditor_debuginterfaceclient ${BUILD_LIBRARY_MODE} ${DEBUGINTERFACECLIENT_SRCS})
 
 if(BUILD_QT6)
     qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
@@ -82,7 +82,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC)
+if(MSVC AND NOT BUILD_STATIC)
     # cmake-lint: disable=C0301
     install(
         FILES
