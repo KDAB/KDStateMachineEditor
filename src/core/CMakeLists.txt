@@ -142,7 +142,7 @@ set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatem
 
 if(WITH_INTERNAL_GRAPHVIZ)
     install(
-        TARGETS gvc cgraph cdt gvplugin_dot_layout dotgen
+        TARGETS gvc cgraph cdt gvplugin_dot_layout dotgen util
         EXPORT KDSME_TARGETS
         ${INSTALL_TARGETS_DEFAULT_ARGS}
     )
