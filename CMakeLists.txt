@@ -56,7 +56,7 @@ project(
     DESCRIPTION "A framework for creating Qt State Machine metacode using a graphical user interface"
     HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
     LANGUAGES CXX C
-    VERSION 1.99.50
+    VERSION 2.0.0
 )
 
 set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
