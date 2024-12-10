@@ -7,6 +7,7 @@ Version 2.0.0: (unreleased):
  * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True
    (Bad side-effect: allows dynamic builds only)
  * Fixed build with more recent graphviz versions
+ * Buildsystem: new Option BUILD_STATIC to create static libraries
 
 Version 1.2.8:
 --------------

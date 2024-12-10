@@ -77,7 +77,7 @@ if(GRAPHVIZ_FOUND)
     endif()
 endif()
 
-add_library(kdstatemachineeditor_core SHARED ${LIB_SRCS})
+add_library(kdstatemachineeditor_core ${BUILD_LIBRARY_MODE} ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
     kdstatemachineeditor_core
@@ -159,7 +159,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC)
+if(MSVC AND NOT BUILD_STATIC)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_core>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_core>"
         DESTINATION ${BIN_INSTALL_DIR}

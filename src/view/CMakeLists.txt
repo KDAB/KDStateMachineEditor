@@ -16,7 +16,8 @@
 file(GLOB_RECURSE QML_JS_FILES *.qml *.js)
 
 add_library(
-    kdstatemachineeditor_view SHARED
+    kdstatemachineeditor_view
+    ${BUILD_LIBRARY_MODE}
     command/command.cpp
     command/commandfactory.cpp
     command/createelementcommand.cpp
@@ -97,7 +98,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC)
+if(MSVC AND NOT BUILD_STATIC)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_view>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_view>"
         DESTINATION ${BIN_INSTALL_DIR}
