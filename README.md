@@ -1,5 +1,7 @@
 # KDStateMachineEditor - Library for visualizing and editing state charts
 
+test
+
 ## Introduction
 
 The KDAB State Machine Editor Library is a framework that can be used to
