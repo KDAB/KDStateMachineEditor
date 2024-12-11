@@ -7,7 +7,15 @@ Version 2.0.0:
  * Use official Graphviz from upstream with -DWITH_INTERNAL_GRAPHVIZ=True
    (Bad side-effect: allows dynamic builds only, but external graphviz still supported)
  * Fixed build with more recent graphviz versions
- * Buildsystem: new Option BUILD_STATIC to create static libraries
+ * Buildsystem: new Option BUILD_SHARED_LIBS to select between shared or static libraries
+ * Renamed the following CMake options
+   * BUILD_DOCS -> KDSME_DOCS
+   * BUILD_EXAMPLES -> KDSME_EXAMPLES
+   * BUILD_QT6 -> KDSME_QT6
+   * WITH_INTERNAL_GRAPHVIZ -> KDSME_INTERNAL_GRAPHVIZ
+   * WITH_STATIC_GRAPHVIZ -> KDSME_STATIC_GRAPHVIZ
+ * Use standard cmake options instead of custom ones:
+   * BUILD_TESTS -> BUILD_TESTING
 
 Version 1.2.8:
 --------------

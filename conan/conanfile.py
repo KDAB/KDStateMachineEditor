@@ -54,10 +54,10 @@ class KDStateMachineEditorConan(ConanFile):
 
     def build(self):
         self.cmake = CMake(self)
-        self.cmake.definitions["WITH_INTERNAL_GRAPHVIZ"] = True
-        self.cmake.definitions["BUILD_EXAMPLES"] = self.options.build_examples
-        self.cmake.definitions["BUILD_DOCS"] = self.options.build_docs
-        self.cmake.definitions["BUILD_TESTS"] = self.options.build_tests
+        self.cmake.definitions["KDSME_INTERNAL_GRAPHVIZ"] = True
+        self.cmake.definitions["KDSME_EXAMPLES"] = self.options.build_examples
+        self.cmake.definitions["KDSME_DOCS"] = self.options.build_docs
+        self.cmake.definitions["BUILD_TESTING"] = self.options.build_tests
         self.cmake.configure()
         self.cmake.build()
 

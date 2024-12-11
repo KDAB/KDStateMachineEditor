@@ -13,12 +13,12 @@
 # Contact info@kdab.com if any conditions of this licensing are not clear to you.
 #
 
-if(WITH_INTERNAL_GRAPHVIZ)
+if(KDSME_INTERNAL_GRAPHVIZ)
     # Function creates extra scope to keep these variables local
     function(add_graphviz_subdirectory)
         #TODO check if there are unneeded features to disable
 
-        if(WITH_STATIC_GRAPHVIZ)
+        if(KDSME_STATIC_GRAPHVIZ)
             set(BUILD_SHARED_LIBS OFF)
         endif()
         if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/graphviz/CMakeLists.txt")

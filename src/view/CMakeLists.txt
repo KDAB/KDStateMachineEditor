@@ -17,7 +17,6 @@ file(GLOB_RECURSE QML_JS_FILES *.qml *.js)
 
 add_library(
     kdstatemachineeditor_view
-    ${BUILD_LIBRARY_MODE}
     command/command.cpp
     command/commandfactory.cpp
     command/createelementcommand.cpp
@@ -98,7 +97,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC AND NOT BUILD_STATIC)
+if(MSVC AND BUILD_SHARED_LIBS)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_view>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_view>"
         DESTINATION ${BIN_INSTALL_DIR}
@@ -119,7 +118,7 @@ install(
     DESTINATION ${INCLUDE_INSTALL_DIR}/view
 )
 
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     ecm_generate_pri_file(
         BASE_NAME
         KDSMEView
@@ -135,6 +134,6 @@ if(NOT BUILD_QT6)
     install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 endif()
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

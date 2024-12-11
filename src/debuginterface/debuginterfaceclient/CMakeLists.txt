@@ -13,13 +13,13 @@
 #
 
 set(DEBUGINTERFACECLIENT_SRCS debuginterfaceclient.cpp)
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
 endif()
 
-add_library(kdstatemachineeditor_debuginterfaceclient ${BUILD_LIBRARY_MODE} ${DEBUGINTERFACECLIENT_SRCS})
+add_library(kdstatemachineeditor_debuginterfaceclient ${DEBUGINTERFACECLIENT_SRCS})
 
-if(BUILD_QT6)
+if(KDSME_QT6)
     qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
 endif()
 
@@ -58,7 +58,7 @@ target_include_directories(
     kdstatemachineeditor_debuginterfaceclient PUBLIC "$<BUILD_INTERFACE:${build_iface_dirs}>"
                                                      $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     ecm_generate_pri_file(
         BASE_NAME
         KDSMEDebugInterfaceClient
@@ -82,7 +82,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC AND NOT BUILD_STATIC)
+if(MSVC AND BUILD_SHARED_LIBS)
     # cmake-lint: disable=C0301
     install(
         FILES

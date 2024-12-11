@@ -45,7 +45,7 @@ jobs:
 
       - name: Configure project
         run: >
-          cmake -S . -B ./build -DBUILD_DOCS=ON
+          cmake -S . -B ./build -DKDSME_DOCS=ON
 
       - name: Create docs
         run: cmake --build ./build --target docs

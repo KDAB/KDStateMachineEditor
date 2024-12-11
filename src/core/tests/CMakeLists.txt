@@ -35,7 +35,7 @@ ecm_add_test(test_qmlexport.cpp LINK_LIBRARIES kdsme_testhelper)
 
 if(TARGET Qt::RemoteObjects)
     set(SRCS test_qsmintegration.cpp)
-    if(NOT BUILD_QT6)
+    if(NOT KDSME_QT6)
         qt_generate_repc(SRCS ../../debuginterface/debuginterface.rep REPLICA)
     endif()
     ecm_add_test(
@@ -49,7 +49,7 @@ if(TARGET Qt::RemoteObjects)
         kdstatemachineeditor_debuginterfacesource
         kdsme_testhelper
     )
-    if(BUILD_QT6)
+    if(KDSME_QT6)
         target_link_libraries(test_qsmintegration Qt6::StateMachine)
         qt_add_repc_replicas(test_qsmintegration ../../debuginterface/debuginterface.rep)
     endif()
@@ -67,9 +67,9 @@ ecm_add_test(test_statemachine.cpp LINK_LIBRARIES kdsme_testhelper)
 
 ecm_add_test(test_util.cpp LINK_LIBRARIES Qt::Gui kdsme_testhelper)
 
-if(NOT BUILD_QT6 OR Qt6Core5Compat_FOUND)
+if(NOT KDSME_QT6 OR Qt6Core5Compat_FOUND)
     ecm_add_test(test_layoutinformation.cpp LINK_LIBRARIES Qt::Gui Qt::Test kdstatemachineeditor_core)
-    if(BUILD_QT6)
+    if(KDSME_QT6)
         target_link_libraries(test_layoutinformation Qt6::Core5Compat)
     endif()
 endif()

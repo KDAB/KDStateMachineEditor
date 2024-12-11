@@ -14,11 +14,11 @@
 
 set(SRCS trafficlight.cpp main.cpp)
 # Copy the .rep file to your project
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     qt5_generate_repc(SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
 endif()
 add_executable(qsmdebugger ${SRCS})
-if(BUILD_QT6)
+if(KDSME_QT6)
     qt6_add_repc_replicas(qsmdebugger ../../src/debuginterface/debuginterface.rep)
     target_link_libraries(qsmdebugger Qt6::StateMachine)
 endif()

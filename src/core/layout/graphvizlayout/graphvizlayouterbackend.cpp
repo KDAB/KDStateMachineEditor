@@ -399,7 +399,7 @@ void GraphvizLayouterBackend::Private::importTransition(Transition *transition, 
 }
 
 extern "C" {
-#if WITH_STATIC_GRAPHVIZ
+#if KDSME_STATIC_GRAPHVIZ
 GVC_t *gvContextWithStaticPlugins();
 #endif
 }
@@ -516,7 +516,7 @@ Agnode_t *GraphvizLayouterBackend::Private::agnodeForState(State *state)
     return static_cast<Agnode_t *>(m_elementToPointerMap.value(state));
 }
 
-#if !WITH_STATIC_GRAPHVIZ && !defined(Q_OS_WINDOWS)
+#if !KDSME_STATIC_GRAPHVIZ && !defined(Q_OS_WINDOWS)
 extern "C" {
 
 extern gvplugin_library_t gvplugin_dot_layout_LTX_library;
@@ -532,7 +532,7 @@ GraphvizLayouterBackend::GraphvizLayouterBackend()
     : d(new Private)
 {
     // create context
-#if WITH_STATIC_GRAPHVIZ
+#if KDSME_STATIC_GRAPHVIZ
     d->m_context = gvContextWithStaticPlugins();
 #elif !defined(Q_OS_WINDOWS)
     d->m_context = gvContextPlugins(lt_preloaded_symbols, 1);

@@ -14,7 +14,7 @@
 
 add_executable(qscxmldebugger trafficlight.cpp main.cpp trafficlight-widgets-static.qrc)
 # Copy the .rep file to your project
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     qt_generate_repc(REPC_SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
 
     qt_add_statecharts(STATECHART_SRCS statemachine.scxml)
@@ -24,7 +24,7 @@ if(NOT BUILD_QT6)
     set_source_files_properties(${STATECHART_SRCS} PROPERTIES GENERATED TRUE SKIP_AUTOGEN ON)
     target_sources(qscxmldebugger PRIVATE ${REPC_SRCS} ${STATECHART_SRCS})
 endif()
-if(BUILD_QT6)
+if(KDSME_QT6)
     qt_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
     qt_add_statecharts(qscxmldebugger statemachine.scxml)
 endif()

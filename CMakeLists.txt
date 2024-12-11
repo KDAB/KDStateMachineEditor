@@ -17,37 +17,37 @@
 # Pass the following variables to cmake to control the build:
 # (See INSTALL.txt for more information)
 #
-# -DWITH_INTERNAL_GRAPHVIZ=[true|false]
+# -DKDSME_INTERNAL_GRAPHVIZ=[true|false]
 #  Allow to build with an external Graphviz install.
 #  We build with our internal graphviz sub-module but someone might want to
 #  build against distro package, which is not recommended and probably broken.
 #  Default=true
 #
-# -WITH_STATIC_GRAPHVIZ=[true|false]
+# -KDSME_STATIC_GRAPHVIZ=[true|false]
 #  Allow the internal Graphviz build to be statically.
 #  Currently shared graphviz builds on Windows have link issues.
 #  Default=true
 #
-# -DBUILD_QT6=[true|false]
+# -DKDSME_QT6=[true|false]
 #  Build against Qt6 rather than Qt5
 #  Default=false (Qt5 will be used even if Qt6 is available)
 #
-# -DBUILD_DOCS=[true|false]
+# -DKDSME_DOCS=[true|false]
 #  Build the documentation. Documentation is never built when cross-compiling.
 #  Default=true
 #
-# -DBUILD_EXAMPLES=[true|false]
+# -DKDSME_EXAMPLES=[true|false]
 #  Build the examples. Examples are never built when cross-compiling.
 #  Default=true
 #
-# -DBUILD_TESTS=[true|false]
+# -DBUILD_TESTING=[true|false]
 #  Build the test harness. Tests are never built when cross-compiling.
 #  Note: disabling tests also disables building the kdstatemachineeditor test application.
 #  Default=True
 #
-# -DBUILD_STATIC=[true|false]
-#  Build static libraries
-#  Default=false
+# -DBUILD_SHARED_LIBS=[true|false]
+#  Build shared libraries
+#  Default=true
 
 cmake_minimum_required(VERSION 3.16)
 
@@ -69,23 +69,38 @@ endif()
 
 include(FeatureSummary)
 
-if(CMAKE_CROSSCOMPILING)
-    set(BUILD_DOCS OFF)
-    set(BUILD_EXAMPLES OFF)
-    set(BUILD_TESTS OFF)
-else()
-    option(BUILD_DOCS "Build KDStateMachineEditor documentation" ON)
-    option(BUILD_EXAMPLES "Build examples directory" ON)
-    option(BUILD_TESTS "Build the test harness" ON)
-endif()
-option(BUILD_QT6 "Build against Qt 6" OFF)
-option(BUILD_STATIC "Build statically" OFF)
+# Declare an option as renamed, and eventually update the old cache entry
+function(renamed_option _old _new)
+    get_property(
+        _old_set
+        CACHE ${_old}
+        PROPERTY VALUE
+        SET
+    )
+    if(_old_set)
+        message(DEPRECATION "\"${_old}\" was renamed \"${_new}\". Cache entry will be updated.")
+        set_property(CACHE ${_new} PROPERTY VALUE ${${_old}})
+        unset(${_old} CACHE)
+    endif()
+endfunction()
 
-if(BUILD_STATIC)
-    set(BUILD_LIBRARY_MODE "STATIC")
+if(CMAKE_CROSSCOMPILING)
+    set(KDSME_DOCS OFF)
+    set(KDSME_EXAMPLES OFF)
+    set(BUILD_TESTING OFF)
 else()
-    set(BUILD_LIBRARY_MODE "SHARED")
+    option(KDSME_DOCS "Build KDStateMachineEditor documentation" ON)
+    option(KDSME_EXAMPLES "Build examples directory" ON)
+    option(BUILD_TESTING "Build the test harness" ON)
 endif()
+renamed_option(BUILD_DOCS KDSME_DOCS)
+renamed_option(BUILD_EXAMPLES KDSME_EXAMPLES)
+renamed_option(BUILD_TESTS BUILD_TESTING)
+
+option(KDSME_QT6 "Build against Qt 6" OFF)
+renamed_option(BUILD_QT6 KDSME_QT6)
+
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ECM/modules")
@@ -106,7 +121,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(BUILD_QT6)
+if(KDSME_QT6)
     set(QT_VERSION_MAJOR 6)
     set(QT_MIN_VERSION "6.1.0")
     find_package(
@@ -146,7 +161,7 @@ set_package_properties(
 )
 
 # QtXmlPatterns is removed since Qt6
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     find_package(Qt5XmlPatterns ${QT_MIN_VERSION} CONFIG QUIET)
     set_package_properties(
         Qt5XmlPatterns PROPERTIES
@@ -199,7 +214,7 @@ set(LIB_INSTALL_DIR
     ${CMAKE_INSTALL_LIBDIR}
     CACHE STRING "Library install destination."
 )
-if(BUILD_QT6)
+if(KDSME_QT6)
     set(INCLUDE_INSTALL_ROOT ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}${KDSME_LIBRARY_QTID})
 else()
     set(INCLUDE_INSTALL_ROOT ${CMAKE_INSTALL_INCLUDEDIR}/)
@@ -227,13 +242,16 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
     "/Applications/Qt${QT_VERSION_MAJOR}"
 )
 
-option(WITH_INTERNAL_GRAPHVIZ "Enable internal build of external project Graphviz" ON)
-add_feature_info("Internal build of Graphviz" WITH_INTERNAL_GRAPHVIZ "disable with WITH_INTERNAL_GRAPHVIZ=OFF")
+option(KDSME_INTERNAL_GRAPHVIZ "Enable internal build of external project Graphviz" ON)
+renamed_option(WITH_INTERNAL_GRAPHVIZ KDSME_INTERNAL_GRAPHVIZ)
+add_feature_info("Internal build of Graphviz" KDSME_INTERNAL_GRAPHVIZ "disable with KDSME_INTERNAL_GRAPHVIZ=OFF")
 
-if(WITH_INTERNAL_GRAPHVIZ)
-    option(WITH_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
+if(KDSME_INTERNAL_GRAPHVIZ)
+    option(KDSME_STATIC_GRAPHVIZ "Enable static build of Graphviz when internally building" ON)
+    renamed_option(WITH_STATIC_GRAPHVIZ KDSME_STATIC_GRAPHVIZ)
     add_feature_info(
-        "Statically build Graphviz for internal builds" WITH_INTERNAL_GRAPHVIZ "disable with WITH_STATIC_GRAPHVIZ=OFF"
+        "Statically build Graphviz for internal builds" KDSME_INTERNAL_GRAPHVIZ
+        "disable with KDSME_STATIC_GRAPHVIZ=OFF"
     )
     set(GRAPHVIZ_FOUND ON)
 
@@ -296,7 +314,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -Wextra -Woverloaded-virtual -Winit-self")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-include-dirs -Wunused -Wno-div-by-zero -Wundef")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpointer-arith -Wmissing-noreturn -Werror=return-type -Wswitch")
-    if(NOT BUILD_QT6)
+    if(NOT KDSME_QT6)
         if(HAVE_GXX_GNUXX11) # QNX needs gnu++0x rather than c++0x for compiling QML V4 private headers
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
         elseif(HAVE_GXX_CXX11)
@@ -336,12 +354,12 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 else()
     #Always disable tests, examples, docs when used as a submodule
     set(${PROJECT_NAME}_IS_ROOT_PROJECT FALSE)
-    set(BUILD_TESTS FALSE)
-    set(BUILD_EXAMPLES FALSE)
-    set(BUILD_DOCS FALSE)
+    set(BUILD_TESTING FALSE)
+    set(KDSME_EXAMPLES FALSE)
+    set(KDSME_DOCS FALSE)
 endif()
 
-if(BUILD_TESTS AND NOT CMAKE_CROSSCOMPILING)
+if(BUILD_TESTING AND NOT CMAKE_CROSSCOMPILING)
     enable_testing()
 endif()
 
@@ -349,11 +367,11 @@ set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
 add_subdirectory(src)
 
-if(BUILD_EXAMPLES)
+if(KDSME_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-if(BUILD_DOCS)
+if(KDSME_DOCS)
     add_subdirectory(docs)
 endif()
 
