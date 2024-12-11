@@ -7,7 +7,7 @@
             "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "BUILD_DOCS": "OFF"
+                "KDSME_DOCS": "OFF"
             }
         },
         {
@@ -18,7 +18,7 @@
             "binaryDir": "${sourceDir}/build-dev",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "BUILD_TESTS": "ON"
+                "BUILD_TESTING": "ON"
             }
         },
         {
@@ -27,7 +27,7 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev5-external-graphviz",
             "cacheVariables": {
-                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+                "KDSME_INTERNAL_GRAPHVIZ": "OFF"
             }
         },
         {
@@ -36,7 +36,7 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev5",
             "cacheVariables": {
-                "WITH_INTERNAL_GRAPHVIZ": "ON"
+                "KDSME_INTERNAL_GRAPHVIZ": "ON"
             }
         },
         {
@@ -45,8 +45,8 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev6-external-graphviz",
             "cacheVariables": {
-                "BUILD_QT6": "ON",
-                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+                "KDSME_QT6": "ON",
+                "KDSME_INTERNAL_GRAPHVIZ": "OFF"
             }
         },
         {
@@ -55,8 +55,8 @@
             "inherits": "dev-base",
             "binaryDir": "${sourceDir}/build-dev6",
             "cacheVariables": {
-                "BUILD_QT6": "ON",
-                "WITH_INTERNAL_GRAPHVIZ": "ON"
+                "KDSME_QT6": "ON",
+                "KDSME_INTERNAL_GRAPHVIZ": "ON"
             }
         },
         {
@@ -66,7 +66,7 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "BUILD_TESTS": "OFF"
+                "BUILD_TESTING": "OFF"
             }
         },
         {
@@ -75,7 +75,7 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel5-external-graphviz",
             "cacheVariables": {
-                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+                "KDSME_INTERNAL_GRAPHVIZ": "OFF"
             }
         },
         {
@@ -84,7 +84,7 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel5",
             "cacheVariables": {
-                "WITH_INTERNAL_GRAPHVIZ": "ON"
+                "KDSME_INTERNAL_GRAPHVIZ": "ON"
             }
         },
         {
@@ -93,8 +93,8 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel6-external-graphviz",
             "cacheVariables": {
-                "BUILD_QT6": "ON",
-                "WITH_INTERNAL_GRAPHVIZ": "OFF"
+                "KDSME_QT6": "ON",
+                "KDSME_INTERNAL_GRAPHVIZ": "OFF"
             }
         },
         {
@@ -103,8 +103,8 @@
             "inherits": "rel-base",
             "binaryDir": "${sourceDir}/build-rel6",
             "cacheVariables": {
-                "BUILD_QT6": "ON",
-                "WITH_INTERNAL_GRAPHVIZ": "ON"
+                "KDSME_QT6": "ON",
+                "KDSME_INTERNAL_GRAPHVIZ": "ON"
             }
         }
     ]

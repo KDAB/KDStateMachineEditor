@@ -72,12 +72,12 @@ if(GRAPHVIZ_FOUND)
         layout/graphvizlayout/gvutils.cpp
         layout/graphvizlayout/gvutils.h
     )
-    if(WITH_STATIC_GRAPHVIZ)
+    if(KDSME_STATIC_GRAPHVIZ)
         list(APPEND LIB_SRCS layout/graphvizlayout/graphviz_staticbuild.c)
     endif()
 endif()
 
-add_library(kdstatemachineeditor_core ${BUILD_LIBRARY_MODE} ${LIB_SRCS})
+add_library(kdstatemachineeditor_core ${LIB_SRCS})
 add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
     kdstatemachineeditor_core
@@ -85,11 +85,11 @@ target_link_libraries(
     PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
 )
 
-if(BUILD_QT6)
+if(KDSME_QT6)
     target_link_libraries(kdstatemachineeditor_core PRIVATE Qt6::StateMachine)
 endif()
 
-if(NOT WITH_INTERNAL_GRAPHVIZ)
+if(NOT KDSME_INTERNAL_GRAPHVIZ)
     target_include_directories(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_INCLUDE_DIR})
 endif()
 
@@ -114,7 +114,7 @@ endif()
 
 generate_export_header(kdstatemachineeditor_core EXPORT_FILE_NAME kdsme_core_export.h BASE_NAME KDSME_CORE)
 
-if(WITH_INTERNAL_GRAPHVIZ)
+if(KDSME_INTERNAL_GRAPHVIZ)
     set(GRAPHVIZ_GVC_LIBRARY gvc)
     set(GRAPHVIZ_CGRAPH_LIBRARY cgraph)
     if(NOT GRAPHVIZ_PLUGIN_DOT_LAYOUT_LIBRARY)
@@ -140,13 +140,13 @@ target_include_directories(
 
 set_target_properties(kdstatemachineeditor_core PROPERTIES OUTPUT_NAME "kdstatemachineeditor_core${KDSME_LIBRARY_QTID}")
 
-if(WITH_INTERNAL_GRAPHVIZ)
+if(KDSME_INTERNAL_GRAPHVIZ)
     install(
         TARGETS gvc cgraph cdt gvplugin_dot_layout dotgen
         EXPORT KDSME_TARGETS
         ${INSTALL_TARGETS_DEFAULT_ARGS}
     )
-    if(WITH_STATIC_GRAPHVIZ)
+    if(KDSME_STATIC_GRAPHVIZ)
         install(
             TARGETS common pack ortho pathplan label xdot
             EXPORT KDSME_TARGETS
@@ -159,7 +159,7 @@ install(
     EXPORT KDSME_TARGETS
     ${INSTALL_TARGETS_DEFAULT_ARGS}
 )
-if(MSVC AND NOT BUILD_STATIC)
+if(MSVC AND BUILD_SHARED_LIBS)
     install(
         FILES "$<TARGET_PDB_FILE_DIR:kdstatemachineeditor_core>/$<TARGET_PDB_FILE_NAME:kdstatemachineeditor_core>"
         DESTINATION ${BIN_INSTALL_DIR}
@@ -189,7 +189,7 @@ install(
     DESTINATION ${INCLUDE_INSTALL_DIR}/core
 )
 
-if(NOT BUILD_QT6)
+if(NOT KDSME_QT6)
     ecm_generate_pri_file(
         BASE_NAME
         KDSMECore
@@ -205,6 +205,6 @@ if(NOT BUILD_QT6)
     install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 endif()
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()

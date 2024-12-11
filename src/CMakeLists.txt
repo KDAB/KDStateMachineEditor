@@ -34,6 +34,6 @@ if(TARGET Qt${QT_VERSION_MAJOR}::RemoteObjects)
     add_subdirectory(debuginterface)
 endif()
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     add_subdirectory(app)
 endif()

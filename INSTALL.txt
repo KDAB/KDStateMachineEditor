@@ -42,8 +42,8 @@ Building on Windows with mingw:
 % mingw32-make install
 
 == Testing ==
-To build the testing harness, pass -DBUILD_TESTS=true to CMake, like so:
-  % cmake -DBUILD_TESTS=true
+To build the testing harness, pass -DBUILD_TESTING=true to CMake, like so:
+  % cmake -DBUILD_TESTING=true
 
 Then run 'make test' to run the unit tests.
 
@@ -68,7 +68,7 @@ on Windows you might want set "GRAPHVIZ_ROOT=C:\Program Files\Graphviz".
 
 When you run cmake it will inform you about missing dependencies.
 
-Graphviz can be built for you by passing the -DWITH_INTERNAL_GRAPHVIZ=True
+Graphviz can be built for you by passing the -DKDSME_INTERNAL_GRAPHVIZ=True
 option to CMake.  Be advised that Graphviz may have different minimum
 requirements for CMake, compiler, etc. than this software.
 

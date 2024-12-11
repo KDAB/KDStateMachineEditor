@@ -23,6 +23,6 @@
 
 #cmakedefine01 HAVE_GRAPHVIZ
 
-#cmakedefine01 WITH_STATIC_GRAPHVIZ
+#cmakedefine01 KDSME_STATIC_GRAPHVIZ
 
 #endif
