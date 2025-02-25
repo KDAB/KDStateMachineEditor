@@ -30,7 +30,7 @@
 #
 # -DKDSME_QT6=[true|false]
 #  Build against Qt6 rather than Qt5
-#  Default=false (Qt5 will be used even if Qt6 is available)
+#  Default=true
 #
 # -DKDSME_DOCS=[true|false]
 #  Build the documentation. Documentation is never built when cross-compiling.
@@ -97,7 +97,7 @@ renamed_option(BUILD_DOCS KDSME_DOCS)
 renamed_option(BUILD_EXAMPLES KDSME_EXAMPLES)
 renamed_option(BUILD_TESTS BUILD_TESTING)
 
-option(KDSME_QT6 "Build against Qt 6" OFF)
+option(KDSME_QT6 "Build against Qt 6" ON)
 renamed_option(BUILD_QT6 KDSME_QT6)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
