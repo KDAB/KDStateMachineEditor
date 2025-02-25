@@ -90,7 +90,7 @@ Make sure you have cmake, ninja, compiler, Qt, etc in PATH.
     cmake --build . --target install
 ```
 
-Pass `-DKDSME_QT6=ON` for a Qt 6 build.
+Pass `-DKDSME_QT6=OFF` for a Qt 5 build.
 
 ### Start the test app
 
