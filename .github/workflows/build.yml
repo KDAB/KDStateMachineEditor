@@ -20,7 +20,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-2019
+          - windows-latest
           - macos-latest
         build_type:
           - Debug
@@ -36,7 +36,10 @@ jobs:
             qt_modules: qtscxml
             qt_arch: win64_msvc2019_64
             macos_architectures: "x86_64;arm64"
-
+          - qt_version: 6.9.0 # Bump to latest freely
+            qt_modules: qtscxml
+            qt_arch: win64_msvc2022_64
+            macos_architectures: "x86_64;arm64"
     steps:
       - name: Install Dependencies on Linux
         if: ${{ runner.os == 'Linux' }}
