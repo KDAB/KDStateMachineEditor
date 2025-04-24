@@ -28,6 +28,23 @@ if(KDSME_INTERNAL_GRAPHVIZ)
         # Disable all command line tools
         set(GRAPHVIZ_CLI OFF)
 
+        set(ENABLE_TCL
+            OFF
+            CACHE STRING "Build TCL components" FORCE
+        )
+        set(ENABLE_SWIG
+            OFF
+            CACHE STRING "Build language bindings" FORCE
+        )
+        set(ENABLE_GO
+            OFF
+            CACHE STRING "Build Go components" FORCE
+        )
+        set(WITH_EXPAT
+            OFF
+            CACHE STRING "Support HTML-like labels through expat" FORCE
+        )
+
         # cmake-lint: disable=C0301
         if(WIN32)
             # On Windows we need some dependencies available for tests
