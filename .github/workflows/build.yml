@@ -84,6 +84,12 @@ jobs:
         with:
           submodules: recursive
 
+      # Fixes build on windows
+      - name: Remove Strawberry from PATH
+        if: ${{ runner.os == 'Windows' }}
+        run: |
+          Remove-Item "C:/Strawberry" -Recurse -Force
+
       - name: Configure project
         run: >
           cmake -S . -B ./build -G Ninja
