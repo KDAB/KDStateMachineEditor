@@ -79,7 +79,7 @@ QQuickItem *QuickSceneItem::itemForElement(Element *element) const
     return sceneItem;
 }
 
-void QuickSceneItem::sendClickEvent()  // NOLINT(readability-make-member-function-const)
+void QuickSceneItem::sendClickEvent() // NOLINT(readability-make-member-function-const)
 {
     // TODO: Send events to scene instead?
     scene()->setCurrentItem(element());

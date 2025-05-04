@@ -80,7 +80,7 @@ AbstractScene::AbstractScene(QQuickItem *parent)
 {
 }
 
-AbstractScene::~AbstractScene() = default;  // NOLINT(clang-analyzer-cplusplus.NewDelete)
+AbstractScene::~AbstractScene() = default; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 QAbstractItemModel *AbstractScene::model() const
 {

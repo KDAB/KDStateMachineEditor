@@ -272,7 +272,7 @@ bool QmlExporter::Private::writeStateInner(State *state)
 
     const auto stateTransitions = state->transitions();
     return std::all_of(stateTransitions.begin(), stateTransitions.end(),
-                       [this](Transition* child) { return writeTransition(child); });
+                       [this](Transition *child) { return writeTransition(child); });
 }
 
 bool QmlExporter::Private::writeTransition(Transition *transition)

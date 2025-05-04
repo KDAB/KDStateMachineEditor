@@ -99,7 +99,7 @@ void ModifyTransitionCommand::setSourceState(State *sourceState)
 
 void ModifyTransitionCommand::setTargetState(State *targetState)
 {
-    m_targetState = targetState;  // NOLINT(clang-analyzer-cplusplus.NewDelete)
+    m_targetState = targetState; // NOLINT(clang-analyzer-cplusplus.NewDelete)
     m_operation = SetTargetStateOperation;
     updateText();
 }

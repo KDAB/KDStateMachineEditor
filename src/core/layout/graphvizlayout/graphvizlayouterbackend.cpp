@@ -52,7 +52,7 @@ using namespace ObjectHelper;
 namespace {
 
 /// Default Graphviz layouting  tool, see https://www.graphviz.org/
-const char * DEFAULT_LAYOUT_TOOL = "dot";
+const char *DEFAULT_LAYOUT_TOOL = "dot";
 
 /**
  * Default DPI for dot.
@@ -227,7 +227,7 @@ void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
             _agset(newNode, QStringLiteral("label"), state->label());
         }
 
-        const auto attrs =  attributesForState(qobject_cast<State *>(state));
+        const auto attrs = attributesForState(qobject_cast<State *>(state));
         for (const auto &kv : attrs) {
             _agset(newNode, QString::fromLatin1(kv.first), QString::fromLatin1(kv.second));
         }
@@ -607,7 +607,7 @@ void GraphvizLayouterBackend::saveToFile(const QString &filePath, const QString 
 
 void GraphvizLayouterBackend::openLayout(State *state, const LayoutProperties *properties)
 {
-    d->m_root = state;  // NOLINT(clang-analyzer-cplusplus.NewDelete)
+    d->m_root = state; // NOLINT(clang-analyzer-cplusplus.NewDelete)
     d->m_properties = properties;
 
     d->openContext(QStringLiteral("GraphvizLayouterBackend@%1").arg(addressToString(this)));

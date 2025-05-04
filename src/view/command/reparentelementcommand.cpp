@@ -35,7 +35,7 @@ ReparentElementCommand::ReparentElementCommand(StateMachineScene *view, Element 
 
 void ReparentElementCommand::setParentElement(Element *parentElement)
 {
-    m_newParentElement = parentElement;  // NOLINT(clang-analyzer-cplusplus.NewDelete)
+    m_newParentElement = parentElement; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 }
 
 void ReparentElementCommand::redo()

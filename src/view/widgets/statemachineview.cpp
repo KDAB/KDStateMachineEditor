@@ -83,7 +83,7 @@ QString kdsme_qmlErrorString(const QList<QQmlError> &errors)
 
 } // namespace
 
-struct StateMachineView::Private  // NOLINT(clang-analyzer-cplusplus.NewDelete)
+struct StateMachineView::Private // NOLINT(clang-analyzer-cplusplus.NewDelete)
 {
     Private(StateMachineView *q);
 
