@@ -119,16 +119,21 @@ QMimeData *PaletteModel::mimeData(const QModelIndexList &indexes) const
 
     auto *mimeData = new QMimeData;
 
-    mimeData->setUrls({ QUrl(QStringLiteral("%1:Element/%2").arg(QStringLiteral(KDSME_QML_URI_PREFIX)).arg(typeString)) });
+    mimeData->setUrls({ QUrl(QStringLiteral("%1:Element/%2").arg(QStringLiteral(KDSME_QML_URI_PREFIX)).arg(typeString)) }); // clazy:exclude=qstring-arg
 
     // Following setData calls are used in QML DropArea.keys to accept/reject a drag and drop
     // depending on the data given. We are using this to allow for example "TransitionType"
     // elements not to be placed on a UmlStateMachine.qml but only "StateType" elements.
 
-    if (typeString.contains(QRegularExpression(QStringLiteral(".+StateType$"))))
+    static const QRegularExpression stateTypeRE(QStringLiteral(".+StateType$"));
+    if (typeString.contains(stateTypeRE)) {
         mimeData->setData(QStringLiteral("StateType"), "");
-    if (typeString.contains(QRegularExpression(QStringLiteral(".+TransitionType$"))))
+    }
+
+    static const QRegularExpression transitionTypeRE(QStringLiteral(".+TransitionType$"));
+    if (typeString.contains(transitionTypeRE)) {
         mimeData->setData(QStringLiteral("TransitionType"), "");
+    }
 
     mimeData->setData(QStringLiteral("external"), "");
     mimeData->setData(typeString, "");

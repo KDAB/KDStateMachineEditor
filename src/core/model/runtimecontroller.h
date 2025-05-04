@@ -63,8 +63,8 @@ public:
     void clear();
 
 Q_SIGNALS:
-    void activeConfigurationChanged(const QSet<State *> &configuration);
-    void lastTransitionChanged(Transition *transition);
+    void activeConfigurationChanged(const QSet<KDSME::State *> &configuration);
+    void lastTransitionChanged(KDSME::Transition *transition);
     void isRunningChanged(bool isRunning);
     void activeRegionChanged(const QRectF &region);
 

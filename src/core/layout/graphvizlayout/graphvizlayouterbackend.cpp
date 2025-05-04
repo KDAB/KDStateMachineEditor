@@ -579,7 +579,7 @@ void GraphvizLayouterBackend::layout()
         const QString stateName = !state->label().isEmpty() ? state->label() : ObjectHelper::addressToString(state);
         const QDir tmpDir = QDir::temp();
         tmpDir.mkdir(QStringLiteral("kdsme_debug"));
-        const QString baseName = QStringLiteral("%1/%2_%3").arg(tmpDir.filePath(QStringLiteral("kdsme_debug"))).arg(machineName).arg(stateName);
+        const QString baseName = QStringLiteral("%1/%2_%3").arg(tmpDir.filePath(QStringLiteral("kdsme_debug"))).arg(machineName).arg(stateName); // clazy:exclude=qstring-arg
         saveToFile(baseName + u".png");
         saveToFile(baseName + u".dot", QStringLiteral("dot"));
     }

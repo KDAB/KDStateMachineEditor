@@ -34,7 +34,6 @@ class StateMachine;
 class KDSME_CORE_EXPORT Element : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Flags)
     Q_PROPERTY(KDSME::Element *parent READ parentElement WRITE setParentElement NOTIFY parentChanged FINAL)
     Q_PROPERTY(Type type READ type CONSTANT FINAL)
     Q_PROPERTY(Flags flags READ flags WRITE setFlags NOTIFY flagsChanged FINAL)
@@ -65,7 +64,7 @@ public:
         FinalStateType,
         PseudoStateType
     };
-    Q_ENUMS(Type)
+    Q_ENUM(Type)
 
     enum Flag
     {
@@ -74,6 +73,7 @@ public:
         ElementIsSelectable = 0x2,
         ElementIsEditable = 0x4,
     };
+    Q_ENUM(Flag)
     Q_DECLARE_FLAGS(Flags, Flag)
 
     explicit Element(QObject *parent = nullptr);
@@ -128,12 +128,12 @@ public:
 
     virtual QString toDisplayString() const;
 
-    Q_INVOKABLE static const char *typeToString(Type type);
-    Q_INVOKABLE static Type stringToType(const char *type);
+    Q_INVOKABLE static const char *typeToString(KDSME::Element::Type type);
+    Q_INVOKABLE static KDSME::Element::Type stringToType(const char *type);
 
 Q_SIGNALS:
-    void parentChanged(Element *parent);
-    void flagsChanged(Flags flags);
+    void parentChanged(KDSME::Element *parent);
+    void flagsChanged(KDSME::Element::Flags flags);
     void labelChanged(const QString &label);
     void posChanged(const QPointF &pos);
     void heightChanged(qreal height);

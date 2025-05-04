@@ -52,7 +52,7 @@ class KDSME_VIEW_EXPORT AbstractScene : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel *model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(QQuickItem *instantiator READ instantiator WRITE setInstantiator NOTIFY instantiatorChanged)
-    Q_PROPERTY(ViewState viewState READ viewState NOTIFY stateChanged FINAL)
+    Q_PROPERTY(ViewState viewState READ viewState NOTIFY viewStateChanged FINAL)
     Q_PROPERTY(Qt::ContextMenuPolicy ContextMenuPolicy READ contextMenuPolicy WRITE setContextMenuPolicy NOTIFY contextMenuPolicyChanged FINAL)
 
 public:
@@ -68,7 +68,7 @@ public:
         NoState,
         RefreshState,
     };
-    Q_ENUMS(ViewState)
+    Q_ENUM(ViewState)
 
     explicit AbstractScene(QQuickItem *parent = nullptr);
     virtual ~AbstractScene();
@@ -113,11 +113,11 @@ protected Q_SLOTS:
      */
     virtual void layoutChanged();
 
-    void setViewState(ViewState state);
+    void setViewState(KDSME::AbstractScene::ViewState state);
 
 Q_SIGNALS:
     void modelChanged(QAbstractItemModel *model);
-    void stateChanged(ViewState state);
+    void viewStateChanged(KDSME::AbstractScene::ViewState state);
     void instantiatorChanged(QObject *instantiator);
     void contextMenuPolicyChanged(Qt::ContextMenuPolicy contextMenuPolicy);
 

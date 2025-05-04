@@ -223,7 +223,7 @@ QString Element::toDisplayString() const
     if (label().isEmpty()) {
         return str;
     }
-    return QStringLiteral("%1 [Label: %2]").arg(str).arg(label());
+    return QStringLiteral("%1 [Label: %2]").arg(str).arg(label()); // clazy:exclude=qstring-arg
 }
 
 const char *Element::typeToString(Element::Type type)

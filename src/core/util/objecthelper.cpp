@@ -50,7 +50,7 @@ QString ObjectHelper::displayString(const QObject *object, DisplayOption option)
         return QStringLiteral("QObject(0x0)");
     }
     if (object->objectName().isEmpty()) {
-        return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option));
+        return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option)); // clazy:exclude=qstring-arg
     }
     return object->objectName();
 }
@@ -82,7 +82,7 @@ QString ObjectHelper::toString(const QSizeF &size)
 QString ObjectHelper::toString(const QRectF &rect)
 {
     return QStringLiteral("(pos=%1,size=%2)")
-        .arg(toString(rect.topLeft()))
+        .arg(toString(rect.topLeft())) // clazy:exclude=qstring-arg
         .arg(toString(rect.size()));
 }
 

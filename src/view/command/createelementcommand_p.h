@@ -50,8 +50,8 @@ public:
     void undo() override;
 
 Q_SIGNALS:
-    void parentElementChanged(Element *parentElement);
-    void typeChanged(Element::Type type);
+    void parentElementChanged(KDSME::Element *parentElement);
+    void typeChanged(KDSME::Element::Type type);
 
 private:
     void updateText();

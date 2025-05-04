@@ -28,7 +28,6 @@ class TimeoutTransition;
 class KDSME_CORE_EXPORT State : public Element
 {
     Q_OBJECT
-    Q_ENUMS(ChildMode)
     Q_PROPERTY(QString onEntry READ onEntry WRITE setOnEntry NOTIFY onEntryChanged FINAL)
     Q_PROPERTY(QString onExit READ onExit WRITE setOnExit NOTIFY onExitChanged FINAL)
     Q_PROPERTY(ChildMode childMode READ childMode WRITE setChildMode NOTIFY childModeChanged FINAL)
@@ -41,6 +40,7 @@ public:
         ExclusiveStates,
         ParallelStates,
     };
+    Q_ENUM(ChildMode)
 
     explicit State(State *parent = nullptr);
     ~State();
@@ -90,7 +90,7 @@ protected:
 Q_SIGNALS:
     void onEntryChanged(const QString &onEntry);
     void onExitChanged(const QString &onExit);
-    void childModeChanged(ChildMode childMode);
+    void childModeChanged(KDSME::State::ChildMode childMode);
     void isCompositeChanged(bool isComposite);
     void expandedChanged(bool expanded);
 
@@ -102,7 +102,6 @@ private:
 class KDSME_CORE_EXPORT HistoryState : public State
 {
     Q_OBJECT
-    Q_ENUMS(HistoryType)
     Q_PROPERTY(KDSME::State *defaultState READ defaultState WRITE setDefaultState NOTIFY defaultStateChanged FINAL)
     Q_PROPERTY(HistoryType historyType READ historyType WRITE setHistoryType NOTIFY historyTypeChanged FINAL)
 
@@ -112,6 +111,7 @@ public:
         ShallowHistory,
         DeepHistory
     };
+    Q_ENUM(HistoryType)
 
     explicit HistoryState(State *parent = nullptr);
     explicit HistoryState(HistoryType type, State *parent = nullptr);
@@ -127,7 +127,7 @@ public:
     void setHistoryType(HistoryType historyType);
 
 Q_SIGNALS:
-    void defaultStateChanged(State *state);
+    void defaultStateChanged(KDSME::State *state);
     void historyTypeChanged();
 
 private:
@@ -167,7 +167,7 @@ public:
     void setRuntimeController(RuntimeController *runtimeController);
 
 Q_SIGNALS:
-    void runtimeControllerChanged(RuntimeController *runtimeController);
+    void runtimeControllerChanged(KDSME::RuntimeController *runtimeController);
 
 private:
     struct Private;
@@ -184,7 +184,7 @@ public:
     {
         InitialState
     };
-    Q_ENUMS(Kind)
+    Q_ENUM(Kind)
 
     explicit PseudoState(Kind kind = InitialState, State *parent = nullptr);
     ~PseudoState();
@@ -199,7 +199,7 @@ public:
     QString toDisplayString() const override;
 
 Q_SIGNALS:
-    void kindChanged(Kind kind);
+    void kindChanged(KDSME::PseudoState::Kind kind);
 
 private:
     struct Private;

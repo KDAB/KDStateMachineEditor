@@ -182,7 +182,7 @@ bool QmlExporter::Private::writeStateMachine(StateMachine *machine)
 {
     Q_ASSERT(machine);
 
-    const QString importStmt = QStringLiteral("import %1 %2\n").arg(QStringLiteral(KDSME_QML_MODULE)).arg(QStringLiteral(KDSME_QML_MODULE_VERSION));
+    const QString importStmt = QStringLiteral("import %1 %2\n").arg(QStringLiteral(KDSME_QML_MODULE)).arg(QStringLiteral(KDSME_QML_MODULE_VERSION)); // clazy:exclude=qstring-arg
     m_out << indention() << importStmt;
 
     const QStringList customImports = machine->property("com.kdab.KDSME.DSMExporter.customImports").toStringList();
@@ -229,7 +229,7 @@ void QmlExporter::Private::writeAttribute(Element *element, const QString &name,
         }
     }
 
-    m_out << indention() << QStringLiteral("%1: %2\n").arg(name).arg(value);
+    m_out << indention() << QStringLiteral("%1: %2\n").arg(name).arg(value); // clazy:exclude=qstring-arg
 }
 
 bool QmlExporter::Private::writeStateInner(State *state)

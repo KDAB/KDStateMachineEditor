@@ -221,7 +221,7 @@ void AbstractScene::setViewState(AbstractScene::ViewState state)
         return;
 
     d->m_state = state;
-    emit stateChanged(d->m_state);
+    Q_EMIT viewStateChanged(d->m_state);
 }
 
 QModelIndex AbstractScene::currentIndex() const

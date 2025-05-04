@@ -61,11 +61,13 @@ void ElementUtil::setInitialState(State *state, State *initialState)
     if (!initialState)
         return;
 
-    if (pseudoStateName.isEmpty())
-        pseudoStateName = QStringLiteral("initalState_%1_%2").arg(state->label()).arg(initialState->label());
+    if (pseudoStateName.isEmpty()) {
+        pseudoStateName = QStringLiteral("initalState_%1_%2").arg(state->label()).arg(initialState->label()); // clazy:exclude=qstring-arg
+    }
 
-    if (transitionName.isEmpty())
-        transitionName = QStringLiteral("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label());
+    if (transitionName.isEmpty()) {
+        transitionName = QStringLiteral("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label()); // clazy:exclude=qstring-arg
+    }
 
     State *ps = new PseudoState(PseudoState::InitialState, state);
     ps->setLabel(pseudoStateName);

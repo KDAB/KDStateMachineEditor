@@ -297,7 +297,7 @@ QString HistoryState::toDisplayString() const
 {
     const QString thisClassName = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
     const QString defaultClassName = d->m_defaultState ? ObjectHelper::className(d->m_defaultState, ObjectHelper::StripNameSpace) : QStringLiteral("None");
-    return QStringLiteral("%1 [Default: %2]").arg(thisClassName).arg(defaultClassName);
+    return QStringLiteral("%1 [Default: %2]").arg(thisClassName).arg(defaultClassName); // clazy:exclude=qstring-arg
 }
 
 State *HistoryState::defaultState() const
@@ -402,7 +402,7 @@ QString PseudoState::kindString() const
 QString PseudoState::toDisplayString() const
 {
     const QString str = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
-    return QStringLiteral("%1 [Kind: %2]").arg(str).arg(kindString());
+    return QStringLiteral("%1 [Kind: %2]").arg(str).arg(kindString()); // clazy:exclude=qstring-arg
 }
 
 QDebug KDSME::operator<<(QDebug dbg, const State *state)

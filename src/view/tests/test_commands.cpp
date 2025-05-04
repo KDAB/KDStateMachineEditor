@@ -89,17 +89,17 @@ void CommandsTest::testAddTransition()
     QCOMPARE(harness.machine.childStates().size(), 1);
 
     // add transition to state
-    State *state = harness.machine.childStates()[0];
+    State *state = harness.machine.childStates().at(0);
     cmd = new CreateElementCommand(&harness.model, Element::SignalTransitionType);
     cmd->setParentElement(state);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
-    QCOMPARE(harness.machine.childStates()[0]->transitions().size(), 1);
+    QCOMPARE(harness.machine.childStates().at(0)->transitions().size(), 1);
 
     // remove transition
     harness.undoStack.undo();
     QCOMPARE(harness.machine.childStates().size(), 1); // state is still there
-    QCOMPARE(harness.machine.childStates()[0]->transitions().size(), 0); // transition is gone
+    QCOMPARE(harness.machine.childStates().at(0)->transitions().size(), 0); // transition is gone
 }
 
 void CommandsTest::testLayoutSnapshot()

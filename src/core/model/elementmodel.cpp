@@ -69,6 +69,7 @@ State *StateModel::state() const
 void StateModel::setState(State *state)
 {
     setRootObject(state);
+    Q_EMIT stateChanged();
 }
 
 QVariant StateModel::data(const QModelIndex &index, int role) const
@@ -255,6 +256,8 @@ void TransitionListModel::setState(State *state)
     d->m_transitions = (state ? state->findChildren<Transition *>() : QList<Transition *>());
     // TODO: Track updates to object (newly created/removed transitions)?
     endResetModel();
+
+    Q_EMIT stateChanged();
 }
 
 #include "moc_elementmodel.cpp"

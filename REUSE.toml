@@ -16,7 +16,7 @@ SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <i
 SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"
 
 [[annotations]]
-path = [".pre-commit-config.yaml", ".codespellrc", ".krazy", ".clang-tidy", ".gitignore", ".gitmodules", "appveyor.yml", "distro/**", ".clang-format", ".cmake-format.py", ".mdlrc", ".mdlrc.rb", "REUSE.toml"]
+path = [".pre-commit-config.yaml", ".codespellrc", ".krazy", ".clang-tidy", "3rdparty/.clang-tidy", ".gitignore", ".gitmodules", "appveyor.yml", "distro/**", ".clang-format", ".cmake-format.py", ".mdlrc", ".mdlrc.rb", "REUSE.toml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
 SPDX-License-Identifier = "BSD-3-Clause"
