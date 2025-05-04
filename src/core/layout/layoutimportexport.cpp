@@ -49,7 +49,7 @@ QJsonObject transitionLayoutToJson(const Transition *transition)
     res[u"label"] = transition->label();
     res[u"x"] = transition->pos().x();
     res[u"y"] = transition->pos().y();
-    QRectF labelRect = transition->labelBoundingRect();
+    const QRectF labelRect = transition->labelBoundingRect();
     QJsonObject lbr;
     lbr[u"x"] = labelRect.x();
     lbr[u"y"] = labelRect.y();
@@ -65,19 +65,19 @@ QJsonObject transitionLayoutToJson(const Transition *transition)
 
 void importStateLayout(const QJsonObject &data, State *state)
 {
-    QJsonObject::const_iterator x = data.find(u"x");
+    const auto x = data.find(u"x");
     if (x == data.end())
         return;
 
-    QJsonObject::const_iterator y = data.find(u"y");
+    const auto y = data.find(u"y");
     if (y == data.end())
         return;
 
-    QJsonObject::const_iterator width = data.find(u"width");
+    const auto width = data.find(u"width");
     if (width == data.end())
         return;
 
-    QJsonObject::const_iterator height = data.find(u"height");
+    const auto height = data.find(u"height");
     if (height == data.end())
         return;
 
@@ -98,19 +98,19 @@ bool isValidTransition(const QJsonObject &data, Transition *state)
 
 void importTransitionLayout(const QJsonObject &data, Transition *transition)
 {
-    QJsonObject::const_iterator x = data.find(u"x");
+    const auto x = data.find(u"x");
     if (x == data.end())
         return;
 
-    QJsonObject::const_iterator y = data.find(u"y");
+    const auto y = data.find(u"y");
     if (y == data.end())
         return;
 
-    QJsonObject::const_iterator lbrIt = data.find(u"labelBoundingRect");
+    const auto lbrIt = data.find(u"labelBoundingRect");
     if (lbrIt == data.end())
         return;
 
-    QJsonObject::const_iterator shape = data.find(u"shape");
+    const auto shape = data.find(u"shape");
     if (shape == data.end())
         return;
 

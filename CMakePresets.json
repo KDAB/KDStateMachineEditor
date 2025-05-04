@@ -4,6 +4,7 @@
         {
             "name": "base",
             "hidden": true,
+            "binaryDir":"${sourceDir}/build/${presetName}",
             "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
@@ -15,10 +16,23 @@
             "description": "dev-base",
             "hidden": true,
             "inherits": "base",
-            "binaryDir": "${sourceDir}/build-dev",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "BUILD_TESTING": "ON"
+            }
+        },
+        {
+            "name":"ci-base",
+            "inherits": "dev-base",
+            "hidden":true,
+            "cacheVariables":{
+                "CMAKE_COMPILE_WARNING_AS_ERROR":"ON"
+            },
+            "warnings":{
+                "uninitialized":true
+            },
+            "errors":{
+                "dev":false
             }
         },
         {
@@ -111,6 +125,38 @@
                 "KDSME_QT6": "ON",
                 "KDSME_INTERNAL_GRAPHVIZ": "ON"
             }
+        },
+        {
+            "name":"clazy",
+            "inherits":"ci-base",
+            "environment":{
+                "CXX":"clazy",
+                "CCACHE_DISABLE":"ON"
+            },
+            "cacheVariables":{
+                "CMAKE_CXX_COMPILER":"clazy"
+            }
+        },
+        {
+            "name":"clang-tidy",
+            "inherits":"ci-base",
+            "cacheVariables":{
+                "CMAKE_CXX_CLANG_TIDY":"clang-tidy"
+            }
+        }
+    ],
+    "buildPresets":[
+        {
+            "name":"clazy",
+            "configurePreset":"clazy",
+            "environment":{
+                "CLAZY_CHECKS":"level2,no-qstring-allocations,no-fully-qualified-moc-types,no-copyable-polymorphic",
+                "CCACHE_DISABLE":"ON"
+            }
+        },
+        {
+            "name":"clang-tidy",
+            "configurePreset":"clang-tidy"
         }
     ]
 }

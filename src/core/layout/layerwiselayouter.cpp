@@ -78,8 +78,8 @@ void RegionLayouter::layoutRegion(State *state, const QRectF &boundingRectHint, 
     const qreal innerMargin = properties->regionMargins();
 
     const QPointF offset = QPointF(innerMargin, innerMargin + regionLabelHeight);
-    state->setWidth(boundingRect.width() + 2 * innerMargin);
-    state->setHeight(boundingRect.height() + 2 * innerMargin + regionLabelHeight);
+    state->setWidth(boundingRect.width() + (2 * innerMargin));
+    state->setHeight(boundingRect.height() + (2 * innerMargin) + regionLabelHeight);
     LayoutUtils::moveInner(state, offset);
 }
 
@@ -109,7 +109,7 @@ QRectF LayerwiseLayouter::layout(State *state, const LayoutProperties *propertie
 
 ElementWalker::VisitResult LayerwiseLayouter::layoutState(Element *element)
 {
-    State *state = qobject_cast<State *>(element);
+    auto *state = qobject_cast<State *>(element);
     if (!state || state->childStates().isEmpty()) {
         return ElementWalker::RecursiveWalk;
     }

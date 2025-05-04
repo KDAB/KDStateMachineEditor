@@ -52,9 +52,9 @@ public:
     bool writeStateInner(State *state);
     bool writeTransition(Transition *transition);
 
-    double headerHeight() const;
-    double margin() const;
-    double arrowSize() const;
+    [[nodiscard]] static double headerHeight();
+    [[nodiscard]] static double margin();
+    [[nodiscard]] static double arrowSize();
 
     SvgExporter *q;
     QXmlStreamWriter writer;
@@ -235,7 +235,7 @@ bool SvgExporterPrivate::writeStateInner(State *state)
             }
         }
     } else {
-        QPointF p(state->boundingRect().width() / 2.0, state->boundingRect().height() / 2.0 + headerHeight() / 2.0);
+        const QPointF p(state->boundingRect().width() / 2.0, state->boundingRect().height() / 2.0 + headerHeight() / 2.0);
         writeSvgText(QStringLiteral("..."), p, true);
     }
 
@@ -264,19 +264,19 @@ bool SvgExporterPrivate::writeTransition(Transition *transition)
 }
 
 
-double SvgExporterPrivate::headerHeight() const
+double SvgExporterPrivate::headerHeight()
 {
-    QFontMetricsF metrics(QGuiApplication::font());
+    const QFontMetricsF metrics(QGuiApplication::font());
     return metrics.height() * 2.0;
 }
 
-double SvgExporterPrivate::margin() const
+double SvgExporterPrivate::margin()
 {
-    QFontMetricsF metrics(QGuiApplication::font());
+    const QFontMetricsF metrics(QGuiApplication::font());
     return metrics.horizontalAdvance(u'x');
 }
 
-double SvgExporterPrivate::arrowSize() const
+double SvgExporterPrivate::arrowSize()
 {
     return margin();
 }

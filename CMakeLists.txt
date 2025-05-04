@@ -274,7 +274,7 @@ else()
     )
 endif()
 
-add_subdirectory(3rdparty)
+add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 
 #
 # Compiler & linker settings
@@ -302,7 +302,7 @@ endmacro()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+if((CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND NOT DEFINED CMAKE_CXX_CLANG_TIDY)
     add_flag_if_supported(-Wunused-but-set-variable UNUSED_BUT_SET)
     add_flag_if_supported(-Wlogical-op LOGICAL_OP)
     add_flag_if_supported(-Wsizeof-pointer-memaccess POINTER_MEMACCESS)

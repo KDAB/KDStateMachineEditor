@@ -32,7 +32,7 @@ using namespace KDSME;
  */
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    const QApplication app(argc, argv);
 
     const QString fileName = QStringLiteral(TEST_DATA_DIR "/scxml/microwave.scxml");
     QFile file(fileName);
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
     Q_ASSERT(file.open(QIODevice::ReadOnly));
     ScxmlImporter parser(file.readAll());
-    QScopedPointer<StateMachine> machine(parser.import());
+    const QScopedPointer<StateMachine> machine(parser.import());
     Q_ASSERT(machine);
 
     StateMachineView view;
@@ -52,5 +52,5 @@ int main(int argc, char **argv)
     view.resize(800, 600);
     view.show();
 
-    app.exec();
+    QApplication::exec();
 }

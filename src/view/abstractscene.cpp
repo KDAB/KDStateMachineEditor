@@ -80,9 +80,7 @@ AbstractScene::AbstractScene(QQuickItem *parent)
 {
 }
 
-AbstractScene::~AbstractScene()
-{
-}
+AbstractScene::~AbstractScene() = default;  // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 QAbstractItemModel *AbstractScene::model() const
 {
@@ -122,7 +120,7 @@ void AbstractScene::setModel(QAbstractItemModel *model)
                 this, &AbstractScene::layoutChanged);
     }
 
-    QItemSelectionModel *selectionModel = new QItemSelectionModel(d->m_model, this);
+    auto *selectionModel = new QItemSelectionModel(d->m_model, this);
     connect(d->m_model, SIGNAL(destroyed()), selectionModel, SLOT(deleteLater()));
     setSelectionModel(selectionModel);
 
@@ -203,7 +201,7 @@ void AbstractScene::setContextMenuPolicy(Qt::ContextMenuPolicy contextMenuPolicy
     }
 
     d->m_contextMenuPolicy = contextMenuPolicy;
-    return contextMenuPolicyChanged(d->m_contextMenuPolicy);
+    Q_EMIT contextMenuPolicyChanged(d->m_contextMenuPolicy);
 }
 
 QObject *AbstractScene::itemForIndex(const QModelIndex &index) const

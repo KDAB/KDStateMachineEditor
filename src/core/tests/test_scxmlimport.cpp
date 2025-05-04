@@ -88,7 +88,7 @@ void ScxmlImportTest::testEmptyInput()
     const QByteArray data = "";
 
     ScxmlImporter parser(data);
-    QScopedPointer<StateMachine> stateMachine(parser.import());
+    const QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     // const QString errorString = parser.errorString();
     QVERIFY(!parser.errorString().isEmpty());
@@ -99,7 +99,7 @@ void ScxmlImportTest::testInvalidInput()
     const QByteArray data = "some garbage";
 
     ScxmlImporter parser(data);
-    QScopedPointer<StateMachine> stateMachine(parser.import());
+    const QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     QVERIFY(!parser.errorString().isEmpty());
 }
@@ -110,12 +110,12 @@ void ScxmlImportTest::testInvalidTargetState()
         "<state id=\"s\"><transition target=\"foo\"/></state>");
 
     ScxmlImporter parser(data);
-    QScopedPointer<StateMachine> stateMachine(parser.import());
+    const QScopedPointer<StateMachine> stateMachine(parser.import());
     QVERIFY(!stateMachine);
     QVERIFY(!parser.errorString().isEmpty());
 }
 
-void ScxmlImportTest::testParseState()
+void ScxmlImportTest::testParseState() // NOLINT(readability-function-cognitive-complexity
 {
     const QByteArray data = wrapScxml(
         "<state id=\"s\" initial=\"s1\">"
@@ -124,28 +124,28 @@ void ScxmlImportTest::testParseState()
         "</state>");
 
     ScxmlImporter parser(data);
-    QScopedPointer<StateMachine> machine(parser.import());
+    const QScopedPointer<StateMachine> machine(parser.import());
     QVERIFY(machine);
 
     // check contents of <scxml>
-    State *scxmlInitial = machine->childStates()[0];
+    State *scxmlInitial = machine->childStates().at(0);
     QVERIFY(scxmlInitial);
     QCOMPARE(scxmlInitial->type(), Element::PseudoStateType);
-    State *s = machine->childStates()[1];
+    State *s = machine->childStates().at(1);
     QVERIFY(s);
     QCOMPARE(s->label(), QLatin1String("s"));
     QCOMPARE(s->transitions().size(), 1);
 
     // check contents out outer <state>
-    State *sInitial = s->childStates()[0];
+    State *sInitial = s->childStates().at(0);
     QVERIFY(sInitial);
     QCOMPARE(sInitial->type(), Element::PseudoStateType);
-    State *s1 = s->childStates()[1];
+    State *s1 = s->childStates().at(1);
     QVERIFY(s1);
     QCOMPARE(s1->label(), QLatin1String("s1"));
 }
 
-void ScxmlImportTest::testParseTransition()
+void ScxmlImportTest::testParseTransition() // NOLINT(readability-function-cognitive-complexity
 {
     const QByteArray data = wrapScxml(
         "<state id=\"s\">"
@@ -154,17 +154,17 @@ void ScxmlImportTest::testParseTransition()
         "<final id=\"fin\"/>");
 
     ScxmlImporter parser(data);
-    QScopedPointer<StateMachine> machine(parser.import());
+    const QScopedPointer<StateMachine> machine(parser.import());
     QVERIFY(machine);
 
     QCOMPARE(machine->transitions().size(), 0);
-    State *s = machine->childStates()[1];
+    State *s = machine->childStates().at(1);
     QCOMPARE(s->label(), QLatin1String("s"));
-    State *fin = machine->childStates()[2];
+    State *fin = machine->childStates().at(2);
     QCOMPARE(fin->label(), QLatin1String("fin"));
 
     QVERIFY(s);
-    Transition *t1 = s->transitions()[0];
+    Transition *t1 = s->transitions().at(0);
     QCOMPARE(t1->label(), QLatin1String("e1"));
     QCOMPARE(t1->parent(), s);
     QCOMPARE(t1->sourceState(), s);
@@ -183,18 +183,18 @@ void ScxmlImportTest::testBasicState()
     QCOMPARE(root->childStates().size(), 4);
 
     State *s = nullptr;
-    s = root->childStates()[0];
+    s = root->childStates().at(0);
     auto pseudoState = qobject_cast<PseudoState *>(s);
     QCOMPARE(pseudoState->kind(), PseudoState::InitialState);
-    s = root->childStates()[1];
+    s = root->childStates().at(1);
     QCOMPARE(s->label(), QLatin1String("S1"));
-    s = root->childStates()[2];
+    s = root->childStates().at(2);
     QCOMPARE(s->label(), QLatin1String("S2"));
-    s = root->childStates()[3];
+    s = root->childStates().at(3);
     QCOMPARE(s->label(), QLatin1String("Final"));
 }
 
-void ScxmlImportTest::testParallelState()
+void ScxmlImportTest::testParallelState() // NOLINT(readability-function-cognitive-complexity
 {
     /*
         State chart:
@@ -211,36 +211,36 @@ void ScxmlImportTest::testParallelState()
 
     // check <parallel> element
     State *s = nullptr;
-    State *p1 = root->childStates()[1];
+    State *p1 = root->childStates().at(1);
     QCOMPARE(p1->label(), QLatin1String("P1"));
     QCOMPARE(p1->childStates().size(), 2);
 
     // check first region
-    State *s1 = p1->childStates()[0];
+    State *s1 = p1->childStates().at(0);
     QCOMPARE(s1->childStates().size(), 3);
-    s = s1->childStates()[0];
+    s = s1->childStates().at(0);
     auto pseudoState = qobject_cast<PseudoState *>(s);
     QVERIFY(pseudoState);
     QCOMPARE(pseudoState->kind(), PseudoState::InitialState);
-    s = s1->childStates()[1];
+    s = s1->childStates().at(1);
     QCOMPARE(s->label(), QLatin1String("S11"));
-    s = s1->childStates()[2];
+    s = s1->childStates().at(2);
     QCOMPARE(s->label(), QLatin1String("S1Final"));
 
     // check second region
-    State *s2 = p1->childStates()[1];
+    State *s2 = p1->childStates().at(1);
     QCOMPARE(s2->childStates().size(), 3);
-    s = s1->childStates()[0];
+    s = s1->childStates().at(0);
     pseudoState = qobject_cast<PseudoState *>(s);
     QVERIFY(pseudoState);
     QCOMPARE(pseudoState->kind(), PseudoState::InitialState);
-    s = s2->childStates()[1];
+    s = s2->childStates().at(1);
     QCOMPARE(s->label(), QLatin1String("S21"));
-    s = s2->childStates()[2];
+    s = s2->childStates().at(2);
     QCOMPARE(s->label(), QLatin1String("S2Final"));
 }
 
-void ScxmlImportTest::testExampleCalculator()
+void ScxmlImportTest::testExampleCalculator() // NOLINT(readability-function-cognitive-complexity
 {
     /*
         State chart (transitions omitted):
@@ -267,12 +267,12 @@ void ScxmlImportTest::testExampleCalculator()
     QCOMPARE(root->label(), QLatin1String("Calculator"));
     QCOMPARE(root->childStates().size(), 2);
 
-    State *wrapper = root->childStates()[1];
+    State *wrapper = root->childStates().at(1);
     QVERIFY(wrapper);
     QCOMPARE(wrapper->label(), QLatin1String("wrapper"));
     QCOMPARE(wrapper->childStates().size(), 2);
 
-    State *on = wrapper->childStates()[1];
+    State *on = wrapper->childStates().at(1);
     QVERIFY(on);
     QCOMPARE(on->label(), QLatin1String("on"));
     QCOMPARE(on->childStates().size(), 7);
@@ -280,7 +280,7 @@ void ScxmlImportTest::testExampleCalculator()
     //  Further tests omitted
 }
 
-void ScxmlImportTest::testExampleMicrowave()
+void ScxmlImportTest::testExampleMicrowave() // NOLINT(readability-function-cognitive-complexity
 {
     /*
         State chart (transitions omitted):
@@ -298,21 +298,21 @@ void ScxmlImportTest::testExampleMicrowave()
     QCOMPARE(root->label(), QLatin1String(""));
     QCOMPARE(root->childStates().size(), 3);
 
-    State *off = root->childStates()[1];
+    State *off = root->childStates().at(1);
     QVERIFY(off);
     QCOMPARE(off->label(), QLatin1String("off"));
     QCOMPARE(off->childStates().size(), 0);
 
-    State *on = root->childStates()[2];
+    State *on = root->childStates().at(2);
     QVERIFY(on);
     QCOMPARE(on->label(), QLatin1String("on"));
     QCOMPARE(on->childStates().size(), 3);
 
-    QCOMPARE(on->childStates()[1]->label(), QLatin1String("idle"));
-    QCOMPARE(on->childStates()[2]->label(), QLatin1String("cooking"));
+    QCOMPARE(on->childStates().at(1)->label(), QLatin1String("idle"));
+    QCOMPARE(on->childStates().at(2)->label(), QLatin1String("cooking"));
 }
 
-void ScxmlImportTest::testExampleTrafficLight()
+void ScxmlImportTest::testExampleTrafficLight() // NOLINT(readability-function-cognitive-complexity)
 {
     /*
         State chart:
@@ -325,19 +325,19 @@ void ScxmlImportTest::testExampleTrafficLight()
     QCOMPARE(root->childStates().size(), 5);
 
     // check first state
-    State *s1 = root->childStates()[1];
+    State *s1 = root->childStates().at(1);
     QCOMPARE(s1->label(), QLatin1String("redGoingYellow"));
-    State *s2 = root->childStates()[2];
+    State *s2 = root->childStates().at(2);
     QCOMPARE(s2->label(), QLatin1String("yellowGoingGreen"));
     QCOMPARE(s1->transitions().size(), 1);
-    QCOMPARE(s1->transitions()[0]->sourceState(), s1);
-    QCOMPARE(s1->transitions()[0]->targetState(), s2);
+    QCOMPARE(s1->transitions().at(0)->sourceState(), s1);
+    QCOMPARE(s1->transitions().at(0)->targetState(), s2);
 
     // check last state
-    State *s4 = root->childStates()[4];
+    State *s4 = root->childStates().at(4);
     QCOMPARE(s4->label(), QLatin1String("yellowGoingRed"));
     QCOMPARE(s4->transitions().size(), 1);
-    QCOMPARE(s4->transitions()[0]->sourceState(), s4);
+    QCOMPARE(s4->transitions().at(0)->sourceState(), s4);
 }
 
 void ScxmlImportTest::testExampleTrafficReport()
@@ -356,10 +356,10 @@ void ScxmlImportTest::testExampleTrafficReport()
     QCOMPARE(root->childStates().size(), 8);
 
     State *s = nullptr;
-    s = root->childStates()[1];
+    s = root->childStates().at(1);
     QCOMPARE(s->label(), QLatin1String("Intro"));
     QCOMPARE(s->transitions().size(), 3);
-    s = root->childStates()[2];
+    s = root->childStates().at(2);
     QCOMPARE(s->label(), QLatin1String("PlayAds"));
     QCOMPARE(s->transitions().size(), 2);
 

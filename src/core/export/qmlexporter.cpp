@@ -53,7 +53,7 @@ private:
 /// Maps the type of @p element to the QML Component ID
 QString elementToComponent(Element *element)
 {
-    const QString customType = element->property("com.kdab.KDSME.DSMExporter.customType").toString();
+    QString customType = element->property("com.kdab.KDSME.DSMExporter.customType").toString();
     if (!customType.isEmpty())
         return customType;
 
@@ -112,7 +112,7 @@ struct QmlExporter::Private
     bool writeTransition(Transition *transition);
     void writeAttribute(Element *element, const QString &name, const QString &value);
 
-    QString indention() const;
+    [[nodiscard]] QString indention() const;
 
     QTextStream m_out;
     int m_indent, m_level;
@@ -173,7 +173,7 @@ bool QmlExporter::exportMachine(StateMachine *machine)
         return false;
     }
 
-    bool success = d->writeStateMachine(machine);
+    const bool success = d->writeStateMachine(machine);
     d->m_out.flush();
     return success;
 }
@@ -221,9 +221,9 @@ void QmlExporter::Private::writeAttribute(Element *element, const QString &name,
     if (value.isEmpty())
         return;
 
-    QVariant implBindingNames = element->property("com.kdab.KDSME.DSMExporter.implBindingNames");
+    const QVariant implBindingNames = element->property("com.kdab.KDSME.DSMExporter.implBindingNames");
     if (!implBindingNames.isNull()) {
-        QString v = implBindingNames.toMap().value(name).toString();
+        const QString v = implBindingNames.toMap().value(name).toString();
         if (value == v) {
             return;
         }
@@ -236,12 +236,12 @@ bool QmlExporter::Private::writeStateInner(State *state)
 {
     Q_ASSERT(state);
 
-    LevelIncrementer levelinc(&m_level);
+    const LevelIncrementer levelinc(&m_level);
     Q_UNUSED(levelinc);
 
     writeAttribute(state, QStringLiteral("id"), toQmlId(state->label()));
 
-    if (StateMachine *stateMachine = qobject_cast<StateMachine *>(state)) {
+    if (auto *stateMachine = qobject_cast<StateMachine *>(state)) {
         const QString running = stateMachine->property("com.kdab.KDSME.DSMExporter.running").toString();
         writeAttribute(state, QStringLiteral("running"), running);
     }
@@ -254,7 +254,7 @@ bool QmlExporter::Private::writeStateInner(State *state)
         writeAttribute(state, QStringLiteral("initialState"), toQmlId(initial->label()));
     }
 
-    if (HistoryState *historyState = qobject_cast<HistoryState *>(state)) {
+    if (auto *historyState = qobject_cast<HistoryState *>(state)) {
         if (State *defaultState = historyState->defaultState())
             writeAttribute(state, QStringLiteral("defaultState"), toQmlId(defaultState->label()));
         if (historyState->historyType() == HistoryState::DeepHistory)
@@ -271,12 +271,8 @@ bool QmlExporter::Private::writeStateInner(State *state)
     }
 
     const auto stateTransitions = state->transitions();
-    for (Transition *transition : stateTransitions) {
-        if (!writeTransition(transition))
-            return false;
-    }
-
-    return true;
+    return std::all_of(stateTransitions.begin(), stateTransitions.end(),
+                       [this](Transition* child) { return writeTransition(child); });
 }
 
 bool QmlExporter::Private::writeTransition(Transition *transition)
@@ -284,7 +280,7 @@ bool QmlExporter::Private::writeTransition(Transition *transition)
     Q_ASSERT(transition);
     m_out << indention() << QStringLiteral("%1 {\n").arg(elementToComponent(transition));
     {
-        LevelIncrementer levelinc(&m_level);
+        const LevelIncrementer levelinc(&m_level);
         Q_UNUSED(levelinc);
 
         writeAttribute(transition, QStringLiteral("id"), toQmlId(transition->label()));

@@ -30,10 +30,11 @@
 using namespace KDSME;
 
 namespace {
-static QString stripQml(const QByteArray &input)
+QString stripQml(const QByteArray &input)
 {
     QStringList result;
-    Q_FOREACH (const QString &s, QString::fromUtf8(input).split(u'\n', Qt::SkipEmptyParts)) {
+    const auto parts = QString::fromUtf8(input).split(u'\n', Qt::SkipEmptyParts);
+    for (const QString &s : parts) {
         result.append(s.simplified().trimmed());
     }
     return result.join(u'\n');
@@ -55,7 +56,7 @@ void QmlExportTest::testEmptyInput()
 {
     QByteArray output;
     QmlExporter exporter(&output);
-    bool success = exporter.exportMachine(nullptr);
+    const bool success = exporter.exportMachine(nullptr);
     QVERIFY(!success);
     QVERIFY(output.isEmpty());
 }
@@ -78,7 +79,7 @@ void QmlExportTest::testInvalidIds()
 
     QByteArray output;
     QmlExporter exporter(&output);
-    bool success = exporter.exportMachine(&root);
+    const bool success = exporter.exportMachine(&root);
     QVERIFY(success);
 }
 
@@ -120,7 +121,7 @@ void QmlExportTest::testSimpleStateMachine()
 
     QByteArray output;
     QmlExporter exporter(&output);
-    bool success = exporter.exportMachine(&root);
+    const bool success = exporter.exportMachine(&root);
     QVERIFY(success);
     QVERIFY(!output.isEmpty());
 

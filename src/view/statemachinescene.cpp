@@ -62,7 +62,7 @@ StateMachineScene::StateMachineScene(QQuickItem *parent)
     : AbstractScene(parent)
     , d(new Private(this))
 {
-    setModel(new StateModel(this));
+    setModel(new StateModel(this)); // NOLINT(clang-analyzer-optin.cplusplus.VirtualCall)
 }
 
 StateMachineScene::~StateMachineScene()
@@ -140,7 +140,7 @@ void StateMachineScene::setCurrentItem(Element *item)
 
 Element *StateMachineScene::currentState() const
 {
-    Element *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element *>();
+    auto *element = selectionModel()->currentIndex().data(StateModel::ElementRole).value<Element *>();
     if (!element || element->type() == Element::ElementType)
         return nullptr;
 
@@ -183,9 +183,7 @@ void StateMachineScene::setLayouter(Layouter *layouter)
     if (d->m_layouter == layouter)
         return;
 
-    if (d->m_layouter) {
-        delete d->m_layouter;
-    }
+    delete d->m_layouter;
 
     d->m_layouter = layouter;
 
@@ -239,7 +237,7 @@ void StateMachineScene::setMaximumDepth(int maximumDepth)
     setViewState(oldViewState);
 }
 
-void StateMachineScene::Private::zoomByInternal(qreal scale)
+void StateMachineScene::Private::zoomByInternal(qreal scale) const
 {
     auto root = q->rootState();
 
@@ -294,7 +292,7 @@ StateModel *StateMachineScene::stateModel() const
 
 void StateMachineScene::setModel(QAbstractItemModel *model)
 {
-    StateModel *stateModel = qobject_cast<StateModel *>(model);
+    auto *stateModel = qobject_cast<StateModel *>(model);
     if (!stateModel) {
         qCWarning(KDSME_VIEW) << "Invalid model class type, expected StateModel instance";
         return;
@@ -303,7 +301,7 @@ void StateMachineScene::setModel(QAbstractItemModel *model)
     KDSME::AbstractScene::setModel(stateModel);
 }
 
-void StateMachineScene::Private::updateItemVisibilities()
+void StateMachineScene::Private::updateItemVisibilities() const
 {
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkItems(m_rootState, [&](Element *element) -> ElementWalker::VisitResult {
@@ -324,7 +322,7 @@ void StateMachineScene::Private::updateChildItemVisibility(State *state, bool ex
 
     ElementWalker walker(ElementWalker::PreOrderTraversal);
     walker.walkChildren(state, [&](Element *i) -> ElementWalker::VisitResult {
-        if (Transition *transition = qobject_cast<Transition *>(i)) {
+        if (auto *transition = qobject_cast<Transition *>(i)) {
             // Avoid hiding transitions from states that are collapsed but still visible
             // which have a sibling state as their target
             auto sourceState = transition->sourceState();
@@ -345,8 +343,8 @@ void StateMachineScene::currentChanged(const QModelIndex &current, const QModelI
 {
     AbstractScene::currentChanged(current, previous);
 
-    Element *currentItem = current.data(StateModel::ElementRole).value<Element *>();
-    Element *previousItem = previous.data(StateModel::ElementRole).value<Element *>();
+    auto *currentItem = current.data(StateModel::ElementRole).value<Element *>();
+    auto *previousItem = previous.data(StateModel::ElementRole).value<Element *>();
     if (!currentItem && !previousItem) {
         // something went wrong
         return;

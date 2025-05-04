@@ -87,7 +87,7 @@ bool EditController::sendDragEnterEvent(Element *sender, Element *target, const 
     }
 
     // we only accept one item only for now
-    const QUrl url = urls.first();
+    const QUrl &url = urls.first();
     if (url.scheme() != QStringLiteral(KDSME_QML_URI_PREFIX)) {
         qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
@@ -109,7 +109,7 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
     }
 
     // we only accept one item only for now
-    const QUrl url = urls.first();
+    const QUrl &url = urls.first();
     if (url.scheme() != QStringLiteral(KDSME_QML_URI_PREFIX)) {
         qCDebug(KDSME_VIEW) << "Unexpected Url Schema=" << url.scheme();
         return false;
@@ -120,7 +120,7 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
     if (typeString.isEmpty())
         return false;
 
-    Element::Type type = Element::stringToType(qPrintable(typeString));
+    const Element::Type type = Element::stringToType(qPrintable(typeString));
 
     // TODO should we probably either move that command to kdstatemachine/commands
     // for reuse or even extend the existing CreateElementCommand to set optionally
@@ -154,7 +154,7 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
             // move the new element to its position and set a sane initial size
             ModifyElementCommand poscmd(element);
             QPointF pos = m_pos;
-            QSizeF size = element->preferredSize();
+            const QSizeF size = element->preferredSize();
             if (size.width() > 0)
                 pos.setX(qMax<qreal>(0, pos.x() - size.width() / 2));
             if (size.height() > 0)
@@ -179,7 +179,7 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
 
     // TODO: Try to decouple more
     auto view = stateMachineView()->scene();
-    CreateAndPositionCommand *cmd = new CreateAndPositionCommand(view, type, target, QPointF(pos));
+    auto *cmd = new CreateAndPositionCommand(view, type, target, QPointF(pos));
     stateMachineView()->sendCommand(cmd);
 
     return true;

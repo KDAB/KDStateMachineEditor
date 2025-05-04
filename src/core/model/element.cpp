@@ -219,7 +219,7 @@ QList<Element *> Element::childElements() const
 
 QString Element::toDisplayString() const
 {
-    const QString str = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
+    QString str = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
     if (label().isEmpty()) {
         return str;
     }

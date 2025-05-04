@@ -84,7 +84,7 @@ void CommandsTest::testAddTransition()
     QCOMPARE(harness.machine.childStates().size(), 0);
 
     // add state
-    CreateElementCommand *cmd = new CreateElementCommand(&harness.model, Element::StateType);
+    auto *cmd = new CreateElementCommand(&harness.model, Element::StateType);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
 
@@ -148,7 +148,7 @@ void CommandsTest::testLayoutSnapshot()
     QCOMPARE(transition.shape(), QPainterPath(QPointF(300, 300)));
 }
 
-void CommandsTest::testModifyProperty()
+void CommandsTest::testModifyProperty() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
     QAction action(QStringLiteral("foo"), nullptr);
@@ -179,7 +179,7 @@ void CommandsTest::testModifyProperty()
     QCOMPARE(action.autoRepeat(), true);
 }
 
-void CommandsTest::testModifyTransition()
+void CommandsTest::testModifyTransition() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
 
@@ -239,12 +239,12 @@ void CommandsTest::testModifyElement_moveBy()
     QCOMPARE(item.pos(), QPointF(0, 0));
 }
 
-void CommandsTest::testModifyElement_setGeometry()
+void CommandsTest::testModifyElement_setGeometry() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
     Element item;
 
-    QRectF newGeometry(5, 5, 10, 10);
+    const QRectF newGeometry(5, 5, 10, 10);
 
     QCOMPARE(item.pos(), QPointF(0, 0));
     QCOMPARE(item.width(), 0.);

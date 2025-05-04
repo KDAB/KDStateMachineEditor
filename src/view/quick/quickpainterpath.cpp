@@ -105,17 +105,17 @@ qreal QuickPainterPath::angleAtPercent(qreal t) const
 
 void QuickPainterPath::updateState(const QPainterPath &path)
 {
-    QPointF newStartPoint = path.pointAtPercent(0.0);
+    const QPointF newStartPoint = path.pointAtPercent(0.0);
     if (newStartPoint != m_startPoint) {
         m_startPoint = newStartPoint;
         emit startPointChanged(m_startPoint);
     }
-    QPointF newEndPoint = path.pointAtPercent(1.0);
+    const QPointF newEndPoint = path.pointAtPercent(1.0);
     if (newEndPoint != m_endPoint) {
         m_endPoint = newEndPoint;
         emit endPointChanged(m_endPoint);
     }
-    bool newIsEmpty = path.isEmpty();
+    const bool newIsEmpty = path.isEmpty();
     if (newIsEmpty != m_isEmpty) {
         m_isEmpty = newIsEmpty;
         emit isEmptyChanged(m_isEmpty);

@@ -153,7 +153,7 @@ public:
 
     int vertexCount() const { return vertexArray.size(); }
 
-    void lineToArray(const GLfloat x, const GLfloat y);
+    void lineToArray(QPointF point);
 
 private:
     QDataBuffer<QOpenGLPoint> vertexArray;

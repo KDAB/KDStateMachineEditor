@@ -80,7 +80,7 @@ QuickGeometryItem::QuickGeometryItem(QObject *parent)
     : QObject(parent)
     , m_vertexDataType(Point2DType)
     , m_drawingMode(TriangleStrip)
-    , m_lineWidth(1.f)
+    , m_lineWidth(1.F)
 {
 }
 
@@ -153,12 +153,12 @@ QSGGeometry *QuickGeometryItem::createGeometry() const
     switch (m_vertexDataType) {
     case Point2DType: {
         Q_ASSERT(data.size() % 2 == 0);
-        const int vertexCount = data.size() / 2;
+        const int vertexCount = static_cast<int>(data.size() / 2);
         geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), vertexCount);
         QSGGeometry::Point2D *vertices = geometry->vertexDataAsPoint2D();
         for (int i = 0; i < vertexCount; ++i) {
-            const float x = static_cast<float>(data[i * 2]);
-            const float y = static_cast<float>(data[i * 2 + 1]);
+            const auto x = static_cast<float>(data[i * 2]);
+            const auto y = static_cast<float>(data[(i * 2) + 1]);
             vertices[i].set(x, y);
         }
         break;
@@ -242,11 +242,11 @@ QSGNode *QuickPrimitiveItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
     if (!geometryItem())
         return nullptr;
 
-    QSGGeometryNode *node = static_cast<QSGGeometryNode *>(oldNode);
+    auto *node = static_cast<QSGGeometryNode *>(oldNode);
     if (!node) {
         node = new QSGGeometryNode;
         node->setFlag(QSGNode::OwnsGeometry);
-        QSGFlatColorMaterial *material = new QSGFlatColorMaterial;
+        auto *material = new QSGFlatColorMaterial;
         node->setMaterial(material);
         node->setFlag(QSGNode::OwnsMaterial);
         m_geometryDirty = true;
@@ -261,7 +261,7 @@ QSGNode *QuickPrimitiveItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDa
     }
 
 
-    QSGFlatColorMaterial *material = static_cast<QSGFlatColorMaterial *>(node->material());
+    auto *material = static_cast<QSGFlatColorMaterial *>(node->material());
     material->setColor(m_color);
 
     return node;

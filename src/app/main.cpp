@@ -31,7 +31,7 @@ namespace {
 
 QString presetsLocation()
 {
-    const QString presetsLocation = qEnvironmentVariable("KDSME_PRESETS_LOCATION");
+    QString presetsLocation = qEnvironmentVariable("KDSME_PRESETS_LOCATION");
     if (!presetsLocation.isEmpty()) {
         return presetsLocation;
     }
@@ -48,12 +48,12 @@ QString scxmlPresetsLocation()
 int main(int argc, char **argv)
 {
     // this must be called before the QApplication constructor
-    QQmlDebuggingEnabler enabler;
+    const QQmlDebuggingEnabler enabler;
 
-    QApplication app(argc, argv);
-    app.setOrganizationName(QStringLiteral("KDAB"));
-    app.setApplicationName(QStringLiteral("kdsme"));
-    app.setApplicationVersion(QStringLiteral("0.1"));
+    const QApplication app(argc, argv);
+    QCoreApplication::setOrganizationName(QStringLiteral("KDAB"));
+    QCoreApplication::setApplicationName(QStringLiteral("kdsme"));
+    QCoreApplication::setApplicationVersion(QStringLiteral("0.1"));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QStringLiteral("State Machine Editor"));
@@ -82,5 +82,5 @@ int main(int argc, char **argv)
     }
     mainWindow.show();
 
-    return app.exec();
+    return QApplication::exec();
 }

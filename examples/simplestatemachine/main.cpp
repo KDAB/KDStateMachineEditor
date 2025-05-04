@@ -30,7 +30,7 @@ using namespace KDSME;
  */
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    const QApplication app(argc, argv);
 
     //! [Display the state machine]
     StateMachine machine;
@@ -47,5 +47,5 @@ int main(int argc, char **argv)
     view.show();
     //! [Display the state machine]
 
-    app.exec();
+    QApplication::exec();
 }

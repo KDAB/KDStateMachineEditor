@@ -111,7 +111,7 @@ SignalTransition *State::addSignalTransition(State *target, const QString &silgn
         return nullptr;
     }
 
-    SignalTransition *transition = new SignalTransition(this);
+    auto *transition = new SignalTransition(this);
     transition->setTargetState(target);
     transition->setSignal(silgnal);
     addTransition(transition);
@@ -124,7 +124,7 @@ TimeoutTransition *State::addTimeoutTransition(State *target, int timeout)
         return nullptr;
     }
 
-    TimeoutTransition *transition = new TimeoutTransition(this);
+    auto *transition = new TimeoutTransition(this);
     transition->setTargetState(target);
     transition->setTimeout(timeout);
     addTransition(transition);
@@ -202,7 +202,7 @@ StateMachine *State::machine() const
 bool State::event(QEvent *event)
 {
     if (event->type() == QEvent::ChildAdded || event->type() == QEvent::ChildRemoved) {
-        const bool newIsComposite = childStates().size() > 0;
+        const bool newIsComposite = !childStates().empty();
         if (d->m_isComposite != newIsComposite) {
             d->m_isComposite = newIsComposite;
             emit isCompositeChanged(d->m_isComposite);
@@ -267,14 +267,8 @@ void StateMachine::setRuntimeController(RuntimeController *runtimeController)
 
 struct HistoryState::Private
 {
-    Private()
-        : m_defaultState(nullptr)
-        , m_historyType(ShallowHistory)
-    {
-    }
-
-    State *m_defaultState;
-    HistoryType m_historyType;
+    State *m_defaultState = nullptr;
+    HistoryType m_historyType = ShallowHistory;
 };
 
 HistoryState::HistoryState(State *parent)

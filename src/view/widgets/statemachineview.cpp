@@ -52,7 +52,9 @@
 
 using namespace KDSME;
 
-static QObject *kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+namespace {
+
+QObject *kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -60,7 +62,7 @@ static QObject *kdsme_global_singletontype_provider(QQmlEngine *engine, QJSEngin
     return new QuickKDSMEGlobal;
 }
 
-static QObject *kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+QObject *kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -69,17 +71,19 @@ static QObject *kdsme_commandFactory_singletontype_provider(QQmlEngine *engine, 
 }
 
 #if !defined(NDEBUG)
-static QString kdsme_qmlErrorString(const QList<QQmlError> errors)
+QString kdsme_qmlErrorString(const QList<QQmlError> &errors)
 {
     QString s;
-    Q_FOREACH (const QQmlError &e, errors) {
+    for (const QQmlError &e : errors) {
         s += e.toString() + u'\n';
     }
     return s;
 }
 #endif
 
-struct StateMachineView::Private
+} // namespace
+
+struct StateMachineView::Private  // NOLINT(clang-analyzer-cplusplus.NewDelete)
 {
     Private(StateMachineView *q);
 
@@ -92,7 +96,7 @@ struct StateMachineView::Private
     QString m_themeName;
     bool m_editModeEnabled;
 
-    QRectF adjustedViewRect();
+    [[nodiscard]] QRectF adjustedViewRect() const;
 
     void onStateMachineChanged(KDSME::StateMachine *stateMachine);
 };
@@ -247,14 +251,14 @@ void StateMachineView::setThemeName(const QString &themeName)
 
 QQuickItem *StateMachineView::viewPortObject() const
 {
-    QQuickItem *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineViewport"));
+    auto *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineViewport"));
     Q_ASSERT(item);
     return item;
 }
 
 QQuickItem *StateMachineView::sceneObject() const
 {
-    QQuickItem *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineScene"));
+    auto *item = rootObject()->findChild<QQuickItem *>(QStringLiteral("stateMachineScene"));
     Q_ASSERT(item);
     return item;
 }
@@ -267,7 +271,7 @@ void StateMachineView::Private::onStateMachineChanged(KDSME::StateMachine *state
 void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 {
     Q_ASSERT(d->m_scene);
-    ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(d->m_scene);
+    auto *cmd = new ChangeStateMachineCommand(d->m_scene);
     cmd->setStateMachine(stateMachine);
     if (d->m_scene->rootState()) {
         commandController()->push(cmd);
@@ -279,11 +283,11 @@ void StateMachineView::changeStateMachine(KDSME::StateMachine *stateMachine)
 
 void StateMachineView::deleteElement(KDSME::Element *element)
 {
-    DeleteElementCommand *cmd = new DeleteElementCommand(d->m_scene, element);
+    auto *cmd = new DeleteElementCommand(d->m_scene, element);
     commandController()->push(cmd);
 }
 
-QRectF StateMachineView::Private::adjustedViewRect()
+QRectF StateMachineView::Private::adjustedViewRect() const
 {
     static const int margin = 10;
 
@@ -297,18 +301,18 @@ QRectF StateMachineView::Private::adjustedViewRect()
 
 void StateMachineView::fitInView()
 {
-    QRectF sceneRect = scene()->rootState()->boundingRect();
-    QRectF viewRect = d->adjustedViewRect();
+    const QRectF sceneRect = scene()->rootState()->boundingRect();
+    const QRectF viewRect = d->adjustedViewRect();
     if (sceneRect.isEmpty() || viewRect.isEmpty())
         return;
 
-    qreal horizontalScale = viewRect.width() / sceneRect.width();
-    qreal verticalScale = viewRect.height() / sceneRect.height();
+    const qreal horizontalScale = viewRect.width() / sceneRect.width();
+    const qreal verticalScale = viewRect.height() / sceneRect.height();
     const qreal uniformScale = qMin(horizontalScale, verticalScale);
     scene()->zoomBy(uniformScale);
 }
 
-void StateMachineView::sendCommand(Command *cmd)
+void StateMachineView::sendCommand(Command *cmd) const
 {
     Q_ASSERT(commandController());
     commandController()->undoStack()->push(cmd);

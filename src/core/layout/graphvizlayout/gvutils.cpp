@@ -42,12 +42,11 @@ Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 
 QString GVUtils::_agget(void *object, const QString &attr, const QString &alt)
 {
-    const QString str = QString::fromUtf8(agget(object, attr.toUtf8().data()));
+    QString str = QString::fromUtf8(agget(object, attr.toUtf8().data()));
     if (str.isEmpty()) {
         return alt;
-    } else {
-        return str;
     }
+    return str;
 }
 
 Agsym_t *GVUtils::_agnodeattr(Agraph_t *object, const QString &attr, const QString &alt)

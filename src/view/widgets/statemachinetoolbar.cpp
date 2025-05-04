@@ -39,7 +39,7 @@ namespace {
 
 QStringList availableThemeNames()
 {
-    QDir dir(QStringLiteral(":/kdsme/qml/themes"));
+    const QDir dir(QStringLiteral(":/kdsme/qml/themes"));
     auto entries = dir.entryList();
     std::transform(entries.cbegin(), entries.cend(), entries.begin(), [](const QString &x) {
         return QString(x).remove(QStringLiteral(".qml"));
@@ -86,10 +86,10 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView *view, QWidget *parent
     connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
     addAction(d->m_exportAction);
 
-    QToolButton *themeSelectionButton = new QToolButton(this);
+    auto *themeSelectionButton = new QToolButton(this);
     themeSelectionButton->setText(tr("Theme"));
     themeSelectionButton->setPopupMode(QToolButton::InstantPopup);
-    QMenu *themeSelectionMenu = new QMenu(themeSelectionButton);
+    auto *themeSelectionMenu = new QMenu(themeSelectionButton);
     const auto themes = availableThemeNames();
     for (const QString &themeName : themes) {
         auto action = new QAction(themeName, this);
@@ -125,7 +125,7 @@ void StateMachineToolBar::Private::exportToFile(StateMachine *machine, const QSt
         return;
 
     QFile file(fileName);
-    bool success = file.open(QIODevice::WriteOnly);
+    const bool success = file.open(QIODevice::WriteOnly);
     if (!success) {
         qCWarning(KDSME_VIEW) << "Failed to open file:" << fileName;
         return;

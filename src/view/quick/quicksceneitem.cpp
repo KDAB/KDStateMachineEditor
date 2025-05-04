@@ -28,7 +28,7 @@ using namespace KDSME;
 
 namespace {
 
-static QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
+QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
 {
     return line1.intersects(line2, intersectionPoint);
 }
@@ -79,7 +79,7 @@ QQuickItem *QuickSceneItem::itemForElement(Element *element) const
     return sceneItem;
 }
 
-void QuickSceneItem::sendClickEvent()
+void QuickSceneItem::sendClickEvent()  // NOLINT(readability-make-member-function-const)
 {
     // TODO: Send events to scene instead?
     scene()->setCurrentItem(element());

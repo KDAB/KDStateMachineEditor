@@ -41,10 +41,10 @@ public:
 
     explicit PaletteModel(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QMimeData *mimeData(const QModelIndexList &indexes) const override;
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 private:
     struct Entry
@@ -87,7 +87,7 @@ int PaletteModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return m_entries.count();
+    return static_cast<int>(m_entries.count());
 }
 
 QVariant PaletteModel::data(const QModelIndex &index, int role) const
@@ -117,7 +117,7 @@ QMimeData *PaletteModel::mimeData(const QModelIndexList &indexes) const
     auto type = index.data(ElementTypeRole).value<Element::Type>();
     const QString typeString = QString::fromLatin1(Element::typeToString(type));
 
-    QMimeData *mimeData = new QMimeData;
+    auto *mimeData = new QMimeData;
 
     mimeData->setUrls({ QUrl(QStringLiteral("%1:Element/%2").arg(QStringLiteral(KDSME_QML_URI_PREFIX)).arg(typeString)) });
 
@@ -150,10 +150,10 @@ StateMachinePaletteWidget::StateMachinePaletteWidget(QWidget *parent)
     : QWidget(parent)
     , d(new Private)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QListView *view = new QListView(this);
+    auto *view = new QListView(this);
     view->setDragEnabled(true);
     view->setViewMode(QListView::IconMode);
     view->setFlow(QListView::LeftToRight);

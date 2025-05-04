@@ -39,10 +39,10 @@ KDSME::State *ChangeStateMachineCommand::stateMachine() const
 
 void ChangeStateMachineCommand::setStateMachine(KDSME::State *stateMachine)
 {
-    if (m_newStateMachine == stateMachine)
-        return;
-    m_newStateMachine = stateMachine;
-    emit stateMachineChanged(stateMachine);
+    if (m_newStateMachine != stateMachine) { // NOLINT(clang-analyzer-cplusplus.NewDelete)
+        m_newStateMachine = stateMachine;
+        Q_EMIT stateMachineChanged(stateMachine);
+    }
 }
 
 void ChangeStateMachineCommand::redo()

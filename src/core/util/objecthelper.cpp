@@ -26,7 +26,7 @@ namespace {
 
 QString stripNameSpace(const QString &className)
 {
-    const int pos = className.lastIndexOf(QLatin1String("::"));
+    const int pos = static_cast<int>(className.lastIndexOf(QLatin1String("::")));
     if (pos != -1)
         return className.mid(pos + 2);
     return className;

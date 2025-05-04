@@ -23,10 +23,14 @@
 
 using namespace KDSME;
 
-static void doOutput(QTextStream &qOut, const QByteArray &output)
+namespace {
+
+void doOutput(QTextStream &qOut, const QByteArray &output)
 {
     qOut << output << Qt::endl;
 }
+
+} // namespace
 
 /**
  * @brief Instantiate a state chart by hand and then export it to different formats

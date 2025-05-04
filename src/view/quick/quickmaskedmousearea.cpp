@@ -126,13 +126,12 @@ bool QuickMaskedMouseArea::contains(const QPointF &point) const
             return false;
         }
         return m_mask->intersects(fuzzyClickRect);
-    } else {
-        if (!ignoreBoundingRect && !rect.contains(point)) {
-            return false;
-        }
-        return m_mask->contains(point);
     }
-    return false; // never reached
+
+    if (!ignoreBoundingRect && !rect.contains(point)) {
+        return false;
+    }
+    return m_mask->contains(point);
 }
 
 void QuickMaskedMouseArea::mousePressEvent(QMouseEvent *event)

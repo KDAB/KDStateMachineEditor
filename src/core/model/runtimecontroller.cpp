@@ -153,7 +153,7 @@ float RuntimeController::activenessForState(State *state) const
     const int count = d->m_lastConfigurations.size();
     for (int i = d->m_lastConfigurations.size() - 1; i >= 0; --i) {
         if (d->m_lastConfigurations.at(i).contains(state)) {
-            return (i + 1.) / count;
+            return static_cast<float>((i + 1.) / count);
         }
     }
     return 0.;
@@ -161,5 +161,5 @@ float RuntimeController::activenessForState(State *state) const
 
 float RuntimeController::activenessForTransition(Transition *transition)
 {
-    return relativePosition<QList<Transition *>>(d->m_lastTransitions.entries(), transition);
+    return static_cast<float>(relativePosition<QList<Transition *>>(d->m_lastTransitions.entries(), transition));
 }

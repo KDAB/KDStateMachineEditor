@@ -43,7 +43,7 @@ class LayouterTest : public QObject
 {
     Q_OBJECT
 
-private Q_SLOTS:
+protected Q_SLOTS:
     void testBasicState();
     void testParallelState();
 
@@ -53,9 +53,9 @@ private:
         QVERIFY(!states.isEmpty());
         const State *reference = states[0];
 
-        const qreal referenceCenterY = reference->pos().y() + reference->height() / 2;
+        const qreal referenceCenterY = reference->pos().y() + (reference->height() / 2);
         for (State *item : states) {
-            const qreal centerY = item->pos().y() + item->height() / 2;
+            const qreal centerY = item->pos().y() + (item->height() / 2);
             QVERIFY2(qAbs(centerY - referenceCenterY) < epsilonY, "Not horizontally aligned");
         }
     }
@@ -65,9 +65,9 @@ private:
         QVERIFY(!states.isEmpty());
         const State *reference = states[0];
 
-        const qreal referenceCenterX = reference->pos().x() + reference->width() / 2;
+        const qreal referenceCenterX = reference->pos().x() + (reference->width() / 2);
         for (State *state : states) {
-            const qreal centerX = state->pos().x() + state->width() / 2;
+            const qreal centerX = state->pos().x() + (state->width() / 2);
             QVERIFY2(qAbs(centerX - referenceCenterX) < epsilonX, "Not vertically aligned");
         }
     }
@@ -88,7 +88,7 @@ void LayouterTest::testBasicState()
             (I) -> (S1) -> (S2) -> (Final)
     */
     ScxmlImporter importer(ParseHelper::readFile(QStringLiteral(TEST_DATA_DIR "/scxml/basicstate.scxml")));
-    QScopedPointer<StateMachine> machine(importer.import());
+    const QScopedPointer<StateMachine> machine(importer.import());
 
     auto elements = machine->findChildren<Element *>();
     auto states = copy_if_type<State *>(elements);
@@ -106,10 +106,10 @@ void LayouterTest::testParallelState()
                 S2: (I) -> (S21) -> (S2Final)
     */
     ScxmlImporter importer(ParseHelper::readFile(QStringLiteral(TEST_DATA_DIR "/scxml/parallelstate.scxml")));
-    QScopedPointer<StateMachine> machine(importer.import());
+    const QScopedPointer<StateMachine> machine(importer.import());
     QVERIFY(machine);
 
-    LayoutProperties properties;
+    const LayoutProperties properties;
     LayerwiseLayouter layouter;
     layouter.layout(machine.data(), &properties);
 

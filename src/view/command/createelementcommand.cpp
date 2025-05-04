@@ -81,7 +81,7 @@ void CreateElementCommand::redo()
     }
 
     Element *parentElement = m_parentElement ? m_parentElement : model()->state();
-    StateModel::AppendOperation append(model(), parentElement);
+    const StateModel::AppendOperation append(model(), parentElement);
     if (m_createdElement) {
         m_createdElement->setParent(parentElement);
     } else {
@@ -106,7 +106,7 @@ void CreateElementCommand::undo()
     }
 
     {
-        StateModel::RemoveOperation remove(model(), m_createdElement);
+        const StateModel::RemoveOperation remove(model(), m_createdElement);
         m_createdElement->setParent(nullptr);
     }
 }

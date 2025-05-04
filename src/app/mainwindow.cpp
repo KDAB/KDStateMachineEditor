@@ -43,7 +43,7 @@ using namespace KDSME;
 
 namespace {
 
-enum PresetsModelDataRoles
+enum PresetsModelDataRoles : quint16
 {
     AbsoluteFilePathRole = Qt::UserRole + 1
 };
@@ -83,7 +83,7 @@ void MainWindow::loadPresets(const QString &presetsDir)
 {
     m_presetsModel->clear();
 
-    QDir dir(presetsDir);
+    const QDir dir(presetsDir);
     if (!dir.exists()) {
         qWarning() << "Non-existent presets location:" << presetsDir;
     }
@@ -93,7 +93,7 @@ void MainWindow::loadPresets(const QString &presetsDir)
         if (!file.endsWith(u".scxml"))
             continue;
 
-        QStandardItem *item = new QStandardItem(file);
+        auto *item = new QStandardItem(file);
         item->setData(dir.absoluteFilePath(file), AbsoluteFilePathRole);
         m_presetsModel->appendRow(item);
     }
@@ -201,5 +201,3 @@ void MainWindow::handlePresetActivated(const QModelIndex &index)
 
     importFromScxmlFile(filePath);
 }
-
-#include "ui_mainwindow.h"

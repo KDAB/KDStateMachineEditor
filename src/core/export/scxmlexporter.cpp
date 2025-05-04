@@ -151,11 +151,8 @@ bool ScxmlExporter::Private::writeStateInner(State *state)
     }
 
     const auto childStates = state->childStates();
-    for (State *child : childStates) {
-        if (!writeState(child))
-            return false;
-    }
-    return true;
+    return std::all_of(childStates.begin(), childStates.end(),
+                       [this](State* child) { return writeState(child); });
 }
 
 bool ScxmlExporter::Private::writeTransition(Transition *transition)

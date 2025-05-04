@@ -102,7 +102,7 @@ ReparentElementCommand *CommandFactory::reparentElement(StateMachineScene *view,
 
 ChangeStateMachineCommand *CommandFactory::changeStateMachineElement(KDSME::StateMachineScene *view, KDSME::StateMachine *statemachine)
 {
-    ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(view);
+    auto *cmd = new ChangeStateMachineCommand(view);
     cmd->setStateMachine(statemachine);
     return cmd;
 }

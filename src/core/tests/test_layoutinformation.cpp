@@ -98,7 +98,8 @@ private Q_SLOTS:
 
 void LayoutInformationTest::testLayoutInformation()
 {
-    State rootState, copyState;
+    State rootState;
+    State copyState;
     rootState.setLabel(QStringLiteral("root"));
     copyState.setLabel(QStringLiteral("root"));
     rootState.setPos(QPointF(123, 456));
@@ -107,15 +108,15 @@ void LayoutInformationTest::testLayoutInformation()
     State *lastState = nullptr;
     State *lastCopyState = nullptr;
     for (int i = 0; i < 3; ++i) {
-        State *state = new State();
+        auto *state = new State();
         state->setLabel(QStringLiteral("state %1").arg(i));
         state->setPos(QPointF(i, 10 * i));
         state->setWidth(100 + i);
         state->setHeight(50 + i);
         if (lastState) {
-            Transition *transition = new Transition(lastState);
+            auto *transition = new Transition(lastState);
             transition->setLabel(QStringLiteral("trans %1").arg(i));
-            transition->setTargetState(static_cast<State *>(state));
+            transition->setTargetState(static_cast<State *>(state)); // NOLINT(readability-redundant-casting)
             transition->setTargetState(state);
             transition->setPos(QPointF(i * 10, i * 10));
             transition->setLabelBoundingRect(QRectF(10 + i, 10 + i * 10, 10 + i, 10 + i));
@@ -126,15 +127,15 @@ void LayoutInformationTest::testLayoutInformation()
         state = new State();
         state->setLabel(QStringLiteral("state %1").arg(i));
         if (lastCopyState) {
-            Transition *transition = new Transition(lastCopyState);
+            auto *transition = new Transition(lastCopyState);
             transition->setLabel(QStringLiteral("trans %1").arg(i));
-            transition->setTargetState(static_cast<State *>(state));
+            transition->setTargetState(static_cast<State *>(state)); // NOLINT(readability-redundant-casting)
             transition->setTargetState(state);
         }
         lastCopyState = state;
     }
 
-    QJsonDocument doc(LayoutImportExport::exportLayout(&rootState));
+    const QJsonDocument doc(LayoutImportExport::exportLayout(&rootState));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     LayoutImportExport::importLayout(QBinaryJson::fromBinaryData(QBinaryJson::toBinaryData(doc)).object(), &copyState);
 #else
@@ -150,7 +151,7 @@ void LayoutInformationTest::testLayoutMatches()
         State s1;
         s1.setLabel(QStringLiteral("s1"));
 
-        QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
+        const QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
         QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
         s1.setLabel(QStringLiteral("s2"));
         QVERIFY(!LayoutImportExport::matches(doc.object(), &s1));
@@ -163,7 +164,7 @@ void LayoutInformationTest::testLayoutMatches()
         Transition t1(&s1);
         t1.setLabel(QStringLiteral("t1"));
 
-        QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
+        const QJsonDocument doc(LayoutImportExport::exportLayout(&s1));
         QVERIFY(LayoutImportExport::matches(doc.object(), &s1));
         s1.setLabel(QStringLiteral("t1"));
         t1.setLabel(QStringLiteral("s1"));

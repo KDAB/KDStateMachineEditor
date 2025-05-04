@@ -44,7 +44,7 @@ int main()
 
     Q_ASSERT(file.open(QIODevice::ReadOnly));
     ScxmlImporter parser(file.readAll());
-    QScopedPointer<StateMachine> machine(parser.import());
+    const QScopedPointer<StateMachine> machine(parser.import());
     Q_ASSERT(machine);
 
     //! [Export the layout]
