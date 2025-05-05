@@ -94,7 +94,7 @@ QPointF Element::pos() const
     return d->m_pos;
 }
 
-void Element::setPos(const QPointF &pos)
+void Element::setPos(const QPointF &pos) // clazy:exclude=function-args-by-value
 {
     if (d->m_pos == pos)
         return;

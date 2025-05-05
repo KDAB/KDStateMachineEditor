@@ -45,7 +45,7 @@ public:
     void writeSvgEllipse(const QRectF &rect, bool fill);
     void writeSvgLine(const QLineF &line);
     void writeSvgPath(const QPainterPath &path, bool fill = false);
-    void writeSvgText(const QString &text, const QPointF &pos, bool center = false);
+    void writeSvgText(const QString &text, QPointF pos, bool center = false);
 
     bool writeStateMachine(const StateMachine *machine);
     bool writeState(State *state);
@@ -147,7 +147,7 @@ void SvgExporterPrivate::writeSvgPath(const QPainterPath &path, bool fill)
     writer.writeEndElement();
 }
 
-void SvgExporterPrivate::writeSvgText(const QString &text, const QPointF &pos, bool center)
+void SvgExporterPrivate::writeSvgText(const QString &text, QPointF pos, bool center)
 {
     writer.writeStartElement(QStringLiteral("text"));
     writer.writeAttribute(QStringLiteral("x"), QString::number(pos.x()));

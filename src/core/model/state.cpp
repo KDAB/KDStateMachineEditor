@@ -28,7 +28,7 @@ using namespace KDSME;
 
 namespace {
 
-struct StandardRuntimeController : public RuntimeController
+struct StandardRuntimeController : public RuntimeController // clazy-ignore: ctor-missing-parent-argument
 {
     Q_OBJECT
 };

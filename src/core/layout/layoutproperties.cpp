@@ -100,7 +100,7 @@ QSizeF LayoutProperties::regionLabelButtonBoxSize() const
     return d->regionLabelButtonBoxSize;
 }
 
-void LayoutProperties::setRegionLabelButtonBoxSize(const QSizeF &size)
+void LayoutProperties::setRegionLabelButtonBoxSize(QSizeF size)
 {
     if (d->regionLabelButtonBoxSize == size) {
         return;

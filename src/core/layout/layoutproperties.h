@@ -48,7 +48,7 @@ public:
     void setRegionLabelMargins(qreal margins);
 
     QSizeF regionLabelButtonBoxSize() const;
-    void setRegionLabelButtonBoxSize(const QSizeF &size);
+    void setRegionLabelButtonBoxSize(QSizeF size);
 
     bool showTransitionLabels() const;
     void setShowTransitionLabels(bool show);

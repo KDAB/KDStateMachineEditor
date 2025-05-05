@@ -48,7 +48,7 @@ TestHarness::TestHarness()
     view.setRootState(&machine);
 }
 
-class CommandsTest : public QObject
+class CommandsTest : public QObject // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 

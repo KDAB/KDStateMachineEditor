@@ -90,7 +90,7 @@ QString toQmlId(const QString &input)
     QString out = input;
     std::replace_if(
         out.begin(), out.end(),
-        [](const QChar &c) -> bool {
+        [](QChar c) -> bool {
             return !(c.isLetterOrNumber() || c == u'_');
         },
         u'_');
