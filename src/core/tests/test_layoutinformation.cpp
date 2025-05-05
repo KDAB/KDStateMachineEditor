@@ -64,7 +64,7 @@ void compare(const State *state1, const State *state2)
     }
 }
 
-QPainterPath createPath(const QPointF &start)
+QPainterPath createPath(QPointF start)
 {
     QPainterPath path(start);
     for (int i = 0; i < 3; ++i) {

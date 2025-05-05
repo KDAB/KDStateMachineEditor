@@ -29,7 +29,7 @@ public:
     Element *m_elementUnderCursor = nullptr;
 };
 
-AbstractSceneContextMenuEvent::AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers, Element *elementUnderCursor)
+AbstractSceneContextMenuEvent::AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers, Element *elementUnderCursor) // clazy:exclude=function-args-by-value
     : QContextMenuEvent(reason, pos, globalPos, modifiers)
     , d(new AbstractSceneContextMenuEventPrivate)
 {

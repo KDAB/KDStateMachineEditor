@@ -29,7 +29,7 @@ class KDSME_CORE_EXPORT ObjectTreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    class KDSME_CORE_EXPORT AppendOperation // krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT AppendOperation // krazy:exclude=dpointer // clazy:exclude=rule-of-three
     {
     public:
         AppendOperation(ObjectTreeModel *model, QObject *parent, int count = 1, int index = -1);
@@ -39,7 +39,7 @@ public:
         ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT RemoveOperation // krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT RemoveOperation // krazy:exclude=dpointer // clazy:exclude=rule-of-three
     {
     public:
         RemoveOperation(ObjectTreeModel *model, QObject *object);
@@ -49,7 +49,7 @@ public:
         ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT ResetOperation // krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT ResetOperation // krazy:exclude=dpointer // clazy:exclude=rule-of-three
     {
     public:
         explicit ResetOperation(ObjectTreeModel *model);
@@ -59,7 +59,7 @@ public:
         ObjectTreeModel *m_model;
     };
 
-    class KDSME_CORE_EXPORT ReparentOperation // krazy:exclude=dpointer
+    class KDSME_CORE_EXPORT ReparentOperation // krazy:exclude=dpointer // clazy:exclude=rule-of-three
     {
     public:
         ReparentOperation(ObjectTreeModel *model, QObject *object, QObject *newParent);

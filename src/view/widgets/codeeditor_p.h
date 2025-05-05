@@ -73,7 +73,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
-    void updateLineNumberArea(const QRect &, int);
+    void updateLineNumberArea(QRect , int);
 
 private:
     QWidget *lineNumberArea;

@@ -33,7 +33,7 @@ namespace {
 #define KDSME_QML_MODULE "QtQml.StateMachine"
 #define KDSME_QML_MODULE_VERSION "1.0"
 
-class LevelIncrementer
+class LevelIncrementer // clazy:exclude=rule-of-three
 {
 public:
     explicit LevelIncrementer(int *level)

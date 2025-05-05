@@ -78,7 +78,7 @@ void DepthChecker::setTarget(Element *target)
 
     if (d->m_target) {
         // clang-format off
-        disconnect(d->m_target, SIGNAL(parentChanged(Element*)),
+        disconnect(d->m_target, SIGNAL(parentChanged(Element*)), // clazy:exclude=old-style-connect
                    this, SLOT(updateDepth()));
         // clang-format on
     }
@@ -87,7 +87,7 @@ void DepthChecker::setTarget(Element *target)
 
     if (d->m_target) {
         // clang-format off
-        connect(d->m_target, SIGNAL(parentChanged(Element*)),
+        connect(d->m_target, SIGNAL(parentChanged(Element*)), // clazy:exclude=old-style-connect
                 this, SLOT(updateDepth()));
         // clang-format on
     }

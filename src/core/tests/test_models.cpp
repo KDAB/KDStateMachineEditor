@@ -86,7 +86,9 @@ void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     QObject *appendedObject;
     {
         const ObjectTreeModel::AppendOperation insert(&model, root.data());
@@ -112,7 +114,9 @@ void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     QList<QObject *> appendedObjects;
     {
         const ObjectTreeModel::AppendOperation insert(&model, root.data(), 3);
@@ -141,7 +145,9 @@ void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex, int, int))); // clazy:exclude=old-style-connect
+    // clang-format on
     {
         QObject *object = root.data()->children()[0];
         const ObjectTreeModel::RemoveOperation remove(&model, object);
@@ -164,8 +170,8 @@ void ModelsTest::testObjectTreeModel_ResetOperation_SingleObject()
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    const QSignalSpy spy1(&model, SIGNAL(modelAboutToBeReset()));
-    const QSignalSpy spy2(&model, SIGNAL(modelAboutToBeReset()));
+    const QSignalSpy spy1(&model, SIGNAL(modelAboutToBeReset())); // clazy:exclude=old-style-connect
+    const QSignalSpy spy2(&model, SIGNAL(modelAboutToBeReset())); // clazy:exclude=old-style-connect
     {
         QObject *object = root.data()->children()[0];
         const ObjectTreeModel::ResetOperation reset(&model);
@@ -187,8 +193,10 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject() // NOLINT(
     QVERIFY(o2);
 
     // Want to set parent of o2 to o1
-    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-    const QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+    // clang-format off
+    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+    const QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     {
         const ObjectTreeModel::ReparentOperation reparent(&model, o2, o1);
         QCOMPARE(spy1.count(), 1);
@@ -230,7 +238,9 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 
     {
         // Want to set parent of o1 to root (root is already parent of o1!)
-        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        // clang-format off
+        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+        // clang-format on
         {
             const ObjectTreeModel::ReparentOperation reparent(&model, o1, root.data());
             QCOMPARE(spy1.count(), 0);
@@ -239,8 +249,10 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
     }
 
     {
-        // Want to set parent of o1 to o1 (circular link!)
-        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        // Want to set parent of o1 to o1 (circular link!
+        // clang-format off
+        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+        // clang-format on
         {
             const ObjectTreeModel::ReparentOperation reparent(&model, o1, o1);
             QCOMPARE(spy1.count(), 0);

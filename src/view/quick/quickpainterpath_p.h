@@ -65,11 +65,11 @@ public:
     bool isEmpty() const;
 
     // BEGIN: Replicating QPainterPath API
-    Q_INVOKABLE void moveTo(const QPointF &point);
-    Q_INVOKABLE void lineTo(const QPointF &endPoint);
+    Q_INVOKABLE void moveTo(QPointF point);
+    Q_INVOKABLE void lineTo(QPointF endPoint);
     Q_INVOKABLE void clear();
 
-    Q_INVOKABLE bool contains(const QPointF &point) const;
+    Q_INVOKABLE bool contains(QPointF point) const;
     Q_INVOKABLE qreal angleAtPercent(qreal t) const;
     // END
 

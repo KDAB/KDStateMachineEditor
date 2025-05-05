@@ -83,7 +83,7 @@ StateMachineToolBar::StateMachineToolBar(StateMachineView *view, QWidget *parent
     d->m_exportAction = new QAction(tr("Export to File..."), this);
     d->m_exportAction->setObjectName(QStringLiteral("actionExportToFile"));
     d->m_exportAction->setStatusTip(QStringLiteral("Export current state machine to a file."));
-    connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport()));
+    connect(d->m_exportAction, SIGNAL(triggered()), this, SLOT(handleExport())); // clazy:exclude=old-style-connect
     addAction(d->m_exportAction);
 
     auto *themeSelectionButton = new QToolButton(this);

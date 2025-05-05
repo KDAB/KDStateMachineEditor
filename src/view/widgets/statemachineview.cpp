@@ -204,7 +204,7 @@ void StateMachineView::setScene(StateMachineScene *scene)
     d->m_scene = scene;
     if (d->m_scene) {
         // clang-format off
-        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine*)),
+        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine*)), // clazy:exclude=old-style-connect
                 this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
         // clang-format on
     }

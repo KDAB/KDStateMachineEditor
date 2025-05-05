@@ -76,13 +76,13 @@ bool QuickPainterPath::isEmpty() const
     return m_isEmpty;
 }
 
-void QuickPainterPath::moveTo(const QPointF &point)
+void QuickPainterPath::moveTo(QPointF point)
 {
     m_path.moveTo(point);
     updateState(m_path);
 }
 
-void QuickPainterPath::lineTo(const QPointF &endPoint)
+void QuickPainterPath::lineTo(QPointF endPoint)
 {
     m_path.lineTo(endPoint);
     updateState(m_path);
@@ -93,7 +93,7 @@ void QuickPainterPath::clear()
     setPath(QPainterPath());
 }
 
-bool QuickPainterPath::contains(const QPointF &point) const
+bool QuickPainterPath::contains(QPointF point) const
 {
     return m_path.contains(point);
 }

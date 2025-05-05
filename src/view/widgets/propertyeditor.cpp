@@ -145,21 +145,21 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     d->m_widgetToPropertyMap.insert(d->m_transitionWidget->signalEdit, QStringLiteral("signal"));
     d->m_widgetToPropertyMap.insert(d->m_transitionWidget->timeoutEdit, QStringLiteral("timeout"));
 
-    connect(d->m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->labelLineEdit, SIGNAL(editingFinished()), this, SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
     connect(d->m_stateWidget->initialStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setInitalState(text); });
     connect(d->m_stateWidget->defaultStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setDefaultState(text); });
-    connect(d->m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(d->m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
-    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(childModeChanged()));
-    connect(d->m_stateWidget->historyTypeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty()));
+    connect(d->m_stateWidget->onEntryEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
+    connect(d->m_stateWidget->onExitEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
+    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
+    connect(d->m_stateWidget->childModeEdit, SIGNAL(currentIndexChanged(int)), SLOT(childModeChanged())); // clazy:exclude=old-style-connect
+    connect(d->m_stateWidget->historyTypeEdit, SIGNAL(currentIndexChanged(int)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
 
-    connect(d->m_transitionWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->labelLineEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
     connect(d->m_transitionWidget->sourceStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setSourceState(text); });
     connect(d->m_transitionWidget->targetStateComboBox, &QComboBox::textActivated, this, [this](const QString &text) { d->setTargetState(text); });
-    connect(d->m_transitionWidget->guardEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty()));
-    connect(d->m_transitionWidget->signalEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty()));
-    connect(d->m_transitionWidget->timeoutEdit, SIGNAL(valueChanged(int)), SLOT(updateSimpleProperty()));
+    connect(d->m_transitionWidget->guardEditor, SIGNAL(editingFinished(QString)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
+    connect(d->m_transitionWidget->signalEdit, SIGNAL(editingFinished()), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
+    connect(d->m_transitionWidget->timeoutEdit, SIGNAL(valueChanged(int)), SLOT(updateSimpleProperty())); // clazy:exclude=old-style-connect
 
     setCurrentIndex(d->m_noWidgetIndex);
 }
@@ -174,9 +174,9 @@ void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     if (d->m_selectionModel) {
         // clang-format off
-        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), // clazy:exclude=old-style-connect
                    this, SLOT(currentChanged(QModelIndex,QModelIndex)));
-        disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
+        disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), // clazy:exclude=old-style-connect
                    this, SLOT(modelAboutToBeReset()));
         // clang-format on
     }
@@ -185,9 +185,9 @@ void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 
     if (d->m_selectionModel) {
         // clang-format off
-        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), // clazy:exclude=old-style-connect
                 this, SLOT(currentChanged(QModelIndex,QModelIndex)));
-        connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
+        connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), // clazy:exclude=old-style-connect
                 this, SLOT(modelAboutToBeReset()));
         // clang-format on
     }

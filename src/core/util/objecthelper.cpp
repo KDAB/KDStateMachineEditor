@@ -69,12 +69,12 @@ int ObjectHelper::stringToEnum(const QMetaObject *metaObject, const char *name, 
     return metaEnum.keyToValue(key);
 }
 
-QString ObjectHelper::toString(const QPointF &point)
+QString ObjectHelper::toString(const QPointF &point) // clazy:exclude=function-args-by-value
 {
     return QStringLiteral("(%1,%2)").arg(point.x()).arg(point.y());
 }
 
-QString ObjectHelper::toString(const QSizeF &size)
+QString ObjectHelper::toString(const QSizeF &size) // clazy:exclude=function-args-by-value
 {
     return QStringLiteral("(%1,%2)").arg(size.width()).arg(size.height());
 }

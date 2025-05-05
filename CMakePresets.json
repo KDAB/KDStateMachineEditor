@@ -150,7 +150,8 @@
             "name": "clazy",
             "configurePreset": "clazy",
             "environment": {
-                "CLAZY_CHECKS": "level2,no-qstring-allocations,no-fully-qualified-moc-types,no-copyable-polymorphic",
+                "CLAZY_CHECKS": "level2,no-qstring-allocations,no-fully-qualified-moc-types,no-copyable-polymorphic,no-ctor-missing-parent-argument",
+                "CLAZY_IGNORE_DIRS": "kdstatemachineeditor_.*_autogen",
                 "CCACHE_DISABLE": "ON"
             }
         },

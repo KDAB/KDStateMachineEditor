@@ -99,7 +99,7 @@ private:
  *
  * Also see: https://marc.info/?l=graphviz-interest&m=129408843223794&w=2
  */
-class LocaleLocker
+class LocaleLocker // clazy:exclude=rule-of-three
 {
 public:
     inline LocaleLocker()

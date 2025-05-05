@@ -20,13 +20,13 @@
 
 class QuickPainterPath;
 
-class QuickKDSMEGlobal : public QObject
+class QuickKDSMEGlobal : public QObject // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 
 public:
     Q_INVOKABLE QuickPainterPath *createPath() const;
-    Q_INVOKABLE QuickPainterPath *createPath(const QPointF &startPoint) const;
+    Q_INVOKABLE QuickPainterPath *createPath(QPointF startPoint) const;
 };
 
 #endif // QUICKKDSMEGLOBAL_P_H

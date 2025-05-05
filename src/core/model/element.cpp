@@ -247,3 +247,5 @@ void Element::setParent(QObject *object)
 
     QObject::setParent(object);
 }
+
+#include "moc_element.cpp"

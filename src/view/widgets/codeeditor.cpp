@@ -49,9 +49,9 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int))); // clazy:exclude=old-style-connect
+    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int))); // clazy:exclude=old-style-connect
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine())); // clazy:exclude=old-style-connect
 
     QFont font(QStringLiteral("Monospace"));
     font.setStyleHint(QFont::TypeWriter);
@@ -72,7 +72,7 @@ int CodeEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    const int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    const int space = 3 + (fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits);
 
     return space;
 }
@@ -86,7 +86,7 @@ void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 
 
 
-void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
+void CodeEditor::updateLineNumberArea(QRect rect, int dy)
 {
     if (dy)
         lineNumberArea->scroll(0, dy);

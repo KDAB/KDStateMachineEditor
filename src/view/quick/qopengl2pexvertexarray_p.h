@@ -67,7 +67,7 @@ public:
     QOpenGLPoint(GLfloat new_x, GLfloat new_y) :
         x(new_x), y(new_y) {};
 
-    explicit QOpenGLPoint(const QPointF &p) :
+    explicit QOpenGLPoint(QPointF p) :
         x(p.x()), y(p.y()) {};
 
     explicit QOpenGLPoint(const QPointF* p) :

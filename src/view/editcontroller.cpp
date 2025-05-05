@@ -68,7 +68,7 @@ void EditController::setEditModeEnabled(bool editModeEnabled)
     Q_EMIT editModeEnabledChanged(d->m_editModeEnabled);
 }
 
-bool EditController::sendDragEnterEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls)
+bool EditController::sendDragEnterEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls) // clazy:exclude=function-args-by-value
 {
     Q_UNUSED(pos);
 
@@ -96,7 +96,63 @@ bool EditController::sendDragEnterEvent(Element *sender, Element *target, const 
     return true;
 }
 
-bool EditController::sendDropEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls)
+// TODO should we probably either move that command to kdstatemachine/commands
+// for reuse or even extend the existing CreateElementCommand to set optionally
+// an initial position/geometry?
+class CreateAndPositionCommand : public Command
+{
+    Q_OBJECT
+public:
+    CreateAndPositionCommand(StateMachineScene *view, Element::Type type, Element *targetElement, QPointF pos)
+        : Command(view->stateModel())
+        , m_view(view)
+        , m_createcmd(new CreateElementCommand(view->stateModel(), type))
+        , m_pos(pos)
+    {
+        m_createcmd->setParentElement(targetElement);
+        setText(m_createcmd->text());
+    }
+    void redo() override
+    {
+        // save the current layout
+        Q_ASSERT(m_view->rootState());
+        const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootState()));
+
+        m_createcmd->redo();
+
+        Element *element = m_createcmd->createdElement();
+        if (!element) // creating the element failed, abort here
+            return;
+
+        LayoutImportExport::importLayout(doc.object(), m_view->rootState());
+
+        // move the new element to its position and set a sane initial size
+        ModifyElementCommand poscmd(element);
+        QPointF pos = m_pos;
+        const QSizeF size = element->preferredSize();
+        if (size.width() > 0)
+            pos.setX(qMax<qreal>(0, pos.x() - size.width() / 2));
+        if (size.height() > 0)
+            pos.setY(qMax<qreal>(0, pos.y() - size.height() / 2));
+        poscmd.setGeometry(QRectF(pos, size));
+        poscmd.redo();
+
+        // Mark the new Element as current one what means the item is selected
+        // as if a user clicked on it.
+        m_view->setCurrentItem(element);
+    }
+    void undo() override
+    {
+        m_createcmd->undo();
+    }
+
+private:
+    StateMachineScene *m_view;
+    QScopedPointer<CreateElementCommand> m_createcmd;
+    QPointF m_pos;
+};
+
+bool EditController::sendDropEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls) // clazy:exclude=function-args-by-value
 {
     Q_UNUSED(sender);
     Q_UNUSED(pos);
@@ -122,61 +178,6 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
 
     const Element::Type type = Element::stringToType(qPrintable(typeString));
 
-    // TODO should we probably either move that command to kdstatemachine/commands
-    // for reuse or even extend the existing CreateElementCommand to set optionally
-    // an initial position/geometry?
-    class CreateAndPositionCommand : public Command
-    {
-    public:
-        CreateAndPositionCommand(StateMachineScene *view, Element::Type type, Element *targetElement, const QPointF &pos)
-            : Command(view->stateModel())
-            , m_view(view)
-            , m_createcmd(new CreateElementCommand(view->stateModel(), type))
-            , m_pos(pos)
-        {
-            m_createcmd->setParentElement(targetElement);
-            setText(m_createcmd->text());
-        }
-        void redo() override
-        {
-            // save the current layout
-            Q_ASSERT(m_view->rootState());
-            const QJsonDocument doc(LayoutImportExport::exportLayout(m_view->rootState()));
-
-            m_createcmd->redo();
-
-            Element *element = m_createcmd->createdElement();
-            if (!element) // creating the element failed, abort here
-                return;
-
-            LayoutImportExport::importLayout(doc.object(), m_view->rootState());
-
-            // move the new element to its position and set a sane initial size
-            ModifyElementCommand poscmd(element);
-            QPointF pos = m_pos;
-            const QSizeF size = element->preferredSize();
-            if (size.width() > 0)
-                pos.setX(qMax<qreal>(0, pos.x() - size.width() / 2));
-            if (size.height() > 0)
-                pos.setY(qMax<qreal>(0, pos.y() - size.height() / 2));
-            poscmd.setGeometry(QRectF(pos, size));
-            poscmd.redo();
-
-            // Mark the new Element as current one what means the item is selected
-            // as if a user clicked on it.
-            m_view->setCurrentItem(element);
-        }
-        void undo() override
-        {
-            m_createcmd->undo();
-        }
-
-    private:
-        StateMachineScene *m_view;
-        QScopedPointer<CreateElementCommand> m_createcmd;
-        QPointF m_pos;
-    };
-
     // TODO: Try to decouple more
     auto view = stateMachineView()->scene();
     auto *cmd = new CreateAndPositionCommand(view, type, target, QPointF(pos));
@@ -184,3 +185,5 @@ bool EditController::sendDropEvent(Element *sender, Element *target, const QPoin
 
     return true;
 }
+
+#include "editcontroller.moc"
