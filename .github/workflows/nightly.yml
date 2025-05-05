@@ -26,10 +26,10 @@ jobs:
 
         config:
           - name: clang-tidy
-            qt_version: "6.9"
+            qt_version: 6.9.0
 
           - name: clazy
-            qt_version: "6.9"
+            qt_version: 6.9.0
             qt_modules: qtscxml
             apt_pgks:
               - clazy
