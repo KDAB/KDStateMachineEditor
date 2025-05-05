@@ -65,6 +65,9 @@ jobs:
       - name: Build Project
         run: cmake --build ./build/${{ matrix.config.name }} --preset ${{ matrix.config.name }}
 
+      - name: Hack - create empty file as graphviz expr target is not used so exparse.c is not generated
+        run: touch ./build/${{ matrix.config.name }}/3rdparty/graphviz/lib/expr/exparse.c
+
       - name: Run cppcheck
         if: ${{ matrix.config.name == 'clazy' }}
         run: cmake --build ./build/${{ matrix.config.name }} --preset ${{ matrix.config.name }} --target cppcheck

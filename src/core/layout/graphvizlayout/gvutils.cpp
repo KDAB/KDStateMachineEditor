@@ -28,7 +28,7 @@ using namespace KDSME;
 constexpr int MOVE_TO_FRONT = 1;
 
 #ifdef WITH_CGRAPH
-Agraph_t *GVUtils::_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc)
+Agraph_t *GVUtils::_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc) // cppcheck-suppress passedByValue
 #else
 Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 #endif
