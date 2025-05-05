@@ -51,7 +51,7 @@ public:
     void redo() override;
     void undo() override;
 
-signals:
+Q_SIGNALS:
     void stateMachineChanged(KDSME::State *statemachine);
 
 private:

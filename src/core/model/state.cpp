@@ -147,7 +147,7 @@ void State::setOnEntry(const QString &onEntry)
         return;
 
     d->m_onEntry = onEntry;
-    emit onEntryChanged(d->m_onEntry);
+    Q_EMIT onEntryChanged(d->m_onEntry);
 }
 
 void State::setOnExit(const QString &onExit)
@@ -156,7 +156,7 @@ void State::setOnExit(const QString &onExit)
         return;
 
     d->m_onExit = onExit;
-    emit onExitChanged(d->m_onExit);
+    Q_EMIT onExitChanged(d->m_onExit);
 }
 
 State::ChildMode State::childMode() const
@@ -170,7 +170,7 @@ void State::setChildMode(ChildMode childMode)
         return;
 
     d->m_childMode = childMode;
-    emit childModeChanged(d->m_childMode);
+    Q_EMIT childModeChanged(d->m_childMode);
 }
 
 bool State::isComposite() const
@@ -189,7 +189,7 @@ void State::setExpanded(bool expanded)
         return;
 
     d->m_isExpanded = expanded;
-    emit expandedChanged(d->m_isExpanded);
+    Q_EMIT expandedChanged(d->m_isExpanded);
 }
 
 StateMachine *State::machine() const
@@ -205,7 +205,7 @@ bool State::event(QEvent *event)
         const bool newIsComposite = !childStates().empty();
         if (d->m_isComposite != newIsComposite) {
             d->m_isComposite = newIsComposite;
-            emit isCompositeChanged(d->m_isComposite);
+            Q_EMIT isCompositeChanged(d->m_isComposite);
         }
     }
 
@@ -262,7 +262,7 @@ void StateMachine::setRuntimeController(RuntimeController *runtimeController)
         d->m_runtimeController = new StandardRuntimeController;
     }
 
-    emit runtimeControllerChanged(d->m_runtimeController);
+    Q_EMIT runtimeControllerChanged(d->m_runtimeController);
 }
 
 struct HistoryState::Private
@@ -310,7 +310,7 @@ void HistoryState::setDefaultState(State *state)
     if (d->m_defaultState == state)
         return;
     d->m_defaultState = state;
-    emit defaultStateChanged(d->m_defaultState);
+    Q_EMIT defaultStateChanged(d->m_defaultState);
 }
 
 HistoryState::HistoryType HistoryState::historyType() const
@@ -323,7 +323,7 @@ void HistoryState::setHistoryType(HistoryState::HistoryType historyType)
     if (d->m_historyType == historyType)
         return;
     d->m_historyType = historyType;
-    emit historyTypeChanged();
+    Q_EMIT historyTypeChanged();
 }
 
 struct FinalState::Private
@@ -391,7 +391,7 @@ void PseudoState::setKind(PseudoState::Kind kind)
         return;
 
     d->m_kind = kind;
-    emit kindChanged(d->m_kind);
+    Q_EMIT kindChanged(d->m_kind);
 }
 
 QString PseudoState::kindString() const

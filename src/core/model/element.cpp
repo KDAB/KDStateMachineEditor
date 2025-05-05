@@ -52,7 +52,7 @@ void Element::setFlags(Element::Flags flags)
     if (d->m_flags == flags)
         return;
     d->m_flags = flags;
-    emit flagsChanged(flags);
+    Q_EMIT flagsChanged(flags);
 }
 
 QString Element::label() const
@@ -66,7 +66,7 @@ void Element::setLabel(const QString &label)
         return;
 
     d->m_label = label;
-    emit labelChanged(label);
+    Q_EMIT labelChanged(label);
 }
 
 quintptr Element::internalId() const
@@ -100,7 +100,7 @@ void Element::setPos(const QPointF &pos) // clazy:exclude=function-args-by-value
         return;
 
     d->m_pos = pos;
-    emit posChanged(pos);
+    Q_EMIT posChanged(pos);
 }
 
 qreal Element::width() const
@@ -114,7 +114,7 @@ void Element::setWidth(qreal width)
         return;
 
     d->m_width = width;
-    emit widthChanged(width);
+    Q_EMIT widthChanged(width);
 }
 
 qreal Element::height() const
@@ -128,7 +128,7 @@ void Element::setHeight(qreal height)
         return;
 
     d->m_height = height;
-    emit heightChanged(height);
+    Q_EMIT heightChanged(height);
 }
 
 QPointF Element::absolutePos() const
@@ -153,7 +153,7 @@ void Element::setVisible(bool visible)
         return;
 
     d->m_visible = visible;
-    emit visibleChanged(d->m_visible);
+    Q_EMIT visibleChanged(d->m_visible);
 }
 
 bool Element::isSelected() const
@@ -167,7 +167,7 @@ void Element::setSelected(bool selected)
         return;
 
     d->m_selected = selected;
-    emit selectedChanged(d->m_selected);
+    Q_EMIT selectedChanged(d->m_selected);
 }
 
 QSizeF Element::preferredSize() const
@@ -242,7 +242,7 @@ void Element::setParent(QObject *object)
     const auto *oldElementParent = parentElement();
     const auto newElementParent = qobject_cast<Element *>(object);
     if (oldElementParent != newElementParent) {
-        emit parentChanged(newElementParent);
+        Q_EMIT parentChanged(newElementParent);
     }
 
     QObject::setParent(object);

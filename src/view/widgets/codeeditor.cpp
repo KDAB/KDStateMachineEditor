@@ -110,7 +110,7 @@ void CodeEditor::resizeEvent(QResizeEvent *event)
 void CodeEditor::focusOutEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
-    emit editingFinished(toPlainText());
+    Q_EMIT editingFinished(toPlainText());
 }
 
 void CodeEditor::highlightCurrentLine()

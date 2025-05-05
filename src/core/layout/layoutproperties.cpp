@@ -59,8 +59,8 @@ void LayoutProperties::setRegionMargins(qreal margins)
     }
 
     d->regionMargins = margins;
-    emit regionMarginsChanged(margins);
-    emit changed();
+    Q_EMIT regionMarginsChanged(margins);
+    Q_EMIT changed();
 }
 
 QFont LayoutProperties::regionLabelFont() const
@@ -75,8 +75,8 @@ void LayoutProperties::setRegionLabelFont(const QFont &font)
     }
 
     d->regionLabelFont = font;
-    emit regionLabelFontChanged(font);
-    emit changed();
+    Q_EMIT regionLabelFontChanged(font);
+    Q_EMIT changed();
 }
 
 qreal LayoutProperties::regionLabelMargins() const
@@ -91,8 +91,8 @@ void LayoutProperties::setRegionLabelMargins(qreal margins)
     }
 
     d->regionLabelMargins = margins;
-    emit regionLabelMarginsChanged(margins);
-    emit changed();
+    Q_EMIT regionLabelMarginsChanged(margins);
+    Q_EMIT changed();
 }
 
 QSizeF LayoutProperties::regionLabelButtonBoxSize() const
@@ -107,8 +107,8 @@ void LayoutProperties::setRegionLabelButtonBoxSize(QSizeF size)
     }
 
     d->regionLabelButtonBoxSize = size;
-    emit regionLabelButtonBoxSizeChanged(size);
-    emit changed();
+    Q_EMIT regionLabelButtonBoxSizeChanged(size);
+    Q_EMIT changed();
 }
 
 bool LayoutProperties::showTransitionLabels() const
@@ -123,6 +123,6 @@ void LayoutProperties::setShowTransitionLabels(bool show)
     }
 
     d->showTransitionLabels = show;
-    emit showTransitionLabelsChanged(show);
-    emit changed();
+    Q_EMIT showTransitionLabelsChanged(show);
+    Q_EMIT changed();
 }

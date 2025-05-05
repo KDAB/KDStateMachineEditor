@@ -91,7 +91,7 @@ void DepthChecker::setTarget(Element *target)
                 this, SLOT(updateDepth()));
         // clang-format on
     }
-    emit targetChanged(d->m_target);
+    Q_EMIT targetChanged(d->m_target);
 
     d->updateDepth();
 }
@@ -103,7 +103,7 @@ void DepthChecker::Private::updateDepth()
         return;
 
     m_depth = depth;
-    emit q->depthChanged(m_depth);
+    Q_EMIT q->depthChanged(m_depth);
 }
 
 #include "moc_depthchecker.cpp"

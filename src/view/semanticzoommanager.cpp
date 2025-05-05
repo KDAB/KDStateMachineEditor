@@ -51,7 +51,7 @@ void SemanticZoomManager::setScene(StateMachineScene *scene)
                 this, &SemanticZoomManager::updateRuntimeController);
     }
     updateRuntimeController();
-    emit sceneChanged(m_scene);
+    Q_EMIT sceneChanged(m_scene);
 }
 
 RuntimeController *SemanticZoomManager::runtimeController() const
@@ -86,7 +86,7 @@ void SemanticZoomManager::setEnabled(bool enabled)
         return;
 
     m_enabled = enabled;
-    emit enabledChanged(m_enabled);
+    Q_EMIT enabledChanged(m_enabled);
 }
 
 void SemanticZoomManager::handleActiveConfigurationChanged(const QSet<State *> &configuration)

@@ -48,7 +48,7 @@ qreal QuickPen::width() const
 void QuickPen::setWidth(qreal width)
 {
     m_width = width;
-    emit penChanged();
+    Q_EMIT penChanged();
 }
 
 QColor QuickPen::color() const
@@ -59,7 +59,7 @@ QColor QuickPen::color() const
 void QuickPen::setColor(const QColor &color)
 {
     m_color = color;
-    emit penChanged();
+    Q_EMIT penChanged();
 }
 
 Qt::PenStyle QuickPen::style() const
@@ -70,5 +70,5 @@ Qt::PenStyle QuickPen::style() const
 void QuickPen::setStyle(Qt::PenStyle style)
 {
     m_style = style;
-    emit penChanged();
+    Q_EMIT penChanged();
 }

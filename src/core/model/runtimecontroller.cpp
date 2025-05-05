@@ -60,7 +60,7 @@ void RuntimeController::Private::updateActiveRegion()
         activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;
-    emit q->activeRegionChanged(m_activeRegion);
+    Q_EMIT q->activeRegionChanged(m_activeRegion);
 }
 
 RuntimeController::RuntimeController(QObject *parent)
@@ -112,7 +112,7 @@ void RuntimeController::setActiveConfiguration(const RuntimeController::Configur
         return;
 
     d->m_lastConfigurations.enqueue(configuration);
-    emit activeConfigurationChanged(configuration);
+    Q_EMIT activeConfigurationChanged(configuration);
     d->updateActiveRegion();
 }
 
@@ -145,7 +145,7 @@ void RuntimeController::setIsRunning(bool isRunning)
         return;
 
     d->m_isRunning = isRunning;
-    emit isRunningChanged(d->m_isRunning);
+    Q_EMIT isRunningChanged(d->m_isRunning);
 }
 
 float RuntimeController::activenessForState(State *state) const

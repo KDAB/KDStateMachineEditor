@@ -168,7 +168,7 @@ void StateMachineScene::setRootState(State *rootState)
     stateModel()->setState(rootState);
 
     d->m_rootState = rootState;
-    emit rootStateChanged(d->m_rootState);
+    Q_EMIT rootStateChanged(d->m_rootState);
 
     d->updateItemVisibilities();
 }
@@ -207,7 +207,7 @@ void StateMachineScene::setZoom(qreal zoom)
     d->zoomByInternal(delta);
 
     d->m_zoom = zoom;
-    emit zoomChanged(d->m_zoom);
+    Q_EMIT zoomChanged(d->m_zoom);
 }
 
 void StateMachineScene::zoomBy(qreal scale)
@@ -226,7 +226,7 @@ void StateMachineScene::setMaximumDepth(int maximumDepth)
         return;
 
     d->m_maximumDepth = maximumDepth;
-    emit maximumDepthChanged(d->m_maximumDepth);
+    Q_EMIT maximumDepthChanged(d->m_maximumDepth);
 
     auto oldViewState = viewState();
     setViewState(RefreshState);
@@ -357,7 +357,7 @@ void StateMachineScene::currentChanged(const QModelIndex &current, const QModelI
         previousItem->setSelected(false);
     }
 
-    emit currentItemChanged(currentItem);
+    Q_EMIT currentItemChanged(currentItem);
 }
 
 void StateMachineScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)

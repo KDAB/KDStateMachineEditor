@@ -115,7 +115,7 @@ void QuickSceneItem::setShape(const QPainterPath &shape)
     }
 
     m_shape = shape;
-    emit shapeChanged(m_shape);
+    Q_EMIT shapeChanged(m_shape);
 }
 
 void QuickSceneItem::mousePressEvent(QMouseEvent *event)
@@ -173,7 +173,7 @@ void QuickSceneItem::setElement(Element *element)
         });
     }
 
-    emit elementChanged(m_element);
+    Q_EMIT elementChanged(m_element);
 }
 
 qreal QuickSceneItem::activeness() const
@@ -187,7 +187,7 @@ void QuickSceneItem::setActiveness(qreal activeness)
         return;
 
     m_activeness = activeness;
-    emit activenessChanged(m_activeness);
+    Q_EMIT activenessChanged(m_activeness);
 }
 
 QuickStateItem::QuickStateItem(QQuickItem *parent)

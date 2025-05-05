@@ -55,7 +55,7 @@ void CommandFactory::setModel(StateModel *model)
         return;
 
     m_model = model;
-    emit modelChanged(m_model);
+    Q_EMIT modelChanged(m_model);
 }
 
 CreateElementCommand *CommandFactory::createElement(StateModel *model, Element::Type type, Element *parentElement) const

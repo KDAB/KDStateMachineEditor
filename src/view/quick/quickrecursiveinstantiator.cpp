@@ -61,7 +61,7 @@ void QuickRecursiveInstantiator::setModel(QAbstractItemModel *model)
         connect(m_model, &QAbstractItemModel::rowsAboutToBeRemoved, this, &QuickRecursiveInstantiator::rowsAboutToBeRemoved);
         connect(m_model, &QAbstractItemModel::destroyed, this, &QuickRecursiveInstantiator::modelDestroyed);
     }
-    emit modelChanged(m_model);
+    Q_EMIT modelChanged(m_model);
 }
 
 QQmlComponent *QuickRecursiveInstantiator::delegate() const
@@ -76,7 +76,7 @@ void QuickRecursiveInstantiator::setDelegate(QQmlComponent *delegate)
     }
 
     m_delegate = delegate;
-    emit delegateChanged(m_delegate);
+    Q_EMIT delegateChanged(m_delegate);
 }
 
 QObject *QuickRecursiveInstantiator::itemForIndex(const QModelIndex &index) const

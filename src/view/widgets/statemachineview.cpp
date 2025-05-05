@@ -209,7 +209,7 @@ void StateMachineView::setScene(StateMachineScene *scene)
         // clang-format on
     }
 
-    emit sceneChanged(d->m_scene);
+    Q_EMIT sceneChanged(d->m_scene);
 }
 
 CommandController *StateMachineView::commandController() const
@@ -249,7 +249,7 @@ void StateMachineView::setThemeName(const QString &themeName)
     }
 
     d->m_themeName = std::move(selectedThemeName);
-    emit themeNameChanged(d->m_themeName);
+    Q_EMIT themeNameChanged(d->m_themeName);
 }
 
 QQuickItem *StateMachineView::viewPortObject() const

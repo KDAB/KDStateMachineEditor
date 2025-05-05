@@ -49,7 +49,7 @@ void CreateElementCommand::setParentElement(Element *parentElement)
         return;
 
     m_parentElement = parentElement;
-    emit parentElementChanged(m_parentElement);
+    Q_EMIT parentElementChanged(m_parentElement);
 }
 
 Element::Type CreateElementCommand::type() const
@@ -63,7 +63,7 @@ void CreateElementCommand::setType(Element::Type type)
         return;
 
     m_type = type;
-    emit typeChanged(m_type);
+    Q_EMIT typeChanged(m_type);
 }
 
 Element *CreateElementCommand::createdElement() const

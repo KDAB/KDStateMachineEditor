@@ -31,7 +31,7 @@ void QuickPainterPathStroker::setWidth(qreal width)
         return;
 
     m_stroker.setWidth(width);
-    emit widthChanged(width);
+    Q_EMIT widthChanged(width);
 }
 
 QPainterPath QuickPainterPathStroker::createStroke(const QPainterPath &path) const
@@ -56,7 +56,7 @@ void QuickPainterPath::setPath(const QPainterPath &path)
         return;
 
     m_path = path;
-    emit pathChanged(path);
+    Q_EMIT pathChanged(path);
 
     updateState(path);
 }
@@ -108,17 +108,17 @@ void QuickPainterPath::updateState(const QPainterPath &path)
     const QPointF newStartPoint = path.pointAtPercent(0.0);
     if (newStartPoint != m_startPoint) {
         m_startPoint = newStartPoint;
-        emit startPointChanged(m_startPoint);
+        Q_EMIT startPointChanged(m_startPoint);
     }
     const QPointF newEndPoint = path.pointAtPercent(1.0);
     if (newEndPoint != m_endPoint) {
         m_endPoint = newEndPoint;
-        emit endPointChanged(m_endPoint);
+        Q_EMIT endPointChanged(m_endPoint);
     }
     const bool newIsEmpty = path.isEmpty();
     if (newIsEmpty != m_isEmpty) {
         m_isEmpty = newIsEmpty;
-        emit isEmptyChanged(m_isEmpty);
+        Q_EMIT isEmptyChanged(m_isEmpty);
     }
 }
 
@@ -141,8 +141,8 @@ void QuickPainterPathGeometryItem::setPath(const QPainterPath &path)
 
     m_path = path;
     updateData();
-    emit pathChanged(m_path);
-    emit changed();
+    Q_EMIT pathChanged(m_path);
+    Q_EMIT changed();
 }
 
 void QuickPainterPathGeometryItem::updateData()

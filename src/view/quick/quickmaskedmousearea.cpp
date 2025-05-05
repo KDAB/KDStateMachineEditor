@@ -40,7 +40,7 @@ void PainterPathMask::setPath(const QPainterPath &path)
         return;
 
     m_path = path;
-    emit pathChanged(m_path);
+    Q_EMIT pathChanged(m_path);
 }
 
 bool PainterPathMask::contains(const QPointF &point) const
@@ -70,7 +70,7 @@ void QuickMaskedMouseArea::setPressed(bool pressed)
         return;
 
     m_pressed = pressed;
-    emit pressedChanged(m_pressed);
+    Q_EMIT pressedChanged(m_pressed);
 }
 
 void QuickMaskedMouseArea::setContainsMouse(bool containsMouse)
@@ -79,7 +79,7 @@ void QuickMaskedMouseArea::setContainsMouse(bool containsMouse)
         return;
 
     m_containsMouse = containsMouse;
-    emit containsMouseChanged(m_containsMouse);
+    Q_EMIT containsMouseChanged(m_containsMouse);
 }
 
 AbstractMask *QuickMaskedMouseArea::mask() const
@@ -93,7 +93,7 @@ void QuickMaskedMouseArea::setMask(AbstractMask *mask)
         return;
 
     m_mask = mask;
-    emit maskChanged(m_mask);
+    Q_EMIT maskChanged(m_mask);
 }
 
 qreal QuickMaskedMouseArea::tolerance() const
@@ -108,7 +108,7 @@ void QuickMaskedMouseArea::setTolerance(qreal tolerance)
     }
 
     m_tolerance = qMax(tolerance, qreal(0.0));
-    emit toleranceChanged(m_tolerance);
+    Q_EMIT toleranceChanged(m_tolerance);
 }
 
 bool QuickMaskedMouseArea::contains(const QPointF &point) const
@@ -138,26 +138,26 @@ void QuickMaskedMouseArea::mousePressEvent(QMouseEvent *event)
 {
     setPressed(true);
     m_pressPoint = event->pos();
-    emit pressed();
+    Q_EMIT pressed();
 }
 
 void QuickMaskedMouseArea::mouseReleaseEvent(QMouseEvent *event)
 {
     setPressed(false);
-    emit released();
+    Q_EMIT released();
 
 
     const int threshold = qApp->styleHints()->startDragDistance();
     const bool isClick = (threshold >= qAbs(event->x() - m_pressPoint.x()) && threshold >= qAbs(event->y() - m_pressPoint.y()));
 
     if (isClick)
-        emit clicked();
+        Q_EMIT clicked();
 }
 
 void QuickMaskedMouseArea::mouseUngrabEvent()
 {
     setPressed(false);
-    emit canceled();
+    Q_EMIT canceled();
 }
 
 void QuickMaskedMouseArea::hoverEnterEvent(QHoverEvent *event)

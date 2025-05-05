@@ -67,10 +67,10 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
 
-signals:
+Q_SIGNALS:
     void editingFinished(QString);
 
-private slots:
+private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);

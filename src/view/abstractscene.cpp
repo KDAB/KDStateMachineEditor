@@ -60,7 +60,7 @@ bool AbstractScene::event(QEvent *event)
         switch (d->m_contextMenuPolicy) {
         case Qt::CustomContextMenu:
             event->accept();
-            emit customContextMenuEvent(contextMenuEvent);
+            Q_EMIT customContextMenuEvent(contextMenuEvent);
             break;
         default:
             event->ignore();
@@ -124,7 +124,7 @@ void AbstractScene::setModel(QAbstractItemModel *model)
     connect(d->m_model, &QAbstractItemModel::destroyed, itemSelectionModel, &QItemSelectionModel::deleteLater);
     setSelectionModel(itemSelectionModel);
 
-    emit modelChanged(d->m_model);
+    Q_EMIT modelChanged(d->m_model);
 }
 
 QItemSelectionModel *AbstractScene::selectionModel() const
@@ -176,7 +176,7 @@ void AbstractScene::setInstantiator(QQuickItem *instantiator)
 
     d->m_instantiator = instantiator;
     d->m_instantiator->setParentItem(this);
-    emit instantiatorChanged(d->m_instantiator);
+    Q_EMIT instantiatorChanged(d->m_instantiator);
 }
 
 AbstractScene::EditTriggers AbstractScene::editTriggers() const

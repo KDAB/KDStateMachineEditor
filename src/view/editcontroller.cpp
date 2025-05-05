@@ -65,7 +65,7 @@ void EditController::setEditModeEnabled(bool editModeEnabled)
         return;
 
     d->m_editModeEnabled = editModeEnabled;
-    emit editModeEnabledChanged(d->m_editModeEnabled);
+    Q_EMIT editModeEnabledChanged(d->m_editModeEnabled);
 }
 
 bool EditController::sendDragEnterEvent(Element *sender, Element *target, const QPoint &pos, const QList<QUrl> &urls)

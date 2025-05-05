@@ -66,7 +66,7 @@ void Transition::setSourceState(State *sourceState)
     }
 
     setParent(sourceState);
-    emit sourceStateChanged(sourceState);
+    Q_EMIT sourceStateChanged(sourceState);
 }
 
 State *Transition::targetState() const
@@ -80,7 +80,7 @@ void Transition::setTargetState(State *targetState)
         return;
 
     d->m_targetState = targetState;
-    emit targetStateChanged(targetState);
+    Q_EMIT targetStateChanged(targetState);
 }
 
 Element::Type Transition::type() const
@@ -99,7 +99,7 @@ void Transition::setGuard(const QString &guard)
         return;
 
     d->m_guard = guard;
-    emit guardChanged(d->m_guard);
+    Q_EMIT guardChanged(d->m_guard);
 }
 
 QPainterPath Transition::shape() const
@@ -113,7 +113,7 @@ void Transition::setShape(const QPainterPath &shape)
         return;
 
     d->m_shape = shape;
-    emit shapeChanged(shape);
+    Q_EMIT shapeChanged(shape);
 }
 
 QRectF Transition::labelBoundingRect() const
@@ -127,7 +127,7 @@ void Transition::setLabelBoundingRect(const QRectF &rect)
         return;
 
     d->m_labelBoundingRect = rect;
-    emit labelBoundingRectChanged(rect);
+    Q_EMIT labelBoundingRectChanged(rect);
 }
 
 struct SignalTransition::Private
@@ -161,7 +161,7 @@ void SignalTransition::setSignal(const QString &signal)
         return;
 
     d->m_signal = signal;
-    emit signalChanged(d->m_signal);
+    Q_EMIT signalChanged(d->m_signal);
 }
 
 struct TimeoutTransition::Private
@@ -200,7 +200,7 @@ void TimeoutTransition::setTimeout(int timeout)
         return;
 
     d->m_timeout = timeout;
-    emit timeoutChanged(d->m_timeout);
+    Q_EMIT timeoutChanged(d->m_timeout);
 }
 
 QDebug KDSME::operator<<(QDebug dbg, const Transition *transition)
