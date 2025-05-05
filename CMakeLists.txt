@@ -127,13 +127,6 @@ if(KDSME_QT6)
     find_package(
         Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine
     )
-    find_package(Qt6Core5Compat ${QT_MIN_VERSION} CONFIG QUIET)
-    set_package_properties(
-        Qt6Core5Compat PROPERTIES
-        TYPE OPTIONAL
-        DESCRIPTION "Qt6-Qt5 compatibility module"
-        PURPOSE "Needed for the layoutinformation unit test"
-    )
     set(KDSME_LIBRARY_QTID "-qt6")
 else()
     set(QT_VERSION_MAJOR 5)
