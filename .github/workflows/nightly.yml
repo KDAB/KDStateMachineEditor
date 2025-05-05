@@ -60,7 +60,7 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Configure project
-        run: cmake -S . -B ./build --preset ${{ matrix.config.name }}
+        run: cmake --preset ${{ matrix.config.name }}
 
       - name: Build Project
         run: cmake --build ./build/${{ matrix.config.name }} --preset ${{ matrix.config.name }}
