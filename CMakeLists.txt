@@ -327,7 +327,7 @@ if((CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND NOT 
     endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_CXX_COMPILER STREQUAL "clazy")
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments -Wdocumentation")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments -Wdocumentation")
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
@@ -440,3 +440,16 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
 endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+add_custom_target(
+    cppcheck
+    USES_TERMINAL
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+    COMMENT "run cppcheck on source files"
+    COMMAND
+        ${CMAKE_COMMAND} -E env cppcheck "--project=${PROJECT_BINARY_DIR}/compile_commands.json" --enable=all
+        --error-exitcode=1 --language=c++ --inline-suppr --quiet --disable=missingInclude,unusedFunction
+        --check-level=exhaustive --library=qt.cfg --suppress=*:*.moc --suppress=*:*moc_*.cpp
+        "-i${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/" "-i${CMAKE_CURRENT_BINARY_DIR}/3rdparty/"
+        "--suppress=*:${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/" "--suppress=*:${CMAKE_CURRENT_BINARY_DIR}/3rdparty/"
+)

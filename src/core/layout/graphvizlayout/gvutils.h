@@ -28,7 +28,7 @@ namespace GVUtils {
 
 /// The agopen method for opening a graph
 #ifdef WITH_CGRAPH
-extern Agraph_t *_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc);
+extern Agraph_t *_agopen(const QString &name, const Agdesc_t &kind, Agdisc_t *disc);
 #else
 extern Agraph_t *_agopen(const QString &name, int kind);
 #endif

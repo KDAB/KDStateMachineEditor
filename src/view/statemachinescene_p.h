@@ -24,7 +24,7 @@ namespace KDSME {
 
 struct StateMachineScene::Private
 {
-    Private(StateMachineScene *view);
+    explicit Private(StateMachineScene *view);
 
     State *importState(State *state);
 

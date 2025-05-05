@@ -29,7 +29,7 @@ using namespace KDSME;
 
 struct ScxmlImporter::Private
 {
-    Private(ScxmlImporter *q)
+    explicit Private(ScxmlImporter *q)
         : q(q)
     {
     }
@@ -221,7 +221,7 @@ void ScxmlImporter::Private::visitInitial(State *parent)
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     // Must have exactly one <transition> child
-    Transition *transition = nullptr;
+    const Transition *transition = nullptr;
     while (m_reader.readNextStartElement()) {
         if (m_reader.name() == u"transition") {
             State *initialState = new PseudoState(PseudoState::InitialState, parent);

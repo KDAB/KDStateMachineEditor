@@ -32,7 +32,7 @@ inline qreal relativePosition(const ContainerType &list, const ItemType &t)
 
 struct RuntimeController::Private
 {
-    Private(RuntimeController *qq)
+    explicit Private(RuntimeController *qq)
         : q(qq)
         , m_lastConfigurations(5)
         , m_lastTransitions(5)
@@ -56,7 +56,7 @@ void RuntimeController::Private::updateActiveRegion()
 
     // Calculate the bounding rect of all states in that are currently active
     QRectF activeRegion;
-    for (State *state : configuration) {
+    for (const State *state : configuration) {
         activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;

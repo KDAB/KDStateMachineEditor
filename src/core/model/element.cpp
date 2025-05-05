@@ -239,7 +239,7 @@ Element::Type Element::stringToType(const char *type)
 
 void Element::setParent(QObject *object)
 {
-    const auto oldElementParent = parentElement();
+    const auto *oldElementParent = parentElement();
     const auto newElementParent = qobject_cast<Element *>(object);
     if (oldElementParent != newElementParent) {
         emit parentChanged(newElementParent);

@@ -36,7 +36,7 @@ namespace {
 class LevelIncrementer
 {
 public:
-    LevelIncrementer(int *level)
+    explicit LevelIncrementer(int *level)
         : m_level(level)
     {
         ++(*m_level);
@@ -103,8 +103,8 @@ QString toQmlId(const QString &input)
 
 struct QmlExporter::Private
 {
-    Private(QByteArray *array);
-    Private(QIODevice *device);
+    explicit Private(QByteArray *array);
+    explicit Private(QIODevice *device);
 
     bool writeStateMachine(StateMachine *machine);
     bool writeState(State *state);
@@ -250,12 +250,12 @@ bool QmlExporter::Private::writeStateInner(State *state)
         writeAttribute(state, QStringLiteral("childMode"), QStringLiteral("State.ParallelStates"));
     }
 
-    if (State *initial = ElementUtil::findInitialState(state)) {
+    if (const State *initial = ElementUtil::findInitialState(state)) {
         writeAttribute(state, QStringLiteral("initialState"), toQmlId(initial->label()));
     }
 
     if (auto *historyState = qobject_cast<HistoryState *>(state)) {
-        if (State *defaultState = historyState->defaultState())
+        if (const State *defaultState = historyState->defaultState())
             writeAttribute(state, QStringLiteral("defaultState"), toQmlId(defaultState->label()));
         if (historyState->historyType() == HistoryState::DeepHistory)
             writeAttribute(state, QStringLiteral("historyType"), QStringLiteral("HistoryState.DeepHistory"));
@@ -265,9 +265,9 @@ bool QmlExporter::Private::writeStateInner(State *state)
     writeAttribute(state, QStringLiteral("onExited"), state->onExit());
 
     const auto childStates = state->childStates();
-    for (State *child : childStates) {
-        if (!writeState(child))
-            return false;
+    if (std::any_of(childStates.begin(), childStates.end(),
+                    [this](State *child) { return !writeState(child); })) {
+        return false;
     }
 
     const auto stateTransitions = state->transitions();

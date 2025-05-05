@@ -23,7 +23,7 @@ namespace KDSME {
 
 class ObjectTreeModelPrivate
 {
-    ObjectTreeModelPrivate(ObjectTreeModel *qq)
+    explicit ObjectTreeModelPrivate(ObjectTreeModel *qq)
         : q_ptr(qq)
     {
     }
@@ -107,9 +107,9 @@ ObjectTreeModel::RemoveOperation::RemoveOperation(ObjectTreeModel *model, QObjec
     Q_ASSERT(object);
     Q_ASSERT(object->parent());
     Q_ASSERT(!m_model->rootObjects().contains(object));
-    const QModelIndex index = m_model->indexForObject(object);
+    const QModelIndex indexObj = m_model->indexForObject(object);
     const QModelIndex parentIndex = m_model->indexForObject(object->parent());
-    m_model->beginRemoveRows(parentIndex, index.row(), index.row());
+    m_model->beginRemoveRows(parentIndex, indexObj.row(), indexObj.row());
 }
 
 ObjectTreeModel::RemoveOperation::~RemoveOperation()
@@ -141,12 +141,12 @@ ObjectTreeModel::ReparentOperation::ReparentOperation(ObjectTreeModel *model, QO
     }
 
     if (m_model) {
-        const QModelIndex index = m_model->indexForObject(object);
-        QObject *parent = object->parent();
-        const QModelIndex parentIndex = m_model->indexForObject(parent);
+        const QModelIndex indexObj = m_model->indexForObject(object);
+        QObject *parentObj = object->parent(); // cppcheck-suppress constVariablePointer
+        const QModelIndex parentIndex = m_model->indexForObject(parentObj);
         const QModelIndex destinationParentIndex = m_model->indexForObject(newParent);
         Q_ASSERT(destinationParentIndex.isValid());
-        const bool success = m_model->beginMoveRows(parentIndex, index.row(), index.row(), destinationParentIndex, m_model->rowCount(destinationParentIndex));
+        const bool success = m_model->beginMoveRows(parentIndex, indexObj.row(), indexObj.row(), destinationParentIndex, m_model->rowCount(destinationParentIndex));
         Q_ASSERT(success);
         Q_UNUSED(success);
     }
@@ -207,7 +207,7 @@ void ObjectTreeModel::setRootObjects(const QList<QObject *> &rootObjects)
     Q_D(ObjectTreeModel);
     beginResetModel();
     d->m_rootObjects.clear();
-    for (QObject *object : rootObjects) {
+    for (QObject *object : rootObjects) { // cppcheck-suppress constVariablePointer
         if (object)
             d->m_rootObjects << object;
     }

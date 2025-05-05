@@ -20,13 +20,13 @@
 #include <QSignalSpy>
 #include <QTimer>
 
-bool TestUtil::waitForSignal(QObject *obj, const char *signal, int timeout)
+bool TestUtil::waitForSignal(const QObject *obj, const char *signal, std::chrono::milliseconds timeout)
 {
     QEventLoop loop;
     QObject::connect(obj, signal, &loop, SLOT(quit()));
     QTimer timer;
     const QSignalSpy timeoutSpy(&timer, SIGNAL(timeout()));
-    if (timeout > 0) {
+    if (timeout.count() > 0) {
         QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
         timer.setSingleShot(true);
         timer.start(timeout);

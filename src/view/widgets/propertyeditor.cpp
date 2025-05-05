@@ -173,17 +173,23 @@ PropertyEditor::~PropertyEditor()
 void PropertyEditor::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     if (d->m_selectionModel) {
-        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+        // clang-format off
+        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+                   this, SLOT(currentChanged(QModelIndex,QModelIndex)));
         disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
                    this, SLOT(modelAboutToBeReset()));
+        // clang-format on
     }
 
     d->m_selectionModel = selectionModel;
 
     if (d->m_selectionModel) {
-        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)), SLOT(currentChanged(QModelIndex, QModelIndex)));
+        // clang-format off
+        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+                this, SLOT(currentChanged(QModelIndex,QModelIndex)));
         connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()),
                 this, SLOT(modelAboutToBeReset()));
+        // clang-format on
     }
 }
 

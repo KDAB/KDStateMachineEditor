@@ -24,7 +24,7 @@ namespace KDSME {
 template<>
 struct TreeWalkerTrait<Element *>
 {
-    static inline QList<Element *> children(Element *element)
+    static inline QList<Element *> children(const Element *element)
     {
         return element->childElements();
     }

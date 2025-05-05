@@ -86,12 +86,12 @@ void importStateLayout(const QJsonObject &data, State *state)
     state->setHeight((*height).toDouble());
 }
 
-bool isValidState(const QJsonObject &data, State *state)
+bool isValidState(const QJsonObject &data, const State *state)
 {
     return data.value(u"label") == state->label() && data.contains(u"x") && data.contains(u"y") && data.contains(u"width") && data.contains(u"height");
 }
 
-bool isValidTransition(const QJsonObject &data, Transition *state)
+bool isValidTransition(const QJsonObject &data, const Transition *state)
 {
     return data.value(u"label") == state->label() && data.contains(u"x") && data.contains(u"y") && data.contains(u"labelBoundingRect") && data.contains(u"shape");
 }
@@ -152,20 +152,22 @@ QJsonObject LayoutImportExport::exportLayout(const State *state)
 
     QJsonArray states;
     const auto childStates = state->childStates();
-    for (State *child : childStates)
-        states.push_back(exportLayout(child));
+    for (const State *child : childStates) {
+        states.push_back(exportLayout(child)); // cppcheck-suppress useStlAlgorithm
+    }
     res[u"childStates"] = states;
 
     QJsonArray transitions;
     const auto stateTransitions = state->transitions();
-    for (Transition *child : stateTransitions)
-        transitions.push_back(transitionLayoutToJson(child));
+    for (const Transition *child : stateTransitions) {
+        transitions.push_back(transitionLayoutToJson(child)); // cppcheck-suppress useStlAlgorithm
+    }
     res[u"transitions"] = transitions;
 
     return res;
 }
 
-bool LayoutImportExport::matches(const QJsonObject &data, State *state)
+bool LayoutImportExport::matches(const QJsonObject &data, State *state) // cppcheck-suppress constParameterPointer
 {
     if (!isValidState(data, state))
         return false;
@@ -185,7 +187,7 @@ bool LayoutImportExport::matches(const QJsonObject &data, State *state)
         return false;
 
     for (int i = 0; i < transitions.size(); ++i) {
-        Transition *child = state->transitions().at(i);
+        const Transition *child = state->transitions().at(i);
         if (!isValidTransition(transitions.at(i).toObject(), child))
             return false;
     }

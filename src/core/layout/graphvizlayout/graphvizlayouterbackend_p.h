@@ -42,6 +42,9 @@ public:
     GraphvizLayouterBackend();
     ~GraphvizLayouterBackend();
 
+    GraphvizLayouterBackend(const GraphvizLayouterBackend &other) = delete;
+    GraphvizLayouterBackend &operator=(const GraphvizLayouterBackend &) = delete;
+
     /**
      * Defines the layout mode for this instance
      *
@@ -64,7 +67,7 @@ public:
      *
      * @note If RecursiveMode is selected, transitions of descendants of @p state will get imported as well
      */
-    void buildTransitions(KDSME::State *state);
+    void buildTransitions(const KDSME::State *state);
 
     void buildTransition(KDSME::Transition *transition);
 

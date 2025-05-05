@@ -17,6 +17,7 @@
 #define TESTS_UTIL_H
 
 #include <qglobal.h>
+#include <chrono>
 
 QT_BEGIN_NAMESPACE
 class QObject;
@@ -32,7 +33,7 @@ namespace TestUtil {
  * \return \p true if the requested signal was received
  *         \p false on timeout
  */
-bool waitForSignal(QObject *obj, const char *signal, int timeout = 1000);
+bool waitForSignal(const QObject *obj, const char *signal, std::chrono::milliseconds timeout = std::chrono::seconds { 1 });
 
 }
 

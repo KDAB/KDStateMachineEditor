@@ -81,10 +81,12 @@ public:
             continueWalk = (visit(item) == TreeWalker::RecursiveWalk);
         }
         Q_ASSERT(item);
-        foreach (T child, TreeWalkerTrait<T>::children(item)) {
-            if (!walkItems(child, visit))
-                return false;
+        const auto items = TreeWalkerTrait<T>::children(item);
+        if (std::any_of(items.begin(), items.end(),
+                        [&](const T &child) { return !walkItems(child, visit); })) {
+            return false;
         }
+
         if (m_traversalType == PostOrderTraversal) {
             continueWalk = (visit(item) == TreeWalker::RecursiveWalk);
         }
@@ -101,11 +103,9 @@ public:
         if (!item)
             return false;
 
-        foreach (T child, TreeWalkerTrait<T>::children(item)) {
-            if (!walkItems(child, visit))
-                return false;
-        }
-        return true;
+        const auto items = TreeWalkerTrait<T>::children(item);
+        return !std::any_of(items.begin(), items.end(),
+                            [&](const T &child) { return !walkItems(child, visit); });
     }
 
 private:

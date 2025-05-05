@@ -36,7 +36,7 @@ struct ScxmlExporter::Private
     bool writeStateMachine(StateMachine *machine);
     bool writeState(State *state);
     bool writeStateInner(State *state);
-    bool writeTransition(Transition *transition);
+    bool writeTransition(const Transition *transition);
 
     ScxmlExporter *q;
     QXmlStreamWriter m_writer;
@@ -145,9 +145,8 @@ bool ScxmlExporter::Private::writeStateInner(State *state)
     }
 
     const auto stateTransitions = state->transitions();
-    for (Transition *transition : stateTransitions) {
-        if (!writeTransition(transition))
-            return false;
+    for (const Transition *transition : stateTransitions) {
+        writeTransition(transition);
     }
 
     const auto childStates = state->childStates();
@@ -155,11 +154,11 @@ bool ScxmlExporter::Private::writeStateInner(State *state)
                        [this](State *child) { return writeState(child); });
 }
 
-bool ScxmlExporter::Private::writeTransition(Transition *transition)
+bool ScxmlExporter::Private::writeTransition(const Transition *transition)
 {
     m_writer.writeStartElement(QStringLiteral("transition"));
     m_writer.writeAttribute(QStringLiteral("event"), transition->label());
-    if (State *targetState = transition->targetState()) {
+    if (const State *targetState = transition->targetState()) {
         m_writer.writeAttribute(QStringLiteral("target"), targetState->label());
     }
     m_writer.writeEndElement();

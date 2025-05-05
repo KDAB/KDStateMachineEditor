@@ -67,10 +67,10 @@ public:
     QOpenGLPoint(GLfloat new_x, GLfloat new_y) :
         x(new_x), y(new_y) {};
 
-    QOpenGLPoint(const QPointF &p) :
+    explicit QOpenGLPoint(const QPointF &p) :
         x(p.x()), y(p.y()) {};
 
-    QOpenGLPoint(const QPointF* p) :
+    explicit QOpenGLPoint(const QPointF* p) :
         x(p->x()), y(p->y()) {};
 
     GLfloat x;
@@ -84,7 +84,7 @@ Q_DECLARE_TYPEINFO(QOpenGLPoint, Q_PRIMITIVE_TYPE);
 
 struct QOpenGLRect
 {
-    QOpenGLRect(const QRectF &r)
+    explicit QOpenGLRect(const QRectF &r)
         :  left(r.left()), top(r.top()), right(r.right()), bottom(r.bottom()) {}
 
     QOpenGLRect(GLfloat l, GLfloat t, GLfloat r, GLfloat b)

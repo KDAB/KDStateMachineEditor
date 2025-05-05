@@ -37,7 +37,7 @@ QSizeF LayoutUtils::sizeForLabel(const QString &label)
     return QSizeF(width + 2 * margin, fm.height() + 2 * margin);
 }
 
-bool LayoutUtils::moveInner(State *state, const QPointF &offset)
+bool LayoutUtils::moveInner(State *state, const QPointF &offset) // cppcheck-suppress constParameterPointer
 {
     if (!state) {
         return false;
@@ -66,7 +66,7 @@ bool LayoutUtils::moveToParent(Element *item, Element *parentItem)
     if (!item || !parentItem)
         return false;
 
-    auto oldParent = item->parentElement();
+    const auto *oldParent = item->parentElement();
     if (oldParent == parentItem)
         return false; // do nothing
 

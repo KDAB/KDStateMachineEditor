@@ -203,7 +203,10 @@ void StateMachineView::setScene(StateMachineScene *scene)
     }
     d->m_scene = scene;
     if (d->m_scene) {
-        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine *)), this, SLOT(onStateMachineChanged(KDSME::StateMachine *)));
+        // clang-format off
+        connect(d->m_scene, SIGNAL(stateMachineChanged(KDSME::StateMachine*)),
+                this, SLOT(onStateMachineChanged(KDSME::StateMachine*)));
+        // clang-format on
     }
 
     emit sceneChanged(d->m_scene);

@@ -35,7 +35,7 @@ namespace KDSME {
 class SvgExporterPrivate
 {
 public:
-    SvgExporterPrivate(SvgExporter *qq)
+    explicit SvgExporterPrivate(SvgExporter *qq)
         : q(qq)
     {
     }
@@ -47,10 +47,10 @@ public:
     void writeSvgPath(const QPainterPath &path, bool fill = false);
     void writeSvgText(const QString &text, const QPointF &pos, bool center = false);
 
-    bool writeStateMachine(StateMachine *machine);
+    bool writeStateMachine(const StateMachine *machine);
     bool writeState(State *state);
-    bool writeStateInner(State *state);
-    bool writeTransition(Transition *transition);
+    bool writeStateInner(const State *state);
+    bool writeTransition(const Transition *transition);
 
     [[nodiscard]] static double headerHeight();
     [[nodiscard]] static double margin();
@@ -128,12 +128,12 @@ void SvgExporterPrivate::writeSvgPath(const QPainterPath &path, bool fill)
             pathData += QStringLiteral(" C") + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
             ++i;
             while (i < path.elementCount()) {
-                auto pathElement = path.elementAt(i);
-                if (pathElement.type != QPainterPath::CurveToDataElement) {
+                const auto curveElement = path.elementAt(i);
+                if (curveElement.type != QPainterPath::CurveToDataElement) {
                     --i;
                     break;
                 }
-                pathData += u' ' + QString::number(pathElement.x) + u',' + QString::number(pathElement.y);
+                pathData += u' ' + QString::number(curveElement.x) + u',' + QString::number(curveElement.y);
                 ++i;
             }
             break;
@@ -162,7 +162,7 @@ void SvgExporterPrivate::writeSvgText(const QString &text, const QPointF &pos, b
 }
 
 
-bool SvgExporterPrivate::writeStateMachine(StateMachine *machine)
+bool SvgExporterPrivate::writeStateMachine(const StateMachine *machine)
 {
     writeSvgRect(machine->boundingRect());
     const QFontMetricsF metrics(QGuiApplication::font());
@@ -211,7 +211,7 @@ bool SvgExporterPrivate::writeState(State *state)
     return true;
 }
 
-bool SvgExporterPrivate::writeStateInner(State *state)
+bool SvgExporterPrivate::writeStateInner(const State *state)
 {
     if (state->transitions().isEmpty() && state->childStates().isEmpty())
         return true;
@@ -219,9 +219,8 @@ bool SvgExporterPrivate::writeStateInner(State *state)
     writer.writeStartElement(QStringLiteral("g"));
     writer.writeAttribute(QStringLiteral("transform"), QStringLiteral("translate(%1,%2)").arg(state->boundingRect().x()).arg(state->boundingRect().y()));
     const auto stateTransitions = state->transitions();
-    for (Transition *transition : stateTransitions) {
-        if (!writeTransition(transition))
-            return false;
+    for (const Transition *transition : stateTransitions) {
+        writeTransition(transition);
     }
 
     if (state->isExpanded()) {
@@ -243,7 +242,7 @@ bool SvgExporterPrivate::writeStateInner(State *state)
     return true;
 }
 
-bool SvgExporterPrivate::writeTransition(Transition *transition)
+bool SvgExporterPrivate::writeTransition(const Transition *transition)
 {
     const auto path = transition->shape().translated(transition->pos());
     writeSvgPath(path);

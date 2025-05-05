@@ -80,10 +80,10 @@ void CreateElementCommand::redo()
         return;
     }
 
-    Element *parentElement = m_parentElement ? m_parentElement : model()->state();
-    const StateModel::AppendOperation append(model(), parentElement);
+    Element *parentElementL = m_parentElement ? m_parentElement : model()->state();
+    const StateModel::AppendOperation append(model(), parentElementL);
     if (m_createdElement) {
-        m_createdElement->setParent(parentElement);
+        m_createdElement->setParent(parentElementL);
     } else {
         Element *element = factory.create(m_type);
         if (!element) {
@@ -92,7 +92,7 @@ void CreateElementCommand::redo()
         }
 
         element->setLabel(tr("Unnamed"));
-        element->setParent(parentElement);
+        element->setParent(parentElementL);
         m_createdElement = element;
     }
     updateText();

@@ -30,7 +30,7 @@ State *ElementUtil::findInitialState(const KDSME::State *state)
     for (State *child : childStates) {
         if (auto *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
-                Transition *transition = pseudoState->transitions().value(0);
+                const Transition *transition = pseudoState->transitions().value(0);
                 return transition ? transition->targetState() : nullptr;
             }
         }
@@ -50,7 +50,7 @@ void ElementUtil::setInitialState(State *state, State *initialState)
         if (auto *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
                 pseudoStateName = pseudoState->label();
-                Transition *transition = pseudoState->transitions().value(0);
+                const Transition *transition = pseudoState->transitions().value(0);
                 if (transition)
                     transitionName = transition->label();
                 delete pseudoState;
@@ -86,9 +86,11 @@ State *ElementUtil::findState(State *root, const QString &label)
         return root;
 
     const auto childStates = root->childStates();
-    for (State *state : childStates)
-        if (State *st = findState(state, label))
+    for (State *state : childStates) {
+        if (State *st = findState(state, label)) { // cppcheck-suppress useStlAlgorithm
             return st;
+        }
+    }
 
     return nullptr;
 }

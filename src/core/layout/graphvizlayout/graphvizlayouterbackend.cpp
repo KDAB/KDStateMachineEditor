@@ -106,6 +106,19 @@ QVector<QPair<const char *, const char *>> attributesForState(const State *state
         << EntryType("shape", "rectangle")
         << EntryType("style", "rounded");
 }
+
+bool isAncestorCollapsed(const State *current)
+{
+    while (current) {
+        auto parent = current->parentState();
+        if (parent && !parent->isExpanded())
+            return true;
+
+        current = parent;
+    }
+    return false;
+}
+
 }
 
 struct GraphvizLayouterBackend::Private // NOLINT(clang-analyzer-cplusplus.NewDelete)
@@ -114,7 +127,7 @@ struct GraphvizLayouterBackend::Private // NOLINT(clang-analyzer-cplusplus.NewDe
     ~Private();
 
     void buildState(State *state, Agraph_t *graph);
-    void buildTransitions(State *state, Agraph_t *graph);
+    void buildTransitions(const State *state, Agraph_t *graph);
     void buildTransition(Transition *transition, Agraph_t *graph);
 
     void import();
@@ -169,19 +182,6 @@ GraphvizLayouterBackend::Private::~Private()
 {
 }
 
-bool isAncestorCollapsed(State *state)
-{
-    auto current = state;
-    while (current) {
-        auto parent = current->parentState();
-        if (parent && !parent->isExpanded())
-            return true;
-
-        current = parent;
-    }
-    return false;
-}
-
 void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
 {
     Q_ASSERT(state);
@@ -234,7 +234,7 @@ void GraphvizLayouterBackend::Private::buildState(State *state, Agraph_t *graph)
     }
 }
 
-void GraphvizLayouterBackend::Private::buildTransitions(State *state, Agraph_t *graph)
+void GraphvizLayouterBackend::Private::buildTransitions(const State *state, Agraph_t *graph)
 {
     IF_DEBUG(qCDebug(KDSME_CORE) << state->label() << *state << graph);
 
@@ -245,7 +245,7 @@ void GraphvizLayouterBackend::Private::buildTransitions(State *state, Agraph_t *
 
     if (m_layoutMode == RecursiveMode) {
         const auto childStates = state->childStates();
-        for (State *childState : childStates) {
+        for (const State *childState : childStates) {
             buildTransitions(childState, graph); // recursive call
         }
     }
@@ -332,6 +332,7 @@ void GraphvizLayouterBackend::Private::importState(State *state, Agnode_t *node)
 
     IF_DEBUG(qCDebug(KDSME_CORE) << "before" << state->label() << *state << node);
 
+    // cppcheck-suppress-begin cstyleCast
     // Fetch the X coordinate, apply the DPI conversion rate (actual DPI / 72, used by dot)
     const qreal x = ND_coord(node).x * TO_DOT_DPI_RATIO;
 
@@ -342,6 +343,7 @@ void GraphvizLayouterBackend::Private::importState(State *state, Agnode_t *node)
 
     state->setWidth(ND_width(node) * DISPLAY_DPI);
     state->setHeight(ND_height(node) * DISPLAY_DPI);
+    // cppcheck-suppress-end cstyleCast
 
     const QPointF absolutePos = QPointF(x - state->width() / 2, y - state->height() / 2);
     if (m_layoutMode == RecursiveMode) {
@@ -451,15 +453,18 @@ void GraphvizLayouterBackend::Private::closeLayout()
 
 QRectF GraphvizLayouterBackend::Private::boundingRectForGraph(Agraph_t *graph) const
 {
+    // cppcheck-suppress-begin cstyleCast
     const qreal left = GD_bb(graph).LL.x * TO_DOT_DPI_RATIO;
     const qreal top = (GD_bb(m_graph).UR.y - GD_bb(graph).LL.y) * TO_DOT_DPI_RATIO;
     const qreal right = GD_bb(graph).UR.x * TO_DOT_DPI_RATIO;
     const qreal bottom = (GD_bb(m_graph).UR.y - GD_bb(graph).UR.y) * TO_DOT_DPI_RATIO;
+    // cppcheck-suppress-end cstyleCast
     return QRectF(left, top, right - left, bottom - top).normalized();
 }
 
 QRectF GraphvizLayouterBackend::Private::labelRectForEdge(Agedge_t *edge) const
 {
+    // cppcheck-suppress-begin cstyleCast
     if (!ED_label(edge))
         return QRectF();
 
@@ -472,6 +477,7 @@ QRectF GraphvizLayouterBackend::Private::labelRectForEdge(Agedge_t *edge) const
         ((GD_bb(m_graph).UR.y - posy) - ED_label(edge)->dimen.y / 2.0) * TO_DOT_DPI_RATIO,
         ED_label(edge)->dimen.x * TO_DOT_DPI_RATIO,
         ED_label(edge)->dimen.y * TO_DOT_DPI_RATIO);
+    // cppcheck-suppress-end cstyleCast
     return labelBoundingRect;
 }
 
@@ -481,6 +487,7 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t *edge) const
     // Calculate the path from the spline (only one spline, as the graph is strict.
     // If it wasn't, we would have to iterate over the first list too)
     // Calculate the path from the spline (only one as the graph is strict)
+    // cppcheck-suppress-begin cstyleCast
     if (ED_spl(edge) && (ED_spl(edge)->list != nullptr) && (ED_spl(edge)->list->size % 3 == 1)) {
         // If there is a starting point, draw a line from it to the first curve point
         if (ED_spl(edge)->list->sflag) {
@@ -509,6 +516,8 @@ QPainterPath GraphvizLayouterBackend::Private::pathForEdge(Agedge_t *edge) const
                         (GD_bb(m_graph).UR.y - ED_spl(edge)->list->ep.y) * TO_DOT_DPI_RATIO);
         }
     }
+    // cppcheck-suppress-end cstyleCast
+
     return path;
 }
 
@@ -623,7 +632,7 @@ void GraphvizLayouterBackend::buildState(State *state)
     d->buildState(state, d->m_graph);
 }
 
-void GraphvizLayouterBackend::buildTransitions(State *state)
+void GraphvizLayouterBackend::buildTransitions(const State *state)
 {
     d->buildTransitions(state, d->m_graph);
 }

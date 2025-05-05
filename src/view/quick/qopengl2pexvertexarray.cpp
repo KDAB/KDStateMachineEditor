@@ -65,8 +65,9 @@ QOpenGLRect QOpenGL2PEXVertexArray::boundingRect() const
 void QOpenGL2PEXVertexArray::addClosingLine(int index)
 {
     const QPointF point(vertexArray.at(index));
-    if (point != QPointF(vertexArray.last()))
-        vertexArray.add(point);
+    if (point != QPointF(vertexArray.last())) {
+        vertexArray.add(QOpenGLPoint{point});
+    }
 }
 
 void QOpenGL2PEXVertexArray::addCentroid(const QVectorPath &path, int subPathIndex)
@@ -83,7 +84,7 @@ void QOpenGL2PEXVertexArray::addCentroid(const QVectorPath &path, int subPathInd
     }
 
     const QPointF centroid = sum / qreal(count);
-    vertexArray.add(centroid);
+    vertexArray.add(QOpenGLPoint{centroid});
 }
 
 void QOpenGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInverseScale, bool outline)  // NOLINT(readability-function-cognitive-complexity)
@@ -101,7 +102,7 @@ void QOpenGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInver
         addCentroid(path, 0);
 
     int lastMoveTo = static_cast<int>(vertexArray.size());
-    vertexArray.add(points[0]); // The first element is always a moveTo
+    vertexArray.add(QOpenGLPoint{points[0]}); // The first element is always a moveTo
 
     do {
         if (!elements) {
@@ -136,7 +137,7 @@ void QOpenGL2PEXVertexArray::addPath(const QVectorPath &path, GLfloat curveInver
                 lineToArray(points[i]);
                 break;
             case QPainterPath::CurveToElement: {
-                const QBezier b = QBezier::fromPoints(*(((const QPointF *) points) + i - 1),
+                const QBezier b = QBezier::fromPoints(*(static_cast<const QPointF *>(points) + i - 1),
                                                 points[i],
                                                 points[i+1],
                                                 points[i+2]);

@@ -282,12 +282,12 @@ void QuickTransitionItem::updatePosition()
 
 void QuickTransitionItem::updateSource()
 {
-    auto transition = toTransition();
+    const auto *transition = toTransition();
     if (!transition)
         return;
 
     disconnect(m_sourceStateConnection);
-    if (auto source = toTransition()->sourceState()) {
+    if (const auto *source = toTransition()->sourceState()) {
         m_sourceStateConnection = connect(source, &Element::posChanged,
                                           this, &QuickTransitionItem::updatePosition);
     }
@@ -295,12 +295,12 @@ void QuickTransitionItem::updateSource()
 
 void QuickTransitionItem::updateTarget()
 {
-    auto transition = toTransition();
+    const auto *transition = toTransition();
     if (!transition)
         return;
 
     disconnect(m_targetStateConnection);
-    if (auto targetState = toTransition()->targetState()) {
+    if (const auto *targetState = toTransition()->targetState()) {
         m_targetStateConnection = connect(targetState, &Element::posChanged,
                                           this, &QuickTransitionItem::updatePosition);
     }

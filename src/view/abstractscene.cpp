@@ -120,9 +120,9 @@ void AbstractScene::setModel(QAbstractItemModel *model)
                 this, &AbstractScene::layoutChanged);
     }
 
-    auto *selectionModel = new QItemSelectionModel(d->m_model, this);
-    connect(d->m_model, SIGNAL(destroyed()), selectionModel, SLOT(deleteLater()));
-    setSelectionModel(selectionModel);
+    auto *itemSelectionModel = new QItemSelectionModel(d->m_model, this);
+    connect(d->m_model, &QAbstractItemModel::destroyed, itemSelectionModel, &QItemSelectionModel::deleteLater);
+    setSelectionModel(itemSelectionModel);
 
     emit modelChanged(d->m_model);
 }
@@ -135,7 +135,7 @@ QItemSelectionModel *AbstractScene::selectionModel() const
 void AbstractScene::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     Q_ASSERT(selectionModel);
-    if (selectionModel->model() != d->m_model) {
+    if (selectionModel && selectionModel->model() != d->m_model) {
         qCWarning(KDSME_VIEW) << "QAbstractItemView::setSelectionModel() failed: "
                                  "Trying to set a selection model, which works on "
                                  "a different model than the view.";
@@ -143,19 +143,19 @@ void AbstractScene::setSelectionModel(QItemSelectionModel *selectionModel)
     }
 
     if (d->m_selectionModel) {
-        disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-                   this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-                   this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+        disconnect(d->m_selectionModel, &QItemSelectionModel::selectionChanged,
+                   this, &AbstractScene::selectionChanged);
+        disconnect(d->m_selectionModel, &QItemSelectionModel::currentChanged,
+                   this, &AbstractScene::currentChanged);
     }
 
     d->m_selectionModel = selectionModel;
 
     if (d->m_selectionModel) {
-        connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-                this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-                this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+        connect(d->m_selectionModel, &QItemSelectionModel::selectionChanged,
+                this, &AbstractScene::selectionChanged);
+        connect(d->m_selectionModel, &QItemSelectionModel::currentChanged,
+                this, &AbstractScene::currentChanged);
     }
 }
 
@@ -206,8 +206,8 @@ void AbstractScene::setContextMenuPolicy(Qt::ContextMenuPolicy contextMenuPolicy
 
 QObject *AbstractScene::itemForIndex(const QModelIndex &index) const
 {
-    auto instantiator = dynamic_cast<InstantiatorInterface *>(d->m_instantiator);
-    return instantiator ? instantiator->itemForIndex(index) : nullptr;
+    const auto *iface = dynamic_cast<InstantiatorInterface *>(d->m_instantiator);
+    return iface ? iface->itemForIndex(index) : nullptr;
 }
 
 AbstractScene::ViewState AbstractScene::viewState() const

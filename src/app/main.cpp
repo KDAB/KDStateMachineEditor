@@ -66,11 +66,11 @@ int main(int argc, char **argv)
 
     StateMachine *stateMachine = nullptr;
     if (!source.isEmpty()) {
-        ScxmlImporter parser(ParseHelper::readFile(source));
-        stateMachine = parser.import();
+        ScxmlImporter scxmlParser(ParseHelper::readFile(source));
+        stateMachine = scxmlParser.import();
 
         if (!stateMachine) {
-            qWarning() << "Failed loading" << source << "-" << parser.errorString();
+            qWarning() << "Failed loading" << source << "-" << scxmlParser.errorString();
         }
     }
 
