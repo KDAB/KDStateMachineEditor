@@ -34,10 +34,10 @@ QSizeF LayoutUtils::sizeForLabel(const QString &label)
     // TODO: Improve
     const QFontMetricsF fm(QGuiApplication::font());
     const qreal width = fm.horizontalAdvance(label);
-    return QSizeF(width + 2 * margin, fm.height() + 2 * margin);
+    return QSizeF(width + (2 * margin), fm.height() + (2 * margin));
 }
 
-bool LayoutUtils::moveInner(State *state, QPointF offset) // cppcheck-suppress constParameterPointer
+bool LayoutUtils::moveInner(State *state, const QPointF &offset) // cppcheck-suppress constParameterPointer // clazy:exclude=function-args-by-value
 {
     if (!state) {
         return false;

@@ -37,7 +37,7 @@ public:
     static QSizeF sizeForLabel(const QString &label);
 
     /// Move all direct children of state @p state by offset @p offset
-    static bool moveInner(State *state, QPointF offset);
+    static bool moveInner(State *state, const QPointF &offset);
 
     static bool fixupLayout(State *);
 

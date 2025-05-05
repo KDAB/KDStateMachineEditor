@@ -100,7 +100,7 @@ QSizeF LayoutProperties::regionLabelButtonBoxSize() const
     return d->regionLabelButtonBoxSize;
 }
 
-void LayoutProperties::setRegionLabelButtonBoxSize(QSizeF size)
+void LayoutProperties::setRegionLabelButtonBoxSize(const QSizeF &size) // clazy:exclude=function-args-by-value
 {
     if (d->regionLabelButtonBoxSize == size) {
         return;
