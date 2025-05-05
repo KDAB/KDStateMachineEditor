@@ -2,6 +2,8 @@ Version 2.1.0: (unreleased)
 --------------
  * KDStateMachineEditor now looks for Qt6 by default, rather than Qt5. If your Qt5
    build broke, pass -DKDStateMachineEditor_QT6=OFF to CMake.
+ * Bump to Graphviz 12.2.1
+ * Fix build with Qt 6.9
 
 Version 2.0.0:
 --------------
