@@ -149,7 +149,7 @@ QScxmlDebugInterfaceSource::Private::Private(QObject *parent)
 
 void QScxmlDebugInterfaceSource::Private::repopulateGraph()
 {
-    emit aboutToRepopulateGraph();
+    Q_EMIT aboutToRepopulateGraph();
 
     updateStartStop();
 
@@ -157,10 +157,13 @@ void QScxmlDebugInterfaceSource::Private::repopulateGraph()
         // root state is not part of 'allStates', add it manually
         addState(QScxmlStateMachineInfo::InvalidStateId);
 
-        foreach (auto stateId, m_info->allStates()) {
+        const auto states = m_info->allStates();
+        for (auto stateId : states) {
             addState(stateId);
         }
-        foreach (auto transition, m_info->allTransitions()) {
+
+        const auto transitions = m_info->allTransitions();
+        for (auto transition : transitions) {
             addTransition(transition);
         }
 
@@ -168,7 +171,7 @@ void QScxmlDebugInterfaceSource::Private::repopulateGraph()
         m_recursionGuardForTransition.clear();
     }
 
-    emit graphRepopulated();
+    Q_EMIT graphRepopulated();
 
     // make sure to pass the current config to the listener
     handleStateConfigurationChanged();
@@ -219,18 +222,18 @@ void QScxmlDebugInterfaceSource::Private::setQScxmlStateMachine(QScxmlStateMachi
 
 void QScxmlDebugInterfaceSource::Private::handleTransitionTriggered(QScxmlStateMachineInfo::TransitionId transition)
 {
-    emit transitionTriggered(makeTransitionId(transition), labelForTransition(transition));
+    Q_EMIT transitionTriggered(makeTransitionId(transition), labelForTransition(transition));
 }
 
 void QScxmlDebugInterfaceSource::Private::stateEntered(QScxmlStateMachineInfo::StateId state)
 {
-    emit message(tr("State entered: %1").arg(labelForState(state)));
+    Q_EMIT message(tr("State entered: %1").arg(labelForState(state)));
     handleStateConfigurationChanged();
 }
 
 void QScxmlDebugInterfaceSource::Private::stateExited(QScxmlStateMachineInfo::StateId state)
 {
-    emit message(tr("State exited: %1").arg(labelForState(state)));
+    Q_EMIT message(tr("State exited: %1").arg(labelForState(state)));
     handleStateConfigurationChanged();
 }
 
@@ -248,11 +251,11 @@ void QScxmlDebugInterfaceSource::Private::handleStateConfigurationChanged()
 
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
-    foreach (auto state, newConfig) {
+    for (auto state : qAsConst(newConfig)) {
         config << makeStateId(state);
     }
 
-    emit stateConfigurationChanged(config);
+    Q_EMIT stateConfigurationChanged(config);
 }
 
 void QScxmlDebugInterfaceSource::Private::addState(QScxmlStateMachineInfo::StateId state)
@@ -280,9 +283,9 @@ void QScxmlDebugInterfaceSource::Private::addState(QScxmlStateMachineInfo::State
     Q_ASSERT(parentInitialTransitionTargets.size() <= 1); // assume there can only be at most one 'initial state'
     const auto parentInitialState = parentInitialTransitionTargets.value(0);
     const bool connectToInitial = parentInitialState == state; // TODO ?
-    emit stateAdded(makeStateId(state), makeStateId(parentState),
-                    hasChildren, labelForState(state),
-                    makeStateType(m_info->stateType(state)), connectToInitial);
+    Q_EMIT stateAdded(makeStateId(state), makeStateId(parentState),
+                      hasChildren, labelForState(state),
+                      makeStateType(m_info->stateType(state)), connectToInitial);
 
     // add sub-states
     Q_FOREACH (int child, m_info->stateChildren(state)) {
@@ -301,19 +304,19 @@ void QScxmlDebugInterfaceSource::Private::addTransition(QScxmlStateMachineInfo::
     const auto sourceState = m_info->transitionSource(transition);
     const auto targetStates = m_info->transitionTargets(transition);
     addState(sourceState);
-    foreach (int targetState, targetStates) {
+    for (int targetState : targetStates) {
         addState(targetState);
     }
 
-    foreach (int targetState, targetStates) {
-        emit transitionAdded(makeTransitionId(transition), makeStateId(sourceState),
-                             makeStateId(targetState), labelForTransition(transition));
+    for (int targetState : targetStates) {
+        Q_EMIT transitionAdded(makeTransitionId(transition), makeStateId(sourceState),
+                               makeStateId(targetState), labelForTransition(transition));
     }
 }
 
 void QScxmlDebugInterfaceSource::Private::updateStartStop()
 {
-    emit statusChanged(qScxmlStateMachine() != nullptr, qScxmlStateMachine() && qScxmlStateMachine()->isRunning());
+    Q_EMIT statusChanged(qScxmlStateMachine() != nullptr, qScxmlStateMachine() && qScxmlStateMachine()->isRunning());
 }
 
 void QScxmlDebugInterfaceSource::Private::toggleRunning()

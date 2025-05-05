@@ -24,10 +24,6 @@
 #include <QPainterPath>
 #include <QTest>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <QBinaryJson>
-#endif
-
 using namespace KDSME;
 
 namespace {
@@ -70,15 +66,15 @@ QPainterPath createPath(QPointF start)
     for (int i = 0; i < 3; ++i) {
         switch (i) {
         case 0:
-            path.lineTo(10 + i * 10, 10 + i * 10);
+            path.lineTo(10 + (i * 10), 10 + (i * 10));
             break;
 
         case 1:
-            path.cubicTo(10 + i * 100, 10 + i * 100, 10 + i * 100, 10 + i * 100, 10 + i * 100, 10 + i * 100);
+            path.cubicTo(10 + (i * 100), 10 + (i * 100), 10 + (i * 100), 10 + (i * 100), 10 + (i * 100), 10 + (i * 100));
             break;
 
         case 2:
-            path.quadTo(10 + i * 10, 10 + i * 10, 10 + i * 10, 10 + i * 10);
+            path.quadTo(10 + (i * 10), 10 + (i * 10), 10 + (i * 10), 10 + (i * 10));
             break;
         }
     }
@@ -119,7 +115,7 @@ void LayoutInformationTest::testLayoutInformation()
             transition->setTargetState(static_cast<State *>(state)); // NOLINT(readability-redundant-casting)
             transition->setTargetState(state);
             transition->setPos(QPointF(i * 10, i * 10));
-            transition->setLabelBoundingRect(QRectF(10 + i, 10 + i * 10, 10 + i, 10 + i));
+            transition->setLabelBoundingRect(QRectF(10 + i, 10 + (i * 10), 10 + i, 10 + i));
             transition->setShape(createPath(transition->pos()));
         }
         lastState = state;
@@ -135,12 +131,11 @@ void LayoutInformationTest::testLayoutInformation()
         lastCopyState = state;
     }
 
-    const QJsonDocument doc(LayoutImportExport::exportLayout(&rootState));
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    LayoutImportExport::importLayout(QBinaryJson::fromBinaryData(QBinaryJson::toBinaryData(doc)).object(), &copyState);
-#else
-    LayoutImportExport::importLayout(QJsonDocument::fromBinaryData(doc.toBinaryData()).object(), &copyState);
-#endif
+    const QJsonObject json(LayoutImportExport::exportLayout(&rootState));
+
+    const QByteArray cbor = QCborValue::fromJsonValue(json).toCbor();
+    LayoutImportExport::importLayout(QCborValue::fromCbor(cbor).toJsonValue().toObject(), &copyState);
+
     compare(&rootState, &copyState);
 }
 

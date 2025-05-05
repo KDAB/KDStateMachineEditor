@@ -137,7 +137,7 @@ void QuickSceneItem::mouseReleaseEvent(QMouseEvent *event)
             QContextMenuEvent::Mouse,
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             event->pos(), event->globalPosition().toPoint(), event->modifiers(),
-#elif
+#else
             event->pos(), event->globalPos(), event->modifiers(),
 #endif
             element());

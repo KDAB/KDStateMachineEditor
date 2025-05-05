@@ -37,7 +37,7 @@ public:
         update();
     }
 
-public slots:
+public Q_SLOTS:
     void turnOff()
     {
         setOn(false);
