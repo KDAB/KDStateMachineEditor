@@ -30,6 +30,7 @@ jobs:
 
           - name: clazy
             qt_version: "6.6"
+            qt_modules: qtscxml
             apt_pgks:
               - clazy
               - cppcheck
@@ -39,6 +40,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ matrix.config.qt_version }}
+          modules: ${{ matrix.config.qt_modules }}
           cache: true
 
       - name: Install ninja-build tool (must be after Qt due PATH changes)
