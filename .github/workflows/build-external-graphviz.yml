@@ -42,7 +42,7 @@ jobs:
         run: brew install bison graphviz
 
       - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           aqtversion: null # use whatever the default is
           modules: ${{ matrix.config.qt_modules }}

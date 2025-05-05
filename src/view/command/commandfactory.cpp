@@ -55,7 +55,7 @@ void CommandFactory::setModel(StateModel *model)
         return;
 
     m_model = model;
-    emit modelChanged(m_model);
+    Q_EMIT modelChanged(m_model);
 }
 
 CreateElementCommand *CommandFactory::createElement(StateModel *model, Element::Type type, Element *parentElement) const
@@ -102,7 +102,7 @@ ReparentElementCommand *CommandFactory::reparentElement(StateMachineScene *view,
 
 ChangeStateMachineCommand *CommandFactory::changeStateMachineElement(KDSME::StateMachineScene *view, KDSME::StateMachine *statemachine)
 {
-    ChangeStateMachineCommand *cmd = new ChangeStateMachineCommand(view);
+    auto *cmd = new ChangeStateMachineCommand(view);
     cmd->setStateMachine(statemachine);
     return cmd;
 }

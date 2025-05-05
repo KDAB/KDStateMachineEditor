@@ -41,7 +41,7 @@ public:
     /**
      * Construct a ring buffer with initial capacity @p capacity
      */
-    RingBuffer(int capacity = 10)
+    explicit RingBuffer(int capacity = 10)
         : m_capacity(capacity)
     {
     }

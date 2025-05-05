@@ -28,7 +28,7 @@ using namespace KDSME;
 
 namespace {
 
-struct StandardRuntimeController : public RuntimeController
+struct StandardRuntimeController : public RuntimeController // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 };
@@ -111,7 +111,7 @@ SignalTransition *State::addSignalTransition(State *target, const QString &silgn
         return nullptr;
     }
 
-    SignalTransition *transition = new SignalTransition(this);
+    auto *transition = new SignalTransition(this);
     transition->setTargetState(target);
     transition->setSignal(silgnal);
     addTransition(transition);
@@ -124,7 +124,7 @@ TimeoutTransition *State::addTimeoutTransition(State *target, int timeout)
         return nullptr;
     }
 
-    TimeoutTransition *transition = new TimeoutTransition(this);
+    auto *transition = new TimeoutTransition(this);
     transition->setTargetState(target);
     transition->setTimeout(timeout);
     addTransition(transition);
@@ -147,7 +147,7 @@ void State::setOnEntry(const QString &onEntry)
         return;
 
     d->m_onEntry = onEntry;
-    emit onEntryChanged(d->m_onEntry);
+    Q_EMIT onEntryChanged(d->m_onEntry);
 }
 
 void State::setOnExit(const QString &onExit)
@@ -156,7 +156,7 @@ void State::setOnExit(const QString &onExit)
         return;
 
     d->m_onExit = onExit;
-    emit onExitChanged(d->m_onExit);
+    Q_EMIT onExitChanged(d->m_onExit);
 }
 
 State::ChildMode State::childMode() const
@@ -170,7 +170,7 @@ void State::setChildMode(ChildMode childMode)
         return;
 
     d->m_childMode = childMode;
-    emit childModeChanged(d->m_childMode);
+    Q_EMIT childModeChanged(d->m_childMode);
 }
 
 bool State::isComposite() const
@@ -189,7 +189,7 @@ void State::setExpanded(bool expanded)
         return;
 
     d->m_isExpanded = expanded;
-    emit expandedChanged(d->m_isExpanded);
+    Q_EMIT expandedChanged(d->m_isExpanded);
 }
 
 StateMachine *State::machine() const
@@ -202,10 +202,10 @@ StateMachine *State::machine() const
 bool State::event(QEvent *event)
 {
     if (event->type() == QEvent::ChildAdded || event->type() == QEvent::ChildRemoved) {
-        const bool newIsComposite = childStates().size() > 0;
+        const bool newIsComposite = !childStates().empty();
         if (d->m_isComposite != newIsComposite) {
             d->m_isComposite = newIsComposite;
-            emit isCompositeChanged(d->m_isComposite);
+            Q_EMIT isCompositeChanged(d->m_isComposite);
         }
     }
 
@@ -262,19 +262,13 @@ void StateMachine::setRuntimeController(RuntimeController *runtimeController)
         d->m_runtimeController = new StandardRuntimeController;
     }
 
-    emit runtimeControllerChanged(d->m_runtimeController);
+    Q_EMIT runtimeControllerChanged(d->m_runtimeController);
 }
 
 struct HistoryState::Private
 {
-    Private()
-        : m_defaultState(nullptr)
-        , m_historyType(ShallowHistory)
-    {
-    }
-
-    State *m_defaultState;
-    HistoryType m_historyType;
+    State *m_defaultState = nullptr;
+    HistoryType m_historyType = ShallowHistory;
 };
 
 HistoryState::HistoryState(State *parent)
@@ -303,7 +297,7 @@ QString HistoryState::toDisplayString() const
 {
     const QString thisClassName = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
     const QString defaultClassName = d->m_defaultState ? ObjectHelper::className(d->m_defaultState, ObjectHelper::StripNameSpace) : QStringLiteral("None");
-    return QStringLiteral("%1 [Default: %2]").arg(thisClassName).arg(defaultClassName);
+    return QStringLiteral("%1 [Default: %2]").arg(thisClassName).arg(defaultClassName); // clazy:exclude=qstring-arg
 }
 
 State *HistoryState::defaultState() const
@@ -316,7 +310,7 @@ void HistoryState::setDefaultState(State *state)
     if (d->m_defaultState == state)
         return;
     d->m_defaultState = state;
-    emit defaultStateChanged(d->m_defaultState);
+    Q_EMIT defaultStateChanged(d->m_defaultState);
 }
 
 HistoryState::HistoryType HistoryState::historyType() const
@@ -329,7 +323,7 @@ void HistoryState::setHistoryType(HistoryState::HistoryType historyType)
     if (d->m_historyType == historyType)
         return;
     d->m_historyType = historyType;
-    emit historyTypeChanged();
+    Q_EMIT historyTypeChanged();
 }
 
 struct FinalState::Private
@@ -397,7 +391,7 @@ void PseudoState::setKind(PseudoState::Kind kind)
         return;
 
     d->m_kind = kind;
-    emit kindChanged(d->m_kind);
+    Q_EMIT kindChanged(d->m_kind);
 }
 
 QString PseudoState::kindString() const
@@ -408,7 +402,7 @@ QString PseudoState::kindString() const
 QString PseudoState::toDisplayString() const
 {
     const QString str = ObjectHelper::className(this, ObjectHelper::StripNameSpace);
-    return QStringLiteral("%1 [Kind: %2]").arg(str).arg(kindString());
+    return QStringLiteral("%1 [Kind: %2]").arg(str).arg(kindString()); // clazy:exclude=qstring-arg
 }
 
 QDebug KDSME::operator<<(QDebug dbg, const State *state)

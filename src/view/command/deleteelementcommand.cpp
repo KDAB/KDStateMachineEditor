@@ -36,10 +36,8 @@ DeleteElementCommand::DeleteElementCommand(StateMachineScene *scene, Element *de
 
 DeleteElementCommand::~DeleteElementCommand()
 {
-    if (m_parentElement) {
-        delete m_deletedElement;
-    }
-}
+    delete m_deletedElement;
+} // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 void DeleteElementCommand::redo()
 {
@@ -49,11 +47,11 @@ void DeleteElementCommand::redo()
 
     m_parentElement = m_deletedElement->parentElement();
 
-    QModelIndex index = model()->indexForObject(m_deletedElement);
+    const QModelIndex index = model()->indexForObject(m_deletedElement);
     Q_ASSERT(index.isValid());
     m_index = index.row();
 
-    StateModel::RemoveOperation remove(model(), m_deletedElement);
+    const StateModel::RemoveOperation remove(model(), m_deletedElement);
     Q_UNUSED(remove);
     m_deletedElement->setParent(nullptr);
 }
@@ -69,7 +67,7 @@ void DeleteElementCommand::undo()
 
     {
         const int count = 1;
-        StateModel::AppendOperation append(model(), m_parentElement, count, m_index);
+        const StateModel::AppendOperation append(model(), m_parentElement, count, m_index);
         Q_UNUSED(append);
 
         m_deletedElement->setParent(m_parentElement);

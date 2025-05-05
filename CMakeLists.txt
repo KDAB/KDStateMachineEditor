@@ -127,13 +127,6 @@ if(KDSME_QT6)
     find_package(
         Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine
     )
-    find_package(Qt6Core5Compat ${QT_MIN_VERSION} CONFIG QUIET)
-    set_package_properties(
-        Qt6Core5Compat PROPERTIES
-        TYPE OPTIONAL
-        DESCRIPTION "Qt6-Qt5 compatibility module"
-        PURPOSE "Needed for the layoutinformation unit test"
-    )
     set(KDSME_LIBRARY_QTID "-qt6")
 else()
     set(QT_VERSION_MAJOR 5)
@@ -274,7 +267,7 @@ else()
     )
 endif()
 
-add_subdirectory(3rdparty)
+add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 
 #
 # Compiler & linker settings
@@ -302,7 +295,7 @@ endmacro()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+if((CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND NOT DEFINED CMAKE_CXX_CLANG_TIDY)
     add_flag_if_supported(-Wunused-but-set-variable UNUSED_BUT_SET)
     add_flag_if_supported(-Wlogical-op LOGICAL_OP)
     add_flag_if_supported(-Wsizeof-pointer-memaccess POINTER_MEMACCESS)
@@ -326,13 +319,26 @@ if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
     endif()
 endif()
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_CXX_COMPILER MATCHES "clazy")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments -Wdocumentation")
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
 endif()
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050400)
+
+add_definitions(
+    -DQT_NO_KEYWORDS
+    -DQT_NO_CAST_TO_ASCII
+    -DQT_NO_CAST_FROM_ASCII
+    -DQT_STRICT_ITERATORS
+    -DQT_NO_URL_CAST_FROM_STRING
+    -DQT_NO_CAST_FROM_BYTEARRAY
+    -DQT_USE_QSTRINGBUILDER
+    -DQT_NO_SIGNALS_SLOTS_KEYWORDS
+    -DQT_USE_FAST_OPERATOR_PLUS
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
+)
+
 if(MSVC)
     add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 endif()
@@ -440,3 +446,16 @@ if(${PROJECT_NAME}_IS_ROOT_PROJECT)
 endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+add_custom_target(
+    cppcheck
+    USES_TERMINAL
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+    COMMENT "run cppcheck on source files"
+    COMMAND
+        ${CMAKE_COMMAND} -E env cppcheck "--project=${PROJECT_BINARY_DIR}/compile_commands.json" --enable=all
+        --error-exitcode=1 --language=c++ --inline-suppr --quiet --disable=missingInclude,unusedFunction
+        --check-level=exhaustive --library=qt.cfg --suppress=*:*.moc --suppress=*:*moc_*.cpp
+        "-i${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/" "-i${CMAKE_CURRENT_BINARY_DIR}/3rdparty/"
+        "--suppress=*:${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/" "--suppress=*:${CMAKE_CURRENT_BINARY_DIR}/3rdparty/"
+)

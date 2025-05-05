@@ -77,17 +77,21 @@ void DepthChecker::setTarget(Element *target)
         return;
 
     if (d->m_target) {
-        disconnect(d->m_target, SIGNAL(parentChanged(Element *)),
+        // clang-format off
+        disconnect(d->m_target, SIGNAL(parentChanged(Element*)), // clazy:exclude=old-style-connect
                    this, SLOT(updateDepth()));
+        // clang-format on
     }
 
     d->m_target = target;
 
     if (d->m_target) {
-        connect(d->m_target, SIGNAL(parentChanged(Element *)),
+        // clang-format off
+        connect(d->m_target, SIGNAL(parentChanged(Element*)), // clazy:exclude=old-style-connect
                 this, SLOT(updateDepth()));
+        // clang-format on
     }
-    emit targetChanged(d->m_target);
+    Q_EMIT targetChanged(d->m_target);
 
     d->updateDepth();
 }
@@ -99,7 +103,7 @@ void DepthChecker::Private::updateDepth()
         return;
 
     m_depth = depth;
-    emit q->depthChanged(m_depth);
+    Q_EMIT q->depthChanged(m_depth);
 }
 
 #include "moc_depthchecker.cpp"

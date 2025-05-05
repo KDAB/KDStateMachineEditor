@@ -22,7 +22,7 @@
 
 using namespace KDSME;
 
-ModifyInitialStateCommand::ModifyInitialStateCommand(State *state, State *initialState, QUndoCommand *parent)
+ModifyInitialStateCommand::ModifyInitialStateCommand(State *state, State *initialState, QUndoCommand *parent) // NOLINT(clang-analyzer-cplusplus.NewDelete)
     : Command(QString(), parent)
     , m_state(state)
     , m_initialState(initialState)
@@ -31,9 +31,7 @@ ModifyInitialStateCommand::ModifyInitialStateCommand(State *state, State *initia
     setText(tr("Changing initial state of %1").arg(state->label()));
 }
 
-ModifyInitialStateCommand::~ModifyInitialStateCommand()
-{
-}
+ModifyInitialStateCommand::~ModifyInitialStateCommand() = default; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 int ModifyInitialStateCommand::id() const
 {

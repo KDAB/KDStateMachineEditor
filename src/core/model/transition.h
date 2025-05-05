@@ -59,8 +59,8 @@ public:
     void setLabelBoundingRect(const QRectF &rect);
 
 Q_SIGNALS:
-    void sourceStateChanged(State *sourceState);
-    void targetStateChanged(State *targetState);
+    void sourceStateChanged(KDSME::State *sourceState);
+    void targetStateChanged(KDSME::State *targetState);
     void guardChanged(const QString &guard);
     void shapeChanged(const QPainterPath &path);
     void labelBoundingRectChanged(const QRectF &rect);

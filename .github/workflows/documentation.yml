@@ -5,6 +5,7 @@
 name: Deploy doxygen to GitHub Pages
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -36,6 +37,7 @@ jobs:
         with:
           aqtversion: null # use whatever the default is
           version: 6.6.2
+          modules: qtscxml
           cache: true
 
       - name: Checkout sources

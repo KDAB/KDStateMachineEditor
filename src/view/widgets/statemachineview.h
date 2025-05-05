@@ -58,7 +58,7 @@ public:
     QString themeName() const;
     void setThemeName(const QString &themeName);
 
-    Q_INVOKABLE void sendCommand(KDSME::Command *cmd);
+    Q_INVOKABLE void sendCommand(KDSME::Command *cmd) const;
 
     Q_INVOKABLE void fitInView();
 

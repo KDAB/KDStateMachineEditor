@@ -36,7 +36,7 @@ void ModifyTransitionCommand::redo()
     switch (m_operation) {
     case SetSourceStateOperation: {
         m_oldSourceState = m_transition->sourceState();
-        ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_sourceState);
+        const ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_sourceState);
         m_transition->setSourceState(m_sourceState);
     } break;
     case SetTargetStateOperation:
@@ -59,7 +59,7 @@ void ModifyTransitionCommand::undo()
 
     switch (m_operation) {
     case SetSourceStateOperation: {
-        ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_oldSourceState);
+        const ObjectTreeModel::ReparentOperation reparentOperation(model(), m_transition, m_oldSourceState);
         m_transition->setSourceState(m_oldSourceState);
     } break;
     case SetTargetStateOperation:
@@ -99,7 +99,7 @@ void ModifyTransitionCommand::setSourceState(State *sourceState)
 
 void ModifyTransitionCommand::setTargetState(State *targetState)
 {
-    m_targetState = targetState;
+    m_targetState = targetState; // NOLINT(clang-analyzer-cplusplus.NewDelete)
     m_operation = SetTargetStateOperation;
     updateText();
 }

@@ -46,12 +46,12 @@ QRectF GraphvizLayerLayouter::layout(State *state, const LayoutProperties *prope
 
     // Step 1: Create Graphviz structures out of the State/Transition tree
     // Step 1.1: build nodes
-    for (State *state : childStates) {
-        m_backend->buildState(state);
+    for (State *childState : childStates) {
+        m_backend->buildState(childState);
     }
     // Step 1.2: build edges
-    for (State *state : childStates) {
-        const auto stateTransitions = state->transitions();
+    for (const State *childState : childStates) {
+        const auto stateTransitions = childState->transitions();
         for (Transition *transition : stateTransitions) {
             // TODO: What to do with transitions crossing hierarchies?
             if (!childStates.contains(transition->targetState())) {

@@ -58,7 +58,7 @@ class CodeEditor : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    CodeEditor(QWidget *parent = nullptr);
+    explicit CodeEditor(QWidget *parent = nullptr);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
@@ -67,13 +67,13 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
 
-signals:
+Q_SIGNALS:
     void editingFinished(QString);
 
-private slots:
+private Q_SLOTS:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
-    void updateLineNumberArea(const QRect &, int);
+    void updateLineNumberArea(QRect , int);
 
 private:
     QWidget *lineNumberArea;
@@ -86,7 +86,7 @@ class LineNumberArea : public QWidget
     Q_OBJECT
 
 public:
-    LineNumberArea(CodeEditor *editor) : QWidget(editor) {
+    explicit LineNumberArea(CodeEditor *editor) : QWidget(editor) {
         codeEditor = editor;
     }
 

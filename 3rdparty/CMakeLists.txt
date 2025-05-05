@@ -27,6 +27,7 @@ if(KDSME_INTERNAL_GRAPHVIZ)
 
         # Disable all command line tools
         set(GRAPHVIZ_CLI OFF)
+        set(CMAKE_AUTOMOC OFF)
 
         set(ENABLE_TCL
             OFF

@@ -31,9 +31,7 @@ ModifyDefaultStateCommand::ModifyDefaultStateCommand(HistoryState *state, State 
     setText(tr("Changing default state of %1").arg(state->label()));
 }
 
-ModifyDefaultStateCommand::~ModifyDefaultStateCommand()
-{
-}
+ModifyDefaultStateCommand::~ModifyDefaultStateCommand() = default; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 int ModifyDefaultStateCommand::id() const
 {

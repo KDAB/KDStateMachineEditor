@@ -28,9 +28,9 @@ State *ElementUtil::findInitialState(const KDSME::State *state)
 
     const auto childStates = state->childStates();
     for (State *child : childStates) {
-        if (PseudoState *pseudoState = qobject_cast<PseudoState *>(child)) {
+        if (auto *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
-                Transition *transition = pseudoState->transitions().value(0);
+                const Transition *transition = pseudoState->transitions().value(0);
                 return transition ? transition->targetState() : nullptr;
             }
         }
@@ -43,13 +43,14 @@ void ElementUtil::setInitialState(State *state, State *initialState)
     if (!state)
         return;
 
-    QString pseudoStateName, transitionName;
+    QString pseudoStateName;
+    QString transitionName;
     const auto childStates = state->childStates();
     for (State *child : childStates) {
-        if (PseudoState *pseudoState = qobject_cast<PseudoState *>(child)) {
+        if (auto *pseudoState = qobject_cast<PseudoState *>(child)) {
             if (pseudoState->kind() == PseudoState::InitialState) {
                 pseudoStateName = pseudoState->label();
-                Transition *transition = pseudoState->transitions().value(0);
+                const Transition *transition = pseudoState->transitions().value(0);
                 if (transition)
                     transitionName = transition->label();
                 delete pseudoState;
@@ -60,16 +61,18 @@ void ElementUtil::setInitialState(State *state, State *initialState)
     if (!initialState)
         return;
 
-    if (pseudoStateName.isEmpty())
-        pseudoStateName = QStringLiteral("initalState_%1_%2").arg(state->label()).arg(initialState->label());
+    if (pseudoStateName.isEmpty()) {
+        pseudoStateName = QStringLiteral("initalState_%1_%2").arg(state->label()).arg(initialState->label()); // clazy:exclude=qstring-arg
+    }
 
-    if (transitionName.isEmpty())
-        transitionName = QStringLiteral("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label());
+    if (transitionName.isEmpty()) {
+        transitionName = QStringLiteral("transitionInitalState_%1_%2").arg(state->label()).arg(initialState->label()); // clazy:exclude=qstring-arg
+    }
 
     State *ps = new PseudoState(PseudoState::InitialState, state);
     ps->setLabel(pseudoStateName);
 
-    Transition *tr = new Transition(ps);
+    auto *tr = new Transition(ps);
     tr->setLabel(transitionName);
     tr->setTargetState(initialState);
 }
@@ -83,9 +86,11 @@ State *ElementUtil::findState(State *root, const QString &label)
         return root;
 
     const auto childStates = root->childStates();
-    for (State *state : childStates)
-        if (State *st = findState(state, label))
+    for (State *state : childStates) {
+        if (State *st = findState(state, label)) { // cppcheck-suppress useStlAlgorithm
             return st;
+        }
+    }
 
     return nullptr;
 }
@@ -94,7 +99,7 @@ StateMachine *ElementUtil::findStateMachine(const Element *element)
 {
     QObject *current = const_cast<Element *>(element);
     while (current != nullptr) {
-        if (StateMachine *machine = qobject_cast<StateMachine *>(current))
+        if (auto *machine = qobject_cast<StateMachine *>(current))
             return machine;
         current = current->parent();
     }

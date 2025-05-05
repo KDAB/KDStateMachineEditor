@@ -28,7 +28,7 @@ using namespace KDSME;
 constexpr int MOVE_TO_FRONT = 1;
 
 #ifdef WITH_CGRAPH
-Agraph_t *GVUtils::_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc)
+Agraph_t *GVUtils::_agopen(const QString &name, Agdesc_t kind, Agdisc_t *disc) // cppcheck-suppress passedByValue
 #else
 Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 #endif
@@ -42,12 +42,11 @@ Agraph_t *GVUtils::_agopen(const QString &name, int kind)
 
 QString GVUtils::_agget(void *object, const QString &attr, const QString &alt)
 {
-    const QString str = QString::fromUtf8(agget(object, attr.toUtf8().data()));
+    QString str = QString::fromUtf8(agget(object, attr.toUtf8().data()));
     if (str.isEmpty()) {
         return alt;
-    } else {
-        return str;
     }
+    return str;
 }
 
 Agsym_t *GVUtils::_agnodeattr(Agraph_t *object, const QString &attr, const QString &alt)

@@ -54,7 +54,7 @@ public:
 
 public Q_SLOTS:
     void setStateMachine(KDSME::StateMachine *stateMachine);
-    void setInputMode(InputMode mode);
+    void setInputMode(MainWindow::InputMode mode);
 
     void createNew();
 

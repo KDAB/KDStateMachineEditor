@@ -26,7 +26,7 @@ namespace {
 
 QString stripNameSpace(const QString &className)
 {
-    const int pos = className.lastIndexOf(QLatin1String("::"));
+    const int pos = static_cast<int>(className.lastIndexOf(QLatin1String("::")));
     if (pos != -1)
         return className.mid(pos + 2);
     return className;
@@ -50,7 +50,7 @@ QString ObjectHelper::displayString(const QObject *object, DisplayOption option)
         return QStringLiteral("QObject(0x0)");
     }
     if (object->objectName().isEmpty()) {
-        return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option));
+        return QString::fromLatin1("%1 (%2)").arg(addressToString(object)).arg(className(object, option)); // clazy:exclude=qstring-arg
     }
     return object->objectName();
 }
@@ -69,12 +69,12 @@ int ObjectHelper::stringToEnum(const QMetaObject *metaObject, const char *name, 
     return metaEnum.keyToValue(key);
 }
 
-QString ObjectHelper::toString(const QPointF &point)
+QString ObjectHelper::toString(const QPointF &point) // clazy:exclude=function-args-by-value
 {
     return QStringLiteral("(%1,%2)").arg(point.x()).arg(point.y());
 }
 
-QString ObjectHelper::toString(const QSizeF &size)
+QString ObjectHelper::toString(const QSizeF &size) // clazy:exclude=function-args-by-value
 {
     return QStringLiteral("(%1,%2)").arg(size.width()).arg(size.height());
 }
@@ -82,13 +82,13 @@ QString ObjectHelper::toString(const QSizeF &size)
 QString ObjectHelper::toString(const QRectF &rect)
 {
     return QStringLiteral("(pos=%1,size=%2)")
-        .arg(toString(rect.topLeft()))
+        .arg(toString(rect.topLeft())) // clazy:exclude=qstring-arg
         .arg(toString(rect.size()));
 }
 
 bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *object)
 {
-    QObject *parent = object->parent();
+    const QObject *parent = object->parent();
     if (!parent) {
         return false;
     }

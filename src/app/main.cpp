@@ -31,7 +31,7 @@ namespace {
 
 QString presetsLocation()
 {
-    const QString presetsLocation = qEnvironmentVariable("KDSME_PRESETS_LOCATION");
+    QString presetsLocation = qEnvironmentVariable("KDSME_PRESETS_LOCATION");
     if (!presetsLocation.isEmpty()) {
         return presetsLocation;
     }
@@ -48,12 +48,16 @@ QString scxmlPresetsLocation()
 int main(int argc, char **argv)
 {
     // this must be called before the QApplication constructor
-    QQmlDebuggingEnabler enabler;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    QQmlDebuggingEnabler::enableDebugging(true);
+#else
+    const QQmlDebuggingEnabler enabler;
+#endif
 
-    QApplication app(argc, argv);
-    app.setOrganizationName(QStringLiteral("KDAB"));
-    app.setApplicationName(QStringLiteral("kdsme"));
-    app.setApplicationVersion(QStringLiteral("0.1"));
+    const QApplication app(argc, argv);
+    QCoreApplication::setOrganizationName(QStringLiteral("KDAB"));
+    QCoreApplication::setApplicationName(QStringLiteral("kdsme"));
+    QCoreApplication::setApplicationVersion(QStringLiteral("0.1"));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(QStringLiteral("State Machine Editor"));
@@ -66,11 +70,11 @@ int main(int argc, char **argv)
 
     StateMachine *stateMachine = nullptr;
     if (!source.isEmpty()) {
-        ScxmlImporter parser(ParseHelper::readFile(source));
-        stateMachine = parser.import();
+        ScxmlImporter scxmlParser(ParseHelper::readFile(source));
+        stateMachine = scxmlParser.import();
 
         if (!stateMachine) {
-            qWarning() << "Failed loading" << source << "-" << parser.errorString();
+            qWarning() << "Failed loading" << source << "-" << scxmlParser.errorString();
         }
     }
 
@@ -82,5 +86,5 @@ int main(int argc, char **argv)
     }
     mainWindow.show();
 
-    return app.exec();
+    return QApplication::exec();
 }

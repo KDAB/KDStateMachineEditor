@@ -23,7 +23,7 @@
 namespace KDSME {
 class StateModel;
 
-class KDSME_VIEW_EXPORT Command : public QObject, public QUndoCommand
+class KDSME_VIEW_EXPORT Command : public QObject, public QUndoCommand // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 

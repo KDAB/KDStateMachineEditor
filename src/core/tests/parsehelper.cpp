@@ -31,7 +31,7 @@ QByteArray ParseHelper::readFile(const QString &fileName)
         qWarning() << "File does not exist:" << file.fileName();
         return QByteArray();
     }
-    bool success = file.open(QIODevice::ReadOnly);
+    const bool success = file.open(QIODevice::ReadOnly);
     if (!success)
         return QByteArray();
 

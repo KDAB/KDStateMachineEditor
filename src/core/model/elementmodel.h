@@ -50,7 +50,7 @@ private:
 class KDSME_CORE_EXPORT TransitionListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State *state READ state WRITE setState)
+    Q_PROPERTY(KDSME::State *state READ state WRITE setState NOTIFY stateChanged)
 
 public:
     enum Role
@@ -78,6 +78,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+Q_SIGNALS:
+    void stateChanged();
+
 private:
     struct Private;
     QScopedPointer<Private> d;
@@ -86,7 +89,7 @@ private:
 class KDSME_CORE_EXPORT StateModel : public ObjectTreeModel
 {
     Q_OBJECT
-    Q_PROPERTY(KDSME::State *state READ state WRITE setState)
+    Q_PROPERTY(KDSME::State *state READ state WRITE setState NOTIFY stateChanged)
 
 public:
     enum Role
@@ -104,6 +107,9 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
+
+Q_SIGNALS:
+    void stateChanged();
 
 private:
     struct Private;

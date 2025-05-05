@@ -36,7 +36,7 @@ RuntimeController::Configuration toSmeConfiguration(const StateMachineConfigurat
                                                     const QHash<StateId, State *> &map)
 {
     RuntimeController::Configuration result;
-    foreach (const StateId &id, config) {
+    for (const StateId &id : config) {
         if (auto state = map.value(id)) {
             result << state;
         }
@@ -253,7 +253,7 @@ void DebugInterfaceClient::Private::clearGraph()
     m_idToStateMap.clear();
     m_idToTransitionMap.clear();
 
-    emit q->clearGraph();
+    Q_EMIT q->clearGraph();
 }
 
 void DebugInterfaceClient::Private::stateChanged(QRemoteObjectReplica::State state)
@@ -269,7 +269,7 @@ void DebugInterfaceClient::Private::repopulateView()
 {
     IF_DEBUG(qDebug() << m_machine);
 
-    emit q->repopulateView();
+    Q_EMIT q->repopulateView();
 }
 
 #include "debuginterfaceclient.moc"

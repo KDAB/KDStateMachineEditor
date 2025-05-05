@@ -45,11 +45,11 @@ public:
     void setEnabled(bool enabled);
 
 private Q_SLOTS:
-    void handleActiveConfigurationChanged(const QSet<State *> &configuration);
+    void handleActiveConfigurationChanged(const QSet<KDSME::State *> &configuration);
     void updateRuntimeController();
 
 Q_SIGNALS:
-    void sceneChanged(StateMachineScene *controller);
+    void sceneChanged(KDSME::StateMachineScene *controller);
     void enabledChanged(bool enabled);
 
 private:

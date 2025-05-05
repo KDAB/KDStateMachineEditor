@@ -32,12 +32,12 @@ QSizeF LayoutUtils::sizeForLabel(const QString &label)
     const qreal margin = 10;
 
     // TODO: Improve
-    QFontMetricsF fm(QGuiApplication::font());
+    const QFontMetricsF fm(QGuiApplication::font());
     const qreal width = fm.horizontalAdvance(label);
-    return QSizeF(width + 2 * margin, fm.height() + 2 * margin);
+    return QSizeF(width + (2 * margin), fm.height() + (2 * margin));
 }
 
-bool LayoutUtils::moveInner(State *state, const QPointF &offset)
+bool LayoutUtils::moveInner(State *state, const QPointF &offset) // cppcheck-suppress constParameterPointer // clazy:exclude=function-args-by-value
 {
     if (!state) {
         return false;
@@ -66,7 +66,7 @@ bool LayoutUtils::moveToParent(Element *item, Element *parentItem)
     if (!item || !parentItem)
         return false;
 
-    auto oldParent = item->parentElement();
+    const auto *oldParent = item->parentElement();
     if (oldParent == parentItem)
         return false; // do nothing
 

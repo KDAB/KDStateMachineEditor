@@ -28,7 +28,7 @@ using namespace KDSME;
 
 namespace {
 
-static QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
+QLineF::IntersectionType intersects(const QLineF &line1, const QLineF &line2, QPointF *intersectionPoint)
 {
     return line1.intersects(line2, intersectionPoint);
 }
@@ -79,7 +79,7 @@ QQuickItem *QuickSceneItem::itemForElement(Element *element) const
     return sceneItem;
 }
 
-void QuickSceneItem::sendClickEvent()
+void QuickSceneItem::sendClickEvent() // NOLINT(readability-make-member-function-const)
 {
     // TODO: Send events to scene instead?
     scene()->setCurrentItem(element());
@@ -115,7 +115,7 @@ void QuickSceneItem::setShape(const QPainterPath &shape)
     }
 
     m_shape = shape;
-    emit shapeChanged(m_shape);
+    Q_EMIT shapeChanged(m_shape);
 }
 
 void QuickSceneItem::mousePressEvent(QMouseEvent *event)
@@ -135,7 +135,11 @@ void QuickSceneItem::mouseReleaseEvent(QMouseEvent *event)
         // select other items in the scene until we reset the QQuickWindow's state
         AbstractSceneContextMenuEvent contextMenuEvent(
             QContextMenuEvent::Mouse,
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            event->pos(), event->globalPosition().toPoint(), event->modifiers(),
+#else
             event->pos(), event->globalPos(), event->modifiers(),
+#endif
             element());
         QCoreApplication::sendEvent(scene(), &contextMenuEvent);
     }
@@ -173,7 +177,7 @@ void QuickSceneItem::setElement(Element *element)
         });
     }
 
-    emit elementChanged(m_element);
+    Q_EMIT elementChanged(m_element);
 }
 
 qreal QuickSceneItem::activeness() const
@@ -187,7 +191,7 @@ void QuickSceneItem::setActiveness(qreal activeness)
         return;
 
     m_activeness = activeness;
-    emit activenessChanged(m_activeness);
+    Q_EMIT activenessChanged(m_activeness);
 }
 
 QuickStateItem::QuickStateItem(QQuickItem *parent)
@@ -282,12 +286,12 @@ void QuickTransitionItem::updatePosition()
 
 void QuickTransitionItem::updateSource()
 {
-    auto transition = toTransition();
+    const auto *transition = toTransition();
     if (!transition)
         return;
 
     disconnect(m_sourceStateConnection);
-    if (auto source = toTransition()->sourceState()) {
+    if (const auto *source = toTransition()->sourceState()) {
         m_sourceStateConnection = connect(source, &Element::posChanged,
                                           this, &QuickTransitionItem::updatePosition);
     }
@@ -295,12 +299,12 @@ void QuickTransitionItem::updateSource()
 
 void QuickTransitionItem::updateTarget()
 {
-    auto transition = toTransition();
+    const auto *transition = toTransition();
     if (!transition)
         return;
 
     disconnect(m_targetStateConnection);
-    if (auto targetState = toTransition()->targetState()) {
+    if (const auto *targetState = toTransition()->targetState()) {
         m_targetStateConnection = connect(targetState, &Element::posChanged,
                                           this, &QuickTransitionItem::updatePosition);
     }

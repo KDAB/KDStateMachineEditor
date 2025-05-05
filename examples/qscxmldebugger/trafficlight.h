@@ -63,7 +63,7 @@ class TrafficLight : public QWidget
 public:
     TrafficLight(QScxmlStateMachine *machine, QWidget *parent = 0);
 
-private slots:
+private Q_SLOTS:
     void toggleWorking(bool pause);
 
 private:
@@ -81,7 +81,7 @@ public:
     bool isOn() const;
     void setOn(bool on);
 
-public slots:
+public Q_SLOTS:
     void switchLight(bool onoff);
 
 protected:

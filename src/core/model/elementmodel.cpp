@@ -69,11 +69,12 @@ State *StateModel::state() const
 void StateModel::setState(State *state)
 {
     setRootObject(state);
+    Q_EMIT stateChanged();
 }
 
 QVariant StateModel::data(const QModelIndex &index, int role) const
 {
-    Element *element = qobject_cast<Element *>(ObjectTreeModel::data(index, ObjectRole).value<QObject *>());
+    auto *element = qobject_cast<Element *>(ObjectTreeModel::data(index, ObjectRole).value<QObject *>());
     if (!element) {
         return ObjectTreeModel::data(index, role);
     }
@@ -137,7 +138,7 @@ void TransitionModel::setSourceModel(QAbstractItemModel *sourceModel)
         return;
     }
 
-    StateModel *model = qobject_cast<StateModel *>(sourceModel);
+    auto *model = qobject_cast<StateModel *>(sourceModel);
     if (!model) {
         qCWarning(KDSME_CORE) << "called with invalid model instance:" << model;
         return;
@@ -150,12 +151,10 @@ bool TransitionModel::filterAcceptsRow(int source_row, const QModelIndex &source
 {
     Q_UNUSED(source_row);
 
-    QObject *object = source_parent.data(StateModel::ObjectRole).value<QObject *>();
-    Transition *transition = qobject_cast<Transition *>(object);
-    if (!transition) {
-        return false;
-    }
-    return true;
+    const auto *object = source_parent.data(StateModel::ObjectRole).value<QObject *>();
+    const auto *transition = qobject_cast<const Transition *>(object);
+
+    return transition != nullptr;
 }
 
 struct TransitionListModel::Private
@@ -186,7 +185,7 @@ int TransitionListModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return d->m_transitions.size();
+    return static_cast<int>(d->m_transitions.size());
 }
 
 int TransitionListModel::columnCount(const QModelIndex &parent) const
@@ -257,6 +256,8 @@ void TransitionListModel::setState(State *state)
     d->m_transitions = (state ? state->findChildren<Transition *>() : QList<Transition *>());
     // TODO: Track updates to object (newly created/removed transitions)?
     endResetModel();
+
+    Q_EMIT stateChanged();
 }
 
 #include "moc_elementmodel.cpp"

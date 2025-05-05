@@ -41,11 +41,12 @@ void QSMWatcher::setWatchedStateMachine(QStateMachine *machine)
     m_watchedStateMachine = machine;
 
     clearWatchedStates();
-    Q_FOREACH (QAbstractState *state, machine->findChildren<QAbstractState *>()) {
+    const auto children = machine->findChildren<QAbstractState *>();
+    for (QAbstractState *state : children) {
         watchState(state);
     }
 
-    emit watchedStateMachineChanged(machine);
+    Q_EMIT watchedStateMachineChanged(machine);
 }
 
 QStateMachine *QSMWatcher::watchedStateMachine() const
@@ -92,7 +93,7 @@ void QSMWatcher::handleTransitionTriggered()
     QAbstractTransition *transition = qobject_cast<QAbstractTransition *>(QObject::sender());
     Q_ASSERT(transition);
 
-    emit transitionTriggered(transition);
+    Q_EMIT transitionTriggered(transition);
 }
 
 void QSMWatcher::handleStateEntered()
@@ -108,7 +109,7 @@ void QSMWatcher::handleStateEntered()
     }
 
     m_lastEnteredState = state;
-    emit stateEntered(state);
+    Q_EMIT stateEntered(state);
 }
 
 void QSMWatcher::handleStateExited()
@@ -125,7 +126,7 @@ void QSMWatcher::handleStateExited()
     }
 
     m_lastExitedState = state;
-    emit stateExited(state);
+    Q_EMIT stateExited(state);
 }
 
 void QSMWatcher::handleStateDestroyed()

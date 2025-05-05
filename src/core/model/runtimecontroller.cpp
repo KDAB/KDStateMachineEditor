@@ -32,7 +32,7 @@ inline qreal relativePosition(const ContainerType &list, const ItemType &t)
 
 struct RuntimeController::Private
 {
-    Private(RuntimeController *qq)
+    explicit Private(RuntimeController *qq)
         : q(qq)
         , m_lastConfigurations(5)
         , m_lastTransitions(5)
@@ -56,11 +56,11 @@ void RuntimeController::Private::updateActiveRegion()
 
     // Calculate the bounding rect of all states in that are currently active
     QRectF activeRegion;
-    for (State *state : configuration) {
+    for (const State *state : configuration) {
         activeRegion = activeRegion.united(state->boundingRect());
     }
     m_activeRegion = activeRegion;
-    emit q->activeRegionChanged(m_activeRegion);
+    Q_EMIT q->activeRegionChanged(m_activeRegion);
 }
 
 RuntimeController::RuntimeController(QObject *parent)
@@ -112,7 +112,7 @@ void RuntimeController::setActiveConfiguration(const RuntimeController::Configur
         return;
 
     d->m_lastConfigurations.enqueue(configuration);
-    emit activeConfigurationChanged(configuration);
+    Q_EMIT activeConfigurationChanged(configuration);
     d->updateActiveRegion();
 }
 
@@ -145,7 +145,7 @@ void RuntimeController::setIsRunning(bool isRunning)
         return;
 
     d->m_isRunning = isRunning;
-    emit isRunningChanged(d->m_isRunning);
+    Q_EMIT isRunningChanged(d->m_isRunning);
 }
 
 float RuntimeController::activenessForState(State *state) const
@@ -153,7 +153,7 @@ float RuntimeController::activenessForState(State *state) const
     const int count = d->m_lastConfigurations.size();
     for (int i = d->m_lastConfigurations.size() - 1; i >= 0; --i) {
         if (d->m_lastConfigurations.at(i).contains(state)) {
-            return (i + 1.) / count;
+            return static_cast<float>((i + 1.) / count);
         }
     }
     return 0.;
@@ -161,5 +161,5 @@ float RuntimeController::activenessForState(State *state) const
 
 float RuntimeController::activenessForTransition(Transition *transition)
 {
-    return relativePosition<QList<Transition *>>(d->m_lastTransitions.entries(), transition);
+    return static_cast<float>(relativePosition<QList<Transition *>>(d->m_lastTransitions.entries(), transition));
 }

@@ -48,7 +48,7 @@ TestHarness::TestHarness()
     view.setRootState(&machine);
 }
 
-class CommandsTest : public QObject
+class CommandsTest : public QObject // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 
@@ -84,22 +84,22 @@ void CommandsTest::testAddTransition()
     QCOMPARE(harness.machine.childStates().size(), 0);
 
     // add state
-    CreateElementCommand *cmd = new CreateElementCommand(&harness.model, Element::StateType);
+    auto *cmd = new CreateElementCommand(&harness.model, Element::StateType);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
 
     // add transition to state
-    State *state = harness.machine.childStates()[0];
+    State *state = harness.machine.childStates().at(0);
     cmd = new CreateElementCommand(&harness.model, Element::SignalTransitionType);
     cmd->setParentElement(state);
     harness.undoStack.push(cmd);
     QCOMPARE(harness.machine.childStates().size(), 1);
-    QCOMPARE(harness.machine.childStates()[0]->transitions().size(), 1);
+    QCOMPARE(harness.machine.childStates().at(0)->transitions().size(), 1);
 
     // remove transition
     harness.undoStack.undo();
     QCOMPARE(harness.machine.childStates().size(), 1); // state is still there
-    QCOMPARE(harness.machine.childStates()[0]->transitions().size(), 0); // transition is gone
+    QCOMPARE(harness.machine.childStates().at(0)->transitions().size(), 0); // transition is gone
 }
 
 void CommandsTest::testLayoutSnapshot()
@@ -148,7 +148,7 @@ void CommandsTest::testLayoutSnapshot()
     QCOMPARE(transition.shape(), QPainterPath(QPointF(300, 300)));
 }
 
-void CommandsTest::testModifyProperty()
+void CommandsTest::testModifyProperty() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
     QAction action(QStringLiteral("foo"), nullptr);
@@ -179,7 +179,7 @@ void CommandsTest::testModifyProperty()
     QCOMPARE(action.autoRepeat(), true);
 }
 
-void CommandsTest::testModifyTransition()
+void CommandsTest::testModifyTransition() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
 
@@ -239,12 +239,12 @@ void CommandsTest::testModifyElement_moveBy()
     QCOMPARE(item.pos(), QPointF(0, 0));
 }
 
-void CommandsTest::testModifyElement_setGeometry()
+void CommandsTest::testModifyElement_setGeometry() // NOLINT(readability-function-cognitive-complexity)
 {
     TestHarness harness;
     Element item;
 
-    QRectF newGeometry(5, 5, 10, 10);
+    const QRectF newGeometry(5, 5, 10, 10);
 
     QCOMPARE(item.pos(), QPointF(0, 0));
     QCOMPARE(item.width(), 0.);

@@ -35,7 +35,7 @@ ReparentElementCommand::ReparentElementCommand(StateMachineScene *view, Element 
 
 void ReparentElementCommand::setParentElement(Element *parentElement)
 {
-    m_newParentElement = parentElement;
+    m_newParentElement = parentElement; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 }
 
 void ReparentElementCommand::redo()
@@ -51,7 +51,7 @@ void ReparentElementCommand::redo()
 
     m_oldParentElement = m_element->parentElement();
 
-    ObjectTreeModel::ReparentOperation reparentOperation(m_view->stateModel(), m_element, m_newParentElement);
+    const ObjectTreeModel::ReparentOperation reparentOperation(m_view->stateModel(), m_element, m_newParentElement);
     m_element->setParent(m_newParentElement);
 }
 
@@ -63,6 +63,6 @@ void ReparentElementCommand::undo()
     if (!m_valid)
         return;
 
-    ObjectTreeModel::ReparentOperation reparentOperation(m_view->stateModel(), m_element, m_oldParentElement);
+    const ObjectTreeModel::ReparentOperation reparentOperation(m_view->stateModel(), m_element, m_oldParentElement);
     m_element->setParent(m_oldParentElement);
 }

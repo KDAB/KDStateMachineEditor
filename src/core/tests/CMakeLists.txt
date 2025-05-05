@@ -67,9 +67,4 @@ ecm_add_test(test_statemachine.cpp LINK_LIBRARIES kdsme_testhelper)
 
 ecm_add_test(test_util.cpp LINK_LIBRARIES Qt::Gui kdsme_testhelper)
 
-if(NOT KDSME_QT6 OR Qt6Core5Compat_FOUND)
-    ecm_add_test(test_layoutinformation.cpp LINK_LIBRARIES Qt::Gui Qt::Test kdstatemachineeditor_core)
-    if(KDSME_QT6)
-        target_link_libraries(test_layoutinformation Qt6::Core5Compat)
-    endif()
-endif()
+ecm_add_test(test_layoutinformation.cpp LINK_LIBRARIES Qt::Gui Qt::Test kdstatemachineeditor_core)

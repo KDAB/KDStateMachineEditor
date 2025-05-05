@@ -49,9 +49,9 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int))); // clazy:exclude=old-style-connect
+    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int))); // clazy:exclude=old-style-connect
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine())); // clazy:exclude=old-style-connect
 
     QFont font(QStringLiteral("Monospace"));
     font.setStyleHint(QFont::TypeWriter);
@@ -72,7 +72,7 @@ int CodeEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    const int space = 3 + (fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits);
 
     return space;
 }
@@ -86,7 +86,7 @@ void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 
 
 
-void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
+void CodeEditor::updateLineNumberArea(QRect rect, int dy)
 {
     if (dy)
         lineNumberArea->scroll(0, dy);
@@ -103,14 +103,14 @@ void CodeEditor::resizeEvent(QResizeEvent *event)
 {
     QPlainTextEdit::resizeEvent(event);
 
-    QRect cr = contentsRect();
+    const QRect cr = contentsRect();
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
 void CodeEditor::focusOutEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
-    emit editingFinished(toPlainText());
+    Q_EMIT editingFinished(toPlainText());
 }
 
 void CodeEditor::highlightCurrentLine()
@@ -120,7 +120,7 @@ void CodeEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
 
-        QColor lineColor = QColor(Qt::yellow).lighter(160);
+        const QColor lineColor = QColor(Qt::yellow).lighter(160);
 
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -147,7 +147,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
-            QString number = QString::number(blockNumber + 1);
+            const QString number = QString::number(blockNumber + 1);
             painter.setPen(Qt::black);
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
                             Qt::AlignRight, number);

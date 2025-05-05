@@ -29,7 +29,7 @@ public:
     Element *m_elementUnderCursor = nullptr;
 };
 
-AbstractSceneContextMenuEvent::AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers, Element *elementUnderCursor)
+AbstractSceneContextMenuEvent::AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers, Element *elementUnderCursor) // clazy:exclude=function-args-by-value
     : QContextMenuEvent(reason, pos, globalPos, modifiers)
     , d(new AbstractSceneContextMenuEventPrivate)
 {
@@ -60,7 +60,7 @@ bool AbstractScene::event(QEvent *event)
         switch (d->m_contextMenuPolicy) {
         case Qt::CustomContextMenu:
             event->accept();
-            emit customContextMenuEvent(contextMenuEvent);
+            Q_EMIT customContextMenuEvent(contextMenuEvent);
             break;
         default:
             event->ignore();
@@ -80,9 +80,7 @@ AbstractScene::AbstractScene(QQuickItem *parent)
 {
 }
 
-AbstractScene::~AbstractScene()
-{
-}
+AbstractScene::~AbstractScene() = default; // NOLINT(clang-analyzer-cplusplus.NewDelete)
 
 QAbstractItemModel *AbstractScene::model() const
 {
@@ -122,11 +120,11 @@ void AbstractScene::setModel(QAbstractItemModel *model)
                 this, &AbstractScene::layoutChanged);
     }
 
-    QItemSelectionModel *selectionModel = new QItemSelectionModel(d->m_model, this);
-    connect(d->m_model, SIGNAL(destroyed()), selectionModel, SLOT(deleteLater()));
-    setSelectionModel(selectionModel);
+    auto *itemSelectionModel = new QItemSelectionModel(d->m_model, this);
+    connect(d->m_model, &QAbstractItemModel::destroyed, itemSelectionModel, &QItemSelectionModel::deleteLater);
+    setSelectionModel(itemSelectionModel);
 
-    emit modelChanged(d->m_model);
+    Q_EMIT modelChanged(d->m_model);
 }
 
 QItemSelectionModel *AbstractScene::selectionModel() const
@@ -137,7 +135,7 @@ QItemSelectionModel *AbstractScene::selectionModel() const
 void AbstractScene::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     Q_ASSERT(selectionModel);
-    if (selectionModel->model() != d->m_model) {
+    if (selectionModel && selectionModel->model() != d->m_model) {
         qCWarning(KDSME_VIEW) << "QAbstractItemView::setSelectionModel() failed: "
                                  "Trying to set a selection model, which works on "
                                  "a different model than the view.";
@@ -145,19 +143,19 @@ void AbstractScene::setSelectionModel(QItemSelectionModel *selectionModel)
     }
 
     if (d->m_selectionModel) {
-        disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-                   this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-        disconnect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-                   this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+        disconnect(d->m_selectionModel, &QItemSelectionModel::selectionChanged,
+                   this, &AbstractScene::selectionChanged);
+        disconnect(d->m_selectionModel, &QItemSelectionModel::currentChanged,
+                   this, &AbstractScene::currentChanged);
     }
 
     d->m_selectionModel = selectionModel;
 
     if (d->m_selectionModel) {
-        connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-                this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-        connect(d->m_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-                this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+        connect(d->m_selectionModel, &QItemSelectionModel::selectionChanged,
+                this, &AbstractScene::selectionChanged);
+        connect(d->m_selectionModel, &QItemSelectionModel::currentChanged,
+                this, &AbstractScene::currentChanged);
     }
 }
 
@@ -178,7 +176,7 @@ void AbstractScene::setInstantiator(QQuickItem *instantiator)
 
     d->m_instantiator = instantiator;
     d->m_instantiator->setParentItem(this);
-    emit instantiatorChanged(d->m_instantiator);
+    Q_EMIT instantiatorChanged(d->m_instantiator);
 }
 
 AbstractScene::EditTriggers AbstractScene::editTriggers() const
@@ -203,13 +201,13 @@ void AbstractScene::setContextMenuPolicy(Qt::ContextMenuPolicy contextMenuPolicy
     }
 
     d->m_contextMenuPolicy = contextMenuPolicy;
-    return contextMenuPolicyChanged(d->m_contextMenuPolicy);
+    Q_EMIT contextMenuPolicyChanged(d->m_contextMenuPolicy);
 }
 
 QObject *AbstractScene::itemForIndex(const QModelIndex &index) const
 {
-    auto instantiator = dynamic_cast<InstantiatorInterface *>(d->m_instantiator);
-    return instantiator ? instantiator->itemForIndex(index) : nullptr;
+    const auto *iface = dynamic_cast<InstantiatorInterface *>(d->m_instantiator);
+    return iface ? iface->itemForIndex(index) : nullptr;
 }
 
 AbstractScene::ViewState AbstractScene::viewState() const
@@ -223,7 +221,7 @@ void AbstractScene::setViewState(AbstractScene::ViewState state)
         return;
 
     d->m_state = state;
-    emit stateChanged(d->m_state);
+    Q_EMIT viewStateChanged(d->m_state);
 }
 
 QModelIndex AbstractScene::currentIndex() const

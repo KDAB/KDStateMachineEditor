@@ -41,7 +41,7 @@ void StateMachineTest::testProperties()
     QCOMPARE(s1.label(), QLatin1String("s1"));
 }
 
-void StateMachineTest::testParentChildRelationship()
+void StateMachineTest::testParentChildRelationship() // NOLINT(readability-function-cognitive-complexity)
 {
     StateMachine machine;
     State s1(&machine);

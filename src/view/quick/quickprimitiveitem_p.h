@@ -38,8 +38,6 @@ class QuickGeometryItem : public QObject
     Q_PROPERTY(float lineWidth READ lineWidth WRITE setLineWidth NOTIFY lineWidthChanged)
 
     Q_PROPERTY(DrawingMode drawingMode READ drawingMode READ drawingMode WRITE setDrawingMode NOTIFY drawingModeChanged)
-    Q_ENUMS(VertexDataType)
-    Q_ENUMS(DrawingMode)
 
 public:
     enum VertexDataType
@@ -48,6 +46,8 @@ public:
         ColoredPoint2DType,
         TexturedPoint2DType
     };
+    Q_ENUM(VertexDataType)
+
     enum DrawingMode
     {
         Points = QSGGeometry::DrawPoints,
@@ -58,6 +58,7 @@ public:
         TriangleStrip = QSGGeometry::DrawTriangleStrip,
         TriangleFan = QSGGeometry::DrawTriangleFan
     };
+    Q_ENUM(DrawingMode)
 
     explicit QuickGeometryItem(QObject *parent = nullptr);
 
@@ -77,8 +78,8 @@ public:
 
 Q_SIGNALS:
     void vertexDataChanged(const QList<qreal> &vertexData);
-    void vertexDataTypeChanged(VertexDataType type);
-    void drawingModeChanged(DrawingMode drawingMode);
+    void vertexDataTypeChanged(QuickGeometryItem::VertexDataType type);
+    void drawingModeChanged(QuickGeometryItem::DrawingMode drawingMode);
     void lineWidthChanged(float lineWidth);
     /// Emitted in case any of this object properties changes
     void changed();

@@ -35,11 +35,11 @@ namespace {
  */
 QObject *createQObjectTreeSample()
 {
-    QObject *o1 = new QObject;
+    auto *o1 = new QObject;
     o1->setObjectName(QStringLiteral("root"));
-    QObject *o11 = new QObject(o1);
+    auto *o11 = new QObject(o1);
     o11->setObjectName(QStringLiteral("o1"));
-    QObject *o12 = new QObject(o1);
+    auto *o12 = new QObject(o1);
     o12->setObjectName(QStringLiteral("o2"));
     return o1;
 }
@@ -65,10 +65,10 @@ void ModelsTest::testObjectTreeModel()
     ObjectTreeModel model;
     QCOMPARE(model.rowCount(), 0);
 
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     model.appendRootObject(root.data());
     QCOMPARE(model.rowCount(), 1);
-    QModelIndex rootIndex = model.index(0, 0);
+    const QModelIndex rootIndex = model.index(0, 0);
     QCOMPARE(model.rowCount(rootIndex), 2);
     QCOMPARE(rootIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
     QModelIndex index = model.index(0, 0, rootIndex);
@@ -82,21 +82,23 @@ void ModelsTest::testObjectTreeModel()
 
 void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     QObject *appendedObject;
     {
-        ObjectTreeModel::AppendOperation insert(&model, root.data());
+        const ObjectTreeModel::AppendOperation insert(&model, root.data());
         appendedObject = new QObject(root.data());
         appendedObject->setObjectName(QStringLiteral("appendedObject"));
     }
 
     QCOMPARE(spy.count(), 1);
     auto args = spy.takeFirst();
-    const QModelIndex parentIndex = args[0].value<QModelIndex>();
+    const auto parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
     QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
@@ -108,14 +110,16 @@ void ModelsTest::testObjectTreeModel_AppendOperation_SingleObject()
 
 void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsInserted(QModelIndex,int,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     QList<QObject *> appendedObjects;
     {
-        ObjectTreeModel::AppendOperation insert(&model, root.data(), 3);
+        const ObjectTreeModel::AppendOperation insert(&model, root.data(), 3);
         appendedObjects << new QObject(root.data());
         appendedObjects << new QObject(root.data());
         appendedObjects << new QObject(root.data());
@@ -123,7 +127,7 @@ void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
 
     QCOMPARE(spy.count(), 1);
     auto args = spy.takeFirst();
-    const QModelIndex parentIndex = args[0].value<QModelIndex>();
+    const auto parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
     QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
@@ -137,20 +141,22 @@ void ModelsTest::testObjectTreeModel_AppendOperation_MultipleObjects()
 
 void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex, int, int)));
+    // clang-format off
+    QSignalSpy spy(&model, SIGNAL(rowsRemoved(QModelIndex, int, int))); // clazy:exclude=old-style-connect
+    // clang-format on
     {
         QObject *object = root.data()->children()[0];
-        ObjectTreeModel::RemoveOperation remove(&model, object);
+        const ObjectTreeModel::RemoveOperation remove(&model, object);
         delete object;
     }
 
     QCOMPARE(spy.count(), 1);
     auto args = spy.takeFirst();
-    const QModelIndex parentIndex = args[0].value<QModelIndex>();
+    const auto parentIndex = args[0].value<QModelIndex>();
     const int first = args[1].toInt();
     const int last = args[2].toInt();
     QCOMPARE(parentIndex.data(ObjectTreeModel::ObjectRole).value<QObject *>(), root.data());
@@ -160,24 +166,24 @@ void ModelsTest::testObjectTreeModel_RemoveOperation_SingleObject()
 
 void ModelsTest::testObjectTreeModel_ResetOperation_SingleObject()
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
-    QSignalSpy spy1(&model, SIGNAL(modelAboutToBeReset()));
-    QSignalSpy spy2(&model, SIGNAL(modelAboutToBeReset()));
+    const QSignalSpy spy1(&model, SIGNAL(modelAboutToBeReset())); // clazy:exclude=old-style-connect
+    const QSignalSpy spy2(&model, SIGNAL(modelAboutToBeReset())); // clazy:exclude=old-style-connect
     {
         QObject *object = root.data()->children()[0];
-        ObjectTreeModel::ResetOperation reset(&model);
+        const ObjectTreeModel::ResetOperation reset(&model);
         QCOMPARE(spy1.count(), 1);
         delete object;
     }
     QCOMPARE(spy2.count(), 1);
 }
 
-void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
+void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject() // NOLINT(readability-function-cognitive-complexity)
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
@@ -187,10 +193,12 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
     QVERIFY(o2);
 
     // Want to set parent of o2 to o1
-    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-    QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+    // clang-format off
+    QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+    const QSignalSpy spy2(&model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+    // clang-format on
     {
-        ObjectTreeModel::ReparentOperation reparent(&model, o2, o1);
+        const ObjectTreeModel::ReparentOperation reparent(&model, o2, o1);
         QCOMPARE(spy1.count(), 1);
         o2->setParent(o1);
     }
@@ -198,10 +206,10 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
 
     {
         auto args = spy1.takeFirst();
-        const QModelIndex sourceParent = args[0].value<QModelIndex>();
+        const auto sourceParent = args[0].value<QModelIndex>();
         const int sourceStart = args[1].toInt();
         const int sourceEnd = args[2].toInt();
-        const QModelIndex destinationParent = args[3].value<QModelIndex>();
+        const auto destinationParent = args[3].value<QModelIndex>();
         const int destinationRow = args[4].toInt();
         QCOMPARE(sourceParent, model.indexForObject(root.data()));
         QCOMPARE(sourceStart, 1);
@@ -219,7 +227,7 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject()
 
 void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 {
-    QScopedPointer<QObject> root(createQObjectTreeSample());
+    const QScopedPointer<QObject> root(createQObjectTreeSample());
     ObjectTreeModel model;
     model.appendRootObject(root.data());
 
@@ -230,19 +238,23 @@ void ModelsTest::testObjectTreeModel_ReparentOperation_SingleObject_Invalid()
 
     {
         // Want to set parent of o1 to root (root is already parent of o1!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        // clang-format off
+        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+        // clang-format on
         {
-            ObjectTreeModel::ReparentOperation reparent(&model, o1, root.data());
+            const ObjectTreeModel::ReparentOperation reparent(&model, o1, root.data());
             QCOMPARE(spy1.count(), 0);
             o2->setParent(o1);
         }
     }
 
     {
-        // Want to set parent of o1 to o1 (circular link!)
-        QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+        // Want to set parent of o1 to o1 (circular link!
+        // clang-format off
+        const QSignalSpy spy1(&model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int))); // clazy:exclude=old-style-connect
+        // clang-format on
         {
-            ObjectTreeModel::ReparentOperation reparent(&model, o1, o1);
+            const ObjectTreeModel::ReparentOperation reparent(&model, o1, o1);
             QCOMPARE(spy1.count(), 0);
             o2->setParent(o1);
         }

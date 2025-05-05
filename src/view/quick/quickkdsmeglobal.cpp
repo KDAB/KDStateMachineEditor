@@ -22,7 +22,7 @@ QuickPainterPath *QuickKDSMEGlobal::createPath() const
     return new QuickPainterPath;
 }
 
-QuickPainterPath *QuickKDSMEGlobal::createPath(const QPointF &startPoint) const
+QuickPainterPath *QuickKDSMEGlobal::createPath(QPointF startPoint) const
 {
     auto path = new QuickPainterPath;
     path->moveTo(startPoint);

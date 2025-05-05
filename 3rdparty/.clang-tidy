@@ -1,0 +1,4 @@
+---
+# disable all 3rd party checks
+Checks: '-*'
+...

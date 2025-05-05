@@ -71,7 +71,7 @@ void ScxmlExportTest::testEmptyInput()
 {
     QByteArray output;
     ScxmlExporter exporter(&output);
-    bool success = exporter.exportMachine(nullptr);
+    const bool success = exporter.exportMachine(nullptr);
     QVERIFY(!success);
     QVERIFY(output.isEmpty());
 }
@@ -79,12 +79,12 @@ void ScxmlExportTest::testEmptyInput()
 void ScxmlExportTest::testEmptyLabels()
 {
     StateMachine root;
-    State s1(&root);
-    State s2(&root);
+    const State s1(&root);
+    const State s2(&root);
 
     QByteArray output;
     ScxmlExporter exporter(&output);
-    bool success = exporter.exportMachine(&root);
+    const bool success = exporter.exportMachine(&root);
     QVERIFY(!success);
     QVERIFY(exporter.errorString().contains(u"empty label"));
 }
@@ -104,7 +104,7 @@ void ScxmlExportTest::testSimpleStateMachine()
 
     QByteArray output;
     ScxmlExporter exporter(&output);
-    bool success = exporter.exportMachine(&root);
+    const bool success = exporter.exportMachine(&root);
     QVERIFY(success);
     QVERIFY(!output.isEmpty());
 

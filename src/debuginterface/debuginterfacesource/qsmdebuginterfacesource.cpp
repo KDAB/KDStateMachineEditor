@@ -138,14 +138,14 @@ QsmDebugInterfaceSource::Private::Private(QObject *parent)
 
 void QsmDebugInterfaceSource::Private::repopulateGraph()
 {
-    emit aboutToRepopulateGraph();
+    Q_EMIT aboutToRepopulateGraph();
 
     updateStartStop();
 
     addState(qStateMachine());
     m_recursionGuard.clear();
 
-    emit graphRepopulated();
+    Q_EMIT graphRepopulated();
 
     // make sure to pass the current config to the listener
     handleStateConfigurationChanged();
@@ -193,18 +193,18 @@ void QsmDebugInterfaceSource::Private::setQStateMachine(QStateMachine *machine)
 
 void QsmDebugInterfaceSource::Private::handleTransitionTriggered(QAbstractTransition *transition)
 {
-    emit transitionTriggered(makeTransitionId(transition), ObjectHelper::displayString(transition));
+    Q_EMIT transitionTriggered(makeTransitionId(transition), ObjectHelper::displayString(transition));
 }
 
 void QsmDebugInterfaceSource::Private::stateEntered(QAbstractState *state)
 {
-    emit message(tr("State entered: %1").arg(ObjectHelper::displayString(state)));
+    Q_EMIT message(tr("State entered: %1").arg(ObjectHelper::displayString(state)));
     handleStateConfigurationChanged();
 }
 
 void QsmDebugInterfaceSource::Private::stateExited(QAbstractState *state)
 {
-    emit message(tr("State exited: %1").arg(ObjectHelper::displayString(state)));
+    Q_EMIT message(tr("State exited: %1").arg(ObjectHelper::displayString(state)));
     handleStateConfigurationChanged();
 }
 
@@ -222,11 +222,11 @@ void QsmDebugInterfaceSource::Private::handleStateConfigurationChanged()
 
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
-    foreach (QAbstractState *state, newConfig) {
+    for (QAbstractState *state : qAsConst(newConfig)) {
         config << makeStateId(state);
     }
 
-    emit stateConfigurationChanged(config);
+    Q_EMIT stateConfigurationChanged(config);
 }
 
 void QsmDebugInterfaceSource::Private::addState(QAbstractState *state)
@@ -260,8 +260,8 @@ void QsmDebugInterfaceSource::Private::addState(QAbstractState *state)
         type = StateMachineState;
     }
 
-    emit stateAdded(makeStateId(state), makeStateId(parentState),
-                    hasChildren, label, type, connectToInitial);
+    Q_EMIT stateAdded(makeStateId(state), makeStateId(parentState),
+                      hasChildren, label, type, connectToInitial);
 
     // add outgoing transitions
     Q_FOREACH (auto transition, state->findChildren<QAbstractTransition *>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -282,13 +282,13 @@ void QsmDebugInterfaceSource::Private::addTransition(QAbstractTransition *transi
     addState(targetState);
 
     const QString label = labelForTransition(transition);
-    emit transitionAdded(makeTransitionId(transition), makeStateId(sourceState),
-                         makeStateId(targetState), label);
+    Q_EMIT transitionAdded(makeTransitionId(transition), makeStateId(sourceState),
+                           makeStateId(targetState), label);
 }
 
 void QsmDebugInterfaceSource::Private::updateStartStop()
 {
-    emit statusChanged(qStateMachine() != nullptr, qStateMachine() && qStateMachine()->isRunning());
+    Q_EMIT statusChanged(qStateMachine() != nullptr, qStateMachine() && qStateMachine()->isRunning());
 }
 
 void QsmDebugInterfaceSource::Private::toggleRunning()

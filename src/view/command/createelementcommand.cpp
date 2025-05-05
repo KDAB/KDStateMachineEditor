@@ -49,7 +49,7 @@ void CreateElementCommand::setParentElement(Element *parentElement)
         return;
 
     m_parentElement = parentElement;
-    emit parentElementChanged(m_parentElement);
+    Q_EMIT parentElementChanged(m_parentElement);
 }
 
 Element::Type CreateElementCommand::type() const
@@ -63,7 +63,7 @@ void CreateElementCommand::setType(Element::Type type)
         return;
 
     m_type = type;
-    emit typeChanged(m_type);
+    Q_EMIT typeChanged(m_type);
 }
 
 Element *CreateElementCommand::createdElement() const
@@ -80,10 +80,10 @@ void CreateElementCommand::redo()
         return;
     }
 
-    Element *parentElement = m_parentElement ? m_parentElement : model()->state();
-    StateModel::AppendOperation append(model(), parentElement);
+    Element *parentElementL = m_parentElement ? m_parentElement : model()->state();
+    const StateModel::AppendOperation append(model(), parentElementL);
     if (m_createdElement) {
-        m_createdElement->setParent(parentElement);
+        m_createdElement->setParent(parentElementL);
     } else {
         Element *element = factory.create(m_type);
         if (!element) {
@@ -92,7 +92,7 @@ void CreateElementCommand::redo()
         }
 
         element->setLabel(tr("Unnamed"));
-        element->setParent(parentElement);
+        element->setParent(parentElementL);
         m_createdElement = element;
     }
     updateText();
@@ -106,7 +106,7 @@ void CreateElementCommand::undo()
     }
 
     {
-        StateModel::RemoveOperation remove(model(), m_createdElement);
+        const StateModel::RemoveOperation remove(model(), m_createdElement);
         m_createdElement->setParent(nullptr);
     }
 }

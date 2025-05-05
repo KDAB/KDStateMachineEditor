@@ -23,7 +23,7 @@ namespace KDSME {
 
 class ObjectTreeModelPrivate
 {
-    ObjectTreeModelPrivate(ObjectTreeModel *qq)
+    explicit ObjectTreeModelPrivate(ObjectTreeModel *qq)
         : q_ptr(qq)
     {
     }
@@ -34,7 +34,7 @@ class ObjectTreeModelPrivate
 
     QList<QObject *> children(QObject *parent) const;
 
-    QObject *mapModelIndex2QObject(const QModelIndex &index) const;
+    [[nodiscard]] QObject *mapModelIndex2QObject(const QModelIndex &index) const;
     QModelIndex indexForObject(QObject *object) const;
 };
 
@@ -54,7 +54,7 @@ QObject *ObjectTreeModelPrivate::mapModelIndex2QObject(const QModelIndex &index)
         return nullptr;
     }
 
-    QObject *parent = reinterpret_cast<QObject *>(index.internalPointer());
+    auto *parent = reinterpret_cast<QObject *>(index.internalPointer());
     if (!parent) {
         return m_rootObjects[index.row()];
     }
@@ -69,14 +69,14 @@ QModelIndex ObjectTreeModelPrivate::indexForObject(QObject *object) const
     }
 
     Q_Q(const ObjectTreeModel);
-    int row = m_rootObjects.indexOf(object);
+    int row = static_cast<int>(m_rootObjects.indexOf(object));
     if (row != -1) {
         return q->index(row, 0, QModelIndex());
     }
 
-    row = children(object->parent()).indexOf(object);
+    row = static_cast<int>(children(object->parent()).indexOf(object));
     if (row == -1) {
-        return QModelIndex();
+        return {};
     }
     return q->index(row, 0, indexForObject(object->parent()));
 }
@@ -87,8 +87,8 @@ ObjectTreeModel::AppendOperation::AppendOperation(ObjectTreeModel *model, QObjec
     Q_ASSERT(m_model);
     const QModelIndex parentIndex = m_model->indexForObject(parent);
     Q_ASSERT(parentIndex.isValid());
-    int first = index >= 0 ? index : m_model->rowCount(parentIndex);
-    int last = first + count - 1;
+    const int first = index >= 0 ? index : m_model->rowCount(parentIndex);
+    const int last = first + count - 1;
     Q_ASSERT(first >= 0 && last >= 0);
     Q_ASSERT(first <= last);
 
@@ -107,9 +107,9 @@ ObjectTreeModel::RemoveOperation::RemoveOperation(ObjectTreeModel *model, QObjec
     Q_ASSERT(object);
     Q_ASSERT(object->parent());
     Q_ASSERT(!m_model->rootObjects().contains(object));
-    const QModelIndex index = m_model->indexForObject(object);
+    const QModelIndex indexObj = m_model->indexForObject(object);
     const QModelIndex parentIndex = m_model->indexForObject(object->parent());
-    m_model->beginRemoveRows(parentIndex, index.row(), index.row());
+    m_model->beginRemoveRows(parentIndex, indexObj.row(), indexObj.row());
 }
 
 ObjectTreeModel::RemoveOperation::~RemoveOperation()
@@ -141,12 +141,12 @@ ObjectTreeModel::ReparentOperation::ReparentOperation(ObjectTreeModel *model, QO
     }
 
     if (m_model) {
-        const QModelIndex index = m_model->indexForObject(object);
-        QObject *parent = object->parent();
-        const QModelIndex parentIndex = m_model->indexForObject(parent);
+        const QModelIndex indexObj = m_model->indexForObject(object);
+        QObject *parentObj = object->parent(); // cppcheck-suppress constVariablePointer
+        const QModelIndex parentIndex = m_model->indexForObject(parentObj);
         const QModelIndex destinationParentIndex = m_model->indexForObject(newParent);
         Q_ASSERT(destinationParentIndex.isValid());
-        bool success = m_model->beginMoveRows(parentIndex, index.row(), index.row(), destinationParentIndex, m_model->rowCount(destinationParentIndex));
+        const bool success = m_model->beginMoveRows(parentIndex, indexObj.row(), indexObj.row(), destinationParentIndex, m_model->rowCount(destinationParentIndex));
         Q_ASSERT(success);
         Q_UNUSED(success);
     }
@@ -185,8 +185,8 @@ void ObjectTreeModel::appendRootObject(QObject *object)
         return;
     }
 
-    const int row = d->m_rootObjects.count();
-    beginInsertRows(QModelIndex(), row, row);
+    const int row = static_cast<int>(d->m_rootObjects.count());
+    beginInsertRows({}, row, row);
     d->m_rootObjects << object;
     endInsertRows();
 }
@@ -207,7 +207,7 @@ void ObjectTreeModel::setRootObjects(const QList<QObject *> &rootObjects)
     Q_D(ObjectTreeModel);
     beginResetModel();
     d->m_rootObjects.clear();
-    for (QObject *object : rootObjects) {
+    for (QObject *object : rootObjects) { // cppcheck-suppress constVariablePointer
         if (object)
             d->m_rootObjects << object;
     }
@@ -231,14 +231,16 @@ QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
     Q_D(const ObjectTreeModel);
     QObject *obj = d->mapModelIndex2QObject(index);
     Q_ASSERT(obj);
-    if (role == Qt::DisplayRole) {
+    switch (role) {
+    case Qt::DisplayRole:
         return QString { u"0x" + QString::number(reinterpret_cast<quint64>(obj), 16) };
-    } else if (role == ObjectRole) {
+    case ObjectRole:
         return QVariant::fromValue(obj);
-    } else if (role == ObjectIdRole) {
+    case ObjectIdRole:
         return reinterpret_cast<quint64>(obj);
+    default:
+        return {};
     }
-    return {};
 }
 
 int ObjectTreeModel::columnCount(const QModelIndex &parent) const
@@ -250,7 +252,7 @@ int ObjectTreeModel::columnCount(const QModelIndex &parent) const
 int ObjectTreeModel::rowCount(const QModelIndex &parent) const
 {
     Q_D(const ObjectTreeModel);
-    return d->children(d->mapModelIndex2QObject(parent)).count();
+    return static_cast<int>(d->children(d->mapModelIndex2QObject(parent)).count());
 }
 
 QModelIndex ObjectTreeModel::index(int row, int column, const QModelIndex &parent) const
@@ -267,7 +269,7 @@ QModelIndex ObjectTreeModel::index(int row, int column, const QModelIndex &paren
     QObject *parentObject = d->mapModelIndex2QObject(parent);
     if (!parentObject)
         return QModelIndex();
-    QObjectList c = d->children(parentObject);
+    const QObjectList c = d->children(parentObject);
     if (row >= c.size()) {
         return QModelIndex();
     }
@@ -295,6 +297,6 @@ QModelIndex ObjectTreeModel::parent(const QModelIndex &index) const
     }
 
     QObject *grandParent = parent->parent();
-    int row = d->children(grandParent).indexOf(parent);
+    const int row = static_cast<int>(d->children(grandParent).indexOf(parent));
     return createIndex(row, 0, grandParent);
 }

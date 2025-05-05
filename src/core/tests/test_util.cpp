@@ -23,7 +23,7 @@
 
 using namespace KDSME;
 
-class UtilTest : public QObject
+class UtilTest : public QObject // clazy:exclude=ctor-missing-parent-argument
 {
     Q_OBJECT
 

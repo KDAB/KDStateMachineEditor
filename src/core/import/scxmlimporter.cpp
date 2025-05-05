@@ -29,7 +29,7 @@ using namespace KDSME;
 
 struct ScxmlImporter::Private
 {
-    Private(ScxmlImporter *q)
+    explicit Private(ScxmlImporter *q)
         : q(q)
     {
     }
@@ -127,7 +127,7 @@ StateMachine *ScxmlImporter::Private::visitScxml()
 
     const QXmlStreamAttributes attributes = m_reader.attributes();
 
-    StateMachine *state = new StateMachine;
+    auto *state = new StateMachine;
     state->setLabel(attributes.value(QStringLiteral("name")).toString());
 
     tryCreateInitialState(state);
@@ -155,7 +155,7 @@ void ScxmlImporter::Private::visitParallel(State *parent)
     Q_ASSERT(m_reader.isStartElement() && m_reader.name() == QStringLiteral("parallel"));
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
-    State *state = new State(parent);
+    auto *state = new State(parent);
     state->setChildMode(State::ParallelStates);
     initState(state);
     tryCreateInitialState(state);
@@ -221,7 +221,7 @@ void ScxmlImporter::Private::visitInitial(State *parent)
     IF_DEBUG(qCDebug(KDSME_CORE) << Q_FUNC_INFO;)
 
     // Must have exactly one <transition> child
-    Transition *transition = nullptr;
+    const Transition *transition = nullptr;
     while (m_reader.readNextStartElement()) {
         if (m_reader.name() == u"transition") {
             State *initialState = new PseudoState(PseudoState::InitialState, parent);
@@ -328,7 +328,7 @@ Transition *ScxmlImporter::Private::createTransition(State *parent, const QStrin
         return nullptr;
     }
 
-    Transition *transition = new Transition(parent);
+    auto *transition = new Transition(parent);
     m_unresolvedTargetStateIds[transition] = targetStateId;
     return transition;
 }
