@@ -9,12 +9,6 @@ on:
   schedule:
   - cron: '0 3 * * *'
 
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -27,6 +21,7 @@ jobs:
         config:
           - name: clang-tidy
             qt_version: 6.9.0
+            qt_modules: qtscxml
 
           - name: clazy
             qt_version: 6.9.0
