@@ -64,3 +64,7 @@ jobs:
 
       - name: Build Project
         run: cmake --build ./build/${{ matrix.config.name }} --preset ${{ matrix.config.name }}
+
+      - name: Run cppcheck
+        if: ${{ matrix.config.name == 'clazy' }}
+        run: cmake --build ./build/${{ matrix.config.name }} --preset ${{ matrix.config.name }} --target cppcheck
