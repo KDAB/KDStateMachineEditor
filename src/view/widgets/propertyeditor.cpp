@@ -338,7 +338,11 @@ void PropertyEditor::Private::updateSimpleProperty() const
 
     QVariant newValue;
     auto *comboBox = qobject_cast<QComboBox *>(object);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (comboBox && currentValue.typeId() != QMetaType::QString) { // the user property on QComboBox is currentString, not always what we want
+#else
     if (comboBox && currentValue.type() != QVariant::String) { // the user property on QComboBox is currentString, not always what we want
+#endif
         newValue = comboBox->currentIndex();
     } else {
         newValue = object->metaObject()->userProperty().read(object);

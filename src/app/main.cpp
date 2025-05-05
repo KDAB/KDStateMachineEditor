@@ -48,7 +48,11 @@ QString scxmlPresetsLocation()
 int main(int argc, char **argv)
 {
     // this must be called before the QApplication constructor
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    QQmlDebuggingEnabler::enableDebugging(true);
+#else
     const QQmlDebuggingEnabler enabler;
+#endif
 
     const QApplication app(argc, argv);
     QCoreApplication::setOrganizationName(QStringLiteral("KDAB"));
