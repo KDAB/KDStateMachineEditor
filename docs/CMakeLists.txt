@@ -18,10 +18,7 @@ if(NOT DEFINED QT_INSTALL_BINS)
     set(QT_INSTALL_BINS "")
 endif()
 
-find_program(QHELPGEN_EXECUTABLE qhelpgenerator HINTS
-    ${QT_INSTALL_BINS}
-    "${QT_INSTALL_BINS}/../libexec"
-)
+find_program(QHELPGEN_EXECUTABLE qhelpgenerator HINTS ${QT_INSTALL_BINS} "${QT_INSTALL_BINS}/../libexec")
 
 if(QHELPGEN_EXECUTABLE)
     set(HAVE_QHELPGEN "YES")
