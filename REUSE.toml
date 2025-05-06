@@ -10,7 +10,7 @@ SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <i
 SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"
 
 [[annotations]]
-path = ["CHANGES", "INSTALL.txt", "README.md", "conan/README.txt", "data/scxml/README.txt", "docs/api/footer.html", "docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf"]
+path = ["CHANGES", "version.txt", "INSTALL.txt", "README.md", "conan/README.txt", "data/scxml/README.txt", "docs/api/footer.html", "docs/KDStateMachineEditor-CopyrightAssignmentForm.pdf"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>"
 SPDX-License-Identifier = "LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor"

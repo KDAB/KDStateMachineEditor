@@ -51,12 +51,15 @@
 
 cmake_minimum_required(VERSION 3.16)
 
+file(STRINGS version.txt KDSME_VERSION_FILE)
+list(GET KDSME_VERSION_FILE 0 KDSME_VERSION)
+
 project(
     kdstatemachineeditor
     DESCRIPTION "A framework for creating Qt State Machine metacode using a graphical user interface"
     HOMEPAGE_URL "https://github.com/KDAB/KDStateMachineEditor"
     LANGUAGES CXX C
-    VERSION 2.0.0
+    VERSION ${KDSME_VERSION}
 )
 
 set(KDSME_SOVERSION "2") #means the 2.x ABI is frozen. ABI changes will must go to version 3
