@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies on Linux
         run: |
           sudo apt update -qq
-          sudo apt install -y doxygen
+          sudo apt install -y doxygen graphviz
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -46,8 +46,7 @@ jobs:
           submodules: recursive
 
       - name: Configure project
-        run: >
-          cmake -S . -B ./build -DKDSME_DOCS=ON
+        run: cmake -B ./build -DKDSME_DOCS=ON
 
       - name: Create docs
         run: |
