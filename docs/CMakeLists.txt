@@ -17,14 +17,18 @@ if(NOT DEFINED QT_INSTALL_BINS)
     # silent --warn-uninitialized
     set(QT_INSTALL_BINS "")
 endif()
-find_program(QHELPGEN_EXECUTABLE qhelpgenerator HINTS ${QT_INSTALL_BINS})
+
+find_program(QHELPGEN_EXECUTABLE qhelpgenerator HINTS
+    ${QT_INSTALL_BINS}
+    "${QT_INSTALL_BINS}/../libexec"
+)
 
 if(QHELPGEN_EXECUTABLE)
     set(HAVE_QHELPGEN "YES")
 else()
     set(HAVE_QHELPGEN "NO")
     message(STATUS "Unable to generate the API documentation in qch format. "
-                   "To fix, install the qthelpgenerator program which comes with Qt."
+                   "To fix, install the qhelpgenerator program which comes with Qt."
     )
 endif()
 
@@ -48,4 +52,6 @@ endif()
 
 if(DOXYGEN_FOUND AND QHELPGEN_EXECUTABLE)
     add_subdirectory(api)
+else()
+    message(STATUS "Not adding api directory!")
 endif()
