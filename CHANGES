@@ -1,4 +1,4 @@
-Version 2.1.0: (unreleased)
+Version 2.1.0:
 --------------
  * KDStateMachineEditor now looks for Qt6 by default, rather than Qt5. If your Qt5
    build broke, pass -DKDStateMachineEditor_QT6=OFF to CMake.
