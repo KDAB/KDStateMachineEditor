@@ -50,7 +50,9 @@ jobs:
           cmake -S . -B ./build -DKDSME_DOCS=ON
 
       - name: Create docs
-        run: cmake --build ./build --target docs
+        run: |
+          cmake --build ./build --target docs --verbose
+          ls build/docs/api/html/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
