@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2024 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: LGPL-2.1-only OR LicenseRef-KDAB-KDStateMachineEditor
 
 on:
   workflow_dispatch:
