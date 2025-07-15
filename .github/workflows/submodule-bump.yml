@@ -10,7 +10,7 @@ on:
         description: "Select an option"
         options:
           - "Only print current and available versions"
-          - Graphviz
+          - graphviz
 
 name: bump submodules
 jobs:
