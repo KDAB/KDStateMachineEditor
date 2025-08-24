@@ -67,7 +67,6 @@ jobs:
           --warn-uninitialized -Werror=dev
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_OSX_ARCHITECTURES="arm64"
-          -DKDSME_QT6=ON
           -DBUILD_TESTING=${{ matrix.build_type == 'Debug' }}
           -DKDSME_EXAMPLES=ON
           -DKDSME_DOCS=${{ matrix.build_type == 'Debug' && runner.os == 'Linux' }}

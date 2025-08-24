@@ -82,12 +82,9 @@ add_library(KDSME::Core ALIAS kdstatemachineeditor_core)
 target_link_libraries(
     kdstatemachineeditor_core
     PRIVATE Qt${QT_VERSION_MAJOR}::Quick # TODO: Get rid off this
+            Qt6::StateMachine
     PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
 )
-
-if(KDSME_QT6)
-    target_link_libraries(kdstatemachineeditor_core PRIVATE Qt6::StateMachine)
-endif()
 
 if(NOT KDSME_INTERNAL_GRAPHVIZ)
     target_include_directories(kdstatemachineeditor_core PRIVATE ${GRAPHVIZ_INCLUDE_DIR})
@@ -188,22 +185,6 @@ install(
           util/treewalker.h
     DESTINATION ${INCLUDE_INSTALL_DIR}/core
 )
-
-if(NOT KDSME_QT6)
-    ecm_generate_pri_file(
-        BASE_NAME
-        KDSMECore
-        LIB_NAME
-        kdstatemachineeditor_core
-        DEPS
-        "core gui"
-        FILENAME_VAR
-        PRI_FILENAME
-        INCLUDE_INSTALL_DIR
-        ${INCLUDE_INSTALL_DIR}/core
-    )
-    install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
-endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)

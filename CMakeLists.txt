@@ -28,10 +28,6 @@
 #  Currently shared graphviz builds on Windows have link issues.
 #  Default=true
 #
-# -DKDSME_QT6=[true|false]
-#  Build against Qt6 rather than Qt5
-#  Default=true
-#
 # -DKDSME_DOCS=[true|false]
 #  Build the documentation. Documentation is never built when cross-compiling.
 #  Default=true
@@ -100,9 +96,6 @@ renamed_option(BUILD_DOCS KDSME_DOCS)
 renamed_option(BUILD_EXAMPLES KDSME_EXAMPLES)
 renamed_option(BUILD_TESTS BUILD_TESTING)
 
-option(KDSME_QT6 "Build against Qt 6" ON)
-renamed_option(BUILD_QT6 KDSME_QT6)
-
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -124,20 +117,13 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(KDSME_QT6)
-    set(QT_VERSION_MAJOR 6)
-    set(QT_MIN_VERSION "6.1.0")
-    find_package(
-        Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine
-    )
-    set(KDSME_LIBRARY_QTID "-qt6")
-else()
-    set(QT_VERSION_MAJOR 5)
-    set(QT_MIN_VERSION "5.15")
-    find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickWidgets Test Widgets)
-    set(KDSME_LIBRARY_QTID "")
-    include(ECMGeneratePriFile)
-endif()
+set(QT_VERSION_MAJOR 6)
+set(QT_MIN_VERSION "6.1.0")
+find_package(
+    Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Quick QuickControls2 QuickWidgets Test Widgets StateMachine
+)
+set(KDSME_LIBRARY_QTID "-qt6")
+
 include(KDQtInstallPaths) #to set QT_INSTALL_FOO variables
 
 find_package(Qt${QT_VERSION_MAJOR}RemoteObjects ${QT_MIN_VERSION} CONFIG QUIET)
@@ -155,17 +141,6 @@ set_package_properties(
     DESCRIPTION "Qt SCXML module"
     PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
-
-# QtXmlPatterns is removed since Qt6
-if(NOT KDSME_QT6)
-    find_package(Qt5XmlPatterns ${QT_MIN_VERSION} CONFIG QUIET)
-    set_package_properties(
-        Qt5XmlPatterns PROPERTIES
-        TYPE OPTIONAL
-        DESCRIPTION "Qt5 XmlPatterns library"
-        PURPOSE "Required with Qt5 for unit tests dealing with XML input/output"
-    )
-endif()
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
@@ -210,11 +185,9 @@ set(LIB_INSTALL_DIR
     ${CMAKE_INSTALL_LIBDIR}
     CACHE STRING "Library install destination."
 )
-if(KDSME_QT6)
-    set(INCLUDE_INSTALL_ROOT ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}${KDSME_LIBRARY_QTID})
-else()
-    set(INCLUDE_INSTALL_ROOT ${CMAKE_INSTALL_INCLUDEDIR}/)
-endif()
+
+set(INCLUDE_INSTALL_ROOT ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}${KDSME_LIBRARY_QTID})
+
 set(INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_ROOT}/${CMAKE_PROJECT_NAME})
 set(XDG_DATA_INSTALL_DIR ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME})
 
@@ -310,13 +283,6 @@ if((CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND NOT 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -Wextra -Woverloaded-virtual -Winit-self")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-include-dirs -Wunused -Wno-div-by-zero -Wundef")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpointer-arith -Wmissing-noreturn -Werror=return-type -Wswitch")
-    if(NOT KDSME_QT6)
-        if(HAVE_GXX_GNUXX11) # QNX needs gnu++0x rather than c++0x for compiling QML V4 private headers
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
-        elseif(HAVE_GXX_CXX11)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-        endif()
-    endif()
     if(MINGW)
         # mingw will error out on the crazy casts in probe.cpp without this
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
@@ -339,7 +305,7 @@ add_definitions(
     -DQT_USE_QSTRINGBUILDER
     -DQT_NO_SIGNALS_SLOTS_KEYWORDS
     -DQT_USE_FAST_OPERATOR_PLUS
-    -DQT_DISABLE_DEPRECATED_BEFORE=0x050F00
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x060900
 )
 
 if(MSVC)
