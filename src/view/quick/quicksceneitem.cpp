@@ -135,11 +135,7 @@ void QuickSceneItem::mouseReleaseEvent(QMouseEvent *event)
         // select other items in the scene until we reset the QQuickWindow's state
         AbstractSceneContextMenuEvent contextMenuEvent(
             QContextMenuEvent::Mouse,
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             event->pos(), event->globalPosition().toPoint(), event->modifiers(),
-#else
-            event->pos(), event->globalPos(), event->modifiers(),
-#endif
             element());
         QCoreApplication::sendEvent(scene(), &contextMenuEvent);
     }

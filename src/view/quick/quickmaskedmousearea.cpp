@@ -148,13 +148,8 @@ void QuickMaskedMouseArea::mouseReleaseEvent(QMouseEvent *event)
 
 
     const int threshold = qApp->styleHints()->startDragDistance();
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     const int eventX = static_cast<int>(event->position().x());
     const int eventY = static_cast<int>(event->position().y());
-#else
-    const int eventX = event->x();
-    const int eventY = event->y();
-#endif
     const bool isClick = (threshold >= qAbs(eventX - m_pressPoint.x()) && threshold >= qAbs(eventY - m_pressPoint.y()));
 
     if (isClick)

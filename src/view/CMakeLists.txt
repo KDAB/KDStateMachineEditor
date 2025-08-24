@@ -118,22 +118,6 @@ install(
     DESTINATION ${INCLUDE_INSTALL_DIR}/view
 )
 
-if(NOT KDSME_QT6)
-    ecm_generate_pri_file(
-        BASE_NAME
-        KDSMEView
-        LIB_NAME
-        kdstatemachineeditor_view
-        DEPS
-        "core gui qml quickwidgets widgets KDSMECore"
-        FILENAME_VAR
-        PRI_FILENAME
-        INCLUDE_INSTALL_DIR
-        ${INCLUDE_INSTALL_DIR}/view
-    )
-    install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
-endif()
-
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()
