@@ -54,6 +54,16 @@
             }
         },
         {
+            "name": "rel-base",
+            "description": "rel-base",
+            "inherits": "base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "BUILD_TESTING": "OFF"
+            }
+        },
+        {
             "name": "rel6-external-graphviz",
             "description": "Qt6 release build with external graphviz",
             "inherits": "rel-base",
