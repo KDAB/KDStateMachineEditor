@@ -18,7 +18,6 @@ add_library(kdstatemachineeditor_debuginterfaceclient ${DEBUGINTERFACECLIENT_SRC
 
 qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
 
-
 add_library(KDSME::DebugInterfaceClient ALIAS kdstatemachineeditor_debuginterfaceclient)
 target_link_libraries(
     kdstatemachineeditor_debuginterfaceclient LINK_PRIVATE Qt${QT_VERSION_MAJOR}::RemoteObjects LINK_PUBLIC KDSME::Core
