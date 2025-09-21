@@ -28,7 +28,7 @@ jobs:
           - Static
         config:
           - qt_version: 6.6.2
-            qt_modules: qtscxml
+            qt_modules: qtscxml qtremoteobjects
 
     steps:
       - name: Install Dependencies on Linux
