@@ -13,21 +13,11 @@
 #
 
 add_executable(qscxmldebugger trafficlight.cpp main.cpp trafficlight-widgets-static.qrc)
-# Copy the .rep file to your project
-if(NOT KDSME_QT6)
-    qt_generate_repc(REPC_SRCS ../../src/debuginterface/debuginterface.rep REPLICA)
 
-    qt_add_statecharts(STATECHART_SRCS statemachine.scxml)
-    # Work-around QTBUG-84387
-    # Needed in Qt5, otherwise we'll run into duplicate symbol issues like this:
-    #   ld: error: duplicate symbol: TrafficLightStateMachine::qt_metacall(QMetaObject::Call, int, void**)
-    set_source_files_properties(${STATECHART_SRCS} PROPERTIES GENERATED TRUE SKIP_AUTOGEN ON)
-    target_sources(qscxmldebugger PRIVATE ${REPC_SRCS} ${STATECHART_SRCS})
-endif()
-if(KDSME_QT6)
-    qt_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
-    qt_add_statecharts(qscxmldebugger statemachine.scxml)
-endif()
+# Copy the .rep file to your project
+qt_add_repc_replicas(qscxmldebugger ../../src/debuginterface/debuginterface.rep)
+qt_add_statecharts(qscxmldebugger statemachine.scxml)
+
 target_link_libraries(
     qscxmldebugger
     KDSME::Core

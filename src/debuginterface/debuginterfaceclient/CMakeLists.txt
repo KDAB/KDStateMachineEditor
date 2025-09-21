@@ -13,15 +13,11 @@
 #
 
 set(DEBUGINTERFACECLIENT_SRCS debuginterfaceclient.cpp)
-if(NOT KDSME_QT6)
-    qt5_generate_repc(DEBUGINTERFACECLIENT_SRCS ../debuginterface.rep REPLICA)
-endif()
 
 add_library(kdstatemachineeditor_debuginterfaceclient ${DEBUGINTERFACECLIENT_SRCS})
 
-if(KDSME_QT6)
-    qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
-endif()
+qt6_add_repc_replicas(kdstatemachineeditor_debuginterfaceclient ../debuginterface.rep)
+
 
 add_library(KDSME::DebugInterfaceClient ALIAS kdstatemachineeditor_debuginterfaceclient)
 target_link_libraries(
@@ -58,21 +54,7 @@ target_include_directories(
     kdstatemachineeditor_debuginterfaceclient PUBLIC "$<BUILD_INTERFACE:${build_iface_dirs}>"
                                                      $<INSTALL_INTERFACE:${INCLUDE_INSTALL_ROOT}>
 )
-if(NOT KDSME_QT6)
-    ecm_generate_pri_file(
-        BASE_NAME
-        KDSMEDebugInterfaceClient
-        LIB_NAME
-        kdstatemachineeditor_debuginterfaceclient
-        DEPS
-        ""
-        FILENAME_VAR
-        PRI_FILENAME
-        INCLUDE_INSTALL_DIR
-        ${INCLUDE_INSTALL_DIR}/debuginterfaceclient
-    )
-    install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
-endif()
+
 set_target_properties(
     kdstatemachineeditor_debuginterfaceclient
     PROPERTIES OUTPUT_NAME "kdstatemachineeditor_debuginterfaceclient${KDSME_LIBRARY_QTID}"

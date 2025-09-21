@@ -251,7 +251,7 @@ void QScxmlDebugInterfaceSource::Private::handleStateConfigurationChanged()
 
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
-    for (auto state : qAsConst(newConfig)) {
+    for (auto state : std::as_const(newConfig)) {
         config << makeStateId(state);
     }
 

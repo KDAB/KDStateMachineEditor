@@ -222,7 +222,7 @@ void QsmDebugInterfaceSource::Private::handleStateConfigurationChanged()
 
     StateMachineConfiguration config;
     config.reserve(newConfig.size());
-    for (QAbstractState *state : qAsConst(newConfig)) {
+    for (QAbstractState *state : std::as_const(newConfig)) {
         config << makeStateId(state);
     }
 
