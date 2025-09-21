@@ -142,6 +142,12 @@ set_package_properties(
     PURPOSE "Needed for the Qt SCXML adapter (adapter itself depends on Qt RemoteObjects)"
 )
 
+if(Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
+    set(QT_NO_PRIVATE_MODULE_WARNING ON)
+    find_package(Qt6GuiPrivate REQUIRED NO_MODULE)
+    find_package(Qt6ScxmlPrivate REQUIRED NO_MODULE)
+endif()
+
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 include(CheckIncludeFiles)
