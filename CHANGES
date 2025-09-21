@@ -2,6 +2,7 @@ Version 2.2.0:
 --------------
  * Bump to Graphviz 13.1.0
  * Remove Qt 5 support to simplify maintenance
+ * Fix build with Qt 6.10
 
 Version 2.1.0:
 --------------
