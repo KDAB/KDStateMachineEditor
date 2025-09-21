@@ -198,7 +198,7 @@ if(GRAPHVIZ_FOUND)
                 message(FATAL_ERROR "Unable to compile or run the graphviz version detection program.")
             endif()
         endif()
-    elseif()
+    else()
         find_program(DOT_TOOL dot PATHS ${_GRAPHVIZ_ROOT}/bin)
         execute_process(
             COMMAND ${DOT_TOOL} -V
