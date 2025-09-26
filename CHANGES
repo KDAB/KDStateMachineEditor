@@ -1,3 +1,7 @@
+Version 2.3.0:
+--------------
+* Bump to Graphviz 14.0.0
+
 Version 2.2.0:
 --------------
  * Bump to Graphviz 13.1.0
