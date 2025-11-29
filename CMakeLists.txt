@@ -423,7 +423,7 @@ endif()
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 add_custom_target(
-    cppcheck
+    kdsme_cppcheck
     USES_TERMINAL
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
     COMMENT "run cppcheck on source files"
