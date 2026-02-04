@@ -54,6 +54,16 @@
             }
         },
         {
+            "name": "dev6-asan",
+            "inherits": "dev6",
+            "binaryDir": "${sourceDir}/build-dev6-asan",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-DQT_FORCE_ASSERTS -fsanitize=address -fsanitize=undefined -fno-optimize-sibling-calls",
+                "CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer"
+            }
+        },
+        {
             "name": "rel-base",
             "description": "rel-base",
             "inherits": "base",
