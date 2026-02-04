@@ -1,0 +1,60 @@
+# SPDX-FileCopyrightText: 2026 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: CI (Sanitizers)
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-24.04
+        preset: ['dev6-asan']
+        include:
+          - preset: dev6-asan
+            qt-flavor: asan
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Sanitized Qt
+        uses: KDABLabs/sanitized-qt-action@v1
+        with:
+          qt-tag: "v6.11.0-beta2"
+          qt-flavor: ${{ matrix.qt-flavor }}
+
+      - name: Configure project
+        run: >
+          cmake --preset=${{ matrix.preset }}
+          -DCMAKE_BUILD_TYPE=Debug
+          -DBUILD_TESTING=OFF
+          -DKDSME_EXAMPLES=ON
+          -DKDSME_DOCS=OFF
+          -DBUILD_SHARED_LIBS=OFF
+
+      - name: Build Project
+        run: cmake --build ./build-${{ matrix.preset }}
+
+      - name: Run tests on Linux (offscreen)
+        run: |
+          ctest --test-dir ./build-${{ matrix.preset }} --output-on-failure
+        env:
+          QT_QPA_PLATFORM: offscreen
+          LSAN_OPTIONS: "detect_leaks=0"
