@@ -16,7 +16,7 @@ repos:
     args: [--allow-multiple-documents]
   - id: check-json
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v21.1.2
+  rev: v21.1.8
   hooks:
   - id: clang-format
 - repo: https://github.com/codespell-project/codespell
@@ -31,7 +31,7 @@ repos:
   - id: cmake-format
     exclude: (.py.cmake|.h.cmake|Doxyfile.cmake|cmake/Toolchain|cmake/FindGraphviz.cmake)
 - repo: https://github.com/markdownlint/markdownlint
-  rev: v0.12.0
+  rev: v0.15.0
   hooks:
   - id: markdownlint
     entry: mdl
