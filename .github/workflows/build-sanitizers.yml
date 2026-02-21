@@ -24,7 +24,7 @@ jobs:
         preset: ['dev6-asan']
         include:
           - preset: dev6-asan
-            qt-flavor: asan
+            qt-flavor: asan_ubsan
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
