@@ -57,7 +57,7 @@ jobs:
         run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
 
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 

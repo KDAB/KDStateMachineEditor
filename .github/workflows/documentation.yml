@@ -41,7 +41,7 @@ jobs:
           cache: true
 
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -53,7 +53,7 @@ jobs:
           cmake --build ./build --target docs --verbose
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: build/docs/api/html/
 
