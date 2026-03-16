@@ -74,13 +74,13 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
 
-      - uses: TheMrMilchmann/setup-msvc-dev@v3
+      - uses: TheMrMilchmann/setup-msvc-dev@v4
         if: ${{ runner.os == 'Windows' }}
         with:
           arch: x64
 
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
