@@ -29,7 +29,7 @@ jobs:
           - Shared
           - Static
         config:
-          - qt_version: 6.6.2
+          - qt_version: 6.9.3
             qt_modules: qtscxml qtremoteobjects
             qt_arch: win64_msvc2019_64
             macos_architectures: "x86_64;arm64"
