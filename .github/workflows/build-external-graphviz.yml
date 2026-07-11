@@ -27,7 +27,7 @@ jobs:
           - Shared
           - Static
         config:
-          - qt_version: 6.6.2
+          - qt_version: 6.9.3
             qt_modules: qtscxml qtremoteobjects
 
     steps:
