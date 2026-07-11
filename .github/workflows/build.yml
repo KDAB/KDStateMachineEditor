@@ -31,7 +31,6 @@ jobs:
         config:
           - qt_version: 6.9.3
             qt_modules: qtscxml qtremoteobjects
-            qt_arch: win64_msvc2019_64
             macos_architectures: "x86_64;arm64"
     steps:
       - name: Install Dependencies on Linux
@@ -45,22 +44,11 @@ jobs:
         run: brew install bison
 
       - name: Install Qt ${{ matrix.config.qt_version }} with options and default aqtversion (Linux/macOS)
-        if: ${{ runner.os != 'Windows' }}
         uses: jurplel/install-qt-action@v4
         with:
           aqtversion: null # use whatever the default is
           modules: ${{ matrix.config.qt_modules }}
           version: ${{ matrix.config.qt_version }}
-          cache: true
-
-      - name: Install Qt with options and default aqtversion (Windows)
-        if: ${{ runner.os == 'Windows' }}
-        uses: jurplel/install-qt-action@v4
-        with:
-          aqtversion: null # use whatever the default is
-          modules: ${{ matrix.config.qt_modules }}
-          version: ${{ matrix.config.qt_version }}
-          arch: ${{ matrix.config.qt_arch }}
           cache: true
 
       - name: Install ninja-build tool (must be after Qt due PATH changes)
