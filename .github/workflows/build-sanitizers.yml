@@ -40,6 +40,10 @@ jobs:
           qt-tag: "v6.12.0-beta1"
           qt-flavor: ${{ matrix.qt-flavor }}
 
+      - name: Install dependencies
+        run: |
+          sudo apt install libwayland-dev wayland-protocols -y
+
       - name: Configure project
         run: >
           cmake --preset=${{ matrix.preset }}
