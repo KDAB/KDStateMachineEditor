@@ -81,9 +81,7 @@ QString ObjectHelper::toString(const QSizeF &size) // clazy:exclude=function-arg
 
 QString ObjectHelper::toString(const QRectF &rect)
 {
-    return QStringLiteral("(pos=%1,size=%2)")
-        .arg(toString(rect.topLeft())) // clazy:exclude=qstring-arg
-        .arg(toString(rect.size()));
+    return QStringLiteral("(pos=%1,size=%2)").arg(toString(rect.topLeft())).arg(toString(rect.size())); // clazy:exclude=qstring-arg
 }
 
 bool ObjectHelper::descendantOf(const QObject *ascendant, const QObject *object)
