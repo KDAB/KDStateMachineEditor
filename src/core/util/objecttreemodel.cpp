@@ -76,7 +76,7 @@ QModelIndex ObjectTreeModelPrivate::indexForObject(QObject *object) const
 
     row = static_cast<int>(children(object->parent()).indexOf(object));
     if (row == -1) {
-        return {};
+        return { };
     }
     return q->index(row, 0, indexForObject(object->parent()));
 }
@@ -186,7 +186,7 @@ void ObjectTreeModel::appendRootObject(QObject *object)
     }
 
     const int row = static_cast<int>(d->m_rootObjects.count());
-    beginInsertRows({}, row, row);
+    beginInsertRows({ }, row, row);
     d->m_rootObjects << object;
     endInsertRows();
 }
@@ -225,7 +225,7 @@ void ObjectTreeModel::clear()
 QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
-        return {};
+        return { };
     }
 
     Q_D(const ObjectTreeModel);
@@ -239,7 +239,7 @@ QVariant ObjectTreeModel::data(const QModelIndex &index, int role) const
     case ObjectIdRole:
         return reinterpret_cast<quint64>(obj);
     default:
-        return {};
+        return { };
     }
 }
 

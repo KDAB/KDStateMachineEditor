@@ -294,7 +294,7 @@ SvgExporter::~SvgExporter()
 
 bool SvgExporter::exportMachine(StateMachine *machine)
 {
-    setErrorString({});
+    setErrorString({ });
 
     if (!machine) {
         setErrorString(QStringLiteral("Null machine instance passed"));

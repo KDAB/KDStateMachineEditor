@@ -60,7 +60,7 @@ int main()
 
     doOutput(qOut, "=== Output [QML] ===");
     doOutput(qOut, qmlOutput);
-    doOutput(qOut, {});
+    doOutput(qOut, { });
 
     //! [Export to QML]
 
@@ -74,6 +74,6 @@ int main()
 
     doOutput(qOut, "=== Output [SCXML] ===");
     doOutput(qOut, scxmlOutput);
-    doOutput(qOut, {});
+    doOutput(qOut, { });
     //! [Export to SCXML]
 }
