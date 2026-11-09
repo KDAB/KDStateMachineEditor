@@ -37,7 +37,7 @@ class Element;
 class KDSME_VIEW_EXPORT AbstractSceneContextMenuEvent : public QContextMenuEvent
 {
 public:
-    AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers = {}, Element *elementUnderCursor = nullptr);
+    AbstractSceneContextMenuEvent(Reason reason, const QPoint &pos, const QPoint &globalPos, Qt::KeyboardModifiers modifiers = { }, Element *elementUnderCursor = nullptr);
 
     ~AbstractSceneContextMenuEvent();
 
