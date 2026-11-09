@@ -58,7 +58,7 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
 
-      - uses: TheMrMilchmann/setup-msvc-dev@v4
+      - uses: KDABLabs/msvc-dev-cmd-action@v2
         if: ${{ runner.os == 'Windows' }}
         with:
           arch: x64
